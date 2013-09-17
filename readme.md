@@ -21,11 +21,11 @@ To install Fractal, make sure "regulus/fractal" has been added to Laravel 4's `c
 
 Then run `php composer.phar update` from the command line. Composer will install the Fractal package. Now, all you have to do is register the service provider, set up Fractal's alias in `app/config/app.php`, Add this to the `providers` array:
 
-	'Regulus\Fractal\ActivityLogServiceProvider',
+	'Regulus\Fractal\FractalServiceProvider',
 
 And add this to the `aliases` array:
 
-	'CMS' => 'Regulus\Fractal\Activity',
+	'CMS' => 'Regulus\Fractal\Fractal',
 
 You may use 'Fractal', or another alias, but 'CMS' is recommended for the sake of simplicity.
 
