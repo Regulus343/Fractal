@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreatePagesTable extends Migration {
@@ -11,7 +12,7 @@ class CreatePagesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('content_pages', function($table)
+		Schema::create('content_pages', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->string('slug', 120);
