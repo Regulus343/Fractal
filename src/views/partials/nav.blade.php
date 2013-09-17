@@ -8,8 +8,8 @@
 		<a class="navbar-brand" href="{{ Fractal::url() }}">{{{ Site::get('name') }}}</a>
 	</div>
 	<div class="navbar-collapse collapse">
-		{{ Fractal::createMenuMarkup('CMS Main') }}
+		{{ Fractal::getMenuMarkup('CMS Main') }}
 
-		{{ Fractal::createMenuMarkup('CMS Account', false, 'navbar-right') }}
+		{{ Fractal::getMenuMarkup('CMS Account', false, 'navbar-right') }}
 	</div><!-- /.nav-collapse -->
 </div>

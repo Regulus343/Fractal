@@ -2,11 +2,11 @@
 
 /*----------------------------------------------------------------------------------------------------------
 	FractalCMS
-		A simple and easily customizable CMS package for website administrators.
+		A simple and easily customizable Admin/CMS package for website administrators.
 
 		created by Cody Jassman
-		version 0.1a
-		last updated on September 9, 2013
+		version 0.11a
+		last updated on September 16, 2013
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\Config;
@@ -315,25 +315,25 @@ class Fractal {
 	}
 
 	/**
-	 * Create a menu array.
+	 * Get a menu array.
 	 *
 	 * @return array
 	 */
-	public static function createMenuArray($name = 'Main')
+	public static function getMenuArray($name = 'Main')
 	{
 		$menu = Menu::where('name', '=', $name)->first();
 		return $menu->createArray();
 	}
 
 	/**
-	 * Create menu markup for Bootstrap.
+	 * Get menu markup for Bootstrap.
 	 *
 	 * @param  string   $name
 	 * @param  boolean  $listItemsOnly
 	 * @param  string   $class
 	 * @return string
 	 */
-	public static function createMenuMarkup($name = 'Main', $listItemsOnly = false, $class = '')
+	public static function getMenuMarkup($name = 'Main', $listItemsOnly = false, $class = '')
 	{
 		$menu = Menu::where('name', '=', $name)->first();
 		return $menu->createMarkup($listItemsOnly, $class);
