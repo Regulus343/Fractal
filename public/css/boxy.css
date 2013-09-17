@@ -1,0 +1,105 @@
+.boxy-wrapper { position: absolute; }
+.boxy-wrapper.fixed { position: fixed; }
+
+  /* Modal */
+
+  .boxy-modal-blackout { position: absolute; background-color: black; left: 0; top: 0; }
+
+  /* Border */
+
+  .boxy-wrapper { background-color: black; empty-cells: show; box-shadow: #fff 0 0 14px; -moz-border-radius: 6px; -webkit-border-radius: 6px; border-radius: 6px; }
+	.boxy-wrapper .top-left,
+	.boxy-wrapper .top-right,
+	.boxy-wrapper .bottom-right,
+	.boxy-wrapper .bottom-left { width: 10px; height: 10px; padding: 0 }
+
+	/*.boxy-wrapper .top-left { background: url('../img/boxy/boxy-nw.png'); }
+	.boxy-wrapper .top-right { background: url('../img/boxy/boxy-ne.png'); }
+	.boxy-wrapper .bottom-right { background: url('../img/boxy/boxy-se.png'); }
+	.boxy-wrapper .bottom-left { background: url('../img/boxy/boxy-sw.png'); }*/
+
+	/* IE6+7 hacks for the border. IE7 should support this natively but fails in conjuction with modal blackout bg. */
+	/* NB: these must be absolute paths or URLs to your images */
+	.boxy-wrapper .top-left {
+		background-color: black;
+		-moz-border-radius: 5px 0 0 0; -webkit-border-radius: 5px 0 0 0; border-radius: 5px 0 0 0;
+	}
+	.boxy-wrapper .top-right {
+		background-color: black;
+		-moz-border-radius: 0 5px 0 0; -webkit-border-radius: 0 5px 0 0; border-radius: 0 5px 0 0;
+	}
+	.boxy-wrapper .bottom-right {
+		background-color: black;
+		-moz-border-radius: 0 0 5px 0; -webkit-border-radius: 0 0 5px 0; border-radius: 0 0 5px 0;
+	}
+	.boxy-wrapper .bottom-left {
+		background-color: black;
+		-moz-border-radius: 0 0 0 5px; -webkit-border-radius: 0 0 0 5px; border-radius: 0 0 0 5px;
+	}
+
+	.boxy-wrapper .top,
+	.boxy-wrapper .bottom { height: 10px; background-color: black; opacity: 1; filter: alpha(opacity=100); padding: 0; }
+
+	.boxy-wrapper .left,
+	.boxy-wrapper .right { width: 10px; background-color: black; opacity: 1; filter: alpha(opacity=100); padding: 0; }
+
+	.boxy-wrapper .top, .boxy-wrapper .top-left, .boxy-wrapper .top-right { height: 6px; }
+
+	/* Title bar */
+
+	.boxy-wrapper .title-bar { background-color: black; padding: 6px 2px; position: relative; }
+	  .boxy-wrapper .title-bar.dragging { cursor: move; }
+		.boxy-wrapper .title-bar h2 { font-size: 12px; color: white; line-height: 1; margin: 0; padding: 0; font-weight: normal; border: none; }
+		.boxy-wrapper .title-bar a.close {
+			position: absolute;
+			padding: 2px 5px;
+			color: white;
+			background-color: #900;
+			top: 3px;
+			right: 3px;
+			font-size: 90%;
+			line-height: 1;
+			-moz-border-radius: 4px;
+			-webkit-border-radius: 4px;
+			border-radius: 4px;
+			opacity: 1;
+		}
+		.boxy-wrapper .title-bar a.close:hover { background-color: #b00; text-decoration: none; }
+
+	/* Content Region */
+
+	.boxy-inner { background-color: white; padding: 0; }
+	.boxy-content { padding: 15px; }
+	.boxy-content * { color: #333; }
+	.boxy-content p, .boxy-content ul, .boxy-content ol { margin-bottom: 6px; }
+	.boxy-content ul, .boxy-content ol { list-style-position: inside; }
+
+	/* Question Boxes */
+
+	.boxy-wrapper .question { margin: 0 0 16px 0; min-width: 320px; max-width: 540px; min-height: 40px; }
+	.boxy-wrapper .question iframe {
+		display: block;
+		margin: 0 0 18px 0;
+		padding: 0;
+		width: 520px;
+		height: 440px;
+		border: 1px solid #777;
+		overflow: auto;
+	}
+	.boxy-wrapper .question iframe html, .boxy-wrapper .question iframe body { margin: 0; padding: 0; }
+	.boxy-wrapper .question a img {
+		display: block;
+		margin: 0 0 18px 0;
+		padding: 0;
+		width: 760px;
+		border: 1px solid #777;
+	}
+	.boxy-wrapper .question a:hover img {
+		box-shadow: #6c11f5 0 0 6px;
+	}
+	.boxy-wrapper .answers { margin-bottom: 0; min-width: 320px; text-align: right; }
+	.boxy-wrapper .answers input { margin-bottom: 0; }
+	.boxy-wrapper .answers input:last-child { margin-right: 0; }
+
+	.boxy-wrapper form { width: auto; }
+	.boxy-wrapper input[type="button"] { margin-left: 0; }
