@@ -1,8 +1,8 @@
 <?php namespace Regulus\Fractal;
 
 /*----------------------------------------------------------------------------------------------------------
-	FractalCMS
-		A simple and easily customizable Admin/CMS package for website administrators.
+	Fractal
+		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap.
 
 		created by Cody Jassman
 		version 0.11a
