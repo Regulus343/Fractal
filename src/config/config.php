@@ -192,6 +192,7 @@ return array(
 	|
 	*/
 	'authFilters' => array(
+		'X'        => array('admin'),
 		'menus'    => array('admin'),
 		'pages'    => array('admin'),
 		'files'    => array('admin'),

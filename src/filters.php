@@ -51,9 +51,16 @@ foreach ($authFilters as $uri => $allowedRoles) {
 	if ($uri == "*")
 		$subRoutes = false;
 
+	if ($uri == "X")
+		$uri = "";
+
 	$uri = str_replace('[', '', str_replace(']', '', $uri));
 
-	Route::when($baseURI.'/'.$uri, 'roles');
+	$fullURI = $baseURI;
+	if ($uri != "")
+		$fullURI .= '/'.$uri;
+
+	Route::when($fullURI, 'roles');
 
 	if ($subRoutes)
 		Route::when($baseURI.'/'.$uri.'/*', 'roles');
