@@ -113,12 +113,12 @@ You may add additional controllers in the `controllers` array in `config.php`. U
 
 **Get Bootstrap-ready menu markup for a view:**
 
-	echo Fractal::getMenuMarkup(); //get "Main" menu markup
+	echo CMS::getMenuMarkup(); //get "Main" menu markup
 
-	echo Fractal::getMenuMarkup('Main'); //get "Footer" menu markup
+	echo CMS::getMenuMarkup('Main'); //get "Footer" menu markup
 
 **Getting an array of menu items:**
 
-	$menu = Fractal::getMenuArray(); //get "Main" menu array
+	$menu = CMS::getMenuArray(); //get "Main" menu array
 
-	$menu = Fractal::getMenuArray('Main'); //get "Footer" menu array
+	$menu = CMS::getMenuArray('Main'); //get "Footer" menu array
