@@ -3,6 +3,33 @@ Fractal
 
 **A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap. [PRE ALPHA; Not Ready for Production Use]**
 
+Fractal is a simple yet versative Admin/CMS base for Laravel 4. It is built to work with Twitter Bootstrap by default and can be completely customized to work how you, the developer, want it to. The core philosophy behind Fractal is:
+
+**Maintain simplicity while ensuring the developer is free to customize and modify as they please.**
+
+Fractal attempts not to lock you into a specific way of doing things whenever possible. You may define controllers additional to the core controllers, remove core controllers, or point the URI paths of core controllers to your own custom controllers. You may adjust the views location for all Fractal view files so you can completely customize the views, or you may simple edit `config/tables.php` to adjust the setup of the content display tables.
+
+You may use the menu to handle all Admin/CMS permissions (Fractal's own menu makes use of its "menu" and "menu_items" database tables for full and easy customization), or you may simply set your permissions in `config/config.php`. Fractal attempts to be authentication class agnostic so you may use the authentication class of your choice (although it does come preconfigured to use the "Identify" authentication package).
+
+Some of the things you can do with Fractal:
+
+- Log in / log out
+- Manage account
+- Manage users
+- Manage website settings
+- Manage all menus via database, for both front-end website and admin/CMS area
+- Manage content pages for website
+- Manage files
+- Extra website settings management for developers
+- Build Twitter Bootstrap-enabled menu markup for views
+- Build an array of a menu which you can build custom markup for
+- Easily change base URI which defaults to `website.com/admin`
+- Easily add or remove controllers
+- Easily use custom views
+- Easily build forms (due to use of Formation package)
+
+## Table of Contents
+
 - [Installation](#installation)
 - [Standard Authentication Installation](#auth-installation)
 - [First Log In](#first-log-in)
