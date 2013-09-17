@@ -35,7 +35,9 @@ If you wish to customize the configuration of Fractal, you will need to publish 
 
 	php artisan config:publish regulus/fractal
 
-You will now be able to edit the config file in `app/config/packages/regulus/fractal`.
+You will now be able to edit the config file in `app/config/packages/regulus/fractal`. Since Fractal makes use of a lot of SolidSite features, you may wish to publish SolidSite's config file too:
+
+	php artisan config:publish regulus/solid-site --path="workbench/regulus/fractal/vendor/regulus/solid-site/src/config"
 
 **Run the migrations and seed the database:**
 
