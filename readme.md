@@ -30,13 +30,15 @@ Some of the things you can do with Fractal:
 
 ## Table of Contents
 
-- [Installation](#installation)
-- [Standard Authentication Installation](#auth-installation)
+- [Composer Package Installation](#composer-package-installation)
+- [Installation: Command](#command-installation)
+- [Installation: Manual](#manual-installation)
+- [Authentication Installation](#auth-installation)
 - [First Log In](#first-log-in)
 - [Basic Usage](#basic-usage)
 
-<a name="installation"></a>
-## Installation
+<a name="composer-package-installation"></a>
+## Composer Package Installation
 
 **Basic installation, service provider registration, and aliasing:**
 
@@ -47,6 +49,18 @@ To install Fractal, make sure "regulus/fractal" has been added to Laravel 4's `c
 	},
 
 Then run `php composer.phar update` from the command line. Composer will install the Fractal package.
+
+<a name="command-installation"></a>
+## Command Installation
+
+Run the following from the command line:
+
+	php artisan fractal:install
+
+Fractal should now be installed. You may skip ahead to the Authentication Installation section.
+
+<a name="manual-installation"></a>
+## Manual Installation
 
 **Publishing config file:**
 
@@ -103,7 +117,7 @@ To publish Fractal's assets (CSS, JS, and client-side plugins), run the followin
 	php artisan asset:publish regulus/fractal
 
 <a name="auth-installation"></a>
-## Standard Authentication Installation
+## Authentication Installation
 
 Fractal with require some sort of authorization/authentication package for authenticating users. By default, Fractal is configured to work with Identify, but you may use another authentication package if you prefer (adjust the config variables as you need to get other packages to work with Fractal). To install Identify, add it to Laravel 4's `composer.json` file:
 
