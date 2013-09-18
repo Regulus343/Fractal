@@ -66,7 +66,7 @@ To run the migrations, run the following from the command line:
 
 	php artisan migrate --package=regulus/activity-log
 
-> **Note:** It is important that you run the migrations to create Fractal's necessary database tables before you register the service provider. If you get the order wrong, you can simply turn the `migrations` to `false` in `config.php` and run your migrations. If you do this, remember to turn `migrations` to `true` again after you're done.
+> **Note:** It is important that you run the migrations to create Fractal's necessary database tables before you register the service provider. If you get the order wrong, you can simply turn the `migrations` variable to `false` in `config.php` and run your migrations. If you do this, remember to turn `migrations` to `true` again after you're done.
 
 To seed the database tables, add the following to the `run()` method in `database/seeds/DatabaseSeeder.php`:
 
