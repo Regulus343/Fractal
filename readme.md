@@ -57,7 +57,7 @@ Run the following from the command line:
 
 	php artisan fractal:install
 
-Fractal should now be installed. You may skip ahead to the Authentication Installation section.
+Fractal should now be installed. You may skip ahead to the [Authentication Installation](#auth-installation) section.
 
 <a name="manual-installation"></a>
 ## Manual Installation
