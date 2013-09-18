@@ -2,6 +2,7 @@
 
 use Illuminate\Support\ServiceProvider;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 
 class FractalServiceProvider extends ServiceProvider {
@@ -29,13 +30,18 @@ class FractalServiceProvider extends ServiceProvider {
 		include __DIR__.'/../../settings.php';
 
 		//load config for dependent packages
-		$this->package('regulus/solid-site', null, __DIR__.'/../../../../solid-site/src');
-		$this->package('regulus/tetra-text', null, __DIR__.'/../../../../tetra-text/src');
-		$this->package('aquanode/formation', null, __DIR__.'/../../../../../aquanode/formation/src');
-		$this->package('aquanode/elemental', null, __DIR__.'/../../../../../aquanode/elemental/src');
+		if (Config::get('fractal::workbench')) {
+			$pathPrefix = __DIR__.'/../../../vendor/';
+		} else {
+			$pathPrefix = __DIR__.'/../../../../../';
+		}
+		$this->package('regulus/solid-site', null, $pathPrefix.'regulus/solid-site/src');
+		$this->package('regulus/tetra-text', null, $pathPrefix.'regulus/tetra-text/src');
+		$this->package('aquanode/formation', null, $pathPrefix.'aquanode/formation/src');
+		$this->package('aquanode/elemental', null, $pathPrefix.'aquanode/elemental/src');
 
 		//add view namespace for Elemental
-		View::addNamespace('elemental', __DIR__.'/../../../vendor/aquanode/elemental/src/views');
+		View::addNamespace('elemental', $pathPrefix.'aquanode/elemental/src/views');
 
 		//alias dependent classes
 		$loader = \Illuminate\Foundation\AliasLoader::getInstance();
@@ -58,13 +64,13 @@ class FractalServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		//load config for dependent packages
-		/*$this->app['config']->package('regulus/solid-site', __DIR__.'/../../../vendor/regulus/solid-site/vendor/regulus/solid-site/src/config');
-		$this->app['config']->package('regulus/tetra-text', __DIR__.'/../../../vendor/regulus/tetra-text/src/config');
-		$this->app['config']->package('aquanode/elemental', __DIR__.'/../../../vendor/aquanode/elemental/src/config');
-		$this->app['config']->package('aquanode/formation', __DIR__.'/../../../vendor/aquanode/formation/src/config');*/
+		//add the install command
+		$this->app['fractal:install'] = $this->app->share(function($app)
+		{
+			return new Commands\InstallCommand($app);
+		});
 
-//echo '<pre>'; var_dump($this->app['config']->getItems()); echo '</pre>'; exit;
+		$this->commands('fractal:install');
 	}
 
 	/**

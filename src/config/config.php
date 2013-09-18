@@ -274,4 +274,14 @@ return array(
 	*/
 	'migrated' => true,
 
+	/*
+	|--------------------------------------------------------------------------
+	| Workbench
+	|--------------------------------------------------------------------------
+	|
+	| Set this to true if the package is being run from Laravel's Workbench.
+	|
+	*/
+	'workbench' => false,
+
 );
