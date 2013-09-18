@@ -262,4 +262,16 @@ return array(
 	'dateFormat'     => 'F j, Y',
 	'dateTimeFormat' => 'F j, Y \a\t g:ia',
 
+	/*
+	|--------------------------------------------------------------------------
+	| Migrated
+	|--------------------------------------------------------------------------
+	|
+	| Set this to false if you registered the service provider and do not
+	| currently have the database tables migrated to prevent an error from
+	| occurring when you run the DB migrations.
+	|
+	*/
+	'migrated' => true,
+
 );

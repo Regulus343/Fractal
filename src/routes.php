@@ -50,9 +50,12 @@ Route::controller($baseURI.'/auth', Config::get('fractal::authController'));
 $pageURI    = Config::get('fractal::pageURI');
 $pageMethod = Config::get('fractal::pageMethod');
 if ($pageURI == "") {
-	$pages = Page::select('slug')->where('active', '=', true)->get();
-	foreach ($pages as $page) {
-		Route::get('{'.$page->slug.'}', $pageMethod);
+	//ensure DB tables have been migrated first
+	if (Config::get('fractal::migrated')) {
+		$pages = Page::select('slug')->where('active', '=', true)->get();
+		foreach ($pages as $page) {
+			Route::get('{'.$page->slug.'}', $pageMethod);
+		}
 	}
 } else {
 	Route::get($pageURI.'/{slug}', $pageMethod);
