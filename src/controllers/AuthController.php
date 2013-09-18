@@ -51,7 +51,12 @@ class AuthController extends BaseController {
 		//login form has been submitted
 		if (Auth::attempt(array('username' => trim(Input::get('username')), 'password' => Input::get('password')))) {
 			$user = Auth::user();
-			return Redirect::to(Fractal::uri())->with('messages', array('success' => 'Welcome back to '.Site::name().', <strong>'.$user->username.'</strong>.'));
+
+			$returnURI = Session::get('returnURI');
+			if (is_null($returnURI)) $returnURI = Fractal::uri();
+			Session::forget('returnURI');
+
+			return Redirect::to($returnURI)->with('messages', array('success' => 'Welcome back to '.Site::name().', <strong>'.$user->username.'</strong>.'));
 		} else {
 			$messages = array();
 			if ($_POST) $messages['error'] = "Something went wrong. Please check your username and password and try again.";

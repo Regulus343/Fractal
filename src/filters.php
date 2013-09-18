@@ -14,20 +14,29 @@
 use Illuminate\Support\Facades\Route;
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Session;
 
 use Regulus\SolidSite\SolidSite as Site;
 
 $baseURI = Config::get('fractal::baseURI');
 
-Route::filter('auth', function() use ($baseURI)
+Route::filter('fractal-auth', function() use ($baseURI)
 {
-	var_dump('auth filter'); exit;
-	//if (!Fractal::auth()) return Redirect::to($baseURI.'/login');
+	$path = Request::path();
+	$uriSegments = explode('/', $path);
+	if (!Fractal::auth() && end($uriSegments) != "login") {
+		Session::set('returnURI', $path);
+
+		return Redirect::to($baseURI.'/login')
+			->with('messages', array('error' => Lang::get('fractal::messages.errorLogInRequired')));
+	}
 });
 
-//Route::when($baseURI.'/*', 'auth');
+Route::when($baseURI, 'fractal-auth');
+Route::when($baseURI.'/*', 'fractal-auth');
 
 $authFilters = Config::get('fractal::authFilters');
 Route::filter('roles', function() use ($baseURI, $authFilters)
@@ -37,7 +46,8 @@ Route::filter('roles', function() use ($baseURI, $authFilters)
 		foreach ($uriSegments as $prefixURI => $suffixURI) {
 			if ($prefixURI == $filterURI || $prefixURI.'/'.$suffixURI == $filterURI) {
 				if (!Fractal::roles($allowedRoles))
-					return Redirect::to($baseURI.'/login')->with('messages', array('error' => 'You are not authorized to access the requested page.'));
+					return Redirect::to($baseURI.'/loginx')
+						->with('messages', array('error' => Lang::get('fractal::messages.errorUnauthorized')));
 			}
 		}
 	}

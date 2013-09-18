@@ -6,6 +6,8 @@ return array(
 	'errorNotFound'          => 'The :item you selected was not found.',
 	'errorLogIn'             => 'Something went wrong. Please check your username and password and try again.',
 	'errorAlreadyLoggedIn'   => 'You are already logged in.',
+	'errorLogInRequired'     => 'You must be logged in to access the requested page.',
+	'errorUnauthorized'      => 'You are not authorized to access the requested page.',
 
 	'successCreated'         => 'You have successfully created :item.',
 	'successUpdated'         => 'You have successfully updated :item.',
@@ -30,4 +32,5 @@ return array(
 
 	'noItems'                => 'There are currently no :items.',
 	'selectItem'             => 'Select :item',
+
 );
