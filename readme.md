@@ -96,7 +96,7 @@ And add this to the `aliases` array:
 
 You may use 'Fractal', or another alias, but 'CMS' is recommended for the sake of simplicity.
 
-**Publish the assets:**
+**Publish assets:**
 
 To publish Fractal's assets (CSS, JS, and client-side plugins), run the following from the command line:
 
