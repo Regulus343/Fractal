@@ -31,9 +31,11 @@ Some of the things you can do with Fractal:
 ## Table of Contents
 
 - [Composer Package Installation](#composer-package-installation)
-- [Installation: Command](#command-installation)
+- [Installation: Command Line](#command-line-installation)
 - [Installation: Manual](#manual-installation)
-- [Authentication Installation](#auth-installation)
+- [Composer Package Installation for Authentication](#auth-composer-package-installation)
+- [Authentication Installation: Command Line](#auth-command-line-installation)
+- [Authentication Installation: Manual](#auth-manual-installation)
 - [First Log In](#first-log-in)
 - [Basic Usage](#basic-usage)
 
@@ -50,14 +52,26 @@ To install Fractal, make sure "regulus/fractal" has been added to Laravel 4's `c
 
 Then run `php composer.phar update` from the command line. Composer will install the Fractal package.
 
-<a name="command-installation"></a>
-## Command Installation
+<a name="command-line-installation"></a>
+## Command Line Installation
 
 Run the following from the command line:
 
 	php artisan fractal:install
 
-Fractal should now be installed. You may skip ahead to the [Authentication Installation](#auth-installation) section.
+Fractal should now be installed.
+
+**Register service provider and set up alias:**
+
+Now, all you have to do is register the service provider, set up Fractal's alias in `app/config/app.php`, and publish the assets. Add this to the `providers` array:
+
+	'Regulus\Fractal\FractalServiceProvider',
+
+And add this to the `aliases` array:
+
+	'CMS' => 'Regulus\Fractal\Fractal',
+
+You may now skip ahead to the [Composer Package Installation for Authentication](#auth-composer-package-installation) section.
 
 <a name="manual-installation"></a>
 ## Manual Installation
@@ -98,6 +112,12 @@ To seed the database tables, add the following to the `run()` method in `databas
 
 ...And then running `php artisan db:seed` from the command line.
 
+**Publish assets:**
+
+To publish Fractal's assets (CSS, JS, and client-side plugins), run the following from the command line:
+
+	php artisan asset:publish regulus/fractal
+
 **Register service provider and set up alias:**
 
 Now, all you have to do is register the service provider, set up Fractal's alias in `app/config/app.php`, and publish the assets. Add this to the `providers` array:
@@ -110,22 +130,48 @@ And add this to the `aliases` array:
 
 You may use 'Fractal', or another alias, but 'CMS' is recommended for the sake of simplicity.
 
-**Publish assets:**
+<a name="auth-composer-package-installation"></a>
+## Composer Package Installation for Authentication
 
-To publish Fractal's assets (CSS, JS, and client-side plugins), run the following from the command line:
+**Basic installation, service provider registration, and aliasing:**
 
-	php artisan asset:publish regulus/fractal
-
-<a name="auth-installation"></a>
-## Authentication Installation
-
-Fractal with require some sort of authorization/authentication package for authenticating users. By default, Fractal is configured to work with Identify, but you may use another authentication package if you prefer (adjust the config variables as you need to get other packages to work with Fractal). To install Identify, add it to Laravel 4's `composer.json` file:
+To install Identify, make sure "regulus/identify" has been added to Laravel 4's `composer.json` file.
 
 	"require": {
 		"regulus/identify": "dev-master"
 	},
 
 Then run `php composer.phar update` from the command line. Composer will install the Identify package.
+
+<a name="auth-command-line-installation"></a>
+## Command Line Installation for Authentication
+
+Run the following from the command line:
+
+	php artisan identify:install
+
+Identify should now be installed.
+
+You should now have 4 users, 'Admin', 'TestUser', 'TestUser2', and 'TestUser3'. All of the passwords are 'password' and the usernames are case insensitive, so you may simply type 'admin' and 'password' to log in. The 3 initial roles are 'Administrator', 'Moderator', and 'Member'. 'Admin' has the 'Administrator' role, 'TestUser' has the 'Moderator' role, the final 2 users have the 'Member' role.
+
+**Register service provider and set up alias:**
+
+Now, all you have to do is register the service provider, set up Identify's alias in `app/config/app.php`, and set 'model' to `Regulus\Identify\User` in `app/config/auth.php`. Add this to the `providers` array:
+
+	'Regulus\Identify\IdentifyServiceProvider',
+
+And add this to the `aliases` array:
+
+	'Auth' => 'Regulus\Identify\Identify',
+
+You may use 'Identify', or another alias, but 'Auth' is recommended for the sake of simplicity.
+
+Lastly, change the `model` variable in `app/config/auth.php` to `Regulus\Identify\User`.
+
+You may now skip ahead to the [First Log In](#first-log-in) section.
+
+<a name="auth-manual-installation"></a>
+## Manual Installation for Authentication
 
 **Publishing config file:**
 

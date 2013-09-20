@@ -41,7 +41,7 @@ class InstallCommand extends Command {
 	{
 		$this->output->writeln('');
 		$this->comment('Installing Fractal...');
-		$this->info('---------------------');
+		$this->info('----------------------');
 		$this->output->writeln('');
 
 		//run database migrations
@@ -87,7 +87,7 @@ class InstallCommand extends Command {
 		$this->call('asset:publish', $arguments);
 
 		$this->output->writeln('');
-		$this->info('------------------');
+		$this->info('----------------------');
 		$this->comment('Fractal installed!');
 		$this->output->writeln('');
 	}
