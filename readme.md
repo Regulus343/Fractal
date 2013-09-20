@@ -131,7 +131,7 @@ You may use 'Fractal', or another alias, but 'CMS' is recommended for the sake o
 <a name="auth-installation"></a>
 ## Installation for Authentication
 
-**Installing Composer package:**
+**Install Composer package:**
 
 To install Identify, make sure "regulus/identify" has been added to Laravel 4's `composer.json` file.
 
