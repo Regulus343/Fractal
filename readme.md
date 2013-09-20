@@ -33,9 +33,7 @@ Some of the things you can do with Fractal:
 - [Composer Package Installation](#composer-package-installation)
 - [Installation: Command Line](#command-line-installation)
 - [Installation: Manual](#manual-installation)
-- [Composer Package Installation for Authentication](#auth-composer-package-installation)
-- [Authentication Installation: Command Line](#auth-command-line-installation)
-- [Authentication Installation: Manual](#auth-manual-installation)
+- [Installation: Authentication](#auth-installation)
 - [First Log In](#first-log-in)
 - [Basic Usage](#basic-usage)
 
