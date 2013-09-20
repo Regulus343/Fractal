@@ -79,13 +79,10 @@ class InstallCommand extends Command {
 
 		//publish assets for Fractal and its required packages
 		$this->info('Publishing assets');
-		$arguments = array(
-			'--env' => $this->option('env')
-		);
 		if (Config::get('fractal::workbench')) {
 			$arguments = array('--bench'   => 'regulus/fractal');
 		} else {
-			$arguments = array('--package' => 'regulus/fractal');
+			$arguments = array('package' => 'regulus/fractal');
 		}
 		$this->call('asset:publish', $arguments);
 
