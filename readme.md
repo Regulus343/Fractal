@@ -130,10 +130,10 @@ And add this to the `aliases` array:
 
 You may use 'Fractal', or another alias, but 'CMS' is recommended for the sake of simplicity.
 
-<a name="auth-composer-package-installation"></a>
-## Composer Package Installation for Authentication
+<a name="auth-installation"></a>
+## Installation for Authentication
 
-**Basic installation, service provider registration, and aliasing:**
+**Installing Composer package:**
 
 To install Identify, make sure "regulus/identify" has been added to Laravel 4's `composer.json` file.
 
@@ -143,9 +143,6 @@ To install Identify, make sure "regulus/identify" has been added to Laravel 4's 
 
 Then run `php composer.phar update` from the command line. Composer will install the Identify package.
 
-<a name="auth-command-line-installation"></a>
-## Command Line Installation for Authentication
-
 Run the following from the command line:
 
 	php artisan identify:install
@@ -153,52 +150,6 @@ Run the following from the command line:
 Identify should now be installed.
 
 You should now have 4 users, 'Admin', 'TestUser', 'TestUser2', and 'TestUser3'. All of the passwords are 'password' and the usernames are case insensitive, so you may simply type 'admin' and 'password' to log in. The 3 initial roles are 'Administrator', 'Moderator', and 'Member'. 'Admin' has the 'Administrator' role, 'TestUser' has the 'Moderator' role, the final 2 users have the 'Member' role.
-
-**Register service provider and set up alias:**
-
-Now, all you have to do is register the service provider, set up Identify's alias in `app/config/app.php`, and set 'model' to `Regulus\Identify\User` in `app/config/auth.php`. Add this to the `providers` array:
-
-	'Regulus\Identify\IdentifyServiceProvider',
-
-And add this to the `aliases` array:
-
-	'Auth' => 'Regulus\Identify\Identify',
-
-You may use 'Identify', or another alias, but 'Auth' is recommended for the sake of simplicity.
-
-Lastly, change the `model` variable in `app/config/auth.php` to `Regulus\Identify\User`.
-
-You may now skip ahead to the [First Log In](#first-log-in) section.
-
-<a name="auth-manual-installation"></a>
-## Manual Installation for Authentication
-
-**Publishing config file:**
-
-If you wish to customize the configuration of Identify, you will need to publish the config file. Run this from the command line:
-
-	php artisan config:publish regulus/identify
-
-You will now be able to edit the config file in `app/config/packages/regulus/identify`.
-
-**Run the migrations and seed the database:**
-
-The default table prefix is 'auth_'. If you would like to remove it or use a different table prefix, you may do so in `config.php`. To run Identify's migrations run the following from the command line:
-
-	php artisan migrate --package=regulus/identify
-
-This will add the 'auth_users', 'auth_roles', and 'auth_user_roles' table. To start with 4 initial users, you may seed the database by adding the following to the `run()` method in `database/seeds/DatabaseSeeder.php`:
-
-	$this->call('UsersTableSeeder');
-	$this->command->info('Users table seeded.');
-
-	$this->call('RolesTableSeeder');
-	$this->command->info('Roles table seeded.');
-
-	$this->call('UserRolesTableSeeder');
-	$this->command->info('User Roles table seeded.');
-
-...And then running `php artisan db:seed` from the command line. You should now have 4 users, 'Admin', 'TestUser', 'TestUser2', and 'TestUser3'. All of the passwords are 'password' and the usernames are case insensitive, so you may simply type 'admin' and 'password' to log in. The 3 initial roles are 'Administrator', 'Moderator', and 'Member'. 'Admin' has the 'Administrator' role, 'TestUser' has the 'Moderator' role, the final 2 users have the 'Member' role.
 
 **Register service provider and set up alias:**
 
