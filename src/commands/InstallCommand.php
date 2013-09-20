@@ -4,6 +4,8 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
+use Illuminate\Support\Facades\Config;
+
 class InstallCommand extends Command {
 
 	/**
@@ -52,17 +54,6 @@ class InstallCommand extends Command {
 			$this->call('migrate', array('--env' => $this->option('env'), '--package' => $migrationPackage));
 		}
 
-		//publish config files for Fractal and its required packages
-		$configPackages = array(
-			'regulus/fractal',
-			'regulus/solid-site',
-			'aquanode/formation',
-		);
-		foreach ($configPackages as $configPackage) {
-			$this->output->writeln('<info>Publishing config:</info> '.$configPackage);
-			$this->call('config:publish', array('--env' => $this->option('env'), 'package' => $configPackage, '--path' => 'vendor/'.$configPackage.'/src/config'));
-		}
-
 		//seed database tables
 		$seedTables = array(
 			'Settings',
@@ -74,6 +65,29 @@ class InstallCommand extends Command {
 			$this->output->writeln('<info>Seeding DB table:</info> '.$seedTable);
 			$this->call('db:seed', array('--class' => $seedTable.'TableSeeder'));
 		}
+
+		//publish config files for Fractal and its required packages
+		$configPackages = array(
+			'regulus/fractal',
+			'regulus/solid-site',
+			'aquanode/formation',
+		);
+		foreach ($configPackages as $configPackage) {
+			$this->output->writeln('<info>Publishing config:</info> '.$configPackage);
+			$this->call('config:publish', array('--env' => $this->option('env'), 'package' => $configPackage, '--path' => 'vendor/'.$configPackage.'/src/config'));
+		}
+
+		//publish assets for Fractal and its required packages
+		$this->info('Publishing assets');
+		$arguments = array(
+			'--env' => $this->option('env')
+		);
+		if (Config::get('fractal::workbench')) {
+			$arguments = array('--bench'   => 'regulus/fractal');
+		} else {
+			$arguments = array('--package' => 'regulus/fractal');
+		}
+		$this->call('asset:publish', $arguments);
 
 		$this->output->writeln('');
 		$this->info('------------------');
