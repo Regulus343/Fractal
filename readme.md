@@ -53,21 +53,21 @@ Then run `php composer.phar update` from the command line. Composer will install
 <a name="command-line-installation"></a>
 ## Command Line Installation
 
-Run the following from the command line:
-
-	php artisan fractal:install
-
-Fractal should now be installed.
-
 **Register service provider and set up alias:**
 
-Now, all you have to do is register the service provider, set up Fractal's alias in `app/config/app.php`, and publish the assets. Add this to the `providers` array:
+Now, all you have to do is register the service provider, set up Fractal's alias in `app/config/app.php`, publish the assets, and run the install command. Add this to the `providers` array:
 
 	'Regulus\Fractal\FractalServiceProvider',
 
 And add this to the `aliases` array:
 
 	'CMS' => 'Regulus\Fractal\Fractal',
+
+**Run the install command:**
+
+	php artisan fractal:install
+
+Fractal should now be installed.
 
 You may now skip ahead to the [Composer Package Installation for Authentication](#auth-composer-package-installation) section.
 
@@ -139,9 +139,21 @@ To install Identify, make sure "regulus/identify" has been added to Laravel 4's 
 		"regulus/identify": "dev-master"
 	},
 
-Then run `php composer.phar update` from the command line. Composer will install the Identify package.
+**Register service provider and set up alias:**
 
-Run the following from the command line:
+Now, all you have to do is register the service provider, set up Identify's alias in `app/config/app.php`, set 'model' to `Regulus\Identify\User` in `app/config/auth.php`, and run the install command. Add this to the `providers` array:
+
+	'Regulus\Identify\IdentifyServiceProvider',
+
+And add this to the `aliases` array:
+
+	'Auth' => 'Regulus\Identify\Identify',
+
+You may use 'Identify', or another alias, but 'Auth' is recommended for the sake of simplicity.
+
+Next, change the `model` variable in `app/config/auth.php` to `Regulus\Identify\User`.
+
+**Run the install command:**
 
 	php artisan identify:install
 
