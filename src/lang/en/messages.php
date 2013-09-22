@@ -12,6 +12,8 @@ return array(
 	'successCreated'         => 'You have successfully created :item.',
 	'successUpdated'         => 'You have successfully updated :item.',
 	'successActivated'       => 'You have successfully activated :item.',
+	'successBanned'          => 'You have successfully banned :item.',
+	'successUnbanned'        => 'You have successfully unbanned :item.',
 	'successDeleted'         => 'You have successfully deleted :item.',
 	'successUndeleted'       => 'You have successfully undeleted :item.',
 	'successLoggedIn'        => 'Welcome back to :website, <strong>:user</strong>.',

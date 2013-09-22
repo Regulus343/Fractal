@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Config;
 
 $baseURI     = Config::get('fractal::baseURI');
 $controllers = Config::get('fractal::controllers');
+$methods     = Config::get('fractal::controllerMethods');
 
 /* Setup Routes for Defined Standard Controllers */
 if (isset($controllers['standard'])) {
@@ -35,6 +36,19 @@ if (isset($controllers['resource'])) {
 }
 if (isset($controllers['resource']['home']))
 	Route::get($baseURI, $controllers['resource']['home'].'@getIndex');
+
+/* Setup Additional Routes for Defined Controller Methods */
+foreach (array('get', 'post') as $type) {
+	if (isset($methods[$type])) {
+		foreach ($methods[$type] as $route => $method) {
+			if ($type == "get") {
+				Route::get($route, $method);
+			} else {
+				Route::post($route, $method);
+			}
+		}
+	}
+}
 
 /* Setup Developer Route (executing route enables "developer mode" via "developer" session variable) */
 Route::get($baseURI.'/developer', 'Regulus\Fractal\CoreController@getDeveloper');

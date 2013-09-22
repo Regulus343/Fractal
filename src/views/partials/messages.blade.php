@@ -11,6 +11,8 @@
 	</div>
 @endif
 
+<div class="alert alert-success hidden" id="message-success"></div>
+
 {{-- Error Message --}}
 @if (isset($sessionMessages['error']) && $sessionMessages['error'] != "")
 	<div class="alert alert-danger">
@@ -23,6 +25,8 @@
 		<div>{{ $messages['error'] }}</div>
 	</div>
 @endif
+
+<div class="alert alert-error hidden" id="message-error"></div>
 
 {{-- Warning Message --}}
 @if (isset($sessionMessages['warning']) && $sessionMessages['warning'] != "")
@@ -37,6 +41,8 @@
 	</div>
 @endif
 
+<div class="alert alert-warning hidden" id="message-warning"></div>
+
 {{-- General Info Message --}}
 @if (isset($sessionMessages['info']) && $sessionMessages['info'] != "")
 	<div class="alert alert-info">
@@ -49,3 +55,5 @@
 		<div>{{ $messages['info'] }}</div>
 	</div>
 @endif
+
+<div class="alert alert-info hidden" id="message-info"></div>

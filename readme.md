@@ -197,7 +197,7 @@ By default, Fractal's base URI is "admin" making your URLs like `website.com/adm
 
 **Adding additional controllers:**
 
-You may add additional controllers in the `controllers` array in `config.php`. Use `standardControllers` for standard Laravel controllers and `resourceControllers` for resource controllers.
+You may add additional controllers in the `controllers` array in `config.php`. Use `standard` for standard Laravel controllers and `resource` for resource controllers.
 
 **Get Bootstrap-ready menu markup for a view:**
 

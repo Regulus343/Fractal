@@ -40,6 +40,23 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
+	| Controller Methods
+	|--------------------------------------------------------------------------
+	|
+	| The additional methods that are not automatically routed by the
+	| controller setup. They are separated into a "get" array and a "post"
+	| array.
+	|
+	*/
+	'controllerMethods' => array(
+		'get' => array(
+			'users/ban/{id}'   => 'Regulus\Fractal\UsersController@ban',
+			'users/unban/{id}' => 'Regulus\Fractal\UsersController@unban',
+		),
+	),
+
+	/*
+	|--------------------------------------------------------------------------
 	| Layout
 	|--------------------------------------------------------------------------
 	|

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\URL;
 
 use Aquanode\Formation\Formation as Form;
+use Regulus\ActivityLog\Activity;
 use Regulus\TetraText\TetraText as Format;
 use Regulus\SolidSite\SolidSite as Site;
 
@@ -91,14 +92,64 @@ class UsersController extends BaseController {
 			->with('messages', $messages);
 	}
 
-	public function view($slug = '')
+	public function ban($userID)
 	{
-		$page = Page::bySlug($slug);
-		if (empty($page)) return Redirect::to('home');
+		$result = array(
+			'resultType' => 'Error',
+			'message'    => Lang::get('fractal::messages.errorGeneral'),
+		);
 
-		Site::set('title', $page->title);
+		$user = \User::find($userID);
+		if (empty($user))
+			return $result;
 
-		return View::make(Config::get('fractal::pageView'))->with('page', $page);
+		if ($user->banned)
+			return $result;
+
+		$user->banned    = true;
+		$user->banned_at = date('Y-m-d H:i:s');
+		$user->save();
+
+		Activity::log(array(
+			'contentID'   => $user->id,
+			'contentType' => 'User',
+			'description' => 'Banned a User',
+			'details'     => 'Username: '.$user->username,
+		));
+
+		$result['resultType'] = "Success";
+		$result['message']    = Lang::get('fractal::messages.successBanned', array('item' => 'a user'));
+		return $result;
+	}
+
+	public function unban($userID)
+	{
+		$result = array(
+			'resultType' => 'Error',
+			'message'    => Lang::get('fractal::messages.errorGeneral'),
+		);
+
+		$user = \User::find($userID);
+		if (empty($user))
+			return $result;
+
+		if (!$user->banned)
+			return $result;
+
+		$user->banned    = false;
+		$user->banned_at = "0000-00-00 00:00:00";
+		$user->save();
+
+		Activity::log(array(
+			'contentID'   => $user->id,
+			'contentType' => 'User',
+			'description' => 'Unbanned a User',
+			'details'     => 'Username: '.$user->username,
+		));
+
+		$result['resultType'] = "Success";
+		$result['message']    = Lang::get('fractal::messages.successUnbanned', array('item' => 'a user'));
+		return $result;
 	}
 
 }

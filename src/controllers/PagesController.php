@@ -62,11 +62,10 @@ class PagesController extends BaseController {
 			$page->save();
 
 			Activity::log(array(
-			    'contentID'   => $page->id,
-			    'contentType' => 'Page',
-			    'description' => 'Updated a Page',
-			    'details'     => 'Title: '.$page->title,
-			    'updated'     => true,
+				'contentID'   => $page->id,
+				'contentType' => 'Page',
+				'description' => 'Created a Page',
+				'details'     => 'Title: '.$page->title,
 			));
 
 			return Redirect::to(Fractal::uri('pages'))
@@ -123,11 +122,11 @@ class PagesController extends BaseController {
 			$page->save();
 
 			Activity::log(array(
-			    'contentID'   => $page->id,
-			    'contentType' => 'Page',
-			    'description' => 'Updated a Page',
-			    'details'     => 'Title: '.$page->title,
-			    'updated'     => true,
+				'contentID'   => $page->id,
+				'contentType' => 'Page',
+				'description' => 'Created a Page',
+				'details'     => 'Title: '.$page->title,
+				'updated'     => true,
 			));
 
 			return Redirect::to(Fractal::uri('pages'))

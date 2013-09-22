@@ -15,7 +15,6 @@
 @if (Config::get('fractal::loadBootstrap'))
 
 	<link type="text/css" rel="stylesheet" href="{{ Site::css('bootstrap', 'regulus/fractal') }}" />
-	<link type="text/css" rel="stylesheet" href="{{ Site::css('bootstrap-theme', 'regulus/fractal') }}" />
 	<script type="text/javascript" src="{{ Site::js('bootstrap.min', 'regulus/fractal') }}"></script>
 
 @endif
@@ -40,8 +39,8 @@
 <script type="text/javascript">
 	if (baseURL == undefined) var baseURL = "{{ URL::to('') }}";
 
-	var cmsLabels   = {{ json_encode(Lang::get('fractal::labels')) }};
-	var cmsMessages = {{ json_encode(Lang::get('fractal::messages')) }};
+	var fractalLabels   = {{ json_encode(Lang::get('fractal::labels')) }};
+	var fractalMessages = {{ json_encode(Lang::get('fractal::messages')) }};
 
 	function strToSlug(string) {
 		var slug = string.toLowerCase()
