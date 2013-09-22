@@ -12,6 +12,8 @@
 
 		@include('fractal::partials.nav')
 
-		<h1 id="main-heading">{{ Site::titleHeading() }}</h1>
+		@if (!isset($hideTitle) || !$hideTitle)
+			<h1 id="main-heading">{{ Site::titleHeading() }}</h1>
+		@endif
 
 		@include('fractal::partials.messages')

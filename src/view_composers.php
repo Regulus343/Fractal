@@ -25,6 +25,11 @@ View::composer(Config::get('fractal::viewsLocation').'partials.messages', functi
 	$view->with('sessionMessages', $sessionMessages);
 });
 
+View::composer(Config::get('fractal::viewsLocation').'core.home', function($view)
+{
+	$view->with('hideTitle', true);
+});
+
 View::composer(Config::get('fractal::viewsLocation').'menus.list', function($view)
 {
 	$menus = Menu::where('id', '>', 0);
