@@ -17,6 +17,8 @@ $(document).ready(function(){
 					$('#user-'+userID+' td.actions a.ban-user').addClass('hidden');
 					$('#user-'+userID+' td.actions a.unban-user').removeClass('hidden');
 
+					$('#user-'+userID+' td.banned').text('Yes');
+
 					setMainMessage(result.message, 'success');
 				} else {
 					setMainMessage(result.message, 'error');
@@ -42,6 +44,8 @@ $(document).ready(function(){
 					$('#user-'+userID+' td.actions a.unban-user').addClass('hidden');
 					$('#user-'+userID+' td.actions a.ban-user').removeClass('hidden');
 
+					$('#user-'+userID+' td.banned').text('No');
+
 					setMainMessage(result.message, 'success');
 				} else {
 					setMainMessage(result.message, 'error');
@@ -55,8 +59,11 @@ $(document).ready(function(){
 
 });
 
+var messageTimer;
 function setMainMessage(message, type) {
+	clearTimeout(messageTimer);
+
 	$('#message-'+type).html(message);
 	$('#message-'+type).removeClass('hidden');
-	setTimeout("$('#message-"+type+"').slideUp();", 4000);
+	messageTimer = setTimeout("$('#message-"+type+"').slideUp();", 4000);
 }

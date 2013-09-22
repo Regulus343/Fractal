@@ -153,6 +153,7 @@ return array(
 			array(
 				'attribute' => 'banned',
 				'type'      => 'boolean',
+				'class'     => 'banned',
 			),
 			array(
 				'label'     => 'Last Updated',
