@@ -19,6 +19,8 @@ return array(
 
 	'createUser' => 'Create User',
 	'editUser'   => 'Edit User',
+	'banUser'    => 'Ban User',
+	'unbanUser'  => 'Unban User',
 	'deleteUser' => 'Delete User',
 
 	'createRole' => 'Create Role',

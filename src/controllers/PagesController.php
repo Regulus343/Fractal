@@ -34,7 +34,50 @@ class PagesController extends BaseController {
 	{
 		Site::set('title', 'Create Page');
 		Site::set('wysiwyg', true);
-		return View::make(Fractal::view('form'));
+
+		$defaults = array('active' => true);
+		Form::setDefaults($defaults);
+
+		return View::make(Fractal::view('form'))->with('update', false);
+	}
+
+	public function store()
+	{
+		Site::set('title', 'Create Page');
+		Site::set('wysiwyg', true);
+
+		Form::setValidationRules(Page::validationRules());
+
+		$messages = array();
+		if (Form::validated()) {
+			$messages['success'] = Lang::get('fractal::messages.successCreated', array('item' => Format::a('page')));
+
+			$page = new Page;
+			$page->title            = ucfirst(trim(Input::get('title')));
+			$page->slug             = Format::uniqueSlug(Input::get('slug'), 'content_pages');
+			$page->content          = trim(Input::get('content'));
+			$page->set_side_content = Input::get('set_side_content') ? true : false;
+			$page->side_content     = Input::get('set_side_content') ? trim(Input::get('side_content')) : '';
+			$page->active           = Form::value('active', 'checkbox');
+			$page->save();
+
+			Activity::log(array(
+			    'contentID'   => $page->id,
+			    'contentType' => 'Page',
+			    'description' => 'Updated a Page',
+			    'details'     => 'Title: '.$page->title,
+			    'updated'     => true,
+			));
+
+			return Redirect::to(Fractal::uri('pages'))
+				->with('messages', $messages);
+		} else {
+			$messages['error']   = Lang::get('fractal::messages.errorGeneral');
+		}
+
+		return View::make(Fractal::view('form'))
+			->with('update', true)
+			->with('messages', $messages);
 	}
 
 	public function edit($slug)
@@ -71,13 +114,12 @@ class PagesController extends BaseController {
 		if (Form::validated()) {
 			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Format::a('page')));
 
-			$originalSlug = $page->slug;
-
 			$page->title            = ucfirst(trim(Input::get('title')));
 			$page->slug             = Format::uniqueSlug(Input::get('slug'), 'content_pages', $page->id);
 			$page->content          = trim(Input::get('content'));
 			$page->set_side_content = Input::get('set_side_content') ? true : false;
 			$page->side_content     = Input::get('set_side_content') ? trim(Input::get('side_content')) : '';
+			$page->active           = Form::value('active', 'checkbox');
 			$page->save();
 
 			Activity::log(array(
@@ -88,9 +130,8 @@ class PagesController extends BaseController {
 			    'updated'     => true,
 			));
 
-			if ($page->slug != $originalSlug)
-				return Redirect::to(Fractal::uri('pages/'.$page->slug.'/edit'))
-					->with('messages', $messages);
+			return Redirect::to(Fractal::uri('pages'))
+				->with('messages', $messages);
 		} else {
 			$messages['error']   = Lang::get('fractal::messages.errorGeneral');
 		}

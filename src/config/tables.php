@@ -163,6 +163,28 @@ return array(
 						),
 					),
 					array(
+						'icon'       => 'ban-circle',
+						'class'      => 'ban-user',
+						'conditions' => array(
+							'banned' => false,
+						),
+						'attributes' => array(
+							'data-user-id' => ':id',
+							'title'        => Lang::get('fractal::labels.banUser'),
+						),
+					),
+					array(
+						'icon'       => 'ok-circle',
+						'class'      => 'unban-user',
+						'conditions' => array(
+							'banned' => true,
+						),
+						'attributes' => array(
+							'data-user-id' => ':id',
+							'title'        => Lang::get('fractal::labels.unbanUser'),
+						),
+					),
+					array(
 						'icon'       => 'trash',
 						'class'      => 'delete-user',
 						'attributes' => array(

@@ -4,7 +4,7 @@
 
 	<script type="text/javascript">
 		$(document).ready(function(){
-			@if ((!isset($update) || !$update)))
+			@if (!isset($update) || !$update)
 				$('#title').keyup(function(){
 					$('#title').val($('#title').val().replace(/  /g, ' '));
 
