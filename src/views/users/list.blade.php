@@ -2,13 +2,11 @@
 
 @section(Config::get('fractal::section'))
 
-	<style type="text/css">
-		table tr td.actions a { margin-right: 4px; font-size: 16px; }
-		table tr td.no-data { text-align: center; font-size: 18px; font-style: italic; }
-	</style>
-
 	<script type="text/javascript">
 		$(document).ready(function(){
+
+			$('table td.actions a[title]').tooltip();
+
 			$('.ban-user').click(function(e){
 				e.preventDefault();
 
@@ -16,7 +14,9 @@
 				$.ajax({
 					url: baseURL + '/users/ban/' + userID,
 					dataType: 'json',
-
+					success: function(){
+						console.log('Test...');
+					}
 				});
 			});
 		});
