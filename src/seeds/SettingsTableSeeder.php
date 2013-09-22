@@ -15,7 +15,7 @@ class SettingsTableSeeder extends Seeder {
 		$settings = array(
 			array(
 				'name'       => 'Website Name',
-				'value'      => 'Website Name',
+				'value'      => 'Fractal',
 				'type'       => 'Text',
 				'rules'      => 'required',
 				'created_at' => $timestamp,
