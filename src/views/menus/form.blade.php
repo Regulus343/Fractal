@@ -21,8 +21,6 @@
 	</script>
 
 	{{ Aquanode\Formation\Formation::openResource() }}
-		<input type="text" class="form-control" placeholder="Email address" autofocus>
-
 		{{ Aquanode\Formation\Formation::field('name') }}
 
 		@if (Regulus\SolidSite\SolidSite::developer())
@@ -31,27 +29,23 @@
 			</div>
 		@endif
 
-		<label class="checkbox">
-			<input type="checkbox" value="remember-me"> Remember me
-		</label>
-
 		@foreach ($menu->items as $menuItem)
 			<fieldset>
 				{{ Aquanode\Formation\Formation::field('item.'.$menuItem->id.'.label') }}
 
 				{{ Aquanode\Formation\Formation::field('item.'.$menuItem->id.'.type', 'select', array('class' => 'item-type', 'options' => $typeOptions, 'null-option' => 'Select a type')) }}
 
-				<div id="item-{{ $menuItem->id }}-uri-area"<?php /*{{ Regulus\SolidSite\SolidSite::hiddenArea(Form::value('item.'.$menuItem->id.'.type') != "URI") }}*/ ?>>
+				<div id="item-{{ $menuItem->id }}-uri-area"{{ HTML::hiddenArea(Form::value('item.'.$menuItem->id.'.type') != "URI") }}>
 					{{ Aquanode\Formation\Formation::field('item.'.$menuItem->id.'.uri', 'text', array('label' => 'URI')) }}
 				</div>
 
-				<div id="item-{{ $menuItem->id }}-page-area"<?php /*{{ Regulus\SolidSite\SolidSite::hiddenArea(Form::value('item.'.$menuItem->id.'.type') != "Content Page") }}*/ ?>>
+				<div id="item-{{ $menuItem->id }}-page-area"{{ HTML::hiddenArea(Form::value('item.'.$menuItem->id.'.type') != "Content Page") }}>
 					{{ Aquanode\Formation\Formation::field('item.'.$menuItem->id.'.page_id', 'select', array('label' => 'Page', 'options' => $pageOptions, 'null-option' => 'Select a page')) }}
 				</div>
 
 				{{ Aquanode\Formation\Formation::field('item.'.$menuItem->id.'.parent_id', 'select', array('label' => 'Parent Menu Item', 'options' => $menuItemOptions, 'null-option' => 'Select a parent menu item')) }}
 
-				{{ Aquanode\Formation\Formation::field('item.'.$menuItem->id.'.display_order', 'select', array('options' => Aquanode\Formation\Formation::numberOptions(1, 100), 'null-option' => 'Select a type')) }}
+				{{ Aquanode\Formation\Formation::field('item.'.$menuItem->id.'.display_order', 'select', array('options' => Aquanode\Formation\Formation::numberOptions(1, 100))) }}
 
 				{{ Aquanode\Formation\Formation::field('item.'.$menuItem->id.'.active', 'checkbox') }}
 			</fieldset>

@@ -35,11 +35,9 @@ View::composer(Config::get('fractal::viewsLocation').'menus.list', function($vie
 
 View::composer(Config::get('fractal::viewsLocation').'menus.form', function($view)
 {
-	$menuItemOptions = Form::prepOptions(MenuItem::select('id', 'label')->orderBy('label')->get(), array('id', 'label'));
-	$typeOptions     = Form::simpleOptions(array('URI', 'Content Page'));
-	$pageOptions     = Form::prepOptions(Page::select('id', 'title')->orderBy('title')->get(), array('id', 'title'));
+	$typeOptions = Form::simpleOptions(array('URI', 'Content Page'));
+	$pageOptions = Form::prepOptions(Page::select('id', 'title')->orderBy('title')->get(), array('id', 'title'));
 	$view
-		->with('menuItemOptions', $menuItemOptions)
 		->with('typeOptions', $typeOptions)
 		->with('pageOptions', $pageOptions);
 });

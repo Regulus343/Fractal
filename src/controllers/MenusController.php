@@ -31,7 +31,7 @@ class MenusController extends BaseController {
 
 	public function create()
 	{
-		return View::make(Fractal::view('form'));
+		return View::make(Fractal::view('form'))->with('menuItemOptions', array());
 	}
 
 	public function edit($id)
@@ -52,7 +52,9 @@ class MenusController extends BaseController {
 		}
 		Form::setDefaults($defaults);
 
-		return View::make(Fractal::view('form'))->with('menu', $menu);
+		return View::make(Fractal::view('form'))
+			->with('menu', $menu)
+			->with('menuItemOptions', Form::prepOptions($menu->items, array('id', 'label')));
 	}
 
 }
