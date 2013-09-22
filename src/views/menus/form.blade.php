@@ -33,19 +33,27 @@
 			<fieldset>
 				{{ Aquanode\Formation\Formation::field('item.'.$menuItem->id.'.label') }}
 
-				{{ Aquanode\Formation\Formation::field('item.'.$menuItem->id.'.type', 'select', array('class' => 'item-type', 'options' => $typeOptions, 'null-option' => 'Select a type')) }}
+				<div class="row">
+					<div class="col-md-6">
+						{{ Aquanode\Formation\Formation::field('item.'.$menuItem->id.'.type', 'select', array('class' => 'item-type', 'options' => $typeOptions, 'null-option' => 'Select a type')) }}
+					</div><div class="col-md-6">
+						<div id="item-{{ $menuItem->id }}-uri-area"{{ HTML::hiddenArea(Form::value('item.'.$menuItem->id.'.type') != "URI") }}>
+							{{ Aquanode\Formation\Formation::field('item.'.$menuItem->id.'.uri', 'text', array('label' => 'URI')) }}
+						</div>
 
-				<div id="item-{{ $menuItem->id }}-uri-area"{{ HTML::hiddenArea(Form::value('item.'.$menuItem->id.'.type') != "URI") }}>
-					{{ Aquanode\Formation\Formation::field('item.'.$menuItem->id.'.uri', 'text', array('label' => 'URI')) }}
+						<div id="item-{{ $menuItem->id }}-page-area"{{ HTML::hiddenArea(Form::value('item.'.$menuItem->id.'.type') != "Content Page") }}>
+							{{ Aquanode\Formation\Formation::field('item.'.$menuItem->id.'.page_id', 'select', array('label' => 'Page', 'options' => $pageOptions, 'null-option' => 'Select a page')) }}
+						</div>
+					</div>
 				</div>
 
-				<div id="item-{{ $menuItem->id }}-page-area"{{ HTML::hiddenArea(Form::value('item.'.$menuItem->id.'.type') != "Content Page") }}>
-					{{ Aquanode\Formation\Formation::field('item.'.$menuItem->id.'.page_id', 'select', array('label' => 'Page', 'options' => $pageOptions, 'null-option' => 'Select a page')) }}
+				<div class="row">
+					<div class="col-md-6">
+						{{ Aquanode\Formation\Formation::field('item.'.$menuItem->id.'.parent_id', 'select', array('label' => 'Parent Menu Item', 'options' => $menuItemOptions, 'null-option' => 'Select a parent menu item')) }}
+					</div><div class="col-md-6">
+						{{ Aquanode\Formation\Formation::field('item.'.$menuItem->id.'.display_order', 'select', array('options' => Aquanode\Formation\Formation::numberOptions(1, 100))) }}
+					</div>
 				</div>
-
-				{{ Aquanode\Formation\Formation::field('item.'.$menuItem->id.'.parent_id', 'select', array('label' => 'Parent Menu Item', 'options' => $menuItemOptions, 'null-option' => 'Select a parent menu item')) }}
-
-				{{ Aquanode\Formation\Formation::field('item.'.$menuItem->id.'.display_order', 'select', array('options' => Aquanode\Formation\Formation::numberOptions(1, 100))) }}
 
 				{{ Aquanode\Formation\Formation::field('item.'.$menuItem->id.'.active', 'checkbox') }}
 			</fieldset>
