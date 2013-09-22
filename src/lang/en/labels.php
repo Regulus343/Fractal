@@ -15,6 +15,7 @@ return array(
 
 	'createPage' => 'Create Page',
 	'editPage'   => 'Edit Page',
+	'viewPage'   => 'View Page',
 	'deletePage' => 'Delete Page',
 
 	'createUser' => 'Create User',
