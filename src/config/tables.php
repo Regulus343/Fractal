@@ -99,6 +99,14 @@ return array(
 						),
 					),
 					array(
+						'icon'       => 'file',
+						'uri'        => Config::get('fractal::pageURI') == "" ? ':slug' : Config::get('fractal::pageURI').'/:slug',
+						'attributes' => array(
+							'title'        => Lang::get('fractal::labels.viewPage'),
+							'target'       => '_blank',
+						),
+					),
+					array(
 						'icon'       => 'remove',
 						'class'      => 'delete-page red',
 						'attributes' => array(
