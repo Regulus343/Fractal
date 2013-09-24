@@ -199,14 +199,14 @@ return array(
 						),
 					),
 					array(
-						'icon'       => 'remove',
-						'class'      => 'delete-user red',
+						'icon'           => 'remove',
+						'class'          => 'delete-user red',
 						'classModifiers' => array(
 							'invisible' => array(
 								'id' => 1,
 							),
 						),
-						'attributes' => array(
+						'attributes'     => array(
 							'data-user-id' => ':id',
 							'title'        => Lang::get('fractal::labels.deleteUser'),
 						),
