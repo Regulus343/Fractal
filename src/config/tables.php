@@ -179,6 +179,9 @@ return array(
 							'hidden' => array(
 								'banned' => true,
 							),
+							'invisible' => array(
+								'id' => 1,
+							),
 						),
 						'attributes'     => array(
 							'data-user-id' => ':id',
@@ -189,8 +192,11 @@ return array(
 						'icon'           => 'ok-circle',
 						'class'          => 'unban-user',
 						'classModifiers' => array(
-							'hidden' => array(
+							'hidden'       => array(
 								'banned' => false,
+							),
+							'invisible'    => array(
+								'id'     => 1,
 							),
 						),
 						'attributes'     => array(
@@ -202,7 +208,7 @@ return array(
 						'icon'           => 'remove',
 						'class'          => 'delete-user red',
 						'classModifiers' => array(
-							'invisible' => array(
+							'invisible'    => array(
 								'id' => 1,
 							),
 						),
