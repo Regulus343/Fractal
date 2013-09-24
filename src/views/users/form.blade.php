@@ -9,7 +9,13 @@
 			});
 
 			$('#country').change(function(){
-				//adjust regions and region label
+				if ($(this).val() == "Canada") {
+					$('label[for="region"]').text('Province');
+				} else if ($(this).val() == "United States") {
+					$('label[for="region"]').text('State');
+				} else {
+					$('label[for="region"]').text('Region');
+				}
 			});
 		});
 	</script>
