@@ -138,6 +138,7 @@ return array(
 			),
 			array(
 				'attribute' => 'username',
+				'class'     => 'username',
 			),
 			array(
 				'label'     => 'Role(s)',
@@ -200,6 +201,11 @@ return array(
 					array(
 						'icon'       => 'remove',
 						'class'      => 'delete-user red',
+						'classModifiers' => array(
+							'invisible' => array(
+								'id' => 1,
+							),
+						),
 						'attributes' => array(
 							'data-user-id' => ':id',
 							'title'        => Lang::get('fractal::labels.deleteUser'),

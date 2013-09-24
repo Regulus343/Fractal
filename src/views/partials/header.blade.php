@@ -8,6 +8,8 @@
 <body>
 	@include('fractal::partials.included_files')
 
+	@include('fractal::partials.modal')
+
 	<div class="container" id="container">
 
 		@include('fractal::partials.nav')

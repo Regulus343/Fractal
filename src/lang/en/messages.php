@@ -29,6 +29,9 @@ return array(
 	'confirmDeletePermanent' => 'This action cannot be undone.',
 	'confirmUndelete'        => 'Are you sure you want to undelete this :item?',
 
+	'confirmBanUser'         => 'Are you sure you want to ban this user?',
+	'confirmUnbanUser'       => 'Are you sure you want to unban this user?',
+
 	'displayingItems'        => 'Displaying <strong>:number</strong> :items.',
 	'displayingItemsOfTotal' => 'Displaying <strong>:start - :end</strong> of <strong>:total</strong> :items.',
 
