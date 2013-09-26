@@ -46,7 +46,7 @@ Route::filter('roles', function() use ($baseURI, $authFilters)
 		foreach ($uriSegments as $prefixURI => $suffixURI) {
 			if ($prefixURI == $filterURI || $prefixURI.'/'.$suffixURI == $filterURI) {
 				if (!Fractal::roles($allowedRoles))
-					return Redirect::to($baseURI.'/loginx')
+					return Redirect::to($baseURI.'/login')
 						->with('messages', array('error' => Lang::get('fractal::messages.errorUnauthorized')));
 			}
 		}

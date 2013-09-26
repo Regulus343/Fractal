@@ -42,47 +42,49 @@ class UsersController extends BaseController {
 		$user = Fractal::userByUsername($username);
 		if (empty($user))
 			return Redirect::to(Fractal::uri('users'))
-				->with('messages', array('error' => 'The user you selected was not found'));
+				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'user'))));
 
 		Site::set('title', $user->username.' (User)');
 		Site::set('titleHeading', 'Update User: <strong>'.Format::entities($user->username).'</strong>');
 		Site::set('wysiwyg', true);
 
-		Form::setDefaults($user);
+		$defaults = $user->toArray();
+		foreach ($user->roles as $role) {
+			$defaults['roles.'.$role->id] = true;
+		}
+
+		Form::setDefaults($defaults);
 
 		return View::make(Fractal::view('form'))->with('update', true);
 	}
 
-	public function update($slug)
+	public function update($username)
 	{
-		$page = Page::bySlug($slug);
+		$user = Fractal::userByUsername($username);
+		if (empty($user))
+			return Redirect::to(Fractal::uri('users'))
+				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'user'))));
 
-		if (empty($page))
-			return Redirect::to(Fractal::uri('pages'))
-				->with('messages', array('error' => 'The page you selected was not found'));
-
-		Site::set('title', $page->title.' (Page)');
-		Site::set('titleHeading', 'Update Page: <strong>'.Format::entities($page->title).'</strong>');
+		Site::set('title', $user->username.' (User)');
+		Site::set('titleHeading', 'Update User: <strong>'.Format::entities($user->username).'</strong>');
 		Site::set('wysiwyg', true);
 
-		Form::setValidationRules(Page::validationRules());
+		$rules = array(
+			'username' => array('required'),
+			'email'    => array('required', 'email'),
+		);
+		Form::setValidationRules($rules);
 
 		$messages = array();
 		if (Form::validated()) {
-			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Format::a('page')));
+			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Format::a('user')));
 
-			$originalSlug = $page->slug;
+			$user->fill(Input::except('csrf_token', 'roles'));
+			$user->roles()->sync(Input::get('roles'));
+			$user->save();
 
-			$page->title            = ucfirst(trim(Input::get('title')));
-			$page->slug             = Format::uniqueSlug(Input::get('slug'), 'content_pages', $page->id);
-			$page->content          = trim(Input::get('content'));
-			$page->set_side_content = Input::get('set_side_content') ? true : false;
-			$page->side_content     = Input::get('set_side_content') ? trim(Input::get('side_content')) : '';
-			$page->save();
-
-			if ($page->slug != $originalSlug)
-				return Redirect::to(Fractal::uri('pages/'.$page->slug.'/edit'))
-					->with('messages', $messages);
+			return Redirect::to(Fractal::uri('users'))
+				->with('messages', $messages);
 		} else {
 			$messages['error']   = Lang::get('fractal::messages.errorGeneral');
 		}

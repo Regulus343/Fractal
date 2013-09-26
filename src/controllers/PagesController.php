@@ -84,7 +84,7 @@ class PagesController extends BaseController {
 		$page = Page::bySlug($slug);
 		if (empty($page))
 			return Redirect::to(Fractal::uri('pages'))
-				->with('messages', array('error' => 'The page you selected was not found'));
+				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'page'))));
 
 		Site::set('title', $page->title.' (Page)');
 		Site::set('titleHeading', 'Update Page: <strong>'.Format::entities($page->title).'</strong>');
@@ -98,10 +98,9 @@ class PagesController extends BaseController {
 	public function update($slug)
 	{
 		$page = Page::bySlug($slug);
-
 		if (empty($page))
 			return Redirect::to(Fractal::uri('pages'))
-				->with('messages', array('error' => 'The page you selected was not found'));
+				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'page'))));
 
 		Site::set('title', $page->title.' (Page)');
 		Site::set('titleHeading', 'Update Page: <strong>'.Format::entities($page->title).'</strong>');

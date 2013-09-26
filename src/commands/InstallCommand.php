@@ -44,14 +44,26 @@ class InstallCommand extends Command {
 		$this->info('----------------------');
 		$this->output->writeln('');
 
+		$workbench = Config::get('fractal::workbench');
+
 		//run database migrations
 		$migrationPackages = array(
 			'regulus/fractal',
 			'regulus/activity-log',
 		);
 		foreach ($migrationPackages as $migrationPackage) {
+			if ($workbench) {
+				$prefix = 'workbench';
+			} else {
+				$prefix = 'vendor';
+			}
+
 			$this->output->writeln('<info>Migrating DB tables:</info> '.$migrationPackage);
-			$this->call('migrate', array('--env' => $this->option('env'), '--package' => $migrationPackage));
+			$this->call('migrate', array(
+				'--env' => $this->option('env'),
+				'--package' => $migrationPackage,
+				'--path' => $prefix.'/'.$migrationPackage.'/src/migrations'
+			));
 		}
 
 		//seed database tables
@@ -74,13 +86,17 @@ class InstallCommand extends Command {
 		);
 		foreach ($configPackages as $configPackage) {
 			$this->output->writeln('<info>Publishing config:</info> '.$configPackage);
-			$this->call('config:publish', array('--env' => $this->option('env'), 'package' => $configPackage, '--path' => 'vendor/'.$configPackage.'/src/config'));
+			$this->call('config:publish', array(
+				'package' => $configPackage,
+				'--env'   => $this->option('env'),
+				'--path'  => 'vendor/'.$configPackage.'/src/config'
+			));
 		}
 
 		//publish assets for Fractal and its required packages
 		$this->info('Publishing assets');
-		if (Config::get('fractal::workbench')) {
-			$arguments = array('--bench'   => 'regulus/fractal');
+		if ($workbench) {
+			$arguments = array('--bench' => 'regulus/fractal');
 		} else {
 			$arguments = array('package' => 'regulus/fractal');
 		}

@@ -46,4 +46,6 @@ return array(
 	'city'       => 'City',
 	'country'    => 'Country',
 
+	'roles'      => 'Roles',
+
 );
