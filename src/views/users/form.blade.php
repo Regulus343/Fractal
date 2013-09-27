@@ -23,7 +23,30 @@
 			});
 
 			$('#password').val(''); //prevent browser from automatically inserting a password
+
+			$('#password, #password-confirmation').change(function(){
+				checkPasswords();
+			}).keyup(function(){
+				checkPasswords();
+			});
 		});
+
+		function checkPasswords() {
+			var password             = $('#password').val();
+			var passwordConfirmation = $('#password-confirmation').val();
+
+			if (password != "") {
+				if (password == passwordConfirmation) {
+					$('.passwords-check .passwords-mismatch').addClass('hidden');
+					$('.passwords-check .passwords-match').removeClass('hidden');
+				} else {
+					$('.passwords-check .passwords-match').addClass('hidden');
+					$('.passwords-check .passwords-mismatch').removeClass('hidden');
+				}
+			} else {
+				$('.passwords-check span').addClass('hidden');
+			}
+		}
 	</script>
 
 	{{ Form::openResource(null, null, 'users') }}
@@ -83,9 +106,16 @@
 		)) }}
 
 		@if (!isset($update) || !$update)
-			{{ Form::field('password') }}
-
-			{{ Form::field('password_confirmation', null, array('label' => 'Confirm Password')) }}
+			<div class="row">
+				<div class="col-md-4">
+					{{ Form::field('password') }}
+				</div><div class="col-md-4">
+					{{ Form::field('password_confirmation', null, array('label' => 'Confirm Password')) }}
+				</div><div class="col-md-4 passwords-check">
+					<span class="glyphicon glyphicon-ok-circle passwords-match green hidden"></span>
+					<span class="glyphicon glyphicon-remove-circle passwords-mismatch red hidden"></span>
+				</div>
+			</div>
 		@endif
 
 		{{ Form::field(Form::submitResource('User', (isset($update) && $update)), 'button') }}
