@@ -3,6 +3,7 @@
 use \BaseController;
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
@@ -13,6 +14,9 @@ use Aquanode\Formation\Formation as Form;
 use Regulus\ActivityLog\Activity;
 use Regulus\TetraText\TetraText as Format;
 use Regulus\SolidSite\SolidSite as Site;
+
+use Regulus\Identify\User as User;
+use Regulus\Identify\Role as Role;
 
 class UsersController extends BaseController {
 
@@ -34,6 +38,9 @@ class UsersController extends BaseController {
 	{
 		Site::set('title', 'Create User');
 		Site::set('wysiwyg', true);
+
+		Form::setDefaults(array('active' => true));
+
 		return View::make(Fractal::view('form'));
 	}
 
@@ -41,7 +48,6 @@ class UsersController extends BaseController {
 	{
 		Site::set('title', 'Create User');
 		Site::set('wysiwyg', true);
-		return View::make(Fractal::view('form'));
 
 		$rules = array(
 			'username' => array('required', 'alpha_dash', 'min:3', 'unique:auth_users,username'),
@@ -63,9 +69,12 @@ class UsersController extends BaseController {
 		if (Form::validated()) {
 			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Format::a('user')));
 
-			$user->fill(Input::except('csrf_token', 'roles'));
-			$user->roles()->sync(Input::get('roles'));
+			$user = new User;
+			$user->fill(Input::except('csrf_token', 'roles', 'password', 'password_confirmation'));
+			$user->password = Hash::make(Input::get('password'));
 			$user->save();
+
+			$user->roles()->sync(Input::get('roles'));
 
 			return Redirect::to(Fractal::uri('users'))
 				->with('messages', $messages);
@@ -74,7 +83,7 @@ class UsersController extends BaseController {
 		}
 
 		return View::make(Fractal::view('form'))
-			->with('update', true)
+			->with('update', false)
 			->with('messages', $messages);
 	}
 

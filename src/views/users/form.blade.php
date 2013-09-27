@@ -85,7 +85,7 @@
 		@if (!isset($update) || !$update)
 			{{ Form::field('password') }}
 
-			{{ Form::field('password_confirm') }}
+			{{ Form::field('password_confirmation', null, array('label' => 'Confirm Password')) }}
 		@endif
 
 		{{ Form::field(Form::submitResource('User', (isset($update) && $update)), 'button') }}
