@@ -10,3 +10,15 @@ table tr td.actions a.red { color: #900; }
 table tr td.actions a.red:hover { color: #c00; }
 
 table tr td.no-data { text-align: center; font-size: 18px; font-style: italic; }
+
+div.checkbox-set, div.radio-set {
+	padding: 0 8px;
+	border: 1px solid #aaa;
+	border-radius: 8px; -webkit-border-radius: 8px; -moz-border-radius: 8px;
+}
+div.checkbox-set.has-error, div.radio-set.has-error { border-color: #b94a48; }
+div.checkbox-set label, div.radio-set label { display: inline-block; min-width: 280px; }
+div.checkbox-set label:hover, div.radio-set label:hover { font-weight: bold; }
+div.checkbox-set.has-error label, div.radio-set.has-error label { color: #000; }
+
+form div.error { padding: 5px; color: #b94a48; }

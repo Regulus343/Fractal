@@ -37,6 +37,47 @@ class UsersController extends BaseController {
 		return View::make(Fractal::view('form'));
 	}
 
+	public function store()
+	{
+		Site::set('title', 'Create User');
+		Site::set('wysiwyg', true);
+		return View::make(Fractal::view('form'));
+
+		$rules = array(
+			'username' => array('required', 'alpha_dash', 'min:3', 'unique:auth_users,username'),
+			'email'    => array('required', 'email'),
+			'roles'    => array('required'),
+			'password' => array('required', 'confirmed'),
+		);
+
+		if (Fractal::getSetting('Require Unique Email Addresses'))
+			$rules['email'][] = 'unique:auth_users,email';
+
+		$minPasswordLength = Fractal::getSetting('Minimum Password Length');
+		if ($minPasswordLength)
+			$rules['password'][] = 'min:'.$minPasswordLength;
+
+		Form::setValidationRules($rules);
+
+		$messages = array();
+		if (Form::validated()) {
+			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Format::a('user')));
+
+			$user->fill(Input::except('csrf_token', 'roles'));
+			$user->roles()->sync(Input::get('roles'));
+			$user->save();
+
+			return Redirect::to(Fractal::uri('users'))
+				->with('messages', $messages);
+		} else {
+			$messages['error']   = Lang::get('fractal::messages.errorGeneral');
+		}
+
+		return View::make(Fractal::view('form'))
+			->with('update', true)
+			->with('messages', $messages);
+	}
+
 	public function edit($username)
 	{
 		$user = Fractal::userByUsername($username);
@@ -48,12 +89,7 @@ class UsersController extends BaseController {
 		Site::set('titleHeading', 'Update User: <strong>'.Format::entities($user->username).'</strong>');
 		Site::set('wysiwyg', true);
 
-		$defaults = $user->toArray();
-		foreach ($user->roles as $role) {
-			$defaults['roles.'.$role->id] = true;
-		}
-
-		Form::setDefaults($defaults);
+		Form::setDefaults($user, array('roles' => 'id'));
 
 		return View::make(Fractal::view('form'))->with('update', true);
 	}
@@ -70,9 +106,18 @@ class UsersController extends BaseController {
 		Site::set('wysiwyg', true);
 
 		$rules = array(
-			'username' => array('required'),
+			'username' => array('required', 'alpha_dash', 'min:3', 'unique:auth_users,username,'.$user->id),
 			'email'    => array('required', 'email'),
+			'roles'    => array('required'),
 		);
+
+		if (Fractal::getSetting('Require Unique Email Addresses'))
+			$rules['email'][] = 'unique:auth_users,email,'.$user->id;
+
+		$minPasswordLength = Fractal::getSetting('Minimum Password Length');
+		if ($minPasswordLength)
+			$rules['password'][] = 'min:'.$minPasswordLength;
+
 		Form::setValidationRules($rules);
 
 		$messages = array();

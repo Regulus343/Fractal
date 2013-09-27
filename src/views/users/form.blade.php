@@ -10,13 +10,19 @@
 
 			$('#country').change(function(){
 				if ($(this).val() == "Canada") {
+					$('#region-area').removeClass('hidden');
 					$('label[for="region"]').text('Province');
+
 				} else if ($(this).val() == "United States") {
+					$('#region-area').removeClass('hidden');
 					$('label[for="region"]').text('State');
 				} else {
+					$('#region-area').addClass('hidden');
 					$('label[for="region"]').text('Region');
 				}
 			});
+
+			$('#password').val(''); //prevent browser from automatically inserting a password
 		});
 	</script>
 
@@ -75,6 +81,12 @@
 			'associative' => true,
 			'name-values' => true
 		)) }}
+
+		@if (!isset($update) || !$update)
+			{{ Form::field('password') }}
+
+			{{ Form::field('password_confirm') }}
+		@endif
 
 		{{ Form::field(Form::submitResource('User', (isset($update) && $update)), 'button') }}
 	{{ Form::close() }}
