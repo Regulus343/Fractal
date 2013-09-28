@@ -39,7 +39,13 @@ class UsersController extends BaseController {
 		Site::set('title', 'Create User');
 		Site::set('wysiwyg', true);
 
-		Form::setDefaults(array('active' => true));
+		$defaults    = array('active' => true);
+		$defaultRole = Role::where('default', '=', true)->first();
+
+		if (!empty($defaultRole))
+			$defaults['roles.'.$defaultRole->id] = $defaultRole->id;
+
+		Form::setDefaults($defaults);
 
 		return View::make(Fractal::view('form'));
 	}
@@ -71,7 +77,9 @@ class UsersController extends BaseController {
 
 			$user = new User;
 			$user->fill(Input::except('csrf_token', 'roles', 'password', 'password_confirmation'));
-			$user->password = Hash::make(Input::get('password'));
+			$user->first_name = Format::name($user->first_name);
+			$user->last_name  = Format::name($user->last_name);
+			$user->password   = Hash::make(Input::get('password'));
 			$user->save();
 
 			$user->roles()->sync(Input::get('roles'));
@@ -134,8 +142,11 @@ class UsersController extends BaseController {
 			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Format::a('user')));
 
 			$user->fill(Input::except('csrf_token', 'roles'));
-			$user->roles()->sync(Input::get('roles'));
+			$user->first_name = Format::name($user->first_name);
+			$user->last_name  = Format::name($user->last_name);
 			$user->save();
+
+			$user->roles()->sync(Input::get('roles'));
 
 			return Redirect::to(Fractal::uri('users'))
 				->with('messages', $messages);

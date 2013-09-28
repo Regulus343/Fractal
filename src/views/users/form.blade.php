@@ -66,8 +66,6 @@
 			</div>
 		</div>
 
-		{{ Form::field('active', 'checkbox') }}
-
 		<div class="row">
 			<div class="col-md-4">
 				{{ Form::field('city') }}
@@ -117,6 +115,20 @@
 				</div>
 			</div>
 		@endif
+
+		{{ Form::field(null, 'checkbox-set', array(
+			'options'     => array('active' => 'Active', 'banned' => 'Banned'),
+			'label'       => Lang::get('fractal::labels.statuses'),
+			'associative' => true
+		)) }}
+
+		<div class="row">
+			<div class="col-md-6">
+				{{ Form::field('active', 'checkbox') }}
+			</div><div class="col-md-6">
+				{{ Form::field('banned', 'checkbox') }}
+			</div>
+		</div>
 
 		{{ Form::field(Form::submitResource('User', (isset($update) && $update)), 'button') }}
 	{{ Form::close() }}

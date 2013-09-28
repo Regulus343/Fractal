@@ -2,8 +2,10 @@ var userID;
 
 $(document).ready(function(){
 
-	/* Set Tooltip for Table Actions */
+	/* Setup Tooltips */
 	$('table td.actions a[title]').tooltip();
+
+	$('a.show-tooltip[title]').tooltip();
 
 	/* Set "Ban User" Action */
 	$('.ban-user').click(function(e){

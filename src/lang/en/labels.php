@@ -47,5 +47,6 @@ return array(
 	'country'    => 'Country',
 
 	'roles'      => 'Roles',
+	'statuses'   => 'Statuses',
 
 );
