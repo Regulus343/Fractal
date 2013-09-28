@@ -1,3 +1,5 @@
+html, body { margin: 0; padding: 0; height: 100%; }
+
 table tr td.actions { text-align: center; line-height: 100%; }
 
 table tr td.actions a { margin-right: 6px; color: #555; font-size: 18px; }
@@ -28,14 +30,42 @@ div.passwords-check span { padding-top: 26px; font-size: 28px; }
 .red { color: #900; }
 .green { color: #060; }
 
-div#footer {
-	margin-top: 42px;
-	padding: 24px 24px 18px 24px;
+.bold { font-weight: bold; }
+
+#container { margin: 0 auto -128px; position: relative; min-height: 100%; height: auto !important; }
+#container:after {
+	display: block;
+	content: "";
+}
+
+#footer {
+	clear: both;
+	margin: 56px auto 0;
+	padding: 0;
 	background-color: #222;
 	color: #999;
 	text-align: right;
 	line-height: 1em;
 	border-radius: 10px 10px 0 0; -webkit-border-radius: 10px 10px 0 0; -moz-border-radius: 10px 10px 0 0;
 }
-div#footer a { color: #ccc; }
-div#footer a:hover { color: #fff; }
+
+#container:after, #footer { height: 72px; }
+#container:after { eight: 100px; }
+
+#footer div.pad { padding: 24px 24px 0 24px; }
+
+@media (min-width: 768px) {
+	#footer { width: 720px; }
+}
+
+@media (min-width: 992px) {
+	#footer { width: 940px; }
+}
+
+@media (min-width: 1200px) {
+	#footer { width: 1140px; }
+}
+
+#footer a { color: #ccc; }
+#footer a:hover { color: #fff; }
+#footer p.fractal { color: #555; font-size: 11px; }

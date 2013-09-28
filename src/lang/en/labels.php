@@ -2,51 +2,55 @@
 
 return array(
 
-	'create'   => 'Create',
-	'edit'     => 'Edit',
-	'update'   => 'Update',
-	'activate' => 'Activate',
-	'delete'   => 'Delete',
-	'undelete' => 'Undelete',
+	'version'     => '0.14a',
 
-	'createMenu' => 'Create Menu',
-	'editMenu'   => 'Edit Menu',
-	'deleteMenu' => 'Delete Menu',
+	'create'      => 'Create',
+	'edit'        => 'Edit',
+	'update'      => 'Update',
+	'activate'    => 'Activate',
+	'delete'      => 'Delete',
+	'undelete'    => 'Undelete',
 
-	'createPage' => 'Create Page',
-	'editPage'   => 'Edit Page',
-	'viewPage'   => 'View Page',
-	'deletePage' => 'Delete Page',
+	'createMenu'  => 'Create Menu',
+	'editMenu'    => 'Edit Menu',
+	'deleteMenu'  => 'Delete Menu',
 
-	'createUser' => 'Create User',
-	'editUser'   => 'Edit User',
-	'banUser'    => 'Ban User',
-	'unbanUser'  => 'Unban User',
-	'deleteUser' => 'Delete User',
+	'createPage'  => 'Create Page',
+	'editPage'    => 'Edit Page',
+	'viewPage'    => 'View Page',
+	'deletePage'  => 'Delete Page',
 
-	'createRole' => 'Create Role',
-	'editRole'   => 'Edit Role',
-	'deleteRole' => 'Delete Role',
+	'createUser'  => 'Create User',
+	'editUser'    => 'Edit User',
+	'banUser'     => 'Ban User',
+	'unbanUser'   => 'Unban User',
+	'deleteUser'  => 'Delete User',
 
-	'menu'       => 'Menu',
-	'page'       => 'Page',
-	'user'       => 'User',
-	'role'       => 'Role',
+	'createRole'  => 'Create Role',
+	'editRole'    => 'Edit Role',
+	'deleteRole'  => 'Delete Role',
 
-	'username'   => 'Username',
-	'email'      => 'Email',
+	'menu'        => 'Menu',
+	'page'        => 'Page',
+	'user'        => 'User',
+	'role'        => 'Role',
 
-	'firstName'  => 'First Name',
-	'lastName'   => 'Last Name',
+	'username'    => 'Username',
+	'email'       => 'Email',
 
-	'region'     => 'Region',
-	'state'      => 'State',
-	'province'   => 'Province',
+	'firstName'   => 'First Name',
+	'lastName'    => 'Last Name',
 
-	'city'       => 'City',
-	'country'    => 'Country',
+	'region'      => 'Region',
+	'state'       => 'State',
+	'province'    => 'Province',
 
-	'roles'      => 'Roles',
-	'statuses'   => 'Statuses',
+	'city'        => 'City',
+	'country'     => 'Country',
+
+	'roles'       => 'Roles',
+	'statuses'    => 'Statuses',
+
+	'returnToTop' => 'Return to Top',
 
 );

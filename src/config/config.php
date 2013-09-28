@@ -301,4 +301,15 @@ return array(
 	*/
 	'workbench' => false,
 
+	/*
+	|--------------------------------------------------------------------------
+	| Display Version
+	|--------------------------------------------------------------------------
+	|
+	| Set this to false if you would prefer not to show Fractal's version
+	| number in the footer of the supplied layout.
+	|
+	*/
+	'displayVersion' => true,
+
 );
