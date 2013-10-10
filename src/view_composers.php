@@ -52,11 +52,6 @@ View::composer(Config::get('fractal::viewsLocation').'pages.list', function($vie
 	$view->with('pages', Page::orderBy('title')->get());
 });
 
-View::composer(Config::get('fractal::viewsLocation').'users.list', function($view)
-{
-	$view->with('users', User::orderBy('id')->get());
-});
-
 View::composer(Config::get('fractal::viewsLocation').'users.roles.list', function($view)
 {
 	$view->with('roles', Role::orderBy('id')->get());

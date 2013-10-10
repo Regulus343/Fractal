@@ -49,9 +49,12 @@ return array(
 	|
 	*/
 	'controllerMethods' => array(
-		'get' => array(
-			'users/ban/{id}'   => 'Regulus\Fractal\UsersController@ban',
-			'users/unban/{id}' => 'Regulus\Fractal\UsersController@unban',
+		'get'  => array(
+			'users/ban/{id}'    => 'Regulus\Fractal\UsersController@ban',
+			'users/unban/{id}'  => 'Regulus\Fractal\UsersController@unban',
+		),
+		'post' => array(
+			'users/search'      => 'Regulus\Fractal\UsersController@search',
 		),
 	),
 

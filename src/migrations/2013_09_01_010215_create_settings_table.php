@@ -23,6 +23,7 @@ class CreateSettingsTable extends Migration {
 			$table->text('options');
 			$table->text('rules');
 			$table->boolean('developer');
+			$table->integer('display_order');
 			$table->timestamps();
 		});
 	}

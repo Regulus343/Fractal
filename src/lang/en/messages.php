@@ -38,4 +38,8 @@ return array(
 	'noItems'                => 'There are currently no :items.',
 	'selectItem'             => 'Select :item',
 
+	'searchNoResults'        => 'Your search for &ldquo;<strong>:terms</strong>&rdquo; yielded no results.',
+	'searchResults'          => 'Your search for &ldquo;<strong>:terms</strong>&rdquo; yielded :number :results.',
+	'searchNoTerms'          => 'You did not enter any search terms.',
+
 );

@@ -51,6 +51,8 @@ return array(
 	'roles'       => 'Roles',
 	'statuses'    => 'Statuses',
 
+	'search'      => 'Search',
+
 	'returnToTop' => 'Return to Top',
 
 );

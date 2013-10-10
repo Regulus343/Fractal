@@ -3,6 +3,7 @@
 use \BaseController;
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\URL;
 
+use Aquanode\Elemental\Elemental as HTML;
 use Aquanode\Formation\Formation as Form;
 use Regulus\ActivityLog\Activity;
 use Regulus\TetraText\TetraText as Format;
@@ -31,7 +33,39 @@ class UsersController extends BaseController {
 
 	public function index()
 	{
-		return View::make(Fractal::view('list'));
+		return View::make(Fractal::view('list'))->with('users', User::orderBy('id')->get());
+	}
+
+	public function search()
+	{
+		$terms = Input::get('search');
+		$result = array(
+			'resultType' => 'Error',
+			'message'    => Lang::get('fractal::messages.searchNoResults', array('terms' => $terms)),
+		);
+
+		$users = User::where('username', 'like', $terms)
+						->orWhere('first_name', 'like', $terms)
+						->orWhere('last_name', 'like', $terms)
+						->orWhere(DB::raw('concat_ws(\' \', first_name, last_name)'), 'like', $terms)
+						->orWhere('email', 'like', $terms)
+						->orderBy('id')
+						->get();
+		if (count($users)) {
+			$result['resultType'] = "Success";
+			if ($terms != "") {
+				$result['message'] = Lang::get('fractal::messages.searchResults', array(
+					'terms'   => $terms,
+					'number'  => $users->count(),
+					'results' => Format::pluralize(Lang::get('fractal::labels.user'), $users->count()),
+				));
+			} else {
+				$result['message'] = Lang::get('fractal::messages.searchNoTerms');
+			}
+		}
+		$result['table'] = HTML::table(Config::get('fractal::tables.users'), $users);
+
+		return $result;
 	}
 
 	public function create()
@@ -185,7 +219,7 @@ class UsersController extends BaseController {
 		));
 
 		$result['resultType'] = "Success";
-		$result['message']    = Lang::get('fractal::messages.successBanned', array('item' => 'a user'));
+		$result['message']    = Lang::get('fractal::messages.successBanned', array('item' => '<strong>'.$user->username.'</strong>'));
 		return $result;
 	}
 
@@ -215,7 +249,7 @@ class UsersController extends BaseController {
 		));
 
 		$result['resultType'] = "Success";
-		$result['message']    = Lang::get('fractal::messages.successUnbanned', array('item' => 'a user'));
+		$result['message']    = Lang::get('fractal::messages.successUnbanned', array('item' => '<strong>'.$user->username.'</strong>'));
 		return $result;
 	}
 

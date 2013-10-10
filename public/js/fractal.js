@@ -7,6 +7,27 @@ $(document).ready(function(){
 
 	$('a.show-tooltip[title]').tooltip();
 
+});
+
+var messageTimer;
+function setMainMessage(message, type) {
+	clearTimeout(messageTimer);
+
+	$('#message-'+type).html(message);
+	$('#message-'+type).removeClass('hidden').show();
+	messageTimer = setTimeout("$('#message-"+type+"').slideUp();", 4000);
+}
+
+function modalConfirm(title, message, action) {
+	$('#modal .modal-title').html(title);
+	$('#modal .modal-body p').html(message);
+
+	$('#modal').modal('show');
+
+	$('#modal .btn-primary').off('click').on('click', action);
+}
+
+function setupUsersTable() {
 	/* Set "Ban User" Action */
 	$('.ban-user').click(function(e){
 		e.preventDefault();
@@ -31,24 +52,8 @@ $(document).ready(function(){
 		modalConfirm(fractalLabels.deleteUser+': <strong>'+$(this).parents('tr').children('td.username').text()+'</strong>', fractalMessages.confirmDelete.replace(':item', 'user'), actionDeleteUser);
 	});
 
-});
-
-var messageTimer;
-function setMainMessage(message, type) {
-	clearTimeout(messageTimer);
-
-	$('#message-'+type).html(message);
-	$('#message-'+type).removeClass('hidden').show();
-	messageTimer = setTimeout("$('#message-"+type+"').slideUp();", 4000);
-}
-
-function modalConfirm(title, message, action) {
-	$('#modal .modal-title').html(title);
-	$('#modal .modal-body p').html(message);
-
-	$('#modal').modal('show');
-
-	$('#modal .btn-primary').off('click').on('click', action);
+	/* Setup Tooltips */
+	$('table td.actions a[title]').tooltip();
 }
 
 var actionBanUser = function(){

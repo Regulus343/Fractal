@@ -122,14 +122,6 @@
 			'associative' => true
 		)) }}
 
-		<div class="row">
-			<div class="col-md-6">
-				{{ Form::field('active', 'checkbox') }}
-			</div><div class="col-md-6">
-				{{ Form::field('banned', 'checkbox') }}
-			</div>
-		</div>
-
 		{{ Form::field(Form::submitResource('User', (isset($update) && $update)), 'button') }}
 	{{ Form::close() }}
 

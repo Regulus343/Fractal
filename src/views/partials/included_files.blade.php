@@ -1,17 +1,18 @@
-{{-- Load jQuery --}}
+{{-- jQuery --}}
 @if (Config::get('fractal::loadJquery'))
 
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 
 @endif
 
+{{-- jQuery UI --}}
 @if (Config::get('fractal::loadJqueryUI'))
 
 	<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
 
 @endif
 
-{{-- Load Bootstrap CSS & JS --}}
+{{-- Bootstrap CSS & JS --}}
 @if (Config::get('fractal::loadBootstrap'))
 
 	<link type="text/css" rel="stylesheet" href="{{ Site::css('bootstrap', 'regulus/fractal') }}" />
@@ -19,7 +20,7 @@
 
 @endif
 
-{{-- Load Boxy --}}
+{{-- Boxy --}}
 @if (Config::get('fractal::loadBoxy'))
 
 	<link type="text/css" rel="stylesheet" href="{{ Site::css('boxy', 'regulus/fractal') }}" />
@@ -27,7 +28,7 @@
 
 @endif
 
-{{-- Load CK Editor --}}
+{{-- CK Editor --}}
 @if (Site::get('wysiwyg'))
 	<script type="text/javascript" src="{{ Site::asset('plugins/ckeditor/ckeditor.js', false, 'regulus/fractal') }}"></script>
 @endif
@@ -58,3 +59,6 @@
 </script>
 <script type="text/javascript" src="{{ Site::js('select-helper', 'regulus/fractal') }}"></script>
 <script type="text/javascript" src="{{ Site::js('fractal', 'regulus/fractal') }}"></script>
+
+{{-- Quick Styles --}}
+<link type="text/css" rel="stylesheet" href="{{ Site::css('quick-styles.min', 'regulus/fractal') }}" />
