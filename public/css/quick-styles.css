@@ -3,7 +3,7 @@
 		Simple, generic styles for quick markup which can be used as an alternative for many design
 		features which would otherwise likely use inline styles.
 
-		last updated on October 9, 2013
+		last updated on October 13, 2013
 ----------------------------------------------------------------------------------------------------------*/
 
 .static { position: static; }
@@ -30,12 +30,22 @@
 .margin-vertical-5px { margin-top: 5px; margin-bottom: 5px; }
 .margin-vertical-10px { margin-top: 10px; margin-bottom: 10px; }
 .margin-vertical-20px { margin-top: 20px; margin-bottom: 20px; }
+.margin-bottom-5px { margin-bottom: 5px; }
+.margin-bottom-10px { margin-bottom: 10px; }
+.margin-bottom-20px { margin-bottom: 20px; }
 .margin-center { margin: 0 auto; }
 
 .padding-0, .padding-0px { padding: 0; }
 .padding-5px { padding: 5px; }
 .padding-10px { padding: 10px; }
 .padding-20px { padding: 20px; }
+.padding-vertical-0, .padding-vertical-0px { padding-top: 0; padding-bottom: 0; }
+.padding-vertical-5px { padding-top: 5px; padding-bottom: 5px; }
+.padding-vertical-10px { padding-top: 10px; padding-bottom: 10px; }
+.padding-vertical-20px { padding-top: 20px; padding-bottom: 20px; }
+.padding-bottom-5px { padding-bottom: 5px; }
+.padding-bottom-10px { padding-bottom: 10px; }
+.padding-bottom-20px { padding-bottom: 20px; }
 
 .width-full { width: 100%; }
 .height-full { height: 100%; }

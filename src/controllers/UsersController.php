@@ -38,17 +38,18 @@ class UsersController extends BaseController {
 
 	public function search()
 	{
-		$terms = Input::get('search');
-		$result = array(
+		$terms     = Input::get('search');
+		$likeTerms = '%'.$terms.'%';
+		$result    = array(
 			'resultType' => 'Error',
 			'message'    => Lang::get('fractal::messages.searchNoResults', array('terms' => $terms)),
 		);
 
-		$users = User::where('username', 'like', $terms)
-						->orWhere('first_name', 'like', $terms)
-						->orWhere('last_name', 'like', $terms)
-						->orWhere(DB::raw('concat_ws(\' \', first_name, last_name)'), 'like', $terms)
-						->orWhere('email', 'like', $terms)
+		$users = User::where('username', 'like', $likeTerms)
+						->orWhere('first_name', 'like', $likeTerms)
+						->orWhere('last_name', 'like', $likeTerms)
+						->orWhere(DB::raw('concat_ws(\' \', first_name, last_name)'), 'like', $likeTerms)
+						->orWhere('email', 'like', $likeTerms)
 						->orderBy('id')
 						->get();
 		if (count($users)) {
@@ -57,11 +58,14 @@ class UsersController extends BaseController {
 				$result['message'] = Lang::get('fractal::messages.searchResults', array(
 					'terms'   => $terms,
 					'number'  => $users->count(),
-					'results' => Format::pluralize(Lang::get('fractal::labels.user'), $users->count()),
+					'results' => Format::pluralize(strtolower(Lang::get('fractal::labels.user')), $users->count()),
 				));
 			} else {
 				$result['message'] = Lang::get('fractal::messages.searchNoTerms');
 			}
+		} else {
+			$users = User::orderBy('id')->get();
+			if ($terms == "") $result['message'] = Lang::get('fractal::messages.searchNoTerms');
 		}
 		$result['table'] = HTML::table(Config::get('fractal::tables.users'), $users);
 

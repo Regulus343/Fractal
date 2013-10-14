@@ -141,6 +141,19 @@ return array(
 				'class'     => 'username',
 			),
 			array(
+				'attribute' => 'name',
+				'method'    => 'getName()',
+			),
+			array(
+				'label'     => 'Email',
+				'elements'  => array(
+					array(
+						'text' => ':email',
+						'href' => 'mailto::email',
+					),
+				),
+			),
+			array(
 				'label'     => 'Role(s)',
 				'method'    => 'roles()',
 				'attribute' => 'name',

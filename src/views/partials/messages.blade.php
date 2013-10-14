@@ -13,7 +13,10 @@
 	</div>
 @endif
 
-<div class="alert alert-success hidden" id="message-success"></div>
+<div class="alert alert-success alert-dismissable-hide hidden" id="message-success">
+	<button type="button" class="close">&times;</button>
+	<div></div>
+</div>
 
 {{-- Error Message --}}
 @if (isset($sessionMessages['error']) && $sessionMessages['error'] != "")
@@ -30,7 +33,10 @@
 	</div>
 @endif
 
-<div class="alert alert-error hidden" id="message-error"></div>
+<div class="alert alert-danger alert-dismissable-hide hidden" id="message-error">
+	<button type="button" class="close">&times;</button>
+	<div></div>
+</div>
 
 {{-- Warning Message --}}
 @if (isset($sessionMessages['warning']) && $sessionMessages['warning'] != "")
@@ -47,7 +53,10 @@
 	</div>
 @endif
 
-<div class="alert alert-warning hidden" id="message-warning"></div>
+<div class="alert alert-warning alert-dismissable-hide hidden" id="message-warning">
+	<button type="button" class="close">&times;</button>
+	<div></div>
+</div>
 
 {{-- General Info Message --}}
 @if (isset($sessionMessages['info']) && $sessionMessages['info'] != "")
@@ -64,4 +73,7 @@
 	</div>
 @endif
 
-<div class="alert alert-info hidden" id="message-info"></div>
+<div class="alert alert-info alert-dismissable-hide hidden" id="message-info">
+	<button type="button" class="close">&times;</button>
+	<div></div>
+</div>

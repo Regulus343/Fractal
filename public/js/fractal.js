@@ -7,15 +7,20 @@ $(document).ready(function(){
 
 	$('a.show-tooltip[title]').tooltip();
 
+	/* Setup Ajax Alert Messages */
+	$('.alert-dismissable-hide .close').click(function(){
+		$(this).parents('div.alert-dismissable-hide').addClass('hidden');
+	});
+
 });
 
 var messageTimer;
 function setMainMessage(message, type) {
 	clearTimeout(messageTimer);
 
-	$('#message-'+type).html(message);
+	$('#message-'+type+' div').html(message);
 	$('#message-'+type).removeClass('hidden').show();
-	messageTimer = setTimeout("$('#message-"+type+"').slideUp();", 4000);
+	messageTimer = setTimeout("$('.alert-dismissable-hide').slideUp();", 5000);
 }
 
 function modalConfirm(title, message, action) {
