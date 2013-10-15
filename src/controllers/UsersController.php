@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\URL;
 
@@ -34,7 +35,29 @@ class UsersController extends BaseController {
 	public function index()
 	{
 		$itemsPerPage = Fractal::getSetting('Items Listed Per Page', 20);
-		$users        = User::orderBy('id')->paginate($itemsPerPage);
+		$terms        = Session::get('searchTermsUsers', '');
+		$page         = Session::get('pageUsers', 1);
+
+		if ($page > 1)
+			DB::getPaginator()->setCurrentPage($page);
+
+		if ($terms != "") {
+			$likeTerms = '%'.$terms.'%';
+			$users = User::where('username', 'like', $likeTerms)
+						->orWhere('first_name', 'like', $likeTerms)
+						->orWhere('last_name', 'like', $likeTerms)
+						->orWhere(DB::raw('concat_ws(\' \', first_name, last_name)'), 'like', $likeTerms)
+						->orWhere('email', 'like', $likeTerms)
+						->orderBy('id')
+						->paginate($itemsPerPage);
+		} else {
+			$users = User::orderBy('id')->paginate($itemsPerPage);
+		}
+
+		$defaults = array(
+			'search' => $terms
+		);
+		Form::setDefaults($defaults);
 
 		$messages = array();
 		if ($users->getTotal()) {
@@ -59,7 +82,7 @@ class UsersController extends BaseController {
 	public function search()
 	{
 		$itemsPerPage = Fractal::getSetting('Items Listed Per Page', 20);
-		$terms        = Input::get('search');
+		$terms        = trim(Input::get('search'));
 		$likeTerms    = '%'.$terms.'%';
 		$page         = !is_null(Input::get('page')) ? Input::get('page') : 1;
 		$changingPage = (bool) Input::get('changing_page');
@@ -69,6 +92,9 @@ class UsersController extends BaseController {
 		);
 
 		DB::getPaginator()->setCurrentPage($page);
+
+		Session::set('searchTermsUsers', $terms);
+		Session::set('pageUsers', $page);
 
 		$users = User::where('username', 'like', $likeTerms)
 						->orWhere('first_name', 'like', $likeTerms)
