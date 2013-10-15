@@ -69,3 +69,6 @@ div.passwords-check span { padding-top: 26px; font-size: 28px; }
 #footer a { color: #ccc; }
 #footer a:hover { color: #fff; }
 #footer p.fractal { color: #555; font-size: 11px; }
+
+.search-pagination-area { margin: 8px 0; }
+.search-pagination-area .pagination { float: right; margin: 0; }

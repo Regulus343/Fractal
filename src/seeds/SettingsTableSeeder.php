@@ -44,6 +44,15 @@ class SettingsTableSeeder extends Seeder {
 				'updated_at'    => $timestamp,
 			),
 			array(
+				'name'          => 'Items Listed Per Page',
+				'value'         => 20,
+				'type'          => 'Integer',
+				'rules'         => '',
+				'display_order' => $defaultDisplayOrder,
+				'created_at'    => $timestamp,
+				'updated_at'    => $timestamp,
+			),
+			array(
 				'name'          => 'Minimum Password Length',
 				'value'         => 8,
 				'type'          => 'Text',

@@ -32,14 +32,14 @@ return array(
 	'confirmBanUser'         => 'Are you sure you want to ban this user?',
 	'confirmUnbanUser'       => 'Are you sure you want to unban this user?',
 
-	'displayingItems'        => 'Displaying <strong>:number</strong> :items.',
+	'displayingItems'        => 'Displaying <strong>:total</strong> :items.',
 	'displayingItemsOfTotal' => 'Displaying <strong>:start - :end</strong> of <strong>:total</strong> :items.',
 
 	'noItems'                => 'There are currently no :items.',
 	'selectItem'             => 'Select :item',
 
 	'searchNoResults'        => 'Your search for &ldquo;<strong>:terms</strong>&rdquo; yielded no results.',
-	'searchResults'          => 'Your search for &ldquo;<strong>:terms</strong>&rdquo; yielded :number :results.',
+	'searchResults'          => 'Your search for &ldquo;<strong>:terms</strong>&rdquo; yielded :total :items.',
 	'searchNoTerms'          => 'You did not enter any search terms.',
 
 );
