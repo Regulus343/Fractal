@@ -21,6 +21,16 @@ class AccountController extends BaseController {
 		Fractal::setViewsLocation('auth');
 	}
 
+	public function getIndex()
+	{
+		$section = "Account";
+		Site::setMulti(array('section', 'title'), $section);
+
+		Fractal::setViewsLocation('core');
+
+		return View::make(Fractal::view('home'));
+	}
+
 	public function getLogin()
 	{
 		//check if an active session already exists
