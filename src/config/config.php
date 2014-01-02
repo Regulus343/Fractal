@@ -29,6 +29,7 @@ return array(
 			'home'       => 'Regulus\Fractal\CoreController',
 			'settings'   => 'Regulus\Fractal\SettingsController',
 			'account'    => 'Regulus\Fractal\AccountController',
+			'activity'   => 'Regulus\Fractal\ActivityController',
 		),
 		'resource' => array(
 			'menus'      => 'Regulus\Fractal\MenusController',
