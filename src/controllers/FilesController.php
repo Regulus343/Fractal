@@ -122,12 +122,12 @@ class FilesController extends BaseController {
 			$basename = str_replace('-'.$originalExtension, '', Format::unique(Format::slug(Input::get('name')).'.'.$originalExtension, 'content_files', 'filename', false, true));
 
 			$config = array(
-				'path'             => 'uploads',
-				'fields'           => 'file',
-				'filename'         => $basename,
-				'createDirectory'  => true,
-				'overwrite'        => true,
-				'maxFileSize'      => '5MB',
+				'path'            => 'uploads',
+				'fields'          => 'file',
+				'filename'        => $basename,
+				'createDirectory' => true,
+				'overwrite'       => true,
+				'maxFileSize'     => '5MB',
 			);
 
 			//set path
@@ -260,12 +260,12 @@ class FilesController extends BaseController {
 				$tempFilename = $tempBasename.'.'.$originalExtension;
 
 				$config = array(
-					'path'             => 'uploads',
-					'fields'           => 'file',
-					'filename'         => $tempBasename,
-					'createDirectory'  => true,
-					'overwrite'        => true,
-					'maxFileSize'      => '5MB',
+					'path'            => 'uploads',
+					'fields'          => 'file',
+					'filename'        => $tempBasename,
+					'createDirectory' => true,
+					'overwrite'       => true,
+					'maxFileSize'     => '5MB',
 				);
 
 				//set path
