@@ -46,6 +46,47 @@ $(document).ready(function(){
 		if (isNaN($(this).val()) || $(this).val() == "") $(this).val('');
 	});
 
+	/* Setup Search and Pagination */
+	$('#form-search').submit(function(e){
+		e.preventDefault();
+		$('#changing-page').val(0);
+		searchContent();
+	});
+
+	$('#search').change(function(){
+		$('#changing-page').val(0);
+		searchContent();
+	});
+
+	$('.pagination li a').click(function(e){
+		e.preventDefault();
+		if (!$(this).hasClass('disabled') && !$(this).hasClass('active')) {
+			page = $(this).attr('data-page');
+
+			$('#page').val(page);
+			$('#changing-page').val(1);
+
+			$('.pagination li').removeClass('active');
+			$('.pagination li a').each(function(){
+				if ($(this).text() == page) $(this).parents('li').addClass('active');
+			});
+
+			if (page == 1) {
+				$('.pagination li:first-child').addClass('disabled');
+			} else {
+				$('.pagination li:first-child').removeClass('disabled');
+			}
+
+			if (page == lastPage) {
+				$('.pagination li:last-child').addClass('disabled');
+			} else {
+				$('.pagination li:last-child').removeClass('disabled');
+			}
+
+			searchContent();
+		}
+	});
+
 });
 
 var messageTimer;
@@ -64,6 +105,111 @@ function modalConfirm(title, message, action) {
 	$('#modal').modal('show');
 
 	$('#modal .btn-primary').off('click').on('click', action);
+}
+
+/* Setup Search and Pagination Functions */
+function searchContent() {
+	var postData = $('#form-search').serialize();
+	$('.alert-dismissable').addClass('hidden');
+	$.ajax({
+		url: baseURL + '/'+contentType+'/search',
+		type: 'post',
+		data: postData,
+		dataType: 'json',
+		success: function(result){
+			if (result.resultType == "Success") {
+				console.log(result.message);
+				setMainMessage(result.message, 'success');
+			} else {
+				setMainMessage(result.message, 'error');
+			}
+
+			$('table.table').html(result.table);
+			setupContentTable();
+		},
+		error: function(){
+			setMainMessage(fractalMessages.errorGeneral, 'error');
+		}
+	});
+}
+
+function setupContentTable() {
+	switch (contentType) {
+		case "pages":      setupPagesTable();     break;
+		case "files":      setupFilesTable();     break;
+		case "users":      setupUsersTable();     break;
+		case "user-roles": setupUserRolesTable(); break;
+	}
+}
+
+/* Setup Pages */
+function setupPagesTable() {
+	/* Set "Delete Page" Action */
+	$('.delete-page').click(function(e){
+		e.preventDefault();
+
+		contentID = $(this).attr('data-page-id');
+		modalConfirm(fractalLabels.deletePage+': <strong>'+$(this).parents('tr').children('td.name').text()+'</strong>', fractalMessages.confirmDelete.replace(':item', fractalLabels.page), actionDeletePage);
+	});
+
+	/* Setup Tooltips */
+	$('table td.actions a[title]').tooltip();
+}
+
+var actionDeletePage = function(){
+	$('#modal').modal('hide');
+	$.ajax({
+		url: baseURL + '/pages/' + contentID,
+		type: 'delete',
+		dataType: 'json',
+		success: function(result){
+			if (result.resultType == "Success") {
+				$('#page-'+contentID).addClass('hidden');
+
+				setMainMessage(result.message, 'success');
+			} else {
+				setMainMessage(result.message, 'error');
+			}
+		},
+		error: function(){
+			setMainMessage(fractalMessages.errorGeneral, 'error');
+		}
+	});
+}
+
+/* Setup Files */
+function setupFilesTable() {
+	/* Set "Delete Page" Action */
+	$('.delete-file').click(function(e){
+		e.preventDefault();
+
+		contentID = $(this).attr('data-file-id');
+		modalConfirm(fractalLabels.deleteFile+': <strong>'+$(this).parents('tr').children('td.name').text()+'</strong>', fractalMessages.confirmDelete.replace(':item', fractalLabels.file), actionDeleteFile);
+	});
+
+	/* Setup Tooltips */
+	$('table td.actions a[title]').tooltip();
+}
+
+var actionDeleteFile = function(){
+	$('#modal').modal('hide');
+	$.ajax({
+		url: baseURL + '/files/' + contentID,
+		type: 'delete',
+		dataType: 'json',
+		success: function(result){
+			if (result.resultType == "Success") {
+				$('#file-'+contentID).addClass('hidden');
+
+				setMainMessage(result.message, 'success');
+			} else {
+				setMainMessage(result.message, 'error');
+			}
+		},
+		error: function(){
+			setMainMessage(fractalMessages.errorGeneral, 'error');
+		}
+	});
 }
 
 /* Setup Users */
@@ -188,76 +334,6 @@ var actionDeleteUserRole = function(){
 		success: function(result){
 			if (result.resultType == "Success") {
 				$('#role-'+contentID).addClass('hidden');
-
-				setMainMessage(result.message, 'success');
-			} else {
-				setMainMessage(result.message, 'error');
-			}
-		},
-		error: function(){
-			setMainMessage(fractalMessages.errorGeneral, 'error');
-		}
-	});
-}
-
-/* Setup Pages */
-function setupPagesTable() {
-	/* Set "Delete Page" Action */
-	$('.delete-page').click(function(e){
-		e.preventDefault();
-
-		contentID = $(this).attr('data-page-id');
-		modalConfirm(fractalLabels.deletePage+': <strong>'+$(this).parents('tr').children('td.name').text()+'</strong>', fractalMessages.confirmDelete.replace(':item', fractalLabels.page), actionDeletePage);
-	});
-
-	/* Setup Tooltips */
-	$('table td.actions a[title]').tooltip();
-}
-
-var actionDeletePage = function(){
-	$('#modal').modal('hide');
-	$.ajax({
-		url: baseURL + '/pages/' + contentID,
-		type: 'delete',
-		dataType: 'json',
-		success: function(result){
-			if (result.resultType == "Success") {
-				$('#page-'+contentID).addClass('hidden');
-
-				setMainMessage(result.message, 'success');
-			} else {
-				setMainMessage(result.message, 'error');
-			}
-		},
-		error: function(){
-			setMainMessage(fractalMessages.errorGeneral, 'error');
-		}
-	});
-}
-
-/* Setup Files */
-function setupFilesTable() {
-	/* Set "Delete Page" Action */
-	$('.delete-file').click(function(e){
-		e.preventDefault();
-
-		contentID = $(this).attr('data-file-id');
-		modalConfirm(fractalLabels.deleteFile+': <strong>'+$(this).parents('tr').children('td.name').text()+'</strong>', fractalMessages.confirmDelete.replace(':item', fractalLabels.file), actionDeleteFile);
-	});
-
-	/* Setup Tooltips */
-	$('table td.actions a[title]').tooltip();
-}
-
-var actionDeleteFile = function(){
-	$('#modal').modal('hide');
-	$.ajax({
-		url: baseURL + '/files/' + contentID,
-		type: 'delete',
-		dataType: 'json',
-		success: function(result){
-			if (result.resultType == "Success") {
-				$('#file-'+contentID).addClass('hidden');
 
 				setMainMessage(result.message, 'success');
 			} else {
