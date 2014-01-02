@@ -26,7 +26,19 @@ class SettingsController extends BaseController {
 
 	public function getIndex()
 	{
-		return View::make(Config::get('fractal::viewsLocation').'core.home');
+		$settings = Setting::orderBy('category')->orderBy('display_order')->orderBy('name');
+		if (!Site::developer())
+			$settings->where('developer', false);
+
+		$settings = $settings->get();
+
+		$defaults = array();
+		foreach ($settings as $setting) {
+			$defaults['setting_'.$setting->id] = $setting->value;
+		}
+		Form::setDefaults($defaults);
+
+		return View::make(Fractal::view('list'))->with('settings', $settings);
 	}
 
 }

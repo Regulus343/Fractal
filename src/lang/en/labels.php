@@ -73,4 +73,6 @@ return array(
 	'crop'        => 'Crop',
 	'dimensions'  => 'Dimensions',
 
+	'settings'    => 'Settings',
+
 );
