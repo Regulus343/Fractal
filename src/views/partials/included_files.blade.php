@@ -65,11 +65,17 @@
 		return slug;
 	}
 
-	@if (Site::get('loadFunction') != null && Site::get('loadFunction') != "")
-		$(document).ready(function(){
+	$(document).ready(function(){
+
+		if (contentType !== undefined)
+			setupContentTable();
+
+		@if (Site::get('loadFunction') != null && Site::get('loadFunction') != "")
+
 			{{ Site::get('loadFunction') }};
-		});
-	@endif
+
+		@endif
+	});
 </script>
 <script type="text/javascript" src="{{ Site::js('select-helper', 'regulus/fractal') }}"></script>
 <script type="text/javascript" src="{{ Site::js('fractal', 'regulus/fractal') }}"></script>

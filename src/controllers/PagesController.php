@@ -28,7 +28,7 @@ class PagesController extends BaseController {
 
 	public function index()
 	{
-		return View::make(Fractal::view('list'));
+		return View::make(Fractal::view('list'))->with('contentType', 'pages');
 	}
 
 	public function create()
