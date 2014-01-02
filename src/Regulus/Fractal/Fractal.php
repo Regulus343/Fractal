@@ -149,7 +149,7 @@ class Fractal {
 	{
 		$terms = trim(Input::get('search'));
 		static::$pagination = array(
-			'itemsPerPage' => static::getSetting('Items Listed Per Page', 20),
+			'itemsPerPage' => 2,
 			'terms'        => $terms,
 			'likeTerms'    => '%'.$terms.'%',
 			'search'       => $_POST ? true : false,
