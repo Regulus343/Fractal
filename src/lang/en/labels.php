@@ -2,7 +2,7 @@
 
 return array(
 
-	'version'     => '0.14a',
+	'version'     => '0.2',
 
 	'create'      => 'Create',
 	'edit'        => 'Edit',
@@ -20,6 +20,11 @@ return array(
 	'viewPage'    => 'View Page',
 	'deletePage'  => 'Delete Page',
 
+	'uploadFile'  => 'Upload File',
+	'editFile'    => 'Edit File',
+	'openFile'    => 'Open File',
+	'deleteFile'  => 'Delete File',
+
 	'createUser'  => 'Create User',
 	'editUser'    => 'Edit User',
 	'banUser'     => 'Ban User',
@@ -32,8 +37,14 @@ return array(
 
 	'menu'        => 'Menu',
 	'page'        => 'Page',
+	'file'        => 'File',
+	'filename'    => 'Filename',
+	'image'       => 'Image',
 	'user'        => 'User',
 	'role'        => 'Role',
+
+	'name'        => 'Name',
+	'type'        => 'Type',
 
 	'username'    => 'Username',
 	'email'       => 'Email',
@@ -54,5 +65,12 @@ return array(
 	'search'      => 'Search',
 
 	'returnToTop' => 'Return to Top',
+
+	'size'        => 'Size',
+	'width'       => 'Width',
+	'height'      => 'Height',
+	'thumbnail'   => 'Thumbnail',
+	'crop'        => 'Crop',
+	'dimensions'  => 'Dimensions',
 
 );

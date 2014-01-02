@@ -38,7 +38,7 @@ class PagesController extends BaseController {
 		$defaults = array('active' => true);
 		Form::setDefaults($defaults);
 
-		return View::make(Fractal::view('form'))->with('update', false);
+		return View::make(Fractal::view('form'));
 	}
 
 	public function store()
@@ -46,24 +46,25 @@ class PagesController extends BaseController {
 		Site::set('title', 'Create Page');
 		Site::set('wysiwyg', true);
 
-		Form::setValidationRules(Page::validationRules());
+		Form::setValidationRules(ContentPage::validationRules());
 
 		$messages = array();
 		if (Form::validated()) {
 			$messages['success'] = Lang::get('fractal::messages.successCreated', array('item' => Format::a('page')));
 
-			$page = new Page;
+			$page = new ContentPage;
 			$page->title            = ucfirst(trim(Input::get('title')));
 			$page->slug             = Format::uniqueSlug(Input::get('slug'), 'content_pages');
 			$page->content          = trim(Input::get('content'));
 			$page->set_side_content = Input::get('set_side_content') ? true : false;
 			$page->side_content     = Input::get('set_side_content') ? trim(Input::get('side_content')) : '';
+			$page->user_id          = Auth::user()->id;
 			$page->active           = Form::value('active', 'checkbox');
 			$page->save();
 
 			Activity::log(array(
 				'contentID'   => $page->id,
-				'contentType' => 'Page',
+				'contentType' => 'ContentPage',
 				'description' => 'Created a Page',
 				'details'     => 'Title: '.$page->title,
 			));
@@ -71,17 +72,16 @@ class PagesController extends BaseController {
 			return Redirect::to(Fractal::uri('pages'))
 				->with('messages', $messages);
 		} else {
-			$messages['error']   = Lang::get('fractal::messages.errorGeneral');
+			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
 		}
 
 		return View::make(Fractal::view('form'))
-			->with('update', true)
 			->with('messages', $messages);
 	}
 
 	public function edit($slug)
 	{
-		$page = Page::bySlug($slug);
+		$page = ContentPage::findBySlug($slug);
 		if (empty($page))
 			return Redirect::to(Fractal::uri('pages'))
 				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'page'))));
@@ -91,13 +91,14 @@ class PagesController extends BaseController {
 		Site::set('wysiwyg', true);
 
 		Form::setDefaults($page);
+		Form::setErrors();
 
 		return View::make(Fractal::view('form'))->with('update', true);
 	}
 
 	public function update($slug)
 	{
-		$page = Page::bySlug($slug);
+		$page = ContentPage::findBySlug($slug);
 		if (empty($page))
 			return Redirect::to(Fractal::uri('pages'))
 				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'page'))));
@@ -106,14 +107,14 @@ class PagesController extends BaseController {
 		Site::set('titleHeading', 'Update Page: <strong>'.Format::entities($page->title).'</strong>');
 		Site::set('wysiwyg', true);
 
-		Form::setValidationRules(Page::validationRules());
+		Form::setValidationRules(ContentPage::validationRules());
 
 		$messages = array();
 		if (Form::validated()) {
 			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Format::a('page')));
 
 			$page->title            = ucfirst(trim(Input::get('title')));
-			$page->slug             = Format::uniqueSlug(Input::get('slug'), 'content_pages', $page->id);
+			$page->slug             = Format::uniqueSlug(Input::get('slug'), 'content_pages', 'slug', $page->id);
 			$page->content          = trim(Input::get('content'));
 			$page->set_side_content = Input::get('set_side_content') ? true : false;
 			$page->side_content     = Input::get('set_side_content') ? trim(Input::get('side_content')) : '';
@@ -122,7 +123,7 @@ class PagesController extends BaseController {
 
 			Activity::log(array(
 				'contentID'   => $page->id,
-				'contentType' => 'Page',
+				'contentType' => 'ContentPage',
 				'description' => 'Created a Page',
 				'details'     => 'Title: '.$page->title,
 				'updated'     => true,
@@ -131,17 +132,44 @@ class PagesController extends BaseController {
 			return Redirect::to(Fractal::uri('pages'))
 				->with('messages', $messages);
 		} else {
-			$messages['error']   = Lang::get('fractal::messages.errorGeneral');
-		}
+			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
 
-		return View::make(Fractal::view('form'))
-			->with('update', true)
-			->with('messages', $messages);
+			return Redirect::to(Fractal::uri('pages/'.$slug.'/edit'))
+				->with('messages', $messages)
+				->with('errors', Form::getErrors())
+				->withInput();
+		}
+	}
+
+	public function destroy($id)
+	{
+		$result = array(
+			'resultType' => 'Error',
+			'message'    => Lang::get('fractal::messages.errorGeneral'),
+		);
+
+		$page = ContentPage::find($id);
+		if (empty($page))
+			return $result;
+
+		Activity::log(array(
+			'contentID'   => $page->id,
+			'contentType' => 'ContentPage',
+			'description' => 'Deleted a Page',
+			'details'     => 'Title: '.$page->title,
+		));
+
+		$result['resultType'] = "Success";
+		$result['message']    = Lang::get('fractal::messages.successDeleted', array('item' => '<strong>'.$page->title.'</strong>'));
+
+		$page->delete();
+
+		return $result;
 	}
 
 	public function view($slug = '')
 	{
-		$page = Page::bySlug($slug);
+		$page = ContentPage::findBySlug($slug);
 		if (empty($page)) return Redirect::to('home');
 
 		Site::set('title', $page->title);

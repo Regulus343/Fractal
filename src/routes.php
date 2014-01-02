@@ -15,62 +15,62 @@ use Illuminate\Support\Facades\Route;
 
 use Illuminate\Support\Facades\Config;
 
-$baseURI     = Config::get('fractal::baseURI');
+$baseUri     = Config::get('fractal::baseUri');
 $controllers = Config::get('fractal::controllers');
 $methods     = Config::get('fractal::controllerMethods');
 
 /* Setup Routes for Defined Standard Controllers */
 if (isset($controllers['standard'])) {
 	foreach ($controllers['standard'] as $controllerURI => $controller) {
-		Route::controller($baseURI.'/'.$controllerURI, $controller);
+		Route::controller($baseUri.'/'.$controllerURI, $controller);
 	}
 }
 if (isset($controllers['standard']['home']))
-	Route::get($baseURI, $controllers['standard']['home'].'@getIndex');
+	Route::get($baseUri, $controllers['standard']['home'].'@getIndex');
 
 /* Setup Routes for Defined Resource Controllers */
 if (isset($controllers['resource'])) {
 	foreach ($controllers['resource'] as $controllerURI => $controller) {
-		Route::resource($baseURI.'/'.$controllerURI, $controller);
+		Route::resource($baseUri.'/'.$controllerURI, $controller);
 	}
 }
 if (isset($controllers['resource']['home']))
-	Route::get($baseURI, $controllers['resource']['home'].'@getIndex');
+	Route::get($baseUri, $controllers['resource']['home'].'@getIndex');
 
 /* Setup Additional Routes for Defined Controller Methods */
 foreach (array('get', 'post') as $type) {
 	if (isset($methods[$type])) {
 		foreach ($methods[$type] as $route => $method) {
 			if ($type == "get") {
-				Route::get($route, $method);
+				Route::get($baseUri.'/'.$route, $method);
 			} else {
-				Route::post($route, $method);
+				Route::post($baseUri.'/'.$route, $method);
 			}
 		}
 	}
 }
 
 /* Setup Developer Route (executing route enables "developer mode" via "developer" session variable) */
-Route::get($baseURI.'/developer', 'Regulus\Fractal\CoreController@getDeveloper');
+Route::get($baseUri.'/developer', 'Regulus\Fractal\CoreController@getDeveloper');
 
 /* Setup Authorization Routes */
-Route::get($baseURI.'/login', Config::get('fractal::authController').'@getLogin');
-Route::post($baseURI.'/login', Config::get('fractal::authController').'@postLogin');
-Route::get($baseURI.'/logout', Config::get('fractal::authController').'@getLogout');
+Route::get($baseUri.'/login', Config::get('fractal::authController').'@getLogin');
+Route::post($baseUri.'/login', Config::get('fractal::authController').'@postLogin');
+Route::get($baseUri.'/logout', Config::get('fractal::authController').'@getLogout');
 
-Route::controller($baseURI.'/auth', Config::get('fractal::authController'));
+Route::controller($baseUri.'/auth', Config::get('fractal::authController'));
 
 /* Setup Website Content Pages Routes */
-$pageURI    = Config::get('fractal::pageURI');
+$pageUri    = Config::get('fractal::pageUri');
 $pageMethod = Config::get('fractal::pageMethod');
-if ($pageURI == "") {
+if ($pageUri == "") {
 	//ensure DB tables have been migrated first
 	if (Config::get('fractal::migrated')) {
-		$pages = Page::select('slug')->where('active', '=', true)->get();
+		$pages = ContentPage::select('slug')->where('active', '=', true)->get();
 		foreach ($pages as $page) {
 			Route::get('{'.$page->slug.'}', $pageMethod);
 		}
 	}
 } else {
-	Route::get($pageURI.'/{slug}', $pageMethod);
+	Route::get($pageUri.'/{slug}', $pageMethod);
 }

@@ -8,6 +8,7 @@ return array(
 	'errorAlreadyLoggedIn'   => 'You are already logged in.',
 	'errorLogInRequired'     => 'You must be logged in to access the requested page.',
 	'errorUnauthorized'      => 'You are not authorized to access the requested page.',
+	'errorDeleteItemsExist'  => 'The :item could not be deleted because it is assigned to <strong>:total</strong> existing :relatedItem.',
 
 	'successCreated'         => 'You have successfully created :item.',
 	'successUpdated'         => 'You have successfully updated :item.',

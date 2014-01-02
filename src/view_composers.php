@@ -49,10 +49,19 @@ View::composer(Config::get('fractal::viewsLocation').'menus.form', function($vie
 
 View::composer(Config::get('fractal::viewsLocation').'pages.list', function($view)
 {
-	$view->with('pages', Page::orderBy('title')->get());
+	Site::set('loadFunction', 'setupPagesTable()');
+
+	$view->with('pages', ContentPage::orderBy('title')->get());
+});
+
+View::composer(Config::get('fractal::viewsLocation').'files.list', function($view)
+{
+	Site::set('loadFunction', 'setupFilesTable()');
 });
 
 View::composer(Config::get('fractal::viewsLocation').'users.roles.list', function($view)
 {
-	$view->with('roles', Role::orderBy('id')->get());
+	Site::set('loadFunction', 'setupUserRolesTable()');
+
+	$view->with('roles', Role::orderBy('display_order')->orderBy('name')->get());
 });

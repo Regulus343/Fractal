@@ -4,6 +4,7 @@
 
 	<script type="text/javascript">
 		$(document).ready(function(){
+
 			@if (!isset($update) || !$update)
 				$('#title').keyup(function(){
 					$('#title').val($('#title').val().replace(/  /g, ' '));
@@ -25,10 +26,11 @@
 					$('#side-content-area').addClass('hidden');
 				}
 			});
+
 		});
 	</script>
 
-	{{ Form::openResource(null, null, 'pages') }}
+	{{ Form::openResource() }}
 		{{ Form::field('title') }}
 
 		{{ Form::field('slug') }}
@@ -41,7 +43,7 @@
 
 		{{ Form::field('active', 'checkbox') }}
 
-		{{ Form::field(Form::submitResource('Page', (isset($update) && $update)), 'button') }}
+		{{ Form::field(Form::submitResource(Lang::get('fractal::labels.page'), (isset($update) && $update)), 'button') }}
 	{{ Form::close() }}
 
 @stop

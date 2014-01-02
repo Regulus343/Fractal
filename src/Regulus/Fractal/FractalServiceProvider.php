@@ -39,6 +39,7 @@ class FractalServiceProvider extends ServiceProvider {
 		$this->package('regulus/tetra-text', null, $pathPrefix.'regulus/tetra-text/src');
 		$this->package('aquanode/formation', null, $pathPrefix.'aquanode/formation/src');
 		$this->package('aquanode/elemental', null, $pathPrefix.'aquanode/elemental/src');
+		$this->package('aquanode/upstream', null, $pathPrefix.'aquanode/upstream/src');
 
 		//add view namespace for Elemental
 		View::addNamespace('elemental', $pathPrefix.'aquanode/elemental/src/views');

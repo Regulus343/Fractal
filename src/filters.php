@@ -21,32 +21,32 @@ use Illuminate\Support\Facades\Session;
 
 use Regulus\SolidSite\SolidSite as Site;
 
-$baseURI = Config::get('fractal::baseURI');
+$baseUri = Config::get('fractal::baseUri');
 
-Route::filter('fractal-auth', function() use ($baseURI)
+Route::filter('fractal-auth', function() use ($baseUri)
 {
 	$path = Request::path();
 	$uriSegments = explode('/', $path);
 	if (!Fractal::auth() && end($uriSegments) != "login") {
 		Session::set('returnURI', $path);
 
-		return Redirect::to($baseURI.'/login')
+		return Redirect::to($baseUri.'/login')
 			->with('messages', array('error' => Lang::get('fractal::messages.errorLogInRequired')));
 	}
 });
 
-Route::when($baseURI, 'fractal-auth');
-Route::when($baseURI.'/*', 'fractal-auth');
+Route::when($baseUri, 'fractal-auth');
+Route::when($baseUri.'/*', 'fractal-auth');
 
 $authFilters = Config::get('fractal::authFilters');
-Route::filter('roles', function() use ($baseURI, $authFilters)
+Route::filter('roles', function() use ($baseUri, $authFilters)
 {
 	$uriSegments = explode('/', Request::path());
-	foreach ($authFilters as $filterURI => $allowedRoles) {
-		foreach ($uriSegments as $prefixURI => $suffixURI) {
-			if ($prefixURI == $filterURI || $prefixURI.'/'.$suffixURI == $filterURI) {
+	foreach ($authFilters as $filterUri => $allowedRoles) {
+		foreach ($uriSegments as $prefixUri => $suffixUri) {
+			if ($prefixUri == $filterUri || $prefixUri.'/'.$suffixUri == $filterUri) {
 				if (!Fractal::roles($allowedRoles))
-					return Redirect::to($baseURI.'/login')
+					return Redirect::to($baseUri.'/login')
 						->with('messages', array('error' => Lang::get('fractal::messages.errorUnauthorized')));
 			}
 		}
@@ -66,12 +66,12 @@ foreach ($authFilters as $uri => $allowedRoles) {
 
 	$uri = str_replace('[', '', str_replace(']', '', $uri));
 
-	$fullURI = $baseURI;
+	$fullUri = $baseUri;
 	if ($uri != "")
-		$fullURI .= '/'.$uri;
+		$fullUri .= '/'.$uri;
 
-	Route::when($fullURI, 'roles');
+	Route::when($fullUri, 'roles');
 
 	if ($subRoutes)
-		Route::when($baseURI.'/'.$uri.'/*', 'roles');
+		Route::when($baseUri.'/'.$uri.'/*', 'roles');
 }

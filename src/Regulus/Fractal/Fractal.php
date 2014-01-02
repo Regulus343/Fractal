@@ -6,12 +6,17 @@
 
 		created by Cody Jassman
 		version 0.14a
-		last updated on September 27, 2013
+		last updated on January 1, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
+
+use Regulus\TetraText\TetraText as Format;
 
 class Fractal {
 
@@ -28,6 +33,13 @@ class Fractal {
 	 * @var    string
 	 */
 	public static $viewsLocation;
+
+	/**
+	 * The pagination data setup.
+	 *
+	 * @var    array
+	 */
+	public static $pagination;
 
 	/**
 	 * Create a CMS URL.
@@ -48,9 +60,9 @@ class Fractal {
 	 */
 	public static function uri($uri = '')
 	{
-		$fullURI = Config::get('fractal::baseURI');
-		if ($fullURI != "") $fullURI .= '/'.$uri;
-		return $fullURI;
+		$fullUri = Config::get('fractal::baseUri');
+		if ($fullUri != "") $fullUri .= '/'.$uri;
+		return $fullUri;
 	}
 
 	/**
@@ -60,7 +72,7 @@ class Fractal {
 	 * @param  string   $controller
 	 * @return string
 	 */
-	public static function controllerURL($uri = '', $controller)
+	public static function controllerUrl($uri = '', $controller)
 	{
 		$controller   = ucfirst($controller).'Controller';
 		$controllers  = Config::get('fractal::controllers');
@@ -125,6 +137,85 @@ class Fractal {
 	public static function getSetting($name, $default = false)
 	{
 		return Setting::value($name, $default);
+	}
+
+	/**
+	 * Setup pagination.
+	 *
+	 * @param  mixed    $contentType
+	 * @return array
+	 */
+	public static function setupPagination($contentType = null)
+	{
+		$terms = trim(Input::get('search'));
+		static::$pagination = array(
+			'itemsPerPage' => static::getSetting('Items Listed Per Page', 20),
+			'terms'        => $terms,
+			'likeTerms'    => '%'.$terms.'%',
+			'search'       => $_POST ? true : false,
+			'page'         => !is_null(Input::get('page')) ? Input::get('page') : 1,
+			'changingPage' => (bool) Input::get('changing_page'),
+			'contentType'  => $contentType,
+			'result'       => array(
+				'resultType' => 'Error',
+			),
+		);
+
+		DB::getPaginator()->setCurrentPage(static::$pagination['page']);
+
+		if ($contentType) {
+			if (static::$pagination['search']) {
+				Session::set('searchTerms'.$contentType, $terms);
+				Session::set('page'.$contentType, static::$pagination['page']);
+			} else {
+				static::$pagination['terms'] = Session::get('searchTerms'.$contentType, $terms);
+				static::$pagination['page']  = Session::get('page'.$contentType, static::$pagination['page']);
+			}
+		}
+
+		static::$pagination['likeTerms']         = '%'.static::$pagination['terms'].'%';
+		static::$pagination['result']['message'] = Lang::get('fractal::messages.searchNoResults', array('terms' => static::$pagination['terms']));
+
+		return static::$pagination;
+	}
+
+	/**
+	 * Add content for pagination.
+	 *
+	 * @param  mixed    $contentType
+	 * @return array
+	 */
+	public static function addContentForPagination($content)
+	{
+		static::$pagination['content'] = $content;
+	}
+
+	public static function setPaginationMessage()
+	{
+		$item = Lang::get('fractal::labels.'.strtolower(substr(static::$pagination['contentType'], 0, (strlen(static::$pagination['contentType']) - 1))));
+
+		if (static::$pagination['changingPage'] || (!static::$pagination['search'] && static::$pagination['terms'] == "")) {
+			static::$pagination['result']['resultType'] = "Success";
+			static::$pagination['result']['message'] = Lang::get('fractal::messages.displayingItemsOfTotal', array(
+				'start'  => static::$pagination['content']->getFrom(),
+				'end'    => static::$pagination['content']->getTo(),
+				'total'  => static::$pagination['content']->getTotal(),
+				'items'  => Format::pluralize(strtolower($item), static::$pagination['content']->getTotal()),
+			));
+		} else {
+			if (static::$pagination['terms'] != "") {
+				static::$pagination['result']['resultType'] = "Success";
+				static::$pagination['result']['message'] = Lang::get('fractal::messages.searchResults', array(
+					'terms' => static::$pagination['terms'],
+					'total' => static::$pagination['content']->count(),
+					'items' => Format::pluralize(strtolower($item), static::$pagination['content']->count()),
+				));
+			} else {
+				static::$pagination['result']['message'] = Lang::get('fractal::messages.searchNoTerms');
+			}
+		}
+
+		return static::$pagination;
 	}
 
 	/**

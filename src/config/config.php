@@ -11,7 +11,7 @@ return array(
 	| wish to use "cms" or something else instead.
 	|
 	*/
-	'baseURI' => 'admin',
+	'baseUri' => 'admin',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -33,6 +33,7 @@ return array(
 		'resource' => array(
 			'menus'      => 'Regulus\Fractal\MenusController',
 			'pages'      => 'Regulus\Fractal\PagesController',
+			'files'      => 'Regulus\Fractal\FilesController',
 			'users'      => 'Regulus\Fractal\UsersController',
 			'user-roles' => 'Regulus\Fractal\UserRolesController',
 		),
@@ -54,6 +55,7 @@ return array(
 			'users/unban/{id}'  => 'Regulus\Fractal\UsersController@unban',
 		),
 		'post' => array(
+			'files/search'      => 'Regulus\Fractal\FilesController@search',
 			'users/search'      => 'Regulus\Fractal\UsersController@search',
 		),
 	),
@@ -94,7 +96,7 @@ return array(
 	| "http://localhost/page/home".
 	|
 	*/
-	'pageURI' => '',
+	'pageUri' => '',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -244,7 +246,7 @@ return array(
 	|
 	*/
 	'loadJquery'   => true,
-	'loadJqueryUI' => true,
+	'loadJqueryUi' => true,
 
 	/*
 	|--------------------------------------------------------------------------

@@ -39,7 +39,7 @@ class MenusController extends BaseController {
 		$menu = Menu::with('items')->find($id);
 
 		if (empty($menu) || (!empty($menu) && $menu->cms && !Site::developer()))
-			return Redirect::to(Config::get('fractal::baseURI').'/menus')
+			return Redirect::to(Fractal::uri('menus'))
 				->with('messages', array('error' => 'The menu you selected was not found'));
 
 		$defaults = $menu->toArray();

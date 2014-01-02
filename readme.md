@@ -193,7 +193,7 @@ To set a `developer` session variable to `true`, go to `website.com/admin/develo
 
 **Adjusting Fractal's base URI:**
 
-By default, Fractal's base URI is "admin" making your URLs like `website.com/admin/pages/home/edit`. You may adjust this in the `baseURI` variable in `config.php`.
+By default, Fractal's base URI is "admin" making your URLs like `website.com/admin/pages/home/edit`. You may adjust this in the `baseUri` variable in `config.php`.
 
 **Adding additional controllers:**
 

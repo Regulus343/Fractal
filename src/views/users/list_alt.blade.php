@@ -2,6 +2,10 @@
 
 @section(Config::get('fractal::section'))
 
+	{{-- Search & Pagination --}}
+	@include(Config::get('fractal::viewsLocation').'partials.search_pagination')
+
+	{{-- Content Table --}}
 	<div class="row">
 		<div class="col-md-12">
 			<table class="table table-striped table-bordered table-hover">
@@ -22,7 +26,7 @@
 							<td>{{ Format::objListToStr($user->roles, 'name') }}</td>
 							<td>{{ Format::date($user->created_at, Config::get('fractal::dateTimeFormat')) }}</td>
 							<td>
-								<a href="{{ Regulus\Fractal\Fractal::controllerURL(strtolower($user->username).'/edit', 'Users') }}" title="Edit"><span class="glyphicon glyphicon-wrench"></span></a>
+								<a href="{{ Regulus\Fractal\Fractal::controllerUrl(strtolower($user->username).'/edit', 'Users') }}" title="Edit"><span class="glyphicon glyphicon-wrench"></span></a>
 								<a href="#" class="warning delete-user" data-user-id="{{ $user->id }}" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
 							</td>
 						</tr>
@@ -31,6 +35,9 @@
 			</table>
 		</div>
 	</div>
+
+	{{-- Bottom Pagination --}}
+	@include(Config::get('fractal::viewsLocation').'partials.pagination')
 
 	<a class="btn btn-default" href="{{ Fractal::url('users/create') }}">{{ Lang::get('fractal::labels.createUser') }}</a>
 

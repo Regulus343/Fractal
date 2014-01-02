@@ -4,7 +4,7 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 
 use Illuminate\Support\Facades\Config;
 
-class Page extends Eloquent {
+class ContentPage extends Eloquent {
 
 	/**
 	 * The database table used by the model.
@@ -39,9 +39,9 @@ class Page extends Eloquent {
 	 * @param  string   $slug
 	 * @return Page
 	 */
-	public static function bySlug($slug)
+	public static function findBySlug($slug)
 	{
-		return static::where('slug', '=', $slug)->first();
+		return static::where('slug', $slug)->first();
 	}
 
 	/**

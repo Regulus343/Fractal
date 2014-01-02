@@ -43,7 +43,7 @@ return array(
 				'elements'  => array(
 					array(
 						'icon'       => 'edit',
-						'uri'        => Config::get('fractal::baseURI').'/menus/:id/edit',
+						'uri'        => Config::get('fractal::baseUri').'/menus/:id/edit',
 						'attributes' => array(
 							'title'        => Lang::get('fractal::labels.editMenu'),
 						),
@@ -93,14 +93,14 @@ return array(
 				'elements'  => array(
 					array(
 						'icon'       => 'edit',
-						'uri'        => Config::get('fractal::baseURI').'/pages/:slug/edit',
+						'uri'        => Config::get('fractal::baseUri').'/pages/:slug/edit',
 						'attributes' => array(
 							'title'        => Lang::get('fractal::labels.editPage'),
 						),
 					),
 					array(
 						'icon'       => 'file',
-						'uri'        => Config::get('fractal::pageURI') == "" ? ':slug' : Config::get('fractal::pageURI').'/:slug',
+						'uri'        => Config::get('fractal::pageUri') == "" ? ':slug' : Config::get('fractal::pageUri').'/:slug',
 						'attributes' => array(
 							'title'        => Lang::get('fractal::labels.viewPage'),
 							'target'       => '_blank',
@@ -124,6 +124,63 @@ return array(
 					'active' => false,
 				),
 			),
+		),
+	),
+
+	'files' => array(
+		'table' => array(
+			'class'         => 'table-striped table-bordered table-hover',
+			'noDataMessage' => Lang::get('fractal::messages.noItems', array('items' => Str::plural(Lang::get('fractal::labels.file')))),
+		),
+		'columns' => array(
+			array(
+				'attribute' => 'id',
+			),
+			array(
+				'label'     => Lang::get('fractal::labels.image'),
+				'method'    => 'getThumbnailImage()',
+				'class'     => 'image',
+			),
+			array(
+				'attribute' => 'name',
+				'class'     => 'name',
+			),
+			array(
+				'label'     => Lang::get('fractal::labels.type'),
+				'attribute' => 'type',
+			),
+			array(
+				'label'     => Lang::get('fractal::labels.dimensions'),
+				'method'    => 'getImageDimensions()',
+			),
+			array(
+				'label'     => 'Last Updated',
+				'method'    => 'getLastUpdatedDate()',
+			),
+			array(
+				'label'     => 'Actions',
+				'class'     => 'actions',
+				'elements'  => array(
+					array(
+						'icon'       => 'edit',
+						'uri'        => Config::get('fractal::baseUri').'/files/:id/edit',
+						'attributes' => array(
+							'title'        => Lang::get('fractal::labels.editFile'),
+						),
+					),
+					array(
+						'icon'       => 'remove',
+						'class'      => 'delete-file red',
+						'attributes' => array(
+							'data-file-id' => ':id',
+							'title'        => Lang::get('fractal::labels.deleteFile'),
+						),
+					),
+				),
+			),
+		),
+		'rows' => array(
+			'idPrefix'       => 'file',
 		),
 	),
 
@@ -180,7 +237,7 @@ return array(
 				'elements'  => array(
 					array(
 						'icon'       => 'edit',
-						'uri'        => Config::get('fractal::baseURI').'/users/:username/edit',
+						'uri'        => Config::get('fractal::baseUri').'/users/:username/edit',
 						'attributes' => array(
 							'title'        => Lang::get('fractal::labels.editUser'),
 						),
@@ -261,6 +318,7 @@ return array(
 			),
 			array(
 				'attribute' => 'name',
+				'class'     => 'name',
 			),
 			array(
 				'label'     => 'Last Updated',
@@ -273,7 +331,7 @@ return array(
 				'elements'  => array(
 					array(
 						'icon'       => 'edit',
-						'uri'        => Config::get('fractal::baseURI').'/user-roles/:id/edit',
+						'uri'        => Config::get('fractal::baseUri').'/user-roles/:id/edit',
 						'attributes' => array(
 							'title'        => Lang::get('fractal::labels.editRole'),
 						),
@@ -281,8 +339,13 @@ return array(
 					array(
 						'icon'       => 'remove',
 						'class'      => 'delete-user-role red',
+						'classModifiers' => array(
+							'invisible'    => array(
+								'id' => 1,
+							),
+						),
 						'attributes' => array(
-							'data-user-id' => ':id',
+							'data-role-id' => ':id',
 							'title'        => Lang::get('fractal::labels.deleteRole'),
 						),
 					),

@@ -34,104 +34,68 @@ class UsersController extends BaseController {
 
 	public function index()
 	{
-		$itemsPerPage = Fractal::getSetting('Items Listed Per Page', 20);
-		$terms        = Session::get('searchTermsUsers', '');
-		$page         = Session::get('pageUsers', 1);
+		$data = Fractal::setupPagination('Users');
 
-		if ($page > 1)
-			DB::getPaginator()->setCurrentPage($page);
-
-		if ($terms != "") {
-			$likeTerms = '%'.$terms.'%';
-			$users = User::where('username', 'like', $likeTerms)
-						->orWhere('first_name', 'like', $likeTerms)
-						->orWhere('last_name', 'like', $likeTerms)
-						->orWhere(DB::raw('concat_ws(\' \', first_name, last_name)'), 'like', $likeTerms)
-						->orWhere('email', 'like', $likeTerms)
-						->orderBy('id')
-						->paginate($itemsPerPage);
-		} else {
-			$users = User::orderBy('id')->paginate($itemsPerPage);
+		$users = User::where('deleted', false)->orderBy('id');
+		if ($data['terms'] != "") {
+			$users->where(function($query) use ($data) {
+				$query
+					->where('username', 'like', $data['likeTerms'])
+					->orWhere('first_name', 'like', $data['likeTerms'])
+					->orWhere('last_name', 'like', $data['likeTerms'])
+					->orWhere(DB::raw('concat_ws(\' \', first_name, last_name)'), 'like', $data['likeTerms'])
+					->orWhere('email', 'like', $data['likeTerms']);
+			});
 		}
+		$users = $users->paginate($data['itemsPerPage']);
+
+		Fractal::addContentForPagination($users);
+
+		$data = Fractal::setPaginationMessage();
+		$messages['success'] = $data['result']['message'];
 
 		$defaults = array(
-			'search' => $terms
+			'search' => $data['terms']
 		);
 		Form::setDefaults($defaults);
 
-		$messages = array();
-		if ($users->getTotal()) {
-			$messages['success'] = Lang::get('fractal::messages.displayingItemsOfTotal', array(
-				'start'  => $users->getFrom(),
-				'end'    => $users->getTo(),
-				'total'  => $users->getTotal(),
-				'items'  => Format::pluralize(strtolower(Lang::get('fractal::labels.user')), $users->getTotal()),
-			));
-		} else {
-			$messages['success'] = Lang::get('fractal::messages.displayingItems', array(
-				'total'  => $users->getTotal(),
-				'items'  => Format::pluralize(strtolower(Lang::get('fractal::labels.user')), $users->getTotal()),
-			));
-		}
-
 		return View::make(Fractal::view('list'))
 			->with('users', $users)
+			->with('contentType', 'users')
+			->with('page', $users->getCurrentPage())
+			->with('lastPage', $users->getLastPage())
 			->with('messages', $messages);
 	}
 
 	public function search()
 	{
-		$itemsPerPage = Fractal::getSetting('Items Listed Per Page', 20);
-		$terms        = trim(Input::get('search'));
-		$likeTerms    = '%'.$terms.'%';
-		$page         = !is_null(Input::get('page')) ? Input::get('page') : 1;
-		$changingPage = (bool) Input::get('changing_page');
-		$result       = array(
-			'resultType' => 'Error',
-			'message'    => Lang::get('fractal::messages.searchNoResults', array('terms' => $terms)),
-		);
+		$data = Fractal::setupPagination('Users');
 
-		DB::getPaginator()->setCurrentPage($page);
+		$users = User::where('deleted', false)->orderBy('id');
+		if ($data['terms'] != "") {
+			$users->where(function($query) use ($data) {
+				$query
+					->where('username', 'like', $data['likeTerms'])
+					->orWhere('first_name', 'like', $data['likeTerms'])
+					->orWhere('last_name', 'like', $data['likeTerms'])
+					->orWhere(DB::raw('concat_ws(\' \', first_name, last_name)'), 'like', $data['likeTerms'])
+					->orWhere('email', 'like', $data['likeTerms']);
+			});
+		}
+		$users = $users->paginate($data['itemsPerPage']);
 
-		Session::set('searchTermsUsers', $terms);
-		Session::set('pageUsers', $page);
+		Fractal::addContentForPagination($users);
 
-		$users = User::where('username', 'like', $likeTerms)
-						->orWhere('first_name', 'like', $likeTerms)
-						->orWhere('last_name', 'like', $likeTerms)
-						->orWhere(DB::raw('concat_ws(\' \', first_name, last_name)'), 'like', $likeTerms)
-						->orWhere('email', 'like', $likeTerms)
-						->orderBy('id')
-						->paginate($itemsPerPage);
 		if (count($users)) {
-			if ($changingPage) {
-				$result['resultType'] = "Success";
-				$result['message'] = Lang::get('fractal::messages.displayingItemsOfTotal', array(
-					'start'  => $users->getFrom(),
-					'end'    => $users->getTo(),
-					'total'  => $users->getTotal(),
-					'items'  => Format::pluralize(strtolower(Lang::get('fractal::labels.user')), $users->getTotal()),
-				));
-			} else {
-				if ($terms != "") {
-					$result['resultType'] = "Success";
-					$result['message'] = Lang::get('fractal::messages.searchResults', array(
-						'terms' => $terms,
-						'total' => $users->count(),
-						'items' => Format::pluralize(strtolower(Lang::get('fractal::labels.user')), $users->count()),
-					));
-				} else {
-					$result['message'] = Lang::get('fractal::messages.searchNoTerms');
-				}
-			}
+			$data = Fractal::setPaginationMessage();
 		} else {
-			$users = User::orderBy('id')->paginate($itemsPerPage);
+			$data['content'] = User::orderBy('id')->paginate($data['itemsPerPage']);
 			if ($terms == "") $result['message'] = Lang::get('fractal::messages.searchNoTerms');
 		}
 
-		$result['table'] = HTML::table(Config::get('fractal::tables.users'), $users);
+		$data['result']['table'] = HTML::table(Config::get('fractal::tables.users'), $data['content']);
 
-		return $result;
+		return $data['result'];
 	}
 
 	public function create()
@@ -173,7 +137,7 @@ class UsersController extends BaseController {
 
 		$messages = array();
 		if (Form::validated()) {
-			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Format::a('user')));
+			$messages['success'] = Lang::get('fractal::messages.successCreated', array('item' => Format::a('user')));
 
 			$user = new User;
 			$user->fill(Input::except('csrf_token', 'roles', 'password', 'password_confirmation'));
@@ -187,11 +151,10 @@ class UsersController extends BaseController {
 			return Redirect::to(Fractal::uri('users'))
 				->with('messages', $messages);
 		} else {
-			$messages['error']   = Lang::get('fractal::messages.errorGeneral');
+			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
 		}
 
 		return View::make(Fractal::view('form'))
-			->with('update', false)
 			->with('messages', $messages);
 	}
 
@@ -207,6 +170,7 @@ class UsersController extends BaseController {
 		Site::set('wysiwyg', true);
 
 		Form::setDefaults($user, array('roles' => 'id'));
+		Form::setErrors();
 
 		return View::make(Fractal::view('form'))->with('update', true);
 	}
@@ -251,22 +215,23 @@ class UsersController extends BaseController {
 			return Redirect::to(Fractal::uri('users'))
 				->with('messages', $messages);
 		} else {
-			$messages['error']   = Lang::get('fractal::messages.errorGeneral');
-		}
+			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
 
-		return View::make(Fractal::view('form'))
-			->with('update', true)
-			->with('messages', $messages);
+			return Redirect::to(Fractal::uri('users/'.$username.'/edit'))
+				->with('messages', $messages)
+				->with('errors', Form::getErrors())
+				->withInput();
+		}
 	}
 
-	public function ban($userID)
+	public function ban($id)
 	{
 		$result = array(
 			'resultType' => 'Error',
 			'message'    => Lang::get('fractal::messages.errorGeneral'),
 		);
 
-		$user = \User::find($userID);
+		$user = \User::find($id);
 		if (empty($user))
 			return $result;
 
@@ -289,14 +254,14 @@ class UsersController extends BaseController {
 		return $result;
 	}
 
-	public function unban($userID)
+	public function unban($id)
 	{
 		$result = array(
 			'resultType' => 'Error',
 			'message'    => Lang::get('fractal::messages.errorGeneral'),
 		);
 
-		$user = \User::find($userID);
+		$user = \User::find($id);
 		if (empty($user))
 			return $result;
 
@@ -316,6 +281,36 @@ class UsersController extends BaseController {
 
 		$result['resultType'] = "Success";
 		$result['message']    = Lang::get('fractal::messages.successUnbanned', array('item' => '<strong>'.$user->username.'</strong>'));
+		return $result;
+	}
+
+	public function destroy($id)
+	{
+		$result = array(
+			'resultType' => 'Error',
+			'message'    => Lang::get('fractal::messages.errorGeneral'),
+		);
+
+		$user = \User::find($id);
+		if (empty($user))
+			return $result;
+
+		if ($user->deleted)
+			return $result;
+
+		$user->deleted    = true;
+		$user->deleted_at = date('Y-m-d H:i:s');
+		$user->save();
+
+		Activity::log(array(
+			'contentID'   => $user->id,
+			'contentType' => 'User',
+			'description' => 'Deleted a User',
+			'details'     => 'Username: '.$user->username,
+		));
+
+		$result['resultType'] = "Success";
+		$result['message']    = Lang::get('fractal::messages.successDeleted', array('item' => '<strong>'.$user->username.'</strong>'));
 		return $result;
 	}
 

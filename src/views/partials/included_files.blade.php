@@ -6,7 +6,7 @@
 @endif
 
 {{-- jQuery UI --}}
-@if (Config::get('fractal::loadJqueryUI'))
+@if (Config::get('fractal::loadJqueryUi'))
 
 	<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
 
@@ -38,10 +38,17 @@
 
 {{-- Fractal JS --}}
 <script type="text/javascript">
-	if (baseURL == undefined) var baseURL = "{{ URL::to('') }}";
+	if (baseURL === undefined)
+		var baseURL = "{{ Fractal::url() }}";
+
+	var csrfToken       = '{{ Session::token() }}';
 
 	var fractalLabels   = {{ json_encode(Lang::get('fractal::labels')) }};
 	var fractalMessages = {{ json_encode(Lang::get('fractal::messages')) }};
+
+	var contentType     = '{{ isset($contentType) ? $contentType : '' }}';
+	var page            = {{ (isset($page) && is_int($page)) ? $page : 0 }};
+	var lastPage        = {{ (isset($lastPage) && is_int($lastPage)) ? $lastPage : 0 }};
 
 	function strToSlug(string) {
 		var slug = string.toLowerCase()
@@ -54,8 +61,15 @@
 			.replace(/\(/g, '-').replace(/\)/g, '-').replace(/\[/g, '-')
 			.replace(/\]/g, '-').replace(/ /g, '-').replace(/_/g, '-')
 			.replace(/--/g, '-').replace(/--/g, '-');
+
 		return slug;
 	}
+
+	@if (Site::get('loadFunction') != null && Site::get('loadFunction') != "")
+		$(document).ready(function(){
+			{{ Site::get('loadFunction') }};
+		});
+	@endif
 </script>
 <script type="text/javascript" src="{{ Site::js('select-helper', 'regulus/fractal') }}"></script>
 <script type="text/javascript" src="{{ Site::js('fractal', 'regulus/fractal') }}"></script>

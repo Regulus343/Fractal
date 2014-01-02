@@ -4,6 +4,7 @@
 
 	<script type="text/javascript">
 		$(document).ready(function(){
+
 			$('#username').keyup(function(){
 				$('#username').val($('#username').val().replace(/ /g, '-'));
 			});
@@ -29,6 +30,7 @@
 			}).keyup(function(){
 				checkPasswords();
 			});
+
 		});
 
 		function checkPasswords() {
@@ -49,7 +51,7 @@
 		}
 	</script>
 
-	{{ Form::openResource(null, null, 'users') }}
+	{{ Form::openResource() }}
 		<div class="row">
 			<div class="col-md-6">
 				{{ Form::field('username') }}
@@ -122,7 +124,7 @@
 			'associative' => true
 		)) }}
 
-		{{ Form::field(Form::submitResource('User', (isset($update) && $update)), 'button') }}
+		{{ Form::field(Form::submitResource(Lang::get('fractal::labels.user'), (isset($update) && $update)), 'button') }}
 	{{ Form::close() }}
 
 @stop

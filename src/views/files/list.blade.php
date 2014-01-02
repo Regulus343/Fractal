@@ -8,13 +8,13 @@
 	{{-- Content Table --}}
 	<div class="row">
 		<div class="col-md-12">
-			{{ HTML::table(Config::get('fractal::tables.users'), $users) }}
+			{{ HTML::table(Config::get('fractal::tables.files'), $files) }}
 		</div>
 	</div>
 
 	{{-- Bottom Pagination --}}
 	@include(Config::get('fractal::viewsLocation').'partials.pagination')
 
-	<a class="btn btn-default" href="{{ Fractal::url('users/create') }}">{{ Lang::get('fractal::labels.createUser') }}</a>
+	<a class="btn btn-default" href="{{ Fractal::url('files/create') }}">{{ Lang::get('fractal::labels.uploadFile') }}</a>
 
 @stop

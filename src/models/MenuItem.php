@@ -115,7 +115,7 @@ class MenuItem extends Eloquent {
 	{
 		//if (! (int) $this->page_id) return false;
 
-		return $this->belongsTo('Regulus\Fractal\Page');
+		return $this->belongsTo('Regulus\Fractal\ContentPage');
 	}
 
 	/**
@@ -148,7 +148,7 @@ class MenuItem extends Eloquent {
 	public function getURI()
 	{
 		if ($this->menu->cms) {
-			$uri = Config::get('fractal::baseURI');
+			$uri = Config::get('fractal::baseUri');
 		} else {
 			$uri = '';
 		}

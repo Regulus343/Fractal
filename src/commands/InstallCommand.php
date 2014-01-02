@@ -60,9 +60,9 @@ class InstallCommand extends Command {
 
 			$this->output->writeln('<info>Migrating DB tables:</info> '.$migrationPackage);
 			$this->call('migrate', array(
-				'--env' => $this->option('env'),
+				'--env'     => $this->option('env'),
 				'--package' => $migrationPackage,
-				'--path' => $prefix.'/'.$migrationPackage.'/src/migrations'
+				'--path'    => $prefix.'/'.$migrationPackage.'/src/migrations'
 			));
 		}
 

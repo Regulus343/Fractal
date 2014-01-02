@@ -1,5 +1,7 @@
 html, body { margin: 0; padding: 0; height: 100%; }
 
+table.table { margin-bottom: 10px; }
+
 table tr td.actions { text-align: center; line-height: 100%; }
 
 table tr td.actions a { margin-right: 6px; color: #555; font-size: 18px; }
@@ -13,6 +15,10 @@ table tr td.actions a.red:hover { color: #c00; }
 
 table tr td.no-data { text-align: center; font-size: 18px; font-style: italic; }
 
+table tr td.image a { border: none; }
+table tr td.image img { width: 120px; border: 1px solid #888; }
+table tr td.image a img:hover { border: 1px solid #555; }
+
 div.checkbox-set, div.radio-set {
 	padding: 0 8px;
 	border: 1px solid #aaa;
@@ -24,6 +30,8 @@ div.checkbox-set label:hover, div.radio-set label:hover { font-weight: bold; }
 div.checkbox-set.has-error label, div.radio-set.has-error label { color: #000; }
 
 form div.error { padding: 5px; color: #b94a48; }
+
+input.file-dummy { float: left; margin-right: 5px; width: 60%; }
 
 div.passwords-check span { padding-top: 26px; font-size: 28px; }
 
@@ -71,4 +79,4 @@ div.passwords-check span { padding-top: 26px; font-size: 28px; }
 #footer p.fractal { color: #555; font-size: 11px; }
 
 .search-pagination-area { margin: 8px 0; }
-.search-pagination-area .pagination { float: right; margin: 0; }
+.pagination { margin: 0; }
