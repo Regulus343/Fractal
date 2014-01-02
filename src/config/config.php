@@ -52,12 +52,12 @@ return array(
 	*/
 	'controllerMethods' => array(
 		'get'  => array(
-			'users/ban/{id}'    => 'Regulus\Fractal\UsersController@ban',
-			'users/unban/{id}'  => 'Regulus\Fractal\UsersController@unban',
+			'users/ban/{id}'   => 'Regulus\Fractal\UsersController@ban',
+			'users/unban/{id}' => 'Regulus\Fractal\UsersController@unban',
 		),
 		'post' => array(
-			'files/search'      => 'Regulus\Fractal\FilesController@search',
-			'users/search'      => 'Regulus\Fractal\UsersController@search',
+			'files/search'     => 'Regulus\Fractal\FilesController@search',
+			'users/search'     => 'Regulus\Fractal\UsersController@search',
 		),
 	),
 
