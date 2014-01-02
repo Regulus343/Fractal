@@ -42,6 +42,7 @@ return array(
 	'image'       => 'Image',
 	'user'        => 'User',
 	'role'        => 'Role',
+	'activity'    => 'Activity',
 
 	'general'     => 'General',
 	'pages'       => 'Pages',
@@ -70,6 +71,8 @@ return array(
 	'search'      => 'Search',
 
 	'returnToTop' => 'Return to Top',
+
+	'timestamp'   => 'Timestamp',
 
 	'size'        => 'Size',
 	'width'       => 'Width',

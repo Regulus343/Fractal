@@ -357,4 +357,35 @@ return array(
 		),
 	),
 
+	'userActivity' => array(
+		'table' => array(
+			'class'         => 'table-striped table-bordered table-hover',
+			'noDataMessage' => Lang::get('fractal::messages.noItems', array('items' => Str::plural(Lang::get('fractal::labels.activity')))),
+		),
+		'columns' => array(
+			array(
+				'attribute' => 'id',
+			),
+			array(
+				'attribute' => 'description',
+			),
+			array(
+				'attribute' => 'details',
+			),
+			array(
+				'attribute' => 'developer',
+				'type'      => 'boolean',
+				'developer' => true,
+			),
+			array(
+				'label'     => Lang::get('fractal::labels.timestamp'),
+				'attribute' => 'created_at',
+				'type'      => 'dateTime',
+			),
+		),
+		'rows' => array(
+			'idPrefix' => 'activity',
+		),
+	),
+
 );

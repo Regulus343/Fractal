@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\URL;
 
 use Aquanode\Formation\Formation as Form;
 use Regulus\ActivityLog\Activity;
-use Regulus\TetraText\TetraText as Format;
 use Regulus\SolidSite\SolidSite as Site;
+use Regulus\TetraText\TetraText as Format;
 
 use Regulus\Identify\Role as Role;
 

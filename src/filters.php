@@ -28,7 +28,7 @@ Route::filter('fractal-auth', function() use ($baseUri)
 	$path = Request::path();
 	$uriSegments = explode('/', $path);
 	if (!Fractal::auth() && end($uriSegments) != "login") {
-		Session::set('returnURI', $path);
+		Session::set('returnUri', $path);
 
 		return Redirect::to($baseUri.'/login')
 			->with('messages', array('error' => Lang::get('fractal::messages.errorLogInRequired')));

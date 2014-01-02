@@ -9,9 +9,11 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\URL;
 
+use Aquanode\Elemental\Elemental as HTML;
 use Aquanode\Formation\Formation as Form;
-use Regulus\TetraText\TetraText as Format;
+use Regulus\ActivityLog\Activity;
 use Regulus\SolidSite\SolidSite as Site;
+use Regulus\TetraText\TetraText as Format;
 
 class ActivityController extends BaseController {
 
@@ -22,18 +24,67 @@ class ActivityController extends BaseController {
 		$subSection = "User Activity";
 		Site::setMulti(array('subSection', 'title'), $subSection);
 
-		Fractal::setViewsLocation('core');
+		Fractal::setViewsLocation('users.activity');
 	}
 
 	public function getIndex()
 	{
-		return View::make(Fractal::view('home'));
+		$data = Fractal::setupPagination('Activity');
+
+		$activities = Activity::orderBy('id', 'desc');
+		if ($data['terms'] != "") {
+			$activities->where(function($query) use ($data) {
+				$query
+					->where('description', 'like', $data['likeTerms'])
+					->orWhere('details', 'like', $data['likeTerms']);
+			});
+		}
+		$activities = $activities->paginate($data['itemsPerPage']);
+
+		Fractal::addContentForPagination($activities);
+
+		$data = Fractal::setPaginationMessage();
+		$messages['success'] = $data['result']['message'];
+
+		$defaults = array(
+			'search' => $data['terms']
+		);
+		Form::setDefaults($defaults);
+
+		return View::make(Fractal::view('list'))
+			->with('activities', $activities)
+			->with('contentType', 'activity')
+			->with('page', $activities->getCurrentPage())
+			->with('lastPage', $activities->getLastPage())
+			->with('messages', $messages);
 	}
 
-	public function getDeveloper()
+	public function postSearch()
 	{
-		Site::setDeveloper();
-		return Redirect::to(Fractal::url())->with('messages', array('info' => '<strong>Developer Mode</strong> enabled.'));
+		$data = Fractal::setupPagination('Files');
+
+		$activities = Activity::orderBy('id', 'desc');
+		if ($data['terms'] != "") {
+			$activities->where(function($query) use ($data) {
+				$query
+					->where('description', 'like', $data['likeTerms'])
+					->orWhere('details', 'like', $data['likeTerms']);
+			});
+		}
+		$activities = $activities->paginate($data['itemsPerPage']);
+
+		Fractal::addContentForPagination($activities);
+
+		if (count($activities)) {
+			$data = Fractal::setPaginationMessage();
+		} else {
+			$data['content'] = User::orderBy('id')->paginate($data['itemsPerPage']);
+			if ($terms == "") $result['message'] = Lang::get('fractal::messages.searchNoTerms');
+		}
+
+		$data['result']['table'] = HTML::table(Config::get('fractal::tables.userActivity'), $data['content']);
+
+		return $data['result'];
 	}
 
 }

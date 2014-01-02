@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\URL;
 
 use Regulus\TetraText\TetraText as Format;
@@ -192,7 +193,7 @@ class Fractal {
 
 	public static function setPaginationMessage()
 	{
-		$item = Lang::get('fractal::labels.'.strtolower(substr(static::$pagination['contentType'], 0, (strlen(static::$pagination['contentType']) - 1))));
+		$item = Lang::get('fractal::labels.'.strtolower(Str::singular(static::$pagination['contentType'])));
 
 		if (static::$pagination['changingPage'] || (!static::$pagination['search'] && static::$pagination['terms'] == "")) {
 			static::$pagination['result']['resultType'] = "Success";

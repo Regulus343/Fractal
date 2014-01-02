@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
-use Regulus\SolidSite\SolidSite as Site;
 use Aquanode\Formation\Formation as Form;
+use Regulus\SolidSite\SolidSite as Site;
+use Regulus\ActivityLog\Activity;
 
 class AuthController extends BaseController {
 
@@ -52,21 +53,40 @@ class AuthController extends BaseController {
 		if (Auth::attempt(array('username' => trim(Input::get('username')), 'password' => Input::get('password')))) {
 			$user = Auth::user();
 
-			$returnURI = Session::get('returnURI');
-			if (is_null($returnURI)) $returnURI = Fractal::uri();
-			Session::forget('returnURI');
+			Activity::log(array(
+				'description' => 'Logged In',
+				'details'     => 'Username: '.$user->username,
+			));
 
-			return Redirect::to($returnURI)->with('messages', array('success' => 'Welcome back to '.Site::name().', <strong>'.$user->username.'</strong>.'));
+			$returnUri = Session::get('returnUri');
+			if (is_null($returnUri)) $returnUri = Fractal::uri();
+			Session::forget('returnUri');
+
+			return Redirect::to($returnUri)->with('messages', array('success' => 'Welcome back to '.Site::name().', <strong>'.$user->username.'</strong>.'));
 		} else {
 			$messages = array();
 			if ($_POST) $messages['error'] = "Something went wrong. Please check your username and password and try again.";
+
+			Activity::log(array(
+				'description' => 'Attempted to Log In',
+				'details'     => 'Username: '.trim(Input::get('username')),
+			));
+
 			return View::make(Fractal::view('login'))->with('messages', $messages);
 		}
 	}
 
 	public function getLogout()
 	{
+		$user = Auth::user();
+
 		Auth::logout();
+
+		Activity::log(array(
+			'description' => 'Logged Out',
+			'details'     => 'Username: '.$user->username,
+		));
+
 		return Redirect::to(Fractal::uri('login'))->with('messages', array('success' => 'You have successfully logged out.'));
 	}
 
