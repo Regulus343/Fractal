@@ -58,7 +58,7 @@ div.passwords-check span { padding-top: 26px; font-size: 28px; }
 }
 
 #container:after, #footer { height: 72px; }
-#container:after { eight: 100px; }
+#container:after { height: 100px; }
 
 #footer div.pad { padding: 24px 24px 0 24px; }
 
@@ -80,3 +80,6 @@ div.passwords-check span { padding-top: 26px; font-size: 28px; }
 
 .search-pagination-area { margin: 8px 0; }
 .pagination { margin: 0; }
+
+div.vertical-divider { margin-top: 12px; margin-bottom: 12px; border-top: 1px solid #aaa; border-bottom: 1px solid #aaa; }
+div.vertical-divider h3 { margin-top: 5px; margin-bottom: 5px; }

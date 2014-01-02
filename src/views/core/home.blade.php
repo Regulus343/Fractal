@@ -3,13 +3,7 @@
 @section(Config::get('fractal::section'))
 
 	<div class="jumbotron">
-		<h1>Welcome to Fractal</h1>
-
-		<p>Fractal is currently in development and is at the PRE-ALPHA stage. Stay tuned.</p>
-
-		<p>Fractal's core philosophy is:</p>
-
-		<h3>&ldquo;Maintain simplicity while ensuring the developer is free to customize and modify as they please.&rdquo;</h3>
+		<h1>{{ Site::name() }} Admin CMS</h1>
 	</div>
 
 	<div class="row">

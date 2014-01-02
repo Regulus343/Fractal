@@ -43,6 +43,11 @@ return array(
 	'user'        => 'User',
 	'role'        => 'Role',
 
+	'general'     => 'General',
+	'pages'       => 'Pages',
+	'files'       => 'Files',
+	'users'       => 'Users',
+
 	'name'        => 'Name',
 	'type'        => 'Type',
 
