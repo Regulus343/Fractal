@@ -96,7 +96,7 @@ class FilesController extends BaseController {
 
 	public function create()
 	{
-		Site::set('title', 'Create File');
+		Site::set('title', 'Upload File');
 
 		$thumbnailSize = Fractal::getSetting('Default Image Thumbnail Size', 120);
 		$defaults = array(

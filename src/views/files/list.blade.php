@@ -15,6 +15,8 @@
 	{{-- Bottom Pagination --}}
 	@include(Config::get('fractal::viewsLocation').'partials.pagination')
 
-	<a class="btn btn-default" href="{{ Fractal::url('files/create') }}">{{ Lang::get('fractal::labels.uploadFile') }}</a>
+	<a class="btn btn-primary" href="{{ Fractal::url('files/create') }}">
+		<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Lang::get('fractal::labels.uploadFile') }}
+	</a>
 
 @stop

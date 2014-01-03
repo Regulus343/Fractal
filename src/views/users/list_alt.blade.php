@@ -39,6 +39,8 @@
 	{{-- Bottom Pagination --}}
 	@include(Config::get('fractal::viewsLocation').'partials.pagination')
 
-	<a class="btn btn-default" href="{{ Fractal::url('users/create') }}">{{ Lang::get('fractal::labels.createUser') }}</a>
+	<a class="btn btn-primary" href="{{ Fractal::url('users/create') }}">
+		<span class="glyphicon glyphicon-user"></span>&nbsp; {{ Lang::get('fractal::labels.createUser') }}
+	</a>
 
 @stop

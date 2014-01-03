@@ -66,7 +66,8 @@ div.checkbox-set.has-error label, div.radio-set.has-error label { color: #000; }
 
 form div.error { padding: 5px; color: #b94a48; }
 
-input.file-dummy { float: left; margin-right: 5px; width: 60%; }
+input.file-dummy { float: left; margin-right: 5px; width: 60%; cursor: pointer; }
+input.file-dummy[readonly="readonly"] { background-color: #fff; cursor: pointer; }
 
 div.passwords-check span { padding-top: 26px; font-size: 28px; }
 

@@ -83,7 +83,7 @@
 			</div>
 		</div>
 
-		{{ Form::field(Form::submitResource(Lang::get('fractal::labels.file'), (isset($update) && $update)), 'button') }}
+		{{ Form::field(str_replace('Create', 'Upload', Form::submitResource(Lang::get('fractal::labels.file'), (isset($update) && $update))), 'button') }}
 	{{ Form::close() }}
 
 @stop

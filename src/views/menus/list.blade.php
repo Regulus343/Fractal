@@ -9,6 +9,8 @@
 		</div>
 	</div>
 
-	<a class="btn btn-default" href="{{ Fractal::url('menus/create') }}">{{ Lang::get('fractal::labels.createMenu') }}</a>
+	<a class="btn btn-primary" href="{{ Fractal::url('menus/create') }}">
+		<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Lang::get('fractal::labels.createMenu') }}
+	</a>
 
 @stop

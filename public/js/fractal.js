@@ -17,8 +17,8 @@ $(document).ready(function(){
 		$(this).addClass('hidden');
 
 		var fileType   = $(this).attr('data-file-type') !== undefined ? $(this).attr('data-file-type') : "File";
-		var buttonText = "Upload "+fileType;
-		var button     = $('<button class="btn btn-default block">'+buttonText+'</button>').click(function(e){
+		var buttonText = "Select "+fileType;
+		var button     = $('<button class="btn btn-default block"><span class="glyphicon glyphicon-file"></span>&nbsp; '+buttonText+'</button>').click(function(e){
 			e.preventDefault();
 			$(this).parents('div').children('input[type="file"]').click();
 		});

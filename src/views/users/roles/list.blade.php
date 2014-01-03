@@ -9,6 +9,8 @@
 		</div>
 	</div>
 
-	<a class="btn btn-default" href="{{ Fractal::url('user-roles/create') }}">{{ Lang::get('fractal::labels.createRole') }}</a>
+	<a class="btn btn-primary" href="{{ Fractal::url('user-roles/create') }}">
+		<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Lang::get('fractal::labels.createRole') }}
+	</a>
 
 @stop
