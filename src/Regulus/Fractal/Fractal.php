@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap.
 
 		created by Cody Jassman
-		version 0.14a
-		last updated on January 1, 2014
+		version 0.22
+		last updated on January 2, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\Config;
@@ -156,11 +156,18 @@ class Fractal {
 			'search'       => $_POST ? true : false,
 			'page'         => !is_null(Input::get('page')) ? Input::get('page') : 1,
 			'changingPage' => (bool) Input::get('changing_page'),
+			'sortField'    => Input::get('sort_field'),
+			'sortOrder'    => (Input::get('sort_order') == 'desc' ? Input::get('sort_order') : 'asc'),
 			'contentType'  => $contentType,
 			'result'       => array(
 				'resultType' => 'Error',
 			),
 		);
+
+		$contentTypeTable = strtolower(substr($contentType, 0, 1)).substr($contentType, 1);
+		$sortableFields   = Fractal::getSortableFieldsForTable($contentTypeTable);
+		if (!in_array(static::$pagination['sortField'], $sortableFields))
+			static::$pagination['sortField'] = "id";
 
 		DB::getPaginator()->setCurrentPage(static::$pagination['page']);
 
@@ -168,9 +175,15 @@ class Fractal {
 			if (static::$pagination['search']) {
 				Session::set('searchTerms'.$contentType, $terms);
 				Session::set('page'.$contentType, static::$pagination['page']);
+
+				Session::set('sortField'.$contentType, static::$pagination['sortField']);
+				Session::set('sortOrder'.$contentType, static::$pagination['sortOrder']);
 			} else {
-				static::$pagination['terms'] = Session::get('searchTerms'.$contentType, $terms);
-				static::$pagination['page']  = Session::get('page'.$contentType, static::$pagination['page']);
+				static::$pagination['terms']     = Session::get('searchTerms'.$contentType, $terms);
+				static::$pagination['page']      = Session::get('page'.$contentType, static::$pagination['page']);
+
+				static::$pagination['sortField'] = Session::get('sortField'.$contentType, static::$pagination['sortField']);
+				static::$pagination['sortOrder']  = Session::get('sortOrder'.$contentType, static::$pagination['sortOrder']);
 			}
 		}
 
@@ -195,7 +208,7 @@ class Fractal {
 	{
 		$item = Lang::get('fractal::labels.'.strtolower(Str::singular(static::$pagination['contentType'])));
 
-		if (static::$pagination['changingPage'] || (!static::$pagination['search'] && static::$pagination['terms'] == "")) {
+		if (static::$pagination['changingPage'] || static::$pagination['terms'] == "") {
 			static::$pagination['result']['resultType'] = "Success";
 			static::$pagination['result']['message'] = Lang::get('fractal::messages.displayingItemsOfTotal', array(
 				'start'  => static::$pagination['content']->getFrom(),
@@ -204,19 +217,43 @@ class Fractal {
 				'items'  => Format::pluralize(strtolower($item), static::$pagination['content']->getTotal()),
 			));
 		} else {
-			if (static::$pagination['terms'] != "") {
-				static::$pagination['result']['resultType'] = "Success";
-				static::$pagination['result']['message'] = Lang::get('fractal::messages.searchResults', array(
-					'terms' => static::$pagination['terms'],
-					'total' => static::$pagination['content']->count(),
-					'items' => Format::pluralize(strtolower($item), static::$pagination['content']->count()),
-				));
-			} else {
-				static::$pagination['result']['message'] = Lang::get('fractal::messages.searchNoTerms');
-			}
+			static::$pagination['result']['resultType'] = "Success";
+			static::$pagination['result']['message'] = Lang::get('fractal::messages.searchResults', array(
+				'terms' => static::$pagination['terms'],
+				'total' => static::$pagination['content']->count(),
+				'items' => Format::pluralize(strtolower($item), static::$pagination['content']->count()),
+			));
 		}
 
 		return static::$pagination;
+	}
+
+	/**
+	 * Get sortable fields for table.
+	 *
+	 * @param  string   $name
+	 * @return array
+	 */
+	public static function getSortableFieldsForTable($name)
+	{
+		$fields      = array();
+		$tableConfig = Config::get('fractal::tables.'.$name);
+
+		if (empty($tableConfig) || !isset($tableConfig['columns']))
+			return $fields;
+
+		foreach ($tableConfig['columns'] as $column) {
+			if (isset($column['sort'])) {
+				if (is_bool($column['sort']) && $column['sort'] && isset($column['attribute']))
+					$field = $column['attribute'];
+				else
+					$field = $column['sort'];
+
+				$fields[] = $field;
+			}
+		}
+
+		return $fields;
 	}
 
 	/**

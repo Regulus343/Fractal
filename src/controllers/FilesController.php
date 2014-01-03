@@ -34,7 +34,8 @@ class FilesController extends BaseController {
 	{
 		$data = Fractal::setupPagination('Files');
 
-		$files = ContentFile::orderBy('id');
+		$files = ContentFile::orderBy($data['sortField'], $data['sortOrder']);
+		if ($data['sortField'] != "id") $files->orderBy('id', 'asc');
 		if ($data['terms'] != "") {
 			$files->where(function($query) use ($data) {
 				$query
@@ -67,7 +68,8 @@ class FilesController extends BaseController {
 	{
 		$data = Fractal::setupPagination('Files');
 
-		$files = ContentFile::orderBy('id');
+		$files = ContentFile::orderBy($data['sortField'], $data['sortOrder']);
+		if ($data['sortField'] != "id") $files->orderBy('id', 'asc');
 		if ($data['terms'] != "") {
 			$files->where(function($query) use ($data) {
 				$query
@@ -87,7 +89,7 @@ class FilesController extends BaseController {
 			if ($terms == "") $result['message'] = Lang::get('fractal::messages.searchNoTerms');
 		}
 
-		$data['result']['table'] = HTML::table(Config::get('fractal::tables.files'), $data['content']);
+		$data['result']['tableBody'] = HTML::table(Config::get('fractal::tables.files'), $data['content'], true);
 
 		return $data['result'];
 	}

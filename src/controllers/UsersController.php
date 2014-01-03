@@ -36,7 +36,8 @@ class UsersController extends BaseController {
 	{
 		$data = Fractal::setupPagination('Users');
 
-		$users = User::where('deleted', false)->orderBy('id');
+		$users = User::where('deleted', false)->orderBy($data['sortField'], $data['sortOrder']);
+		if ($data['sortField'] != "id") $users->orderBy('id', 'asc');
 		if ($data['terms'] != "") {
 			$users->where(function($query) use ($data) {
 				$query
@@ -71,7 +72,8 @@ class UsersController extends BaseController {
 	{
 		$data = Fractal::setupPagination('Users');
 
-		$users = User::where('deleted', false)->orderBy('id');
+		$users = User::where('deleted', false)->orderBy($data['sortField'], $data['sortOrder']);
+		if ($data['sortField'] != "id") $users->orderBy('id', 'asc');
 		if ($data['terms'] != "") {
 			$users->where(function($query) use ($data) {
 				$query
@@ -93,7 +95,7 @@ class UsersController extends BaseController {
 			if ($terms == "") $result['message'] = Lang::get('fractal::messages.searchNoTerms');
 		}
 
-		$data['result']['table'] = HTML::table(Config::get('fractal::tables.users'), $data['content']);
+		$data['result']['tableBody'] = HTML::table(Config::get('fractal::tables.users'), $data['content'], true);
 
 		return $data['result'];
 	}

@@ -40,7 +40,7 @@ return array(
 	'selectItem'             => 'Select :item',
 
 	'searchNoResults'        => 'Your search for &ldquo;<strong>:terms</strong>&rdquo; yielded no results.',
-	'searchResults'          => 'Your search for &ldquo;<strong>:terms</strong>&rdquo; yielded :total :items.',
+	'searchResults'          => 'Your search for &ldquo;<strong>:terms</strong>&rdquo; yielded <strong>:total</strong> :items.',
 	'searchNoTerms'          => 'You did not enter any search terms.',
 
 );

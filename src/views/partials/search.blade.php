@@ -6,5 +6,8 @@
 		{{ Form::hidden('page', (isset($page) ? $page : 1)) }}
 		{{ Form::hidden('changing_page', 0) }}
 
+		{{ Form::hidden('sort_field') }}
+		{{ Form::hidden('sort_order') }}
+
 	{{ Form::close() }}
 </div>

@@ -66,26 +66,31 @@ return array(
 
 	'pages' => array(
 		'table' => array(
-			'class'         => 'table-striped table-bordered table-hover',
+			'class'         => 'table-striped table-bordered table-hover table-sortable',
 			'noDataMessage' => Lang::get('fractal::messages.noItems', array('items' => Str::plural(Lang::get('fractal::labels.page')))),
 		),
 		'columns' => array(
 			array(
 				'attribute' => 'id',
+				'sort'      => true,
 			),
 			array(
 				'attribute' => 'title',
+				'sort'      => true,
 			),
 			array(
 				'attribute' => 'slug',
+				'sort'      => true,
 			),
 			array(
 				'attribute' => 'active',
 				'type'      => 'boolean',
+				'sort'      => true,
 			),
 			array(
 				'label'     => 'Last Updated',
 				'method'    => 'getLastUpdatedDate()',
+				'sort'      => 'updated_at',
 			),
 			array(
 				'label'     => 'Actions',
@@ -129,33 +134,39 @@ return array(
 
 	'files' => array(
 		'table' => array(
-			'class'         => 'table-striped table-bordered table-hover',
+			'class'         => 'table-striped table-bordered table-hover table-sortable',
 			'noDataMessage' => Lang::get('fractal::messages.noItems', array('items' => Str::plural(Lang::get('fractal::labels.file')))),
 		),
 		'columns' => array(
 			array(
 				'attribute' => 'id',
+				'sort'      => true,
 			),
 			array(
 				'label'     => Lang::get('fractal::labels.image'),
 				'method'    => 'getThumbnailImage()',
 				'class'     => 'image',
+				'sort'      => 'filename',
 			),
 			array(
 				'attribute' => 'name',
 				'class'     => 'name',
+				'sort'      => true,
 			),
 			array(
 				'label'     => Lang::get('fractal::labels.type'),
 				'attribute' => 'type',
+				'sort'      => true,
 			),
 			array(
 				'label'     => Lang::get('fractal::labels.dimensions'),
 				'method'    => 'getImageDimensions()',
+				'sort'      => 'width',
 			),
 			array(
 				'label'     => 'Last Updated',
 				'method'    => 'getLastUpdatedDate()',
+				'sort'      => 'updated_at',
 			),
 			array(
 				'label'     => 'Actions',
@@ -186,20 +197,23 @@ return array(
 
 	'users' => array(
 		'table' => array(
-			'class'         => 'table-striped table-bordered table-hover',
+			'class'         => 'table-striped table-bordered table-hover table-sortable',
 			'noDataMessage' => Lang::get('fractal::messages.noItems', array('items' => Str::plural(Lang::get('fractal::labels.user')))),
 		),
 		'columns' => array(
 			array(
 				'attribute' => 'id',
+				'sort'      => true,
 			),
 			array(
 				'attribute' => 'username',
 				'class'     => 'username',
+				'sort'      => true,
 			),
 			array(
 				'attribute' => 'name',
 				'method'    => 'getName()',
+				'sort'      => 'last_name',
 			),
 			array(
 				'label'     => 'Email',
@@ -209,6 +223,7 @@ return array(
 						'href' => 'mailto::email',
 					),
 				),
+				'sort'      => 'email',
 			),
 			array(
 				'label'     => 'Role(s)',
@@ -220,16 +235,19 @@ return array(
 				'label'     => 'Activated',
 				'attribute' => 'active',
 				'type'      => 'boolean',
+				'sort'      => true,
 			),
 			array(
 				'attribute' => 'banned',
 				'type'      => 'boolean',
 				'class'     => 'banned',
+				'sort'      => true,
 			),
 			array(
 				'label'     => 'Last Updated',
 				'attribute' => 'updated_at',
 				'type'      => 'dateTime',
+				'sort'      => true,
 			),
 			array(
 				'label'     => 'Actions',
@@ -359,28 +377,33 @@ return array(
 
 	'userActivity' => array(
 		'table' => array(
-			'class'         => 'table-striped table-bordered table-hover',
+			'class'         => 'table-striped table-bordered table-hover table-sortable',
 			'noDataMessage' => Lang::get('fractal::messages.noItems', array('items' => Str::plural(Lang::get('fractal::labels.activity')))),
 		),
 		'columns' => array(
 			array(
 				'attribute' => 'id',
+				'sort'      => true,
 			),
 			array(
 				'attribute' => 'description',
+				'sort'      => true,
 			),
 			array(
 				'attribute' => 'details',
+				'sort'      => true,
 			),
 			array(
 				'attribute' => 'developer',
 				'type'      => 'boolean',
+				'sort'      => true,
 				'developer' => true,
 			),
 			array(
 				'label'     => Lang::get('fractal::labels.timestamp'),
 				'attribute' => 'created_at',
 				'type'      => 'dateTime',
+				'sort'      => true,
 			),
 		),
 		'rows' => array(

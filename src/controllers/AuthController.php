@@ -90,52 +90,6 @@ class AuthController extends BaseController {
 		return Redirect::to(Fractal::uri('login'))->with('messages', array('success' => 'You have successfully logged out.'));
 	}
 
-	/*public function getSignup()
-	{
-		//check if an active session already exists
-		if (!Auth::guest()) return Redirect::to('account')->with('messageInfo', 'You are already logged in.');
-
-		Site::set('section', 'Sign Up');
-		Site::set('title', 'Sign Up - Become a Liberty Alliance Member');
-		Site::addTrailItem('Sign Up', 'signup');
-
-		$rules = array(
-			'username'                 => array('required', 'min:3', 'max:36', 'alpha_dash', 'unique:auth_users,username'),
-			'email'                    => array('required', 'email', 'unique:auth_users,email'),
-			'first_name'               => array('required'),
-			'last_name'                => array('required'),
-			'city'                     => array('required'),
-			'region'		           => array('required'),
-			'password'                 => array('required', 'min:8', 'max:36', 'confirmed'),
-			'password_confirmation'    => array('required'),
-			'statement'                => array('required'),
-			'terms'                    => array('required'),
-			'recaptcha_response_field' => array('required', 'recaptcha'),
-		);
-		Form::setValidationRules($rules);
-
-		Form::setDefaults(array('listed' => true));
-
-		$messages = array();
-		$messagesError = array(
-			'error'    => 'Something went wrong.',
-			'errorSub' => 'Please correct any errors and try again.',
-		);
-		if (Form::validated()) {
-			if (User::createAccount()) {
-				return Redirect::to('login')
-					->with('username', trim(Input::get('username')))
-					->with('messageSuccess', 'You have successfully created an account.')
-					->with('messageSuccessSub', 'Please check your email for account activation instructions.');
-			} else {
-				$messages = $messagesError;
-			}
-		} else {
-			if ($_POST) $messages = $messagesError;
-		}
-		return View::make('auth.signup')->with('messages', $messages);
-	}*/
-
 	public function getActivate($userID = '', $code = '')
 	{
 		if (Auth::activate($userID, $code)) {

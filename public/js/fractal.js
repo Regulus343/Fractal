@@ -46,7 +46,7 @@ $(document).ready(function(){
 		if (isNaN($(this).val()) || $(this).val() == "") $(this).val('');
 	});
 
-	/* Setup Search and Pagination */
+	/* Setup Search, Pagination, and Table Sorting */
 	$('#form-search').submit(function(e){
 		e.preventDefault();
 		$('#changing-page').val(0);
@@ -87,6 +87,94 @@ $(document).ready(function(){
 		}
 	});
 
+	$('table.table-sortable thead tr th').each(function(){
+		if ($(this).attr('data-sort-field') !== undefined) {
+			$(this).addClass('sortable');
+
+			var icon = "record";
+			if ($(this).attr('data-sort-field') == sortField) {
+				if (sortOrder == "desc") {
+					$(this).addClass('sort-desc');
+					icon = "upload";
+				} else {
+					$(this).addClass('sort-asc');
+					icon = "download";
+				}
+			}
+
+			$(this).html($(this).html()+' <span class="sort-icon glyphicon glyphicon-'+icon+'"></span>');
+
+			$(this).mouseenter(function(){
+				if (!$(this).hasClass('sort-changed')) {
+					if ($(this).hasClass('sort-asc')) {
+						$(this).children('span.sort-icon')
+							.addClass('glyphicon-upload')
+							.removeClass('glyphicon-download');
+					} else {
+						$(this).children('span.sort-icon')
+							.addClass('glyphicon-download')
+							.removeClass('glyphicon-upload')
+							.removeClass('glyphicon-record');
+					}
+				}
+			}).mouseleave(function(){
+				$(this).removeClass('sort-changed');
+
+				if ($(this).hasClass('sort-asc')) {
+					$(this).children('span.sort-icon')
+						.addClass('glyphicon-download')
+						.removeClass('glyphicon-upload');
+				} else if ($(this).hasClass('sort-desc')) {
+					$(this).children('span.sort-icon')
+						.addClass('glyphicon-upload')
+						.removeClass('glyphicon-download');
+				} else {
+					$(this).children('span.sort-icon')
+						.addClass('glyphicon-record')
+						.removeClass('glyphicon-download')
+						.removeClass('glyphicon-upload');
+				}
+			}).click(function(){
+				sortField = $(this).attr('data-sort-field');
+				$('table.table-sortable thead tr th.sortable').each(function(){
+					if ($(this).attr('data-sort-field') != sortField)
+						$(this)
+							.removeClass('sort-asc')
+							.removeClass('sort-desc')
+							.removeClass('sort-changed');
+				});
+
+				$(this).addClass('sort-changed');
+
+				$('#sort-field').val(sortField);
+
+				if ($(this).hasClass('sort-asc')) {
+					$(this)
+						.addClass('sort-desc')
+						.removeClass('sort-asc');
+
+					$(this).children('span.sort-icon')
+						.addClass('glyphicon-download')
+						.removeClass('glyphicon-upload');
+
+					$('#sort-order').val('desc');
+				} else {
+					$(this)
+						.addClass('sort-asc')
+						.removeClass('sort-desc');
+
+					$(this).children('span.sort-icon')
+						.addClass('glyphicon-upload')
+						.removeClass('glyphicon-download');
+
+					$('#sort-order').val('asc');
+				}
+
+				searchContent();
+			});
+		}
+	});
+
 });
 
 var messageTimer;
@@ -118,13 +206,12 @@ function searchContent() {
 		dataType: 'json',
 		success: function(result){
 			if (result.resultType == "Success") {
-				console.log(result.message);
 				setMainMessage(result.message, 'success');
 			} else {
 				setMainMessage(result.message, 'error');
 			}
 
-			$('table.table').html(result.table);
+			$('table.table tbody').html(result.tableBody);
 			setupContentTable();
 		},
 		error: function(){

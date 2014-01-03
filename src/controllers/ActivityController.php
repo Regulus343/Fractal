@@ -31,7 +31,8 @@ class ActivityController extends BaseController {
 	{
 		$data = Fractal::setupPagination('Activity');
 
-		$activities = Activity::orderBy('id', 'desc');
+		$activities = Activity::orderBy($data['sortField'], $data['sortOrder']);
+		if ($data['sortField'] != "id") $activities->orderBy('id', 'asc');
 		if ($data['terms'] != "") {
 			$activities->where(function($query) use ($data) {
 				$query
@@ -63,7 +64,8 @@ class ActivityController extends BaseController {
 	{
 		$data = Fractal::setupPagination('Files');
 
-		$activities = Activity::orderBy('id', 'desc');
+		$activities = Activity::orderBy($data['sortField'], $data['sortOrder']);
+		if ($data['sortField'] != "id") $activities->orderBy('id', 'asc');
 		if ($data['terms'] != "") {
 			$activities->where(function($query) use ($data) {
 				$query
@@ -82,7 +84,7 @@ class ActivityController extends BaseController {
 			if ($terms == "") $result['message'] = Lang::get('fractal::messages.searchNoTerms');
 		}
 
-		$data['result']['table'] = HTML::table(Config::get('fractal::tables.userActivity'), $data['content']);
+		$data['result']['tableBody'] = HTML::table(Config::get('fractal::tables.userActivity'), $data['content'], true);
 
 		return $data['result'];
 	}
