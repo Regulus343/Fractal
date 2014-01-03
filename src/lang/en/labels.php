@@ -69,6 +69,7 @@ return array(
 	'statuses'    => 'Statuses',
 
 	'search'      => 'Search',
+	'searchBox'   => 'Search...',
 
 	'returnToTop' => 'Return to Top',
 

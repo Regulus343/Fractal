@@ -51,7 +51,7 @@ foreach (array('get', 'post') as $type) {
 }
 
 /* Setup Developer Route (executing route enables "developer mode" via "developer" session variable) */
-Route::get($baseUri.'/developer', 'Regulus\Fractal\CoreController@getDeveloper');
+Route::get($baseUri.'/developer/{off?}', 'Regulus\Fractal\CoreController@getDeveloper');
 
 /* Setup Authorization Routes */
 Route::get($baseUri.'/login', Config::get('fractal::authController').'@getLogin');

@@ -53,7 +53,17 @@ $(document).ready(function(){
 		searchContent();
 	});
 
-	$('#search').change(function(){
+	$('#search').focus(function(){
+		$(this).animate({
+			width: '300px'
+		});
+	}).blur(function(){
+		if ($(this).val().length < 10) {
+			$(this).animate({
+				width: '200px'
+			});
+		}
+	}).change(function(){
 		$('#changing-page').val(0);
 		searchContent();
 	});

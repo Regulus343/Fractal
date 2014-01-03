@@ -1,7 +1,7 @@
-<div class="col-md-4">
+<div class="col-md-4 padding-0">
 	{{ Form::open(Fractal::url($contentType.'/search'), 'post', array('id' => 'form-search')) }}
 
-		{{ Form::text('search', null, array('placeholder' => Lang::get('fractal::labels.search'))) }}
+		{{ Form::text('search', null, array('placeholder' => Lang::get('fractal::labels.searchBox'))) }}
 
 		{{ Form::hidden('page', (isset($page) ? $page : 1)) }}
 		{{ Form::hidden('changing_page', 0) }}

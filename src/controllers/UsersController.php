@@ -92,7 +92,7 @@ class UsersController extends BaseController {
 			$data = Fractal::setPaginationMessage();
 		} else {
 			$data['content'] = User::orderBy('id')->paginate($data['itemsPerPage']);
-			if ($terms == "") $result['message'] = Lang::get('fractal::messages.searchNoTerms');
+			if ($data['terms'] == "") $data['result']['message'] = Lang::get('fractal::messages.searchNoTerms');
 		}
 
 		$data['result']['tableBody'] = HTML::table(Config::get('fractal::tables.users'), $data['content'], true);

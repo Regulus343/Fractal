@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\URL;
 
@@ -28,10 +29,15 @@ class CoreController extends BaseController {
 		return View::make(Fractal::view('home'));
 	}
 
-	public function getDeveloper()
+	public function getDeveloper($off = false)
 	{
-		Site::setDeveloper();
-		return Redirect::to(Fractal::url())->with('messages', array('info' => '<strong>Developer Mode</strong> enabled.'));
+		if ($off == "off") {
+			Session::forget('developer');
+			return Redirect::to(Fractal::url())->with('messages', array('info' => '<strong>Developer Mode</strong> enabled.'));
+		} else {
+			Site::setDeveloper();
+			return Redirect::to(Fractal::url())->with('messages', array('info' => '<strong>Developer Mode</strong> enabled.'));
+		}
 	}
 
 }

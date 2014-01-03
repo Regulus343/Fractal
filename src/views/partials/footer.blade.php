@@ -9,7 +9,13 @@
 			<p>&copy;{{ date('Y') }} {{ Site::name() }}</p>
 
 			@if (Config::get('fractal::displayVersion'))
-				<p class="fractal">powered by Fractal v{{ Lang::get('fractal::labels.version') }}</p>
+				<p class="fractal">
+					powered by Fractal v{{ Lang::get('fractal::labels.version') }}
+
+					@if (Site::developer())
+						<span class="developer-mode">/ <a href="{{ Fractal::url('developer/off') }}">Disable Developer Mode</a></span>
+					@endif
+				</p>
 			@endif
 		</div><!-- /.pad -->
 	</div><!-- /#footer -->
