@@ -2,6 +2,9 @@ html, body { margin: 0; padding: 0; height: 100%; }
 
 #container { border-left: 1px solid #ddd; border-right: 1px solid #ddd; }
 
+a#logo { padding-top: 10px; padding-bottom: 0; }
+a#logo img { height: 30px; border: none; }
+
 table.table { margin-bottom: 10px; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-collapse: separate; }
 
 table.table-bordered { border-color: #aaa; }
@@ -73,6 +76,8 @@ div.passwords-check span { padding-top: 26px; font-size: 28px; }
 
 .red { color: #900; }
 .green { color: #060; }
+
+.black-bg { background-color: #000; }
 
 .bold { font-weight: bold; }
 

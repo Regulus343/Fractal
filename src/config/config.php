@@ -128,6 +128,28 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
+	| Logo
+	|--------------------------------------------------------------------------
+	|
+	| The filename of the logo. Set this to false to use text instead of a
+	| logo image. If no extension is given, PNG will be assumed.
+	|
+	*/
+	'logo' => 'logo',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Logo in Fractal Assets Directory
+	|--------------------------------------------------------------------------
+	|
+	| Set this to false if your logo lies in your regular images directory.
+	| If true, the logo path will be "public/packages/regulus/fractal/images".
+	|
+	*/
+	'logoFractal' => true,
+
+	/*
+	|--------------------------------------------------------------------------
 	| Authorization Class
 	|--------------------------------------------------------------------------
 	|
