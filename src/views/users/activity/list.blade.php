@@ -8,7 +8,7 @@
 	{{-- Content Table --}}
 	<div class="row">
 		<div class="col-md-12">
-			{{ HTML::table(Config::get('fractal::tables.userActivity'), $activities) }}
+			{{ HTML::table(Config::get('fractal::tables.activity'), $activities) }}
 		</div>
 	</div>
 

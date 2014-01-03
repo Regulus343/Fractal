@@ -375,7 +375,7 @@ return array(
 		),
 	),
 
-	'userActivity' => array(
+	'activity' => array(
 		'table' => array(
 			'class'         => 'table-striped table-bordered table-hover table-sortable',
 			'noDataMessage' => Lang::get('fractal::messages.noItems', array('items' => Str::plural(Lang::get('fractal::labels.activity')))),

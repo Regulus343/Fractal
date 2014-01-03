@@ -55,10 +55,10 @@ $(document).ready(function(){
 
 	$('#search').focus(function(){
 		$(this).animate({
-			width: '300px'
+			width: '360px'
 		});
 	}).blur(function(){
-		if ($(this).val().length < 10) {
+		if ($(this).val().length < 16) {
 			$(this).animate({
 				width: '200px'
 			});

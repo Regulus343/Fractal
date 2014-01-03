@@ -62,7 +62,7 @@ class ActivityController extends BaseController {
 
 	public function postSearch()
 	{
-		$data = Fractal::setupPagination('Files');
+		$data = Fractal::setupPagination('Activity');
 
 		$activities = Activity::orderBy($data['sortField'], $data['sortOrder']);
 		if ($data['sortField'] != "id") $activities->orderBy('id', 'asc');
@@ -84,7 +84,7 @@ class ActivityController extends BaseController {
 			if ($terms == "") $result['message'] = Lang::get('fractal::messages.searchNoTerms');
 		}
 
-		$data['result']['tableBody'] = HTML::table(Config::get('fractal::tables.userActivity'), $data['content'], true);
+		$data['result']['tableBody'] = HTML::table(Config::get('fractal::tables.activity'), $data['content'], true);
 
 		return $data['result'];
 	}

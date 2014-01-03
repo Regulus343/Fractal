@@ -9,18 +9,6 @@ table.table-bordered { border-color: #aaa; }
 table.table-bordered tr th { border-bottom: 1px solid #aaa; }
 table.table-bordered tbody tr:last-child td, table.table-bordered tfoot tr:last-child td { border-bottom: #aaa; }
 
-table tr th.actions { border-left: 1px solid #999; }
-table tr td.actions { border-left: 1px solid #999; text-align: center; line-height: 100%; }
-
-table tr td.actions a { margin-right: 6px; color: #555; font-size: 18px; }
-table tr td.actions a:hover { color: #428bca; }
-
-table tr td.actions a.orange { color: #c60; }
-table tr td.actions a.orange:hover { color: #d50; }
-
-table tr td.actions a.red { color: #900; }
-table tr td.actions a.red:hover { color: #c00; }
-
 table tr td.no-data { text-align: center; font-size: 18px; font-style: italic; }
 
 table tr td.image a { border: none; }
@@ -36,6 +24,22 @@ table.table-sortable thead tr th.sort-asc span.sort-icon,
 table.table-sortable thead tr th.sort-desc span.sort-icon { color: #666; }
 
 .table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(odd) > th { background-color: #eee; }
+
+.table tr.danger td { background-color: #ebcccc; }
+
+table tr th.actions { border-left: 1px solid #999; }
+table tr td.actions { border-left: 1px solid #999; text-align: center; line-height: 100%; }
+
+table tr td.actions a { margin-right: 6px; color: #555; font-size: 18px; }
+table tr td.actions a:hover { color: #428bca; }
+
+table tr td.actions a.orange { color: #c60; }
+table tr td.actions a.orange:hover { color: #d50; }
+
+table tr td.actions a.red { color: #900; }
+table tr td.actions a.red:hover { color: #c00; }
+
+table tr.danger:hover td.actions, table tr.danger td.actions { border-left: 1px solid #999; }
 
 table.table-bordered tr td:hover { background-color: #e6e6e6; }
 
@@ -114,7 +118,12 @@ div.passwords-check span { padding-top: 26px; font-size: 28px; }
 .search-pagination-area { margin: 8px 0; }
 .pagination { margin: 0; }
 
-input#search { width: 200px; border-color: #999; border-radius: 8px 8px 8px 0; -webkit-border-radius: 8px 8px 8px 0; -moz-border-radius: 8px 8px 8px 0; }
+input#search {
+	width: 200px;
+	color: #555;
+	border-color: #999;
+	border-radius: 8px 8px 8px 0; -webkit-border-radius: 8px 8px 8px 0; -moz-border-radius: 8px 8px 8px 0;
+}
 
 div.vertical-divider { margin-top: 12px; margin-bottom: 12px; border-top: 1px solid #aaa; border-bottom: 1px solid #aaa; }
 div.vertical-divider h3 { margin-top: 5px; margin-bottom: 5px; }

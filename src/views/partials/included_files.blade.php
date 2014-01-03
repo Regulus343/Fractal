@@ -50,8 +50,8 @@
 	var page            = {{ (isset($page) && is_int($page)) ? $page : 0 }};
 	var lastPage        = {{ (isset($lastPage) && is_int($lastPage)) ? $lastPage : 0 }};
 
-	var sortField       = '{{ (isset($contentType) ? Session::get('sortField'.$contentType, 'id') : 'id') }}';
-	var sortOrder       = '{{ (isset($contentType) ? Session::get('sortOrder'.$contentType, 'asc') : 'asc') }}';
+	var sortField       = '{{ (isset($contentType) ? Session::get('sortField'.ucfirst($contentType), 'id') : 'id') }}';
+	var sortOrder       = '{{ (isset($contentType) ? Session::get('sortOrder'.ucfirst($contentType), 'asc') : 'asc') }}';
 
 	function strToSlug(string) {
 		var slug = string.toLowerCase()

@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap.
 
 		created by Cody Jassman
-		version 0.22
-		last updated on January 2, 2014
+		version 0.23
+		last updated on January 3, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\Config;
@@ -169,8 +169,6 @@ class Fractal {
 		if (!in_array(static::$pagination['sortField'], $sortableFields))
 			static::$pagination['sortField'] = "id";
 
-		DB::getPaginator()->setCurrentPage(static::$pagination['page']);
-
 		if ($contentType) {
 			if (static::$pagination['search']) {
 				Session::set('searchTerms'.$contentType, $terms);
@@ -183,9 +181,11 @@ class Fractal {
 				static::$pagination['page']      = Session::get('page'.$contentType, static::$pagination['page']);
 
 				static::$pagination['sortField'] = Session::get('sortField'.$contentType, static::$pagination['sortField']);
-				static::$pagination['sortOrder']  = Session::get('sortOrder'.$contentType, static::$pagination['sortOrder']);
+				static::$pagination['sortOrder'] = Session::get('sortOrder'.$contentType, static::$pagination['sortOrder']);
 			}
 		}
+
+		DB::getPaginator()->setCurrentPage(static::$pagination['page']);
 
 		static::$pagination['likeTerms']         = '%'.static::$pagination['terms'].'%';
 		static::$pagination['result']['message'] = Lang::get('fractal::messages.searchNoResults', array('terms' => static::$pagination['terms']));

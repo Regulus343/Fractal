@@ -37,7 +37,8 @@ class UsersController extends BaseController {
 		$data = Fractal::setupPagination('Users');
 
 		$users = User::where('deleted', false)->orderBy($data['sortField'], $data['sortOrder']);
-		if ($data['sortField'] != "id") $users->orderBy('id', 'asc');
+		if ($data['sortField'] == "last_name") $users->orderBy('first_name', $data['sortOrder']);
+		if ($data['sortField'] != "id")        $users->orderBy('id', 'asc');
 		if ($data['terms'] != "") {
 			$users->where(function($query) use ($data) {
 				$query
@@ -73,7 +74,8 @@ class UsersController extends BaseController {
 		$data = Fractal::setupPagination('Users');
 
 		$users = User::where('deleted', false)->orderBy($data['sortField'], $data['sortOrder']);
-		if ($data['sortField'] != "id") $users->orderBy('id', 'asc');
+		if ($data['sortField'] == "last_name") $users->orderBy('first_name', $data['sortOrder']);
+		if ($data['sortField'] != "id")        $users->orderBy('id', 'asc');
 		if ($data['terms'] != "") {
 			$users->where(function($query) use ($data) {
 				$query
