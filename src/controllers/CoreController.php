@@ -33,10 +33,10 @@ class CoreController extends BaseController {
 	{
 		if ($off == "off") {
 			Session::forget('developer');
-			return Redirect::to(Fractal::url())->with('messages', array('info' => '<strong>Developer Mode</strong> enabled.'));
+			return Redirect::to(Fractal::url())->with('messages', array('info' => Lang::get('fractal::messages.developerModeDisabled')));
 		} else {
 			Site::setDeveloper();
-			return Redirect::to(Fractal::url())->with('messages', array('info' => '<strong>Developer Mode</strong> enabled.'));
+			return Redirect::to(Fractal::url())->with('messages', array('info' => Lang::get('fractal::messages.developerModeEnabled')));
 		}
 	}
 

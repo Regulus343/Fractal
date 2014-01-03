@@ -43,4 +43,7 @@ return array(
 	'searchResults'          => 'Your search for &ldquo;<strong>:terms</strong>&rdquo; yielded <strong>:total</strong> :items.',
 	'searchNoTerms'          => 'You did not enter any search terms.',
 
+	'developerModeEnabled'   => '<strong>Developer Mode</strong> enabled.',
+	'developerModeDisabled'  => '<strong>Developer Mode</strong> disabled.',
+
 );
