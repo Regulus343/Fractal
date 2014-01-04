@@ -386,6 +386,11 @@ return array(
 				'sort'      => true,
 			),
 			array(
+				'label'     => 'Name',
+				'method'    => 'getName()',
+				'sort'      => 'last_name',
+			),
+			array(
 				'attribute' => 'description',
 				'sort'      => true,
 			),
@@ -397,6 +402,19 @@ return array(
 				'attribute' => 'developer',
 				'type'      => 'boolean',
 				'sort'      => true,
+				'developer' => true,
+			),
+			array(
+				'label'     => 'IP Address',
+				'attribute' => 'ip_address',
+				'sort'      => true,
+				'developer' => true,
+			),
+			array(
+				'label'     => 'User Agent',
+				'method'    => 'getUserAgentPreview()',
+				'sort'      => 'user_agent',
+				'class'     => 'small-text',
 				'developer' => true,
 			),
 			array(

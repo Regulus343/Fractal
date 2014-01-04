@@ -46,6 +46,8 @@ table tr.danger:hover td.actions, table tr.danger td.actions { border-left: 1px 
 
 table.table-bordered tr td:hover { background-color: #e6e6e6; }
 
+table tr td.small-text { font-size: 11px; }
+
 .alert-top {
 	z-index: 1000;
 	position: absolute;

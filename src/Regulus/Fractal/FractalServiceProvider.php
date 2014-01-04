@@ -35,6 +35,7 @@ class FractalServiceProvider extends ServiceProvider {
 		} else {
 			$pathPrefix = __DIR__.'/../../../../../';
 		}
+		$this->package('regulus/activity-log', null, $pathPrefix.'regulus/activity-log/src');
 		$this->package('regulus/solid-site', null, $pathPrefix.'regulus/solid-site/src');
 		$this->package('regulus/tetra-text', null, $pathPrefix.'regulus/tetra-text/src');
 		$this->package('aquanode/formation', null, $pathPrefix.'aquanode/formation/src');

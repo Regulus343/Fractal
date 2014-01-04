@@ -24,12 +24,14 @@ class ActivityController extends BaseController {
 		$subSection = "User Activity";
 		Site::setMulti(array('subSection', 'title'), $subSection);
 
+		Site::set('defaultSorting', array('order' => 'desc'));
+
 		Fractal::setViewsLocation('users.activity');
 	}
 
 	public function getIndex()
 	{
-		$data = Fractal::setupPagination('Activity');
+		$data = Fractal::setupPagination('Activity', Site::get('defaultSorting'));
 
 		$activities = Activity::orderBy($data['sortField'], $data['sortOrder']);
 		if ($data['sortField'] != "id") $activities->orderBy('id', 'asc');
@@ -62,7 +64,7 @@ class ActivityController extends BaseController {
 
 	public function postSearch()
 	{
-		$data = Fractal::setupPagination('Activity');
+		$data = Fractal::setupPagination('Activity', Site::get('defaultSorting'));
 
 		$activities = Activity::orderBy($data['sortField'], $data['sortOrder']);
 		if ($data['sortField'] != "id") $activities->orderBy('id', 'asc');

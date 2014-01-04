@@ -6,7 +6,7 @@
 
 		created by Cody Jassman
 		version 0.23
-		last updated on January 3, 2014
+		last updated on January 4, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\Config;
@@ -144,9 +144,10 @@ class Fractal {
 	 * Setup pagination.
 	 *
 	 * @param  mixed    $contentType
+	 * @param  array    $defaultSorting
 	 * @return array
 	 */
-	public static function setupPagination($contentType = null)
+	public static function setupPagination($contentType = null, $defaultSorting = array())
 	{
 		$terms = trim(Input::get('search'));
 		static::$pagination = array(
@@ -157,13 +158,23 @@ class Fractal {
 			'page'         => !is_null(Input::get('page')) ? Input::get('page') : 1,
 			'changingPage' => (bool) Input::get('changing_page'),
 			'sortField'    => Input::get('sort_field'),
-			'sortOrder'    => (Input::get('sort_order') == 'desc' ? Input::get('sort_order') : 'asc'),
+			'sortOrder'    => (strtolower(Input::get('sort_order')) == 'desc' ? 'desc' : 'asc'),
 			'contentType'  => $contentType,
 			'result'       => array(
 				'resultType' => 'Error',
 			),
 		);
 
+		//set default sorting
+		if (static::$pagination['sortField'] == "" && !empty($defaultSorting)) {
+			if (isset($defaultSorting['field']))
+				static::$pagination['sortField'] = $defaultSorting['field'];
+
+			if (isset($defaultSorting['order']))
+				static::$pagination['sortOrder'] = (strtolower($defaultSorting['order']) == 'desc' ? 'desc' : 'asc');
+		} 
+
+		//attempt to disallow sorting on fields that "sortable" is not set for via "tables" config
 		$contentTypeTable = strtolower(substr($contentType, 0, 1)).substr($contentType, 1);
 		$sortableFields   = Fractal::getSortableFieldsForTable($contentTypeTable);
 		if (!in_array(static::$pagination['sortField'], $sortableFields))
