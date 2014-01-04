@@ -57,6 +57,8 @@ table.table-bordered tr td:hover { background-color: #e6e6e6; }
 }
 .alert-top.alert-success { z-index: 1001; }
 
+.alert-transparent { opacity: 0.95; filter: alpha(opacity=95); }
+
 div.checkbox-set, div.radio-set {
 	padding: 0 8px;
 	border: 1px solid #aaa;

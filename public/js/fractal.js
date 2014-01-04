@@ -1,4 +1,5 @@
 var contentID;
+var messageShowTime = 5000;
 
 $(document).ready(function(){
 
@@ -11,6 +12,9 @@ $(document).ready(function(){
 	$('.alert-dismissable-hide .close').click(function(){
 		$(this).parents('div.alert-dismissable-hide').addClass('hidden');
 	});
+
+	/* Setup Auto-Hide Alert Messages */
+	setTimeout("$('.alert-auto-hide').fadeOut();", messageShowTime);
 
 	/* Setup File Fields */
 	$('input[type="file"].file-upload-button').each(function(){
@@ -192,8 +196,8 @@ function setMainMessage(message, type) {
 	clearTimeout(messageTimer);
 
 	$('#message-'+type+' div').html(message);
-	$('#message-'+type).removeClass('hidden').show();
-	messageTimer = setTimeout("$('.alert-dismissable-hide').slideUp();", 5000);
+	$('#message-'+type).hide().removeClass('hidden').fadeIn('fast');
+	messageTimer = setTimeout("$('.alert-dismissable-hide').fadeOut();", messageShowTime);
 }
 
 function modalConfirm(title, message, action) {
