@@ -317,7 +317,7 @@ return array(
 	| occurring when you run the DB migrations.
 	|
 	*/
-	'migrated' => true,
+	'migrated' => false,
 
 	/*
 	|--------------------------------------------------------------------------
