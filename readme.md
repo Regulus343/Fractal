@@ -67,7 +67,7 @@ And add this to the `aliases` array:
 
 	php artisan fractal:install
 
-Fractal should now be installed.
+Fractal will now be installed. Finally, you should go into the config file in `app/config/packages/regulus/fractal/config.php` and change the `migrated` variable to `true`.
 
 You may now skip ahead to the [Composer Package Installation for Authentication](#auth-composer-package-installation) section.
 
