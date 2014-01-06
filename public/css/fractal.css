@@ -28,10 +28,7 @@ table.table-sortable thead tr th.sort-desc span.sort-icon { color: #666; }
 
 .table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(odd) > th { background-color: #eee; }
 
-.table tr.danger td { background-color: #ebcccc; }
-
-table tr th.actions { border-left: 1px solid #999; }
-table tr td.actions { border-left: 1px solid #999; text-align: center; line-height: 100%; }
+table tr td.actions { border-left: 1px solid #999 !important; text-align: center; line-height: 100%; }
 
 table tr td.actions a { margin-right: 6px; color: #555; font-size: 18px; }
 table tr td.actions a:hover { color: #428bca; }
@@ -44,9 +41,16 @@ table tr td.actions a.red:hover { color: #c00; }
 
 table tr.danger:hover td.actions, table tr.danger td.actions { border-left: 1px solid #999; }
 
+table tr td.id-attribute { border-right: 1px solid #999 !important; font-weight: bold; text-align: right; }
+
 table.table-bordered tr td:hover { background-color: #e6e6e6; }
 
 table tr td.small-text { font-size: 11px; }
+
+table tr td span.boolean-true { color: #030; }
+table tr td span.boolean-false { color: #500; }
+
+.table tr.danger td { background-color: #f2dede !important; }
 
 .alert-top {
 	z-index: 1000;

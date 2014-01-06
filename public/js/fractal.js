@@ -354,7 +354,7 @@ var actionBanUser = function(){
 				$('#user-'+contentID+' td.actions a.ban-user').addClass('hidden');
 				$('#user-'+contentID+' td.actions a.unban-user').removeClass('hidden');
 
-				$('#user-'+contentID+' td.banned').text('Yes');
+				$('#user-'+contentID+' td.banned').html('<span class="boolean-true">Yes</span>');
 
 				setMainMessage(result.message, 'success');
 			} else {
@@ -378,7 +378,7 @@ var actionUnbanUser = function(){
 				$('#user-'+contentID+' td.actions a.unban-user').addClass('hidden');
 				$('#user-'+contentID+' td.actions a.ban-user').removeClass('hidden');
 
-				$('#user-'+contentID+' td.banned').text('No');
+				$('#user-'+contentID+' td.banned').html('<span class="boolean-false">No</span>');
 
 				setMainMessage(result.message, 'success');
 			} else {
