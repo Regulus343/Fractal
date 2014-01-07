@@ -16,8 +16,9 @@ class MenuItemsTableSeeder extends Seeder {
 			//CMS Main Menu Items
 			array(
 				'menu_id'       => 1,
-				'label'         => 'Home',
-				'icon'          => 'home',
+				'uri'           => '',
+				'label'         => 'Content',
+				'icon'          => 'th-list',
 				'display_order' => 1,
 				'auth_status'   => 1,
 				'active'        => true,
@@ -26,18 +27,7 @@ class MenuItemsTableSeeder extends Seeder {
 			),
 			array(
 				'menu_id'       => 1,
-				'uri'           => '',
-				'label'         => 'Content',
-				'icon'          => 'th-list',
-				'display_order' => 2,
-				'auth_status'   => 1,
-				'active'        => true,
-				'created_at'    => $timestamp,
-				'updated_at'    => $timestamp,
-			),
-			array(
-				'menu_id'       => 1,
-				'parent_id'     => 2,
+				'parent_id'     => 1,
 				'uri'           => 'menus',
 				'label'         => 'Menus',
 				'icon'          => 'tasks',
@@ -49,7 +39,7 @@ class MenuItemsTableSeeder extends Seeder {
 			),
 			array(
 				'menu_id'       => 1,
-				'parent_id'     => 2,
+				'parent_id'     => 1,
 				'uri'           => 'pages',
 				'label'         => 'Pages',
 				'icon'          => 'file',
@@ -61,7 +51,7 @@ class MenuItemsTableSeeder extends Seeder {
 			),
 			array(
 				'menu_id'       => 1,
-				'parent_id'     => 2,
+				'parent_id'     => 1,
 				'uri'           => 'files',
 				'label'         => 'Files',
 				'icon'          => 'folder-open',
@@ -76,7 +66,7 @@ class MenuItemsTableSeeder extends Seeder {
 				'uri'           => 'users',
 				'label'         => 'Users',
 				'icon'          => 'user',
-				'display_order' => 3,
+				'display_order' => 2,
 				'auth_status'   => 1,
 				'auth_roles'    => 'admin',
 				'active'        => true,
@@ -85,7 +75,7 @@ class MenuItemsTableSeeder extends Seeder {
 			),
 			array(
 				'menu_id'       => 1,
-				'parent_id'     => 6,
+				'parent_id'     => 5,
 				'uri'           => 'users',
 				'label'         => 'Users',
 				'icon'          => 'user',
@@ -98,7 +88,7 @@ class MenuItemsTableSeeder extends Seeder {
 			),
 			array(
 				'menu_id'       => 1,
-				'parent_id'     => 6,
+				'parent_id'     => 5,
 				'uri'           => 'user-roles',
 				'label'         => 'User Roles',
 				'icon'          => 'book',
@@ -111,7 +101,7 @@ class MenuItemsTableSeeder extends Seeder {
 			),
 			array(
 				'menu_id'       => 1,
-				'parent_id'     => 6,
+				'parent_id'     => 5,
 				'uri'           => 'activity',
 				'label'         => 'User Activity',
 				'icon'          => 'info-sign',
