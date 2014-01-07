@@ -6,9 +6,10 @@
 
 		created by Cody Jassman
 		version 0.23
-		last updated on January 4, 2014
+		last updated on January 6, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -137,6 +138,9 @@ class Fractal {
 	 */
 	public static function getSetting($name, $default = false)
 	{
+		if (!Config::get('fractal::migrated') || App::runningInConsole())
+			return $default;
+
 		return Setting::value($name, $default);
 	}
 

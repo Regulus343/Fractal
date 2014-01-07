@@ -15,9 +15,11 @@ use Regulus\SolidSite\SolidSite as Site;
 
 //ensure DB tables have been migrated first
 if (Config::get('fractal::migrated')) {
-	$websiteName = Setting::where('name', '=', 'Website Name')->first();
-	if (!empty($websiteName)) Site::set('name', $websiteName->value);
+	$websiteName = Fractal::getSetting('Website Name');
+	if ($websiteName)
+		Site::set('name', $websiteName);
 
-	$webmasterEmail = Setting::where('name', '=', 'Webmaster Email')->first();
-	if (!empty($webmasterEmail)) Site::set('email', $webmasterEmail->value);
+	$webmasterEmail = Fractal::getSetting('Webmaster Email');
+	if ($webmasterEmail)
+		Site::set('email', $webmasterEmail);
 }

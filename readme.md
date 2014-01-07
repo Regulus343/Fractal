@@ -67,7 +67,7 @@ And add this to the `aliases` array:
 
 	php artisan fractal:install
 
-Fractal will now be installed. Finally, you should go into the config file in `app/config/packages/regulus/fractal/config.php` and change the `migrated` variable to `true`.
+Fractal will now be installed. This includes all necessary DB migrations, DB seeding, config publishing, and asset publishing.
 
 You may now skip ahead to the [Composer Package Installation for Authentication](#auth-composer-package-installation) section.
 
@@ -159,7 +159,7 @@ Next, change the `model` variable in `app/config/auth.php` to `Regulus\Identify\
 
 	php artisan identify:install
 
-Identify should now be installed.
+Identify will now be installed. This includes all necessary DB migrations, DB seeding, and config publishing.
 
 You should now have 4 users, 'Admin', 'TestUser', 'TestUser2', and 'TestUser3'. All of the passwords are 'password' and the usernames are case insensitive, so you may simply type 'admin' and 'password' to log in. The 3 initial roles are 'Administrator', 'Moderator', and 'Member'. 'Admin' has the 'Administrator' role, 'TestUser' has the 'Moderator' role, the final 2 users have the 'Member' role.
 

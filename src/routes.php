@@ -13,6 +13,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 
 $baseUri     = Config::get('fractal::baseUri');
@@ -65,7 +66,7 @@ $pageUri    = Config::get('fractal::pageUri');
 $pageMethod = Config::get('fractal::pageMethod');
 if ($pageUri == "") {
 	//ensure DB tables have been migrated first
-	if (Config::get('fractal::migrated')) {
+	if (Config::get('fractal::migrated') && !App::runningInConsole()) {
 		$pages = ContentPage::select('slug')->where('active', '=', true)->get();
 		foreach ($pages as $page) {
 			Route::get('{'.$page->slug.'}', $pageMethod);

@@ -39,14 +39,20 @@ class InstallCommand extends Command {
 	 */
 	public function fire()
 	{
+		$divider = '----------------------';
+
 		$this->output->writeln('');
+		$this->info($divider);
 		$this->comment('Installing Fractal...');
-		$this->info('----------------------');
+		$this->info($divider);
 		$this->output->writeln('');
 
 		$workbench = Config::get('fractal::workbench');
 
 		//run database migrations
+		$this->comment('Migrating DB tables...');
+		$this->info($divider);
+
 		$migrationPackages = array(
 			'regulus/fractal',
 			'regulus/activity-log',
@@ -66,7 +72,12 @@ class InstallCommand extends Command {
 			));
 		}
 
+		$this->output->writeln('');
+
 		//seed database tables
+		$this->comment('Seeding DB tables...');
+		$this->info($divider);
+
 		$seedTables = array(
 			'Settings',
 			'Menus',
@@ -78,14 +89,19 @@ class InstallCommand extends Command {
 			$this->call('db:seed', array('--class' => $seedTable.'TableSeeder'));
 		}
 
+		$this->output->writeln('');
+
 		//publish config files for Fractal and its required packages
+		$this->comment('Publishing configuration...');
+		$this->info($divider);
+
 		$configPackages = array(
 			'regulus/fractal',
 			'regulus/solid-site',
 			'aquanode/formation',
 		);
 		foreach ($configPackages as $configPackage) {
-			$this->output->writeln('<info>Publishing config:</info> '.$configPackage);
+			$this->output->writeln('<info>Publishing configuration:</info> '.$configPackage);
 			$this->call('config:publish', array(
 				'package' => $configPackage,
 				'--env'   => $this->option('env'),
@@ -93,8 +109,13 @@ class InstallCommand extends Command {
 			));
 		}
 
+		$this->output->writeln('');
+
 		//publish assets for Fractal and its required packages
-		$this->info('Publishing assets');
+		$this->info($divider);
+		$this->comment('Publishing assets...');
+		$this->info($divider);
+
 		if ($workbench) {
 			$arguments = array('--bench' => 'regulus/fractal');
 		} else {
@@ -103,8 +124,9 @@ class InstallCommand extends Command {
 		$this->call('asset:publish', $arguments);
 
 		$this->output->writeln('');
-		$this->info('----------------------');
+		$this->info($divider);
 		$this->comment('Fractal installed!');
+		$this->info($divider);
 		$this->output->writeln('');
 	}
 

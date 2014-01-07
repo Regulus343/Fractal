@@ -46,7 +46,7 @@ class AuthController extends BaseController {
 
 		//set form validation rules
 		$rules = array('username' => array('required', 'alpha_dash'),
-					   'password' => array('required', 'min:'.Setting::value('Minimum Password Length', 8)));
+					   'password' => array('required', 'min:'.Fractal::getSetting('Minimum Password Length', 8)));
 		Form::setValidationRules($rules);
 
 		//login form has been submitted
