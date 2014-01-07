@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\URL;
 
 use Aquanode\Formation\Formation as Form;
+use Aquanode\Elemental\Elemental as HTML;
 use Regulus\ActivityLog\Activity;
 use Regulus\Identify\Identify as Auth;
 use Regulus\SolidSite\SolidSite as Site;
@@ -23,12 +24,72 @@ class PagesController extends BaseController {
 		$subSection = "Pages";
 		Site::setMulti(array('subSection', 'title'), $subSection);
 
-		Fractal::setViewsLocation('pages');
+		//set content type and views location
+		Fractal::setContentType('pages', true);
 	}
 
 	public function index()
 	{
-		return View::make(Fractal::view('list'))->with('contentType', 'pages');
+		$data = Fractal::setupPagination();
+
+		$pages = ContentPage::orderBy($data['sortField'], $data['sortOrder']);
+		if ($data['sortField'] != "id") $pages->orderBy('id', 'asc');
+		if ($data['terms'] != "") {
+			$pages->where(function($query) use ($data) {
+				$query
+					->where('title', 'like', $data['likeTerms'])
+					->orWhere('slug', 'like', $data['likeTerms'])
+					->orWhere('content', 'like', $data['likeTerms'])
+					->orWhere('side_content', 'like', $data['likeTerms']);
+			});
+		}
+		$pages = $pages->paginate($data['itemsPerPage']);
+
+		Fractal::setContentForPagination($pages);
+
+		$data = Fractal::setPaginationMessage();
+		$messages['success'] = $data['result']['message'];
+
+		$defaults = array(
+			'search' => $data['terms']
+		);
+		Form::setDefaults($defaults);
+
+		return View::make(Fractal::view('list'))
+			->with('content', $pages)
+			->with('messages', $messages);
+	}
+
+	public function search()
+	{
+		$data = Fractal::setupPagination();
+
+		$pages = ContentPage::orderBy($data['sortField'], $data['sortOrder']);
+		if ($data['sortField'] != "id") $pages->orderBy('id', 'asc');
+		if ($data['terms'] != "") {
+			$pages->where(function($query) use ($data) {
+				$query
+					->where('title', 'like', $data['likeTerms'])
+					->orWhere('slug', 'like', $data['likeTerms'])
+					->orWhere('content', 'like', $data['likeTerms'])
+					->orWhere('side_content', 'like', $data['likeTerms']);
+			});
+		}
+		$pages = $pages->paginate($data['itemsPerPage']);
+
+		Fractal::setContentForPagination($pages);
+
+		if (count($pages)) {
+			$data = Fractal::setPaginationMessage();
+		} else {
+			$data['content'] = ContentPage::orderBy('id')->paginate($data['itemsPerPage']);
+			if ($data['terms'] == "") $data['result']['message'] = Lang::get('fractal::messages.searchNoTerms');
+		}
+
+		$data['result']['pages']     = Fractal::getLastPage();
+		$data['result']['tableBody'] = Fractal::createTable($data['content'], true);
+
+		return $data['result'];
 	}
 
 	public function create()

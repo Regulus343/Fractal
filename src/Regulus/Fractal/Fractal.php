@@ -5,7 +5,7 @@
 		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap.
 
 		created by Cody Jassman
-		version 0.23
+		version 0.26
 		last updated on January 6, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\URL;
 
+use Aquanode\Elemental\Elemental as HTML;
+use Regulus\SolidSite\SolidSite as Site;
 use Regulus\TetraText\TetraText as Format;
 
 class Fractal {
@@ -42,6 +44,13 @@ class Fractal {
 	 * @var    array
 	 */
 	public static $pagination;
+
+	/**
+	 * The current content type.
+	 *
+	 * @var    array
+	 */
+	public static $contentType;
 
 	/**
 	 * Create a CMS URL.
@@ -110,11 +119,14 @@ class Fractal {
 	/**
 	 * Set the views location for a controller.
 	 *
-	 * @param  string   $directory
+	 * @param  mixed    $directory
 	 * @return string
 	 */
-	public static function setViewsLocation($directory = '')
+	public static function setViewsLocation($directory = null)
 	{
+		if (is_null($directory))
+			$directory = static::getContentType();
+
 		static::$viewsLocation = Config::get('fractal::viewsLocation').$directory.'.';
 	}
 
@@ -122,11 +134,15 @@ class Fractal {
 	 * Get the views location for a controller.
 	 *
 	 * @param  string   $relativeLocation
+	 * @param  boolean  $root
 	 * @return string
 	 */
-	public static function view($relativeLocation = '')
+	public static function view($relativeLocation = '', $root = false)
 	{
-		return static::$viewsLocation.$relativeLocation;
+		if ($root)
+			return Config::get('fractal::viewsLocation').$relativeLocation;
+		else
+			return static::$viewsLocation.$relativeLocation;
 	}
 
 	/**
@@ -145,14 +161,68 @@ class Fractal {
 	}
 
 	/**
-	 * Setup pagination.
+	 * Set the current content type.
+	 *
+	 * @param  string   $contentType
+	 * @param  boolean  $setViewsLocation
+	 */
+	public static function setContentType($contentType, $setViewsLocation = false)
+	{
+		static::$contentType = $contentType;
+
+		if ($setViewsLocation)
+			static::setViewsLocation();
+	}
+
+	/**
+	 * Get the current content type.
+	 *
+	 * @return string
+	 */
+	public static function getContentType()
+	{
+		return static::$contentType;
+	}
+
+	/**
+	 * Get get a content type filter session variable.
+	 *
+	 * @param  string   $name
+	 * @param  mixed    $default
+	 * @return string
+	 */
+	public static function getContentTypeFilter($name = '', $default = false)
+	{
+		return Session::get($name.static::getContentTypeUppercase(), $default);
+	}
+
+	/**
+	 * Turn a dashed content type like "user-roles" into an uppercase words content type like "UserRoles".
 	 *
 	 * @param  mixed    $contentType
+	 * @return string
+	 */
+	public static function getContentTypeUppercase($contentType = null)
+	{
+		if (is_null($contentType))
+			$contentType = static::getContentType();
+
+		return str_replace(' ', '', ucwords(str_replace('-', ' ', $contentType)));
+	}
+
+	/**
+	 * Setup pagination.
+	 *
 	 * @param  array    $defaultSorting
 	 * @return array
 	 */
-	public static function setupPagination($contentType = null, $defaultSorting = array())
+	public static function setupPagination($defaultSorting = array())
 	{
+		$contentType = static::getContentType();
+
+		if (empty($defaultSorting))
+			$defaultSorting = Site::get('defaultSorting');
+
 		$terms = trim(Input::get('search'));
 		static::$pagination = array(
 			'itemsPerPage' => static::getSetting('Items Listed Per Page', 20),
@@ -179,24 +249,25 @@ class Fractal {
 		} 
 
 		//attempt to disallow sorting on fields that "sortable" is not set for via "tables" config
-		$contentTypeTable = strtolower(substr($contentType, 0, 1)).substr($contentType, 1);
-		$sortableFields   = Fractal::getSortableFieldsForTable($contentTypeTable);
+		$sortableFields   = Fractal::getSortableFieldsForTable($contentType);
 		if (!in_array(static::$pagination['sortField'], $sortableFields))
 			static::$pagination['sortField'] = "id";
 
+		$contentTypeUppercase = static::getContentTypeUppercase();
+
 		if ($contentType) {
 			if (static::$pagination['search']) {
-				Session::set('searchTerms'.$contentType, $terms);
-				Session::set('page'.$contentType, static::$pagination['page']);
+				Session::set('searchTerms'.$contentTypeUppercase, $terms);
+				Session::set('page'.$contentTypeUppercase, static::$pagination['page']);
 
-				Session::set('sortField'.$contentType, static::$pagination['sortField']);
-				Session::set('sortOrder'.$contentType, static::$pagination['sortOrder']);
+				Session::set('sortField'.$contentTypeUppercase, static::$pagination['sortField']);
+				Session::set('sortOrder'.$contentTypeUppercase, static::$pagination['sortOrder']);
 			} else {
-				static::$pagination['terms']     = Session::get('searchTerms'.$contentType, $terms);
-				static::$pagination['page']      = Session::get('page'.$contentType, static::$pagination['page']);
+				static::$pagination['terms']     = Session::get('searchTerms'.$contentTypeUppercase, $terms);
+				static::$pagination['page']      = Session::get('page'.$contentTypeUppercase, static::$pagination['page']);
 
-				static::$pagination['sortField'] = Session::get('sortField'.$contentType, static::$pagination['sortField']);
-				static::$pagination['sortOrder'] = Session::get('sortOrder'.$contentType, static::$pagination['sortOrder']);
+				static::$pagination['sortField'] = Session::get('sortField'.$contentTypeUppercase, static::$pagination['sortField']);
+				static::$pagination['sortOrder'] = Session::get('sortOrder'.$contentTypeUppercase, static::$pagination['sortOrder']);
 			}
 		}
 
@@ -211,10 +282,10 @@ class Fractal {
 	/**
 	 * Add content for pagination.
 	 *
-	 * @param  mixed    $contentType
+	 * @param  mixed    $content
 	 * @return array
 	 */
-	public static function addContentForPagination($content)
+	public static function setContentForPagination($content)
 	{
 		static::$pagination['content'] = $content;
 	}
@@ -244,13 +315,42 @@ class Fractal {
 	}
 
 	/**
+	 * Get the current content page.
+	 *
+	 * @return integer
+	 */
+	public static function getCurrentPage()
+	{
+		if (empty(static::$pagination['content']))
+			return 1;
+
+		return static::$pagination['content']->getCurrentPage();
+	}
+
+	/**
+	 * Get the last content page.
+	 *
+	 * @return integer
+	 */
+	public static function getLastPage()
+	{
+		if (empty(static::$pagination['content']))
+			return 1;
+
+		return static::$pagination['content']->getLastPage();
+	}
+
+	/**
 	 * Get sortable fields for table.
 	 *
-	 * @param  string   $name
+	 * @param  string   $contentType
 	 * @return array
 	 */
-	public static function getSortableFieldsForTable($name)
+	public static function getSortableFieldsForTable($name = null)
 	{
+		if (is_null($name))
+			$name = Fractal::getContentType();
+
 		$fields      = array();
 		$tableConfig = Config::get('fractal::tables.'.$name);
 
@@ -269,6 +369,18 @@ class Fractal {
 		}
 
 		return $fields;
+	}
+
+	/**
+	 * Create a table from a table config array.
+	 *
+	 * @param  mixed    $content
+	 * @param  boolean  $bodyOnly
+	 * @return string
+	 */
+	public static function createTable($content = array(), $bodyOnly = false)
+	{
+		return HTML::table(Config::get('fractal::tables.'.static::getContentType()), $content, $bodyOnly);
 	}
 
 	/**
@@ -373,7 +485,6 @@ class Fractal {
 	 */
 	public static function userByUsername($username)
 	{
-		//var_dump("\\".Config::get('auth.model')."::where('username', '=', '".str_replace("'", '', $username)."')->first();"); exit;
 		$users = call_user_func_array("\\".Config::get('auth.model')."::where", array('username', '=', str_replace("'", '', $username)));
 		return $users->first();
 	}

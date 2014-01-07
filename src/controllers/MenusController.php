@@ -21,7 +21,8 @@ class MenusController extends BaseController {
 		$subSection = "Menus";
 		Site::setMulti(array('subSection', 'title'), $subSection);
 
-		Fractal::setViewsLocation('menus');
+		//set content type and views location
+		Fractal::setContentType('menus', true);
 	}
 
 	public function index()

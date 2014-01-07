@@ -6,16 +6,16 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body>
-	@include('fractal::partials.included_files')
+	@include(Fractal::view('partials.included_files', true))
 
-	@include('fractal::partials.modal')
+	@include(Fractal::view('partials.modal', true))
 
 	<div class="container" id="container">
 
-		@include('fractal::partials.nav')
+		@include(Fractal::view('partials.nav', true))
 
 		@if (!isset($hideTitle) || !$hideTitle)
 			<h1 id="main-heading">{{ Site::titleHeading() }}</h1>
 		@endif
 
-		@include('fractal::partials.messages')
+		@include(Fractal::view('partials.messages', true))

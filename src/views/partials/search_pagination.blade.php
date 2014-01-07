@@ -1,7 +1,7 @@
 <div class="row search-pagination-area">
 	{{-- Search --}}
-	@include(Config::get('fractal::viewsLocation').'partials.search')
+	@include(Fractal::view('partials.search', true))
 
 	{{-- Pagination --}}
-	@include(Config::get('fractal::viewsLocation').'partials.pagination')
+	@include(Fractal::view('partials.pagination', true))
 </div>

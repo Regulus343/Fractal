@@ -41,17 +41,18 @@
 	if (baseURL === undefined)
 		var baseURL = "{{ Fractal::url() }}";
 
-	var csrfToken       = '{{ Session::token() }}';
+	var csrfToken        = '{{ Session::token() }}';
 
-	var fractalLabels   = {{ json_encode(Lang::get('fractal::labels')) }};
-	var fractalMessages = {{ json_encode(Lang::get('fractal::messages')) }};
+	var fractalLabels    = {{ json_encode(Lang::get('fractal::labels')) }};
+	var fractalMessages  = {{ json_encode(Lang::get('fractal::messages')) }};
 
-	var contentType     = '{{ isset($contentType) ? $contentType : '' }}';
-	var page            = {{ (isset($page) && is_int($page)) ? $page : 0 }};
-	var lastPage        = {{ (isset($lastPage) && is_int($lastPage)) ? $lastPage : 0 }};
+	var contentType      = '{{ Fractal::getContentType() }}';
+	var page             = {{ Fractal::getCurrentPage() }};
+	var lastPage         = {{ Fractal::getLastPage() }};
+	var previousLastPage = lastPage;
 
-	var sortField       = '{{ (isset($contentType) ? Session::get('sortField'.ucfirst($contentType), 'id') : 'id') }}';
-	var sortOrder       = '{{ (isset($contentType) ? Session::get('sortOrder'.ucfirst($contentType), 'asc') : 'asc') }}';
+	var sortField        = '{{ Fractal::getContentTypeFilter('sortField', 'id') }}';
+	var sortOrder        = '{{ Fractal::getContentTypeFilter('sortOrder', 'asc') }}';
 
 	function strToSlug(string) {
 		var slug = string.toLowerCase()

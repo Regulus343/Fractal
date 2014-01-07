@@ -321,7 +321,7 @@ return array(
 		),
 	),
 
-	'userRoles' => array(
+	'roles' => array(
 		'table' => array(
 			'class'         => 'table-striped table-bordered table-hover',
 			'noDataMessage' => Lang::get('fractal::messages.noItems', array('items' => Str::plural(Lang::get('fractal::labels.role')))),
@@ -388,7 +388,7 @@ return array(
 			array(
 				'label'     => 'Name',
 				'method'    => 'getName()',
-				'sort'      => 'last_name',
+				'sort'      => 'user_id',
 			),
 			array(
 				'attribute' => 'description',

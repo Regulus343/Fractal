@@ -72,34 +72,7 @@ $(document).ready(function(){
 		searchContent();
 	});
 
-	$('.pagination li a').click(function(e){
-		e.preventDefault();
-		if (!$(this).hasClass('disabled') && !$(this).hasClass('active')) {
-			page = $(this).attr('data-page');
-
-			$('#page').val(page);
-			$('#changing-page').val(1);
-
-			$('.pagination li').removeClass('active');
-			$('.pagination li a').each(function(){
-				if ($(this).text() == page) $(this).parents('li').addClass('active');
-			});
-
-			if (page == 1) {
-				$('.pagination li:first-child').addClass('disabled');
-			} else {
-				$('.pagination li:first-child').removeClass('disabled');
-			}
-
-			if (page == lastPage) {
-				$('.pagination li:last-child').addClass('disabled');
-			} else {
-				$('.pagination li:last-child').removeClass('disabled');
-			}
-
-			searchContent();
-		}
-	});
+	setupPagination();
 
 	$('table.table-sortable thead tr th').each(function(){
 		if ($(this).attr('data-sort-field') !== undefined) {
@@ -225,11 +198,70 @@ function searchContent() {
 				setMainMessage(result.message, 'error');
 			}
 
+			createPaginationMenu(result.pages);
+
 			$('table.table tbody').html(result.tableBody);
 			setupContentTable();
 		},
 		error: function(){
 			setMainMessage(fractalMessages.errorGeneral, 'error');
+		}
+	});
+}
+
+function createPaginationMenu(pages) {
+	lastPage = pages;
+	if (lastPage > 1) {
+		if (lastPage != previousLastPage) {
+			$('.pagination').fadeOut('fast');
+
+			var pagination = '<li'+(page == 1 ? ' class="disabled"' : '')+'><a href="" data-page="1">&laquo;</a></li>' + "\n";
+			for (p = page- 2; p <= page + 3; p++) {
+				if (p > 0 && p <= lastPage)
+					pagination += '<li'+(page == p ? ' class="active"' : '')+'><a href="" data-page="'+p+'">'+p+'</a></li>' + "\n";
+			}
+			pagination += '<li'+(page == lastPage ? ' class="disabled"' : '')+'><a href="" data-page="'+lastPage+'">&raquo;</a></li>' + "\n";
+
+			$('.pagination').html(pagination);
+
+			setupPagination();
+		}
+
+		$('.pagination').fadeIn('fast');
+	} else {
+		$('.pagination').fadeOut('fast');
+	}
+
+	previousLastPage = lastPage;
+}
+
+function setupPagination() {
+	$('.pagination li a').click(function(e){
+		e.preventDefault();
+		if (!$(this).hasClass('disabled') && !$(this).hasClass('active')) {
+			page = $(this).attr('data-page');
+
+			$('#page').val(page);
+			$('#changing-page').val(1);
+
+			$('.pagination li').removeClass('active');
+			$('.pagination li a').each(function(){
+				if ($(this).text() == page) $(this).parents('li').addClass('active');
+			});
+
+			if (page == 1) {
+				$('.pagination li:first-child').addClass('disabled');
+			} else {
+				$('.pagination li:first-child').removeClass('disabled');
+			}
+
+			if (page == lastPage) {
+				$('.pagination li:last-child').addClass('disabled');
+			} else {
+				$('.pagination li:last-child').removeClass('disabled');
+			}
+
+			searchContent();
 		}
 	});
 }

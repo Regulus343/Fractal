@@ -24,6 +24,8 @@ class ActivityController extends BaseController {
 		$subSection = "User Activity";
 		Site::setMulti(array('subSection', 'title'), $subSection);
 
+		Fractal::setContentType('activity');
+
 		Site::set('defaultSorting', array('order' => 'desc'));
 
 		Fractal::setViewsLocation('users.activity');
@@ -31,7 +33,7 @@ class ActivityController extends BaseController {
 
 	public function getIndex()
 	{
-		$data = Fractal::setupPagination('Activity', Site::get('defaultSorting'));
+		$data = Fractal::setupPagination();
 
 		$activities = Activity::orderBy($data['sortField'], $data['sortOrder']);
 		if ($data['sortField'] != "id") $activities->orderBy('id', 'asc');
@@ -44,7 +46,7 @@ class ActivityController extends BaseController {
 		}
 		$activities = $activities->paginate($data['itemsPerPage']);
 
-		Fractal::addContentForPagination($activities);
+		Fractal::setContentForPagination($activities);
 
 		$data = Fractal::setPaginationMessage();
 		$messages['success'] = $data['result']['message'];
@@ -55,16 +57,13 @@ class ActivityController extends BaseController {
 		Form::setDefaults($defaults);
 
 		return View::make(Fractal::view('list'))
-			->with('activities', $activities)
-			->with('contentType', 'activity')
-			->with('page', $activities->getCurrentPage())
-			->with('lastPage', $activities->getLastPage())
+			->with('content', $activities)
 			->with('messages', $messages);
 	}
 
 	public function postSearch()
 	{
-		$data = Fractal::setupPagination('Activity', Site::get('defaultSorting'));
+		$data = Fractal::setupPagination();
 
 		$activities = Activity::orderBy($data['sortField'], $data['sortOrder']);
 		if ($data['sortField'] != "id") $activities->orderBy('id', 'asc');
@@ -77,16 +76,17 @@ class ActivityController extends BaseController {
 		}
 		$activities = $activities->paginate($data['itemsPerPage']);
 
-		Fractal::addContentForPagination($activities);
+		Fractal::setContentForPagination($activities);
 
 		if (count($activities)) {
 			$data = Fractal::setPaginationMessage();
 		} else {
-			$data['content'] = User::orderBy('id')->paginate($data['itemsPerPage']);
-			if ($terms == "") $result['message'] = Lang::get('fractal::messages.searchNoTerms');
+			$data['content'] = Activity::orderBy('id')->paginate($data['itemsPerPage']);
+			if ($data['terms'] == "") $result['message'] = Lang::get('fractal::messages.searchNoTerms');
 		}
 
-		$data['result']['tableBody'] = HTML::table(Config::get('fractal::tables.activity'), $data['content'], true);
+		$data['result']['pages']     = Fractal::getLastPage();
+		$data['result']['tableBody'] = Fractal::createTable($data['content'], true);
 
 		return $data['result'];
 	}

@@ -29,7 +29,8 @@ class UsersController extends BaseController {
 		$section = "Users";
 		Site::setMulti(array('section', 'subSection', 'title'), $section);
 
-		Fractal::setViewsLocation('users');
+		//set content type and views location
+		Fractal::setContentType('users', true);
 	}
 
 	public function index()
@@ -51,7 +52,7 @@ class UsersController extends BaseController {
 		}
 		$users = $users->paginate($data['itemsPerPage']);
 
-		Fractal::addContentForPagination($users);
+		Fractal::setContentForPagination($users);
 
 		$data = Fractal::setPaginationMessage();
 		$messages['success'] = $data['result']['message'];
@@ -62,10 +63,7 @@ class UsersController extends BaseController {
 		Form::setDefaults($defaults);
 
 		return View::make(Fractal::view('list'))
-			->with('users', $users)
-			->with('contentType', 'users')
-			->with('page', $users->getCurrentPage())
-			->with('lastPage', $users->getLastPage())
+			->with('content', $users)
 			->with('messages', $messages);
 	}
 
@@ -88,7 +86,7 @@ class UsersController extends BaseController {
 		}
 		$users = $users->paginate($data['itemsPerPage']);
 
-		Fractal::addContentForPagination($users);
+		Fractal::setContentForPagination($users);
 
 		if (count($users)) {
 			$data = Fractal::setPaginationMessage();
@@ -97,7 +95,8 @@ class UsersController extends BaseController {
 			if ($data['terms'] == "") $data['result']['message'] = Lang::get('fractal::messages.searchNoTerms');
 		}
 
-		$data['result']['tableBody'] = HTML::table(Config::get('fractal::tables.users'), $data['content'], true);
+		$data['result']['pages']     = Fractal::getLastPage();
+		$data['result']['tableBody'] = Fractal::createTable($data['content'], true);
 
 		return $data['result'];
 	}

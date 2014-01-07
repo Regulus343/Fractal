@@ -56,6 +56,7 @@ return array(
 			'users/unban/{id}' => 'Regulus\Fractal\UsersController@unban',
 		),
 		'post' => array(
+			'pages/search'     => 'Regulus\Fractal\PagesController@search',
 			'files/search'     => 'Regulus\Fractal\FilesController@search',
 			'users/search'     => 'Regulus\Fractal\UsersController@search',
 		),

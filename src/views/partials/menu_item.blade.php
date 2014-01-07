@@ -9,7 +9,7 @@
 
 	@if (!empty($menuItem->children))
 		<ul class="dropdown-menu">
-			@include(Config::get('fractal::viewsLocation').'partials.menu', array('menu' => $menuItem->children, 'listItemsOnly' => true))
+			@include(Fractal::view('partials.menu', true), array('menu' => $menuItem->children, 'listItemsOnly' => true))
 		</ul>
 	@endif
 </li>

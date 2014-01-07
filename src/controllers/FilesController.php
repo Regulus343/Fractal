@@ -27,7 +27,8 @@ class FilesController extends BaseController {
 		$subSection = "Files";
 		Site::setMulti(array('subSection', 'title'), $subSection);
 
-		Fractal::setViewsLocation('files');
+		//set content type and views location
+		Fractal::setContentType('files', true);
 	}
 
 	public function index()
@@ -46,7 +47,7 @@ class FilesController extends BaseController {
 		}
 		$files = $files->paginate($data['itemsPerPage']);
 
-		Fractal::addContentForPagination($files);
+		Fractal::setContentForPagination($files);
 
 		$data = Fractal::setPaginationMessage();
 		$messages['success'] = $data['result']['message'];
@@ -57,10 +58,7 @@ class FilesController extends BaseController {
 		Form::setDefaults($defaults);
 
 		return View::make(Fractal::view('list'))
-			->with('files', $files)
-			->with('contentType', 'files')
-			->with('page', $files->getCurrentPage())
-			->with('lastPage', $files->getLastPage())
+			->with('content', $files)
 			->with('messages', $messages);
 	}
 
@@ -80,7 +78,7 @@ class FilesController extends BaseController {
 		}
 		$files = $files->paginate($data['itemsPerPage']);
 
-		Fractal::addContentForPagination($files);
+		Fractal::setContentForPagination($files);
 
 		if (count($files)) {
 			$data = Fractal::setPaginationMessage();
@@ -89,7 +87,8 @@ class FilesController extends BaseController {
 			if ($terms == "") $result['message'] = Lang::get('fractal::messages.searchNoTerms');
 		}
 
-		$data['result']['tableBody'] = HTML::table(Config::get('fractal::tables.files'), $data['content'], true);
+		$data['result']['pages']     = Fractal::getLastPage();
+		$data['result']['tableBody'] = Fractal::createTable($data['content'], true);
 
 		return $data['result'];
 	}

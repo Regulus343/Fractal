@@ -21,16 +21,76 @@ class UserRolesController extends BaseController {
 	public function __construct()
 	{
 		Site::set('section', 'Content');
+
 		$subSection = "User Roles";
 		Site::set('section', 'Users');
 		Site::setMulti(array('subSection', 'title'), $subSection);
 
-		Fractal::setViewsLocation('users.roles');
+		Fractal::setContentType('roles', true);
+
+		Site::set('defaultSorting', array('field' => 'display_order', 'order' => 'desc'));
+
+		Fractal::setViewsLocation('users.activity');
 	}
 
 	public function index()
 	{
-		return View::make(Fractal::view('list'))->with('contentType', 'user-roles');
+		$data = Fractal::setupPagination();
+
+		$roles = Role::orderBy($data['sortField'], $data['sortOrder']);
+		if ($data['sortField'] != "id") $roles->orderBy('id', 'asc');
+		if ($data['terms'] != "") {
+			$roles->where(function($query) use ($data) {
+				$query
+					->where('role', 'like', $data['likeTerms'])
+					->orWhere('name', 'like', $data['likeTerms']);
+			});
+		}
+		$roles = $roles->paginate($data['itemsPerPage']);
+
+		Fractal::setContentForPagination($roles);
+
+		$data = Fractal::setPaginationMessage();
+		$messages['success'] = $data['result']['message'];
+
+		$defaults = array(
+			'search' => $data['terms']
+		);
+		Form::setDefaults($defaults);
+
+		return View::make(Fractal::view('list'))
+			->with('content', $roles)
+			->with('messages', $messages);
+	}
+
+	public function search()
+	{
+		$data = Fractal::setupPagination();
+
+		$roles = Role::orderBy($data['sortField'], $data['sortOrder']);
+		if ($data['sortField'] != "id") $roles->orderBy('id', 'asc');
+		if ($data['terms'] != "") {
+			$roles->where(function($query) use ($data) {
+				$query
+					->where('role', 'like', $data['likeTerms'])
+					->orWhere('name', 'like', $data['likeTerms']);
+			});
+		}
+		$roles = $roles->paginate($data['itemsPerPage']);
+
+		Fractal::setContentForPagination($roles);
+
+		if (count($roles)) {
+			$data = Fractal::setPaginationMessage();
+		} else {
+			$data['content'] = User::orderBy('id')->paginate($data['itemsPerPage']);
+			if ($data['terms'] == "") $data['result']['message'] = Lang::get('fractal::messages.searchNoTerms');
+		}
+
+		$data['result']['pages']     = Fractal::getLastPage();
+		$data['result']['tableBody'] = Fractal::createTable($data['content'], true);
+
+		return $data['result'];
 	}
 
 	public function create()
