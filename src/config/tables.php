@@ -321,27 +321,31 @@ return array(
 		),
 	),
 
-	'roles' => array(
+	'userRoles' => array(
 		'table' => array(
-			'class'         => 'table-striped table-bordered table-hover',
+			'class'         => 'table-striped table-bordered table-hover table-sortable',
 			'noDataMessage' => Lang::get('fractal::messages.noItems', array('items' => Str::plural(Lang::get('fractal::labels.role')))),
 		),
 		'columns' => array(
 			array(
 				'attribute' => 'id',
+				'sort'      => true,
 			),
 			array(
 				'attribute' => 'role',
+				'sort'      => true,
 				'developer' => true,
 			),
 			array(
 				'attribute' => 'name',
+				'sort'      => true,
 				'class'     => 'name',
 			),
 			array(
 				'label'     => 'Last Updated',
 				'attribute' => 'updated_at',
 				'type'      => 'dateTime',
+				'sort'      => true,
 			),
 			array(
 				'label'     => 'Actions',

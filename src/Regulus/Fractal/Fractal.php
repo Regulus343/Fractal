@@ -193,7 +193,7 @@ class Fractal {
 	 */
 	public static function getContentTypeFilter($name = '', $default = false)
 	{
-		return Session::get($name.static::getContentTypeUppercase(), $default);
+		return Session::get($name.static::getContentTypeUpperCase(), $default);
 	}
 
 	/**
@@ -202,12 +202,24 @@ class Fractal {
 	 * @param  mixed    $contentType
 	 * @return string
 	 */
-	public static function getContentTypeUppercase($contentType = null)
+	public static function getContentTypeUpperCase($contentType = null)
 	{
 		if (is_null($contentType))
 			$contentType = static::getContentType();
 
 		return str_replace(' ', '', ucwords(str_replace('-', ' ', $contentType)));
+	}
+
+	/**
+	 * Turn a dashed content type like "user-roles" into a camelcase words content type like "userRoles".
+	 *
+	 * @param  mixed    $contentType
+	 * @return string
+	 */
+	public static function getContentTypeCamelCase($contentType = null)
+	{
+		$contentType = static::getContentTypeUpperCase($contentType);
+		return strtolower(substr($contentType, 0, 1)).substr($contentType, 1);
 	}
 
 	/**
@@ -253,21 +265,21 @@ class Fractal {
 		if (!in_array(static::$pagination['sortField'], $sortableFields))
 			static::$pagination['sortField'] = "id";
 
-		$contentTypeUppercase = static::getContentTypeUppercase();
+		$contentTypeUpperCase = static::getContentTypeUpperCase();
 
 		if ($contentType) {
 			if (static::$pagination['search']) {
-				Session::set('searchTerms'.$contentTypeUppercase, $terms);
-				Session::set('page'.$contentTypeUppercase, static::$pagination['page']);
+				Session::set('searchTerms'.$contentTypeUpperCase, $terms);
+				Session::set('page'.$contentTypeUpperCase, static::$pagination['page']);
 
-				Session::set('sortField'.$contentTypeUppercase, static::$pagination['sortField']);
-				Session::set('sortOrder'.$contentTypeUppercase, static::$pagination['sortOrder']);
+				Session::set('sortField'.$contentTypeUpperCase, static::$pagination['sortField']);
+				Session::set('sortOrder'.$contentTypeUpperCase, static::$pagination['sortOrder']);
 			} else {
-				static::$pagination['terms']     = Session::get('searchTerms'.$contentTypeUppercase, $terms);
-				static::$pagination['page']      = Session::get('page'.$contentTypeUppercase, static::$pagination['page']);
+				static::$pagination['terms']     = Session::get('searchTerms'.$contentTypeUpperCase, $terms);
+				static::$pagination['page']      = Session::get('page'.$contentTypeUpperCase, static::$pagination['page']);
 
-				static::$pagination['sortField'] = Session::get('sortField'.$contentTypeUppercase, static::$pagination['sortField']);
-				static::$pagination['sortOrder'] = Session::get('sortOrder'.$contentTypeUppercase, static::$pagination['sortOrder']);
+				static::$pagination['sortField'] = Session::get('sortField'.$contentTypeUpperCase, static::$pagination['sortField']);
+				static::$pagination['sortOrder'] = Session::get('sortOrder'.$contentTypeUpperCase, static::$pagination['sortOrder']);
 			}
 		}
 
@@ -380,7 +392,7 @@ class Fractal {
 	 */
 	public static function createTable($content = array(), $bodyOnly = false)
 	{
-		return HTML::table(Config::get('fractal::tables.'.static::getContentType()), $content, $bodyOnly);
+		return HTML::table(Config::get('fractal::tables.'.static::getContentTypeCamelCase()), $content, $bodyOnly);
 	}
 
 	/**

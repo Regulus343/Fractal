@@ -26,11 +26,11 @@ class UserRolesController extends BaseController {
 		Site::set('section', 'Users');
 		Site::setMulti(array('subSection', 'title'), $subSection);
 
-		Fractal::setContentType('roles', true);
+		Fractal::setContentType('user-roles', true);
 
 		Site::set('defaultSorting', array('field' => 'display_order', 'order' => 'desc'));
 
-		Fractal::setViewsLocation('users.activity');
+		Fractal::setViewsLocation('users.roles');
 	}
 
 	public function index()

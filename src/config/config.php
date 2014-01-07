@@ -59,6 +59,7 @@ return array(
 			'pages/search'     => 'Regulus\Fractal\PagesController@search',
 			'files/search'     => 'Regulus\Fractal\FilesController@search',
 			'users/search'     => 'Regulus\Fractal\UsersController@search',
+			'user-roles/search' => 'Regulus\Fractal\UserRolesController@search',
 		),
 	),
 
