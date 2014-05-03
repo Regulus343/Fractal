@@ -19,5 +19,9 @@
 			@endif
 		</div><!-- /.pad -->
 	</div><!-- /#footer -->
+
+	@if (Config::get('fractal::exterminator'))
+		{{ Dbg::display() }}
+	@endif
 </body>
 </html>

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePagesTable extends Migration {
+class CreateContentLayoutTemplatesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,19 +12,17 @@ class CreatePagesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('content_pages', function(Blueprint $table)
+		Schema::create('content_layout_templates', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('slug', 120);
-			$table->string('title');
 
-			$table->text('content');
-			$table->boolean('set_side_content');
-			$table->text('side_content');
+			$table->string('name', 120);
+			$table->text('layout');
 
 			$table->integer('user_id');
-			$table->boolean('active');
+
 			$table->timestamps();
+			$table->timestamp('deleted_at');
 		});
 	}
 
@@ -35,7 +33,7 @@ class CreatePagesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('content_pages');
+		Schema::drop('content_layout_templates');
 	}
 
 }

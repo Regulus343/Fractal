@@ -82,6 +82,28 @@ input.file-dummy[readonly="readonly"] { background-color: #fff; cursor: pointer;
 
 div.passwords-check span { padding-top: 26px; font-size: 28px; }
 
+.form-group.checkbox { margin: 0; }
+
+.checkbox label input[type="checkbox"] { float: none; }
+
+fieldset {
+	margin: 10px 0;
+	padding: 8px;
+	border: 1px solid #999;
+	border-radius: 8px; -webkit-border-radius: 8px; -moz-border-radius: 8px;
+}
+
+fieldset legend {
+	display: inline;
+	margin: 0;
+	width: auto;
+	background-color: none;
+	color: #555;
+	border: none;
+	font-size: 12px;
+	line-height: 1em;
+}
+
 .red { color: #900; }
 .green { color: #060; }
 
@@ -141,3 +163,11 @@ input#search {
 
 div.vertical-divider { margin-top: 12px; margin-bottom: 12px; border-top: 1px solid #aaa; border-bottom: 1px solid #aaa; }
 div.vertical-divider h3 { margin-top: 5px; margin-bottom: 5px; }
+
+div.content-side {
+	padding: 12px;
+	min-height: 280px;
+	background-color: #222;
+	color: #fff;
+	border-radius: 8px; -webkit-border-radius: 8px; -moz-border-radius: 8px;
+}

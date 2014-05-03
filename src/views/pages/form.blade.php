@@ -35,11 +35,13 @@
 
 		{{ Form::field('slug') }}
 
+		{{ Form::field('layout_template_id', 'select', array(
+			'label'       => 'Layout Template',
+			'options'     => Form::prepOptions(Regulus\Fractal\ContentLayoutTemplate::orderBy('name')->get(), array('id', 'name')),
+			'null-option' => 'Select a layout template'
+		)) }}
+
 		{{ Form::field('content', 'textarea', array('class-field' => 'ckeditor', 'id-field' => 'content-editor')) }}
-
-		{{ Form::field('set_side_content', 'checkbox') }}
-
-		{{ Form::field('side_content', 'textarea', array('class-field-container' => HTML::hiddenArea(!Form::checked('set_side_content'), true), 'class-field' => 'ckeditor', 'id-field' => 'side-content-editor')) }}
 
 		{{ Form::field('active', 'checkbox') }}
 

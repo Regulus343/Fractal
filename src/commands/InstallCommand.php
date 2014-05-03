@@ -57,7 +57,10 @@ class InstallCommand extends Command {
 			'regulus/fractal',
 			'regulus/activity-log',
 		);
-		foreach ($migrationPackages as $migrationPackage) {
+		foreach ($migrationPackages as $key => $migrationPackage) {
+			if ($key)
+				$this->output->writeln('');
+
 			if ($workbench) {
 				$prefix = 'workbench';
 			} else {
@@ -82,7 +85,9 @@ class InstallCommand extends Command {
 			'Settings',
 			'Menus',
 			'MenuItems',
-			'Pages',
+			'ContentLayoutTemplates',
+			'ContentPages',
+			'ContentAreas',
 		);
 		foreach ($seedTables as $seedTable) {
 			$this->output->writeln('<info>Seeding DB table:</info> '.$seedTable);
@@ -100,7 +105,10 @@ class InstallCommand extends Command {
 			'regulus/solid-site',
 			'aquanode/formation',
 		);
-		foreach ($configPackages as $configPackage) {
+		foreach ($configPackages as $key => $configPackage) {
+			if ($key)
+				$this->output->writeln('');
+
 			$this->output->writeln('<info>Publishing configuration:</info> '.$configPackage);
 			$this->call('config:publish', array(
 				'package' => $configPackage,

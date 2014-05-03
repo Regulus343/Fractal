@@ -30,21 +30,10 @@ View::composer(Config::get('fractal::viewsLocation').'core.home', function($view
 	$view->with('hideTitle', true);
 });
 
-View::composer(Config::get('fractal::viewsLocation').'menus.list', function($view)
-{
-	$menus = Menu::where('id', '>', 0);
-	if (!Site::developer())
-		$menus->where('cms', false);
-
-	$menus = $menus->orderBy('cms')->orderBy('name')->get();
-
-	$view->with('menus', $menus);
-});
-
 View::composer(Config::get('fractal::viewsLocation').'menus.form', function($view)
 {
 	$typeOptions = Form::simpleOptions(array('URI', 'Content Page'));
-	$pageOptions = Form::prepOptions(Page::select('id', 'title')->orderBy('title')->get(), array('id', 'title'));
+	$pageOptions = Form::prepOptions(ContentPage::select('id', 'title')->orderBy('title')->get(), array('id', 'title'));
 
 	$view
 		->with('typeOptions', $typeOptions)

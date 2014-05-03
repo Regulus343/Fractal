@@ -2,20 +2,11 @@
 
 @section(Config::get('fractal::section'))
 
-	{{-- Search & Pagination --}}
-	@include(Config::get('fractal::viewsLocation').'partials.search_pagination')
-
 	{{-- Content Table --}}
-	<div class="row">
-		<div class="col-md-12">
-			{{ HTML::table(Config::get('fractal::tables.menus'), $menus) }}
-		</div>
-	</div>
+	@include(Fractal::view('partials.content_table', true))
 
-	{{-- Bottom Pagination --}}
-	@include(Config::get('fractal::viewsLocation').'partials.pagination')
-
-	<a class="btn btn-primary" href="{{ Fractal::url('menus/create') }}">
+	{{-- Buttons --}}
+	<a href="{{ Fractal::url('menus/create') }}" class="btn btn-primary">
 		<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Lang::get('fractal::labels.createMenu') }}
 	</a>
 

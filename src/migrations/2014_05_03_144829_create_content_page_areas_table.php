@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMenusTable extends Migration {
+class CreateContentPageAreasTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,12 +12,13 @@ class CreateMenusTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('menus', function(Blueprint $table)
+		Schema::create('content_page_areas', function(Blueprint $table)
 		{
 			$table->increments('id');
 
-			$table->string('name');
-			$table->boolean('cms')->default(0);
+			$table->integer('page_id');
+			$table->integer('area_id');
+			$table->string('layout_tag', 64);
 
 			$table->timestamps();
 		});
@@ -30,7 +31,7 @@ class CreateMenusTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('menus');
+		Schema::drop('content_page_areas');
 	}
 
 }

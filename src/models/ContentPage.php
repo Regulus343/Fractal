@@ -14,6 +14,20 @@ class ContentPage extends Eloquent {
 	protected $table = 'content_pages';
 
 	/**
+	 * Get the validation rules used by the model.
+	 *
+	 * @param  boolean  $id
+	 * @return string
+	 */
+	public static function validationRules($id = false)
+	{
+		return array(
+			'title'   => array('required'),
+			'slug'    => array('required'),
+		);
+	}
+
+	/**
 	 * The creator of the page.
 	 *
 	 * @return User
@@ -21,6 +35,57 @@ class ContentPage extends Eloquent {
 	public function creator()
 	{
 		return $this->belongsTo(Config::get('auth.model'), 'user_id');
+	}
+
+	/**
+	 * The layout template that the page belongs to.
+	 *
+	 * @return Collection
+	 */
+	public function layoutTemplate()
+	{
+		return $this->belongsTo('Regulus\Fractal\ContentLayoutTemplate', 'layout_template_id');
+	}
+
+	/**
+	 * Get the layout for the page.
+	 *
+	 * @return Collection
+	 */
+	public function getLayout()
+	{
+		if ($this->layoutTemplate)
+			return $this->layoutTemplate->layout;
+
+		return $this->layout;
+	}
+
+	/**
+	 * Get the rendered content for the page.
+	 *
+	 * @return Collection
+	 */
+	public function getRenderedContent()
+	{
+		$content = $this->getLayout();
+
+		foreach ($this->contentAreas as $contentArea) {
+			$content = $contentArea->renderContentToLayout($content);
+		}
+
+		return $content;
+	}
+
+	/**
+	 * The content areas that the page belongs to.
+	 *
+	 * @return Collection
+	 */
+	public function contentAreas()
+	{
+		return $this
+			->belongsToMany('Regulus\Fractal\ContentArea', 'content_page_areas', 'page_id', 'area_id')
+			->withPivot('layout_tag');
 	}
 
 	/**
@@ -54,21 +119,6 @@ class ContentPage extends Eloquent {
 	{
 		if (!$dateFormat) $dateFormat = Config::get('fractal::dateTimeFormat');
 		return $this->updated_at != "0000-00-00" ? date($dateFormat, strtotime($this->updated_at)) : date($dateFormat, strtotime($this->created_at));
-	}
-
-	/**
-	 * Get the validation rules.
-	 *
-	 * @param  boolean  $update
-	 * @return string
-	 */
-	public static function validationRules($update = false)
-	{
-		return array(
-			'title'   => array('required'),
-			'slug'    => array('required'),
-			'content' => array('required'),
-		);
 	}
 
 }

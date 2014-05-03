@@ -3,6 +3,7 @@
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
 
 class Menu extends Eloquent {
@@ -19,17 +20,31 @@ class Menu extends Eloquent {
 	 *
 	 * @var    string
 	 */
-	public static $form = array(
-		'name' => array(
-			'type'      => 'text',
-			'rules'     => array('required'),
-		),
-		'cms' => array(
-			'type'      => 'checkbox',
-			'label'     => 'CMS',
-			'authRoles' => 'admin',
-		),
-	);
+	public static function fields()
+	{
+		return array(
+			'name' => true,
+			'cms'  => 'checkbox',
+		);
+	}
+
+	/**
+	 * Get the validation rules used by the model.
+	 *
+	 * @param  boolean  $id
+	 * @return string
+	 */
+	public static function validationRules($id = false)
+	{
+		$rules = array(
+			'name' => array('required', 'unique:menus'),
+		);
+
+		if ($id)
+			$rules['name'][1] .= ",name,".$id;
+
+		return $rules;
+	}
 
 	/**
 	 * The menu items that belong to the menu.

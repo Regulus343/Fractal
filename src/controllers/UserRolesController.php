@@ -50,13 +50,13 @@ class UserRolesController extends BaseController {
 
 		Fractal::setContentForPagination($roles);
 
-		$data = Fractal::setPaginationMessage();
-		$messages['success'] = $data['result']['message'];
+		$data     = Fractal::setPaginationMessage();
+		$messages = Fractal::getPaginationMessageArray();
 
-		$defaults = array(
-			'search' => $data['terms']
-		);
-		Form::setDefaults($defaults);
+		Fractal::setSearchFormDefaults();
+
+		if (!count($roles))
+			$roles = Role::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		return View::make(Fractal::view('list'))
 			->with('content', $roles)
@@ -83,7 +83,7 @@ class UserRolesController extends BaseController {
 		if (count($roles)) {
 			$data = Fractal::setPaginationMessage();
 		} else {
-			$data['content'] = User::orderBy('id')->paginate($data['itemsPerPage']);
+			$data['content'] = User::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 			if ($data['terms'] == "") $data['result']['message'] = Lang::get('fractal::messages.searchNoTerms');
 		}
 

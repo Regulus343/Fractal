@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\URL;
 
-use Aquanode\Elemental\Elemental as HTML;
 use Aquanode\Formation\Formation as Form;
 use Regulus\ActivityLog\Activity;
 use Regulus\SolidSite\SolidSite as Site;
@@ -81,7 +80,7 @@ class ActivityController extends BaseController {
 		if (count($activities)) {
 			$data = Fractal::setPaginationMessage();
 		} else {
-			$data['content'] = Activity::orderBy('id')->paginate($data['itemsPerPage']);
+			$data['content'] = Activity::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 			if ($data['terms'] == "") $result['message'] = Lang::get('fractal::messages.searchNoTerms');
 		}
 

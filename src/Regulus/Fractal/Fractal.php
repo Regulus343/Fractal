@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap.
 
 		created by Cody Jassman
-		version 0.26
-		last updated on January 6, 2014
+		version 0.28
+		last updated on May 3, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -19,6 +19,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\URL;
 
 use Aquanode\Elemental\Elemental as HTML;
+use Aquanode\Formation\Formation as Form;
 use Regulus\SolidSite\SolidSite as Site;
 use Regulus\TetraText\TetraText as Format;
 
@@ -89,24 +90,24 @@ class Fractal {
 		$controllers  = Config::get('fractal::controllers');
 		$uriCompleted = false;
 		if (isset($controllers['standard'])) {
-			foreach ($controllers['standard'] as $controllerURI => $controllerListed) {
+			foreach ($controllers['standard'] as $controllerUri => $controllerListed) {
 				if (!$uriCompleted) {
 					$controllerArray = explode('\\', $controllerListed);
 					$controllerName  = end($controllerArray);
 					if ($controllerName == $controller) {
-						$uri = $controllerURI.'/'.$uri;
+						$uri = $controllerUri.'/'.$uri;
 						$uriCompleted = true;
 					}
 				}
 			}
 		}
 		if (isset($controllers['resource'])) {
-			foreach ($controllers['resource'] as $controllerURI => $controllerListed) {
+			foreach ($controllers['resource'] as $controllerUri => $controllerListed) {
 				if (!$uriCompleted) {
 					$controllerArray = explode('\\', $controllerListed);
 					$controllerName  = end($controllerArray);
 					if ($controllerName == $controller) {
-						$uri = $controllerURI.'/'.$uri;
+						$uri = $controllerUri.'/'.$uri;
 						$uriCompleted = true;
 					}
 				}
@@ -302,12 +303,19 @@ class Fractal {
 		static::$pagination['content'] = $content;
 	}
 
+	/**
+	 * Set the pagination message and return the pagination data.
+	 *
+	 * @return array
+	 */
 	public static function setPaginationMessage()
 	{
-		$item = Lang::get('fractal::labels.'.strtolower(Str::singular(static::$pagination['contentType'])));
+		$contentType = static::getContentTypeCamelCase();
+		$item        = Lang::get('fractal::labels.'.Str::singular($contentType));
+
+		static::$pagination['result']['resultType'] = static::$pagination['content']->getTotal() ? "Success" : "Error";
 
 		if (static::$pagination['changingPage'] || static::$pagination['terms'] == "") {
-			static::$pagination['result']['resultType'] = "Success";
 			static::$pagination['result']['message'] = Lang::get('fractal::messages.displayingItemsOfTotal', array(
 				'start'  => static::$pagination['content']->getFrom(),
 				'end'    => static::$pagination['content']->getTo(),
@@ -315,7 +323,6 @@ class Fractal {
 				'items'  => Format::pluralize(strtolower($item), static::$pagination['content']->getTotal()),
 			));
 		} else {
-			static::$pagination['result']['resultType'] = "Success";
 			static::$pagination['result']['message'] = Lang::get('fractal::messages.searchResults', array(
 				'terms' => static::$pagination['terms'],
 				'total' => static::$pagination['content']->count(),
@@ -324,6 +331,36 @@ class Fractal {
 		}
 
 		return static::$pagination;
+	}
+
+	/**
+	 * Get the pagination message array.
+	 *
+	 * @return array
+	 */
+	public static function getPaginationMessageArray()
+	{
+		if (!isset(static::$pagination['result']['message']))
+			static::setPaginationMessage();
+
+		return array(
+			strtolower(static::$pagination['result']['resultType']) => static::$pagination['result']['message']
+		);
+	}
+
+	/**
+	 * Set the search form default values and return them.
+	 *
+	 * @return array
+	 */
+	public static function setSearchFormDefaults()
+	{
+		$defaults = array(
+			'search' => static::$pagination['terms']
+		);
+		Form::setDefaults($defaults);
+
+		return $defaults;
 	}
 
 	/**

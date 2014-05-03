@@ -12,12 +12,13 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\URL;
 
-use Aquanode\Elemental\Elemental as HTML;
 use Aquanode\Formation\Formation as Form;
 use Aquanode\Upstream\Upstream;
 use Regulus\ActivityLog\Activity;
 use Regulus\SolidSite\SolidSite as Site;
 use Regulus\TetraText\TetraText as Format;
+
+use Regulus\Identify\User as User;
 
 class FilesController extends BaseController {
 
@@ -49,8 +50,11 @@ class FilesController extends BaseController {
 
 		Fractal::setContentForPagination($files);
 
-		$data = Fractal::setPaginationMessage();
-		$messages['success'] = $data['result']['message'];
+		$data     = Fractal::setPaginationMessage();
+		$messages = Fractal::getPaginationMessageArray();
+
+		if (!count($files))
+			$files = ContentFile::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		$defaults = array(
 			'search' => $data['terms']
@@ -83,8 +87,7 @@ class FilesController extends BaseController {
 		if (count($files)) {
 			$data = Fractal::setPaginationMessage();
 		} else {
-			$data['content'] = User::orderBy('id')->paginate($data['itemsPerPage']);
-			if ($terms == "") $result['message'] = Lang::get('fractal::messages.searchNoTerms');
+			$data['content'] = ContentFile::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 		}
 
 		$data['result']['pages']     = Fractal::getLastPage();

@@ -52,13 +52,14 @@ return array(
 	*/
 	'controllerMethods' => array(
 		'get'  => array(
-			'users/ban/{id}'   => 'Regulus\Fractal\UsersController@ban',
-			'users/unban/{id}' => 'Regulus\Fractal\UsersController@unban',
+			'users/ban/{id}'    => 'Regulus\Fractal\UsersController@ban',
+			'users/unban/{id}'  => 'Regulus\Fractal\UsersController@unban',
 		),
 		'post' => array(
-			'pages/search'     => 'Regulus\Fractal\PagesController@search',
-			'files/search'     => 'Regulus\Fractal\FilesController@search',
-			'users/search'     => 'Regulus\Fractal\UsersController@search',
+			'menus/search'      => 'Regulus\Fractal\MenusController@search',
+			'pages/search'      => 'Regulus\Fractal\PagesController@search',
+			'files/search'      => 'Regulus\Fractal\FilesController@search',
+			'users/search'      => 'Regulus\Fractal\UsersController@search',
 			'user-roles/search' => 'Regulus\Fractal\UserRolesController@search',
 		),
 	),
@@ -297,6 +298,17 @@ return array(
 	|
 	*/
 	'loadBoxy' => true,
+
+	/*
+	|--------------------------------------------------------------------------
+	| Use Exterminator Package
+	|--------------------------------------------------------------------------
+	|
+	| If your website uses the "Regulus/Exterminator" package for debugging,
+	| set this to true to use it within Fractal.
+	|
+	*/
+	'exterminator' => true,
 
 	/*
 	|--------------------------------------------------------------------------

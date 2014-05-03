@@ -188,7 +188,7 @@ You should now be logged in to Fractal for the first time. You should now be abl
 
 **Enabling Developer Mode:**
 
-To set a `developer` session variable to `true`, go to `website.com/admin/developer`. This will identify you as the web developer for Fractal and you may be able to see more information and manage extra settings.
+To set a `developer` session variable to `true`, go to `website.com/admin/developer`. This will identify you as the web developer for Fractal and you may be able to see more information and manage extra settings. To turn off Developer Mode, go to `website.com/admin/developer/off`.
 
 <a name="basic-usage"></a>
 ## Basic Usage

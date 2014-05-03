@@ -42,17 +42,24 @@ class FractalServiceProvider extends ServiceProvider {
 		$this->package('aquanode/elemental', null, $pathPrefix.'aquanode/elemental/src');
 		$this->package('aquanode/upstream', null, $pathPrefix.'aquanode/upstream/src');
 
+		if (Config::get('fractal::exterminator'))
+			$this->package('aquanode/exterminator', null, $pathPrefix.'regulus/exterminator/src');
+
 		//add view namespace for Elemental
 		View::addNamespace('elemental', $pathPrefix.'aquanode/elemental/src/views');
 
 		//alias dependent classes
 		$loader = \Illuminate\Foundation\AliasLoader::getInstance();
 		$loader->alias('Fractal',   'Regulus\Fractal\Fractal');
+		$loader->alias('Auth',      'Regulus\Identify\Identify');
 		$loader->alias('Site',      'Regulus\SolidSite\SolidSite');
 		$loader->alias('Format',    'Regulus\TetraText\TetraText');
 		$loader->alias('Elemental', 'Aquanode\Elemental\Elemental');
 		$loader->alias('HTML',      'Aquanode\Elemental\Elemental');
 		$loader->alias('Form',      'Aquanode\Formation\Formation');
+
+		if (Config::get('fractal::exterminator'))
+			$loader->alias('Dbg', 'Regulus\Exterminator\Exterminator');
 
 		//alias models
 		$loader->alias('Menu',      'Regulus\Fractal\Menu');

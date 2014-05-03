@@ -22,7 +22,7 @@ class MenuItem extends Eloquent {
 	 *
 	 * @var    string
 	 */
-	public static $form = array(
+	/*public static $form = array(
 		'menu_id' => array(
 			'type'       => 'select',
 			'options'    => 'menuOptions',
@@ -74,7 +74,29 @@ class MenuItem extends Eloquent {
 		'active' => array(
 			'type'       => 'checkbox',
 		),
-	);
+	);*/
+
+	/**
+	 * The form setup for the model.
+	 *
+	 * @var    string
+	 */
+	public static function fields()
+	{
+		return array(
+			'parent_id'       => true,
+			'page_id'         => true,
+			'uri'             => true,
+			'label'           => true,
+			'icon'            => true,
+			'class'           => true,
+			'additional_info' => true,
+			'display_order'   => true,
+			'auth_status'     => array(0, 1, 2),
+			'auth_roles'      => true,
+			'active'          => 'checkbox',
+		);
+	}
 
 	/**
 	 * The menu that the menu items belong to.

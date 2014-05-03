@@ -12,6 +12,7 @@ class MenuItemsTableSeeder extends Seeder {
 		DB::table('menu_items')->truncate();
 
 		$timestamp = date('Y-m-d H:i:s');
+
 		$menuItems = array(
 			//CMS Main Menu Items
 			array(
@@ -163,6 +164,7 @@ class MenuItemsTableSeeder extends Seeder {
 			//Main Menu Items
 			array(
 				'menu_id'       => 3,
+				'type'          => 'Content Page',
 				'page_id'       => 1,
 				'label'         => 'Home',
 				'icon'          => 'home',
@@ -173,6 +175,7 @@ class MenuItemsTableSeeder extends Seeder {
 			),
 			array(
 				'menu_id'       => 3,
+				'type'          => 'Content Page',
 				'page_id'       => 2,
 				'label'         => 'About',
 				'icon'          => 'list',
@@ -183,6 +186,7 @@ class MenuItemsTableSeeder extends Seeder {
 			),
 			array(
 				'menu_id'       => 3,
+				'type'          => 'Content Page',
 				'page_id'       => 3,
 				'label'         => 'Contact',
 				'icon'          => 'envelope',
@@ -195,6 +199,7 @@ class MenuItemsTableSeeder extends Seeder {
 			//Footer Menu Items
 			array(
 				'menu_id'       => 4,
+				'type'          => 'Content Page',
 				'page_id'       => 1,
 				'label'         => 'Home',
 				'display_order' => 1,
@@ -204,6 +209,7 @@ class MenuItemsTableSeeder extends Seeder {
 			),
 			array(
 				'menu_id'       => 4,
+				'type'          => 'Content Page',
 				'page_id'       => 2,
 				'label'         => 'About',
 				'display_order' => 2,
@@ -213,6 +219,7 @@ class MenuItemsTableSeeder extends Seeder {
 			),
 			array(
 				'menu_id'       => 4,
+				'type'          => 'Content Page',
 				'page_id'       => 3,
 				'label'         => 'Contact',
 				'display_order' => 3,

@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\URL;
 
-use Aquanode\Elemental\Elemental as HTML;
 use Aquanode\Formation\Formation as Form;
 use Regulus\ActivityLog\Activity;
 use Regulus\SolidSite\SolidSite as Site;
@@ -54,8 +53,11 @@ class UsersController extends BaseController {
 
 		Fractal::setContentForPagination($users);
 
-		$data = Fractal::setPaginationMessage();
-		$messages['success'] = $data['result']['message'];
+		$data     = Fractal::setPaginationMessage();
+		$messages = Fractal::getPaginationMessageArray();
+
+		if (!count($users))
+			$users = User::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		$defaults = array(
 			'search' => $data['terms']
@@ -91,7 +93,7 @@ class UsersController extends BaseController {
 		if (count($users)) {
 			$data = Fractal::setPaginationMessage();
 		} else {
-			$data['content'] = User::orderBy('id')->paginate($data['itemsPerPage']);
+			$data['content'] = User::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 			if ($data['terms'] == "") $data['result']['message'] = Lang::get('fractal::messages.searchNoTerms');
 		}
 

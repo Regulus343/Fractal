@@ -16,6 +16,27 @@ class ContentFile extends Eloquent {
 	protected $table = 'content_files';
 
 	/**
+	 * Get the validation rules used by the model.
+	 *
+	 * @param  boolean  $id
+	 * @return string
+	 */
+	public static function validationRules($id = false)
+	{
+		$rules = array(
+			'name' => array('required'),
+		);
+
+		if ($id) {
+			$rules['name'][1] = 'unique:content_files,name,'.$id;
+		} else {
+			$rules['file'] = array('required');
+		}
+
+		return $rules;
+	}
+
+	/**
 	 * The creator of the page.
 	 *
 	 * @return User
@@ -126,27 +147,6 @@ class ContentFile extends Eloquent {
 	{
 		if (!$dateFormat) $dateFormat = Config::get('fractal::dateTimeFormat');
 		return $this->updated_at != "0000-00-00" ? date($dateFormat, strtotime($this->updated_at)) : date($dateFormat, strtotime($this->created_at));
-	}
-
-	/**
-	 * Get the validation rules.
-	 *
-	 * @param  boolean  $update
-	 * @return string
-	 */
-	public static function validationRules($update = false)
-	{
-		$rules = array(
-			'name' => array('required'),
-		);
-
-		if ($update) {
-			$rules['name'][1] = 'unique:content_files,name,'.$update;
-		} else {
-			$rules['file'] = array('required');
-		}
-
-		return $rules;
 	}
 
 }

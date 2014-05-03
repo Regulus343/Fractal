@@ -12,6 +12,7 @@ class MenusTableSeeder extends Seeder {
 		DB::table('menus')->truncate();
 
 		$timestamp = date('Y-m-d H:i:s');
+
 		$menus = array(
 			array(
 				'name'       => 'CMS Main',

@@ -10,6 +10,7 @@ return array(
 	'activate'    => 'Activate',
 	'delete'      => 'Delete',
 	'undelete'    => 'Undelete',
+	'remove'      => 'Remove',
 
 	'createMenu'  => 'Create Menu',
 	'editMenu'    => 'Edit Menu',
@@ -36,18 +37,20 @@ return array(
 	'deleteRole'  => 'Delete Role',
 
 	'menu'        => 'Menu',
+	'menuItem'    => 'Menu Item',
 	'page'        => 'Page',
 	'file'        => 'File',
 	'filename'    => 'Filename',
 	'image'       => 'Image',
 	'user'        => 'User',
-	'role'        => 'Role',
+	'userRole'    => 'User Role',
 	'activity'    => 'Activity',
 
 	'general'     => 'General',
 	'pages'       => 'Pages',
 	'files'       => 'Files',
 	'users'       => 'Users',
+	'userRoles'   => 'User Roles',
 
 	'name'        => 'Name',
 	'type'        => 'Type',
@@ -83,5 +86,7 @@ return array(
 	'dimensions'  => 'Dimensions',
 
 	'settings'    => 'Settings',
+
+	'addMenuItem' => 'Add Menu Item',
 
 );

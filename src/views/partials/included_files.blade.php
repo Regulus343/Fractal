@@ -33,6 +33,9 @@
 	<script type="text/javascript" src="{{ Site::asset('plugins/ckeditor/ckeditor.js', false, 'regulus/fractal') }}"></script>
 @endif
 
+{{-- Handlebars --}}
+<script type="text/javascript" src="{{ Site::js('handlebars.min', 'regulus/fractal') }}"></script>
+
 {{-- Fractal CSS --}}
 <link type="text/css" rel="stylesheet" href="{{ Site::css('fractal', 'regulus/fractal') }}" />
 

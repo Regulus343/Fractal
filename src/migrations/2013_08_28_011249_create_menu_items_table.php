@@ -15,8 +15,10 @@ class CreateMenuItemsTable extends Migration {
 		Schema::create('menu_items', function(Blueprint $table)
 		{
 			$table->increments('id');
+
 			$table->integer('menu_id');
 			$table->integer('parent_id');
+			$table->string('type', 32)->default('URI');
 			$table->integer('page_id');
 			$table->string('uri', 120);
 			$table->string('label');
@@ -27,6 +29,7 @@ class CreateMenuItemsTable extends Migration {
 			$table->integer('auth_status');
 			$table->string('auth_roles');
 			$table->boolean('active');
+
 			$table->timestamps();
 		});
 	}

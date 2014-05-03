@@ -15,15 +15,17 @@ class CreateSettingsTable extends Migration {
 		Schema::create('settings', function(Blueprint $table)
 		{
 			$table->increments('id');
+
 			$table->string('name', 120);
 			$table->string('label', 120);
 			$table->string('value');
 			$table->string('type', 24);
-			$table->string('category', 120);
-			$table->text('options');
-			$table->text('rules');
-			$table->boolean('developer');
-			$table->integer('display_order');
+			$table->string('category', 120)->nullable();
+			$table->text('options')->nullable();
+			$table->text('rules')->nullable();
+			$table->boolean('developer')->default(0);
+			$table->integer('display_order')->default(50);
+
 			$table->timestamps();
 		});
 	}
