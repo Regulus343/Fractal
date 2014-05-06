@@ -39,6 +39,8 @@ class InstallCommand extends Command {
 	 */
 	public function fire()
 	{
+		$workbench = Config::get('fractal::workbench');
+
 		$divider = '----------------------';
 
 		$this->output->writeln('');
@@ -46,8 +48,6 @@ class InstallCommand extends Command {
 		$this->comment('Installing Fractal...');
 		$this->info($divider);
 		$this->output->writeln('');
-
-		$workbench = Config::get('fractal::workbench');
 
 		//run database migrations
 		$this->comment('Migrating DB tables...');
@@ -124,11 +124,18 @@ class InstallCommand extends Command {
 		$this->comment('Publishing assets...');
 		$this->info($divider);
 
-		if ($workbench) {
+		if ($workbench)
 			$arguments = array('--bench' => 'regulus/fractal');
-		} else {
+		else
 			$arguments = array('package' => 'regulus/fractal');
-		}
+
+		$this->call('asset:publish', $arguments);
+
+		$arguments['package'] = "aquanode/formation";
+
+		if ($workbench)
+			$arguments['--bench'] = "regulus/fractal/vendor/aquanode/formation";
+
 		$this->call('asset:publish', $arguments);
 
 		$this->output->writeln('');

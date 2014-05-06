@@ -161,6 +161,10 @@ input#search {
 	border-radius: 8px 8px 8px 0; -webkit-border-radius: 8px 8px 8px 0; -moz-border-radius: 8px 8px 8px 0;
 }
 
+textarea {
+	min-height: 120px;
+}
+
 div.vertical-divider { margin-top: 12px; margin-bottom: 12px; border-top: 1px solid #aaa; border-bottom: 1px solid #aaa; }
 div.vertical-divider h3 { margin-top: 5px; margin-bottom: 5px; }
 

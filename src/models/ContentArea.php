@@ -57,6 +57,23 @@ class ContentArea extends Eloquent {
 	{
 		$content = $this->content;
 
+		//add file URLs to content
+		preg_match_all('/file:([0-9]*)/', $content, $fileIds);
+		if (isset($fileIds[0]) && !empty($fileIds[0])) {
+			$files = ContentFile::whereIn('id', $fileIds[1])->get();
+
+			for ($f = 0; $f < count($fileIds[0]); $f++) {
+				$fileUrl = "";
+				foreach ($files as $file) {
+					if ((int) $file->id == (int) $fileIds[1][$f])
+						$fileUrl = $file->getUrl();
+				}
+
+				$content = str_replace($fileIds[0][$f], $fileUrl, $content);
+			}
+		}
+
+		//render to Markdown
 		if ($this->content_type == "Markdown")
 			$content = "<div>Testing Markdown</div>";
 

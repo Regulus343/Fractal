@@ -135,10 +135,6 @@ class MenusController extends BaseController {
 		Form::setDefaults($menu, array('items' => true));
 		Form::setErrors();
 
-		//\Regulus\Exterminator\Exterminator::a(Form::getDefaultsObject('items'));
-
-		\Regulus\Exterminator\Exterminator::a(Form::getDefaultsObject());
-
 		return View::make(Fractal::view('form'))->with('update', true)->with('menu', $menu);
 	}
 

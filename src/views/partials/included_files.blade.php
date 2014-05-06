@@ -36,6 +36,9 @@
 {{-- Handlebars --}}
 <script type="text/javascript" src="{{ Site::js('handlebars.min', 'regulus/fractal') }}"></script>
 
+{{-- Formation JS --}}
+<script type="text/javascript" src="{{ Site::js('formation', 'aquanode/formation') }}"></script>
+
 {{-- Fractal CSS --}}
 <link type="text/css" rel="stylesheet" href="{{ Site::css('fractal', 'regulus/fractal') }}" />
 

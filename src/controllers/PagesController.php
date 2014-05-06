@@ -102,7 +102,7 @@ class PagesController extends BaseController {
 		$defaults = array('active' => true);
 		Form::setDefaults($defaults);
 
-		return View::make(Fractal::view('form'));
+		return View::make(Fractal::view('form'))->with('contentAreas', array());
 	}
 
 	public function store()
@@ -140,7 +140,8 @@ class PagesController extends BaseController {
 		}
 
 		return View::make(Fractal::view('form'))
-			->with('messages', $messages);
+			->with('messages', $messages)
+			->with('contentAreas', array());
 	}
 
 	public function edit($slug)
@@ -154,10 +155,24 @@ class PagesController extends BaseController {
 		Site::set('titleHeading', 'Update Page: <strong>'.Format::entities($page->title).'</strong>');
 		Site::set('wysiwyg', true);
 
-		Form::setDefaults($page);
+		Form::setDefaults($page, array('content_areas' => true));
 		Form::setErrors();
 
-		return View::make(Fractal::view('form'))->with('update', true);
+		$contentAreas = array();
+		if (Input::old('contentAreas')) {
+			$contentAreasPosted = Input::old('contentAreas');
+			foreach ($contentAreasPosted as $n => $contentArea) {
+				$contentAreas[($n + 1)] = $contentArea;
+			}
+		} else {
+			foreach ($page->contentAreas as $n => $contentArea) {
+				$contentAreas[($n + 1)] = $contentArea->toArray();
+			}
+		}
+
+		return View::make(Fractal::view('form'))
+			->with('update', true)
+			->with('contentAreas', $contentAreas);
 	}
 
 	public function update($slug)
