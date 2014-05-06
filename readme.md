@@ -30,17 +30,15 @@ Some of the things you can do with Fractal:
 
 ## Table of Contents
 
-- [Composer Package Installation](#composer-package-installation)
-- [Installation: Command Line](#command-line-installation)
-- [Installation: Manual](#manual-installation)
+- [Installation](#installation)
 - [Installation: Authentication](#auth-installation)
 - [First Log In](#first-log-in)
 - [Basic Usage](#basic-usage)
 
-<a name="composer-package-installation"></a>
-## Composer Package Installation
+<a name="installation"></a>
+## Installation
 
-**Basic installation, service provider registration, and aliasing:**
+**Composer package installation:**
 
 To install Fractal, make sure "regulus/fractal" has been added to Laravel 4's `composer.json` file.
 
@@ -49,9 +47,6 @@ To install Fractal, make sure "regulus/fractal" has been added to Laravel 4's `c
 	},
 
 Then run `php composer.phar update` from the command line. Composer will install the Fractal package.
-
-<a name="installation"></a>
-## Installation
 
 **Register service provider and set up alias:**
 
