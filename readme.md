@@ -38,7 +38,7 @@ Some of the things you can do with Fractal:
 <a name="installation"></a>
 ## Installation
 
-**Composer package installation:**
+**Install composer package:**
 
 To install Fractal, make sure "regulus/fractal" has been added to Laravel 4's `composer.json` file.
 
