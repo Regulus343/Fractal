@@ -50,8 +50,8 @@ To install Fractal, make sure "regulus/fractal" has been added to Laravel 4's `c
 
 Then run `php composer.phar update` from the command line. Composer will install the Fractal package.
 
-<a name="command-line-installation"></a>
-## Command Line Installation
+<a name="installation"></a>
+## Installation
 
 **Register service provider and set up alias:**
 
@@ -63,70 +63,13 @@ And add this to the `aliases` array:
 
 	'CMS' => 'Regulus\Fractal\Fractal',
 
+You may use 'Fractal', or another alias, but 'CMS' is recommended for the sake of simplicity.
+
 **Run the install command:**
 
 	php artisan fractal:install
 
 Fractal will now be installed. This includes all necessary DB migrations, DB seeding, config publishing, and asset publishing.
-
-You may now skip ahead to the [Composer Package Installation for Authentication](#auth-composer-package-installation) section.
-
-<a name="manual-installation"></a>
-## Manual Installation
-
-**Publishing config file:**
-
-If you wish to customize the configuration of Fractal, you will need to publish the config file. Run this from the command line:
-
-	php artisan config:publish regulus/fractal
-
-You will now be able to edit the config files in `app/config/packages/regulus/fractal`. Since Fractal makes use of a lot of SolidSite features, you may wish to publish SolidSite's config file too:
-
-	php artisan config:publish regulus/solid-site
-
-**Run the migrations and seed the database:**
-
-To run the migrations, run the following from the command line:
-
-	php artisan migrate --package=regulus/fractal
-
-	php artisan migrate --package=regulus/activity-log
-
-> **Note:** It is important that you run the migrations to create Fractal's necessary database tables before you register the service provider. If you get the order wrong, you can simply turn the `migrations` variable to `false` in `config.php` and run your migrations. If you do this, remember to turn `migrations` to `true` again after you're done.
-
-To seed the database tables, add the following to the `run()` method in `database/seeds/DatabaseSeeder.php`:
-
-	$this->call('SettingsTableSeeder');
-	$this->command->info('Settings table seeded.');
-
-	$this->call('MenusTableSeeder');
-	$this->command->info('Menus table seeded.');
-
-	$this->call('MenuItemsTableSeeder');
-	$this->command->info('Menu Items table seeded.');
-
-	$this->call('PagesTableSeeder');
-	$this->command->info('Pages table seeded.');
-
-...And then running `php artisan db:seed` from the command line.
-
-**Publish assets:**
-
-To publish Fractal's assets (CSS, JS, and client-side plugins), run the following from the command line:
-
-	php artisan asset:publish regulus/fractal
-
-**Register service provider and set up alias:**
-
-Now, all you have to do is register the service provider, set up Fractal's alias in `app/config/app.php`, and publish the assets. Add this to the `providers` array:
-
-	'Regulus\Fractal\FractalServiceProvider',
-
-And add this to the `aliases` array:
-
-	'CMS' => 'Regulus\Fractal\Fractal',
-
-You may use 'Fractal', or another alias, but 'CMS' is recommended for the sake of simplicity.
 
 <a name="auth-installation"></a>
 ## Installation for Authentication
@@ -161,7 +104,7 @@ Next, change the `model` variable in `app/config/auth.php` to `Regulus\Identify\
 
 Identify will now be installed. This includes all necessary DB migrations, DB seeding, and config publishing.
 
-You should now have 4 users, 'Admin', 'TestUser', 'TestUser2', and 'TestUser3'. All of the passwords are 'password' and the usernames are case insensitive, so you may simply type 'admin' and 'password' to log in. The 3 initial roles are 'Administrator', 'Moderator', and 'Member'. 'Admin' has the 'Administrator' role, 'TestUser' has the 'Moderator' role, the final 2 users have the 'Member' role.
+You should now have 4 users, `Admin`, `TestUser`, `TestUser2`, and `TestUser3`. All of the passwords are `password` and the usernames are case insensitive, so you may simply type `admin` and `password` to log in. The 3 initial roles are `Administrator`, `Moderator`, and `Member`. `Admin` has the `Administrator` role, `TestUser` has the `Moderator` role, the final 2 users have the `Member` role.
 
 **Register service provider and set up alias:**
 
