@@ -23,7 +23,9 @@ class CreateContentPagesTable extends Migration {
 			$table->text('layout');
 
 			$table->integer('user_id');
+
 			$table->boolean('active');
+			$table->timestamp('activated_at');
 
 			$table->timestamps();
 			$table->timestamp('deleted_at');

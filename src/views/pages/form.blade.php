@@ -26,6 +26,9 @@
 					$('#layout-area').removeClass('hidden');
 			});
 
+			if ($('#active').prop('checked') && $('#activated-at').val() == "")
+				$('#activated-at').val(moment().format('MM/DD/YYYY hh:mm A'));
+
 			//create load template callback function and load templates
 			var contentAreaTemplateCallback = function(item, data) {
 				setupContentTypeFields();
@@ -45,7 +48,7 @@
 				});
 			};
 
-			Formation.loadTemplates('#content-areas', $.parseJSON('{{ json_encode(Form::values('content_areas')) }}'), contentAreaTemplateCallback);
+			Formation.loadTemplates('#content-areas', $.parseJSON('{{ json_encode(Form::getValuesObject('content_areas')) }}'), contentAreaTemplateCallback);
 		});
 
 		function setupContentTypeFields() {
@@ -58,6 +61,11 @@
 					$(this).parents('fieldset').find('.markdown-content-area').removeClass('hidden');
 				}
 			});
+		}
+
+		function activeCheckedCallback(checked) {
+			if (checked)
+				$('#activated-at').val(moment().format('MM/DD/YYYY hh:mm A'));
 		}
 	</script>
 
@@ -96,9 +104,25 @@
 			<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Lang::get('fractal::labels.addContentArea') }}
 		</a>
 
-		<div class="row">
-			<div class="col-md-12">
-				{{ Form::field('active', 'checkbox') }}
+		<div class="row clear">
+			<div class="col-md-1">
+				{{ Form::field('active', 'checkbox', array(
+					'data-checked-show'      => '.activated-at-area',
+					'data-show-hide-type'    => 'visibility',
+					'data-callback-function' => 'activeCheckedCallback'
+				)) }}
+			</div>
+			<div class="col-md-3 activated-at-area{{ HTML::invisibleArea(!Form::value('active', 'checkbox')) }}">
+				<div class="form-group">
+					<div class="input-group date date-time-picker">
+						{{ Form::text('activated_at', null, array(
+							'class'       => 'date',
+							'placeholder' => 'Date/Time Activated',
+						)) }}
+
+						<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+					</div>
+				</div>
 			</div>
 		</div>
 

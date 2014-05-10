@@ -175,3 +175,10 @@ div.content-side {
 	color: #fff;
 	border-radius: 8px; -webkit-border-radius: 8px; -moz-border-radius: 8px;
 }
+
+.error-tooltip + .tooltip .tooltip-inner {
+	background-color: #700;
+}
+.error-tooltip + .tooltip .tooltip-arrow {
+	border-top-color: #700;
+}

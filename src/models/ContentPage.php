@@ -4,6 +4,8 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 
 use Illuminate\Support\Facades\Config;
 
+use Aquanode\Formation\Formation as Form;
+
 class ContentPage extends Eloquent {
 
 	/**
@@ -16,15 +18,49 @@ class ContentPage extends Eloquent {
 	/**
 	 * Get the validation rules used by the model.
 	 *
+	 * @return string
+	 */
+	public static function validationRules()
+	{
+		$rules = array(
+			'title' => array('required'),
+			'slug'  => array('required'),
+		);
+
+		if (Form::post()) {
+			foreach (Form::getValuesObject('content_areas') as $number => $values) {
+				if (Form::getValueFromObject('title', $values) != "" || Form::getValueFromObject('layout_tag', $values) != ""
+				|| Form::getValueFromObject('content_html', $values) != "" || Form::getValueFromObject('content_markdown', $values) != "")
+				{
+					$contentField = Form::getValueFromObject('content_type', $values) == "HTML" ? "content_html" : "content_markdown";
+
+					$rules = array_merge($rules, array(
+						'content_areas.'.$number.'.title'          => array('required'),
+						'content_areas.'.$number.'.layout_tag'     => array('required'),
+						'content_areas.'.$number.'.content_type'   => array('required'),
+						'content_areas.'.$number.'.'.$contentField => array('required'),
+					));
+				}
+			}
+		}
+
+		return $rules;
+	}
+
+	/**
+	 * Get the validation rules used by the model.
+	 *
 	 * @param  boolean  $id
 	 * @return string
 	 */
-	public static function validationRules($id = false)
+	public function validationRulesForItem($id = false)
 	{
-		return array(
-			'title'   => array('required'),
-			'slug'    => array('required'),
+		$rules = array(
+			'title' => array('required'),
+			'slug'  => array('required'),
 		);
+
+		return $rules;
 	}
 
 	/**
@@ -107,6 +143,16 @@ class ContentPage extends Eloquent {
 	public static function findBySlug($slug)
 	{
 		return static::where('slug', $slug)->first();
+	}
+
+	/**
+	 * Gets the active pages.
+	 *
+	 * @return Collection
+	 */
+	public static function getActive()
+	{
+		return static::where('active', true)->where('activated_at', '>=', date('Y-m-d H:i:s'))->orderBy('id')->get();
 	}
 
 	/**

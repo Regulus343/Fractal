@@ -102,7 +102,7 @@ class PagesController extends BaseController {
 		$defaults = array('active' => true);
 		Form::setDefaults($defaults);
 
-		return View::make(Fractal::view('form'))->with('contentAreas', array());
+		return View::make(Fractal::view('form'));
 	}
 
 	public function store()
@@ -140,8 +140,7 @@ class PagesController extends BaseController {
 		}
 
 		return View::make(Fractal::view('form'))
-			->with('messages', $messages)
-			->with('contentAreas', array());
+			->with('messages', $messages);
 	}
 
 	public function edit($slug)
@@ -158,21 +157,8 @@ class PagesController extends BaseController {
 		Form::setDefaults($page, array('content_areas' => true));
 		Form::setErrors();
 
-		$contentAreas = array();
-		if (Input::old('contentAreas')) {
-			$contentAreasPosted = Input::old('contentAreas');
-			foreach ($contentAreasPosted as $n => $contentArea) {
-				$contentAreas[($n + 1)] = $contentArea;
-			}
-		} else {
-			foreach ($page->contentAreas as $n => $contentArea) {
-				$contentAreas[($n + 1)] = $contentArea->toArray();
-			}
-		}
-
 		return View::make(Fractal::view('form'))
-			->with('update', true)
-			->with('contentAreas', $contentAreas);
+			->with('update', true);
 	}
 
 	public function update($slug)
@@ -186,7 +172,9 @@ class PagesController extends BaseController {
 		Site::set('titleHeading', 'Update Page: <strong>'.Format::entities($page->title).'</strong>');
 		Site::set('wysiwyg', true);
 
-		Form::setValidationRules(ContentPage::validationRules());
+		Form::setDefaults($page, array('content_areas' => true));
+
+		Form::setValidationRules(ContentPage::validationRules($page));
 
 		$messages = array();
 		if (Form::validated()) {

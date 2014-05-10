@@ -180,6 +180,38 @@ $(document).ready(function(){
 		}
 	});
 
+	/* Set Up Date Time Pickers */
+	$('.date-time-picker').datetimepicker({
+		language:         'en',
+		pick12HourFormat: true,
+	});
+
+	/* Set Up Checkbox Show / Hide Actions */
+	$('input[type="checkbox"][data-checked-show]').click(function(){
+		var selector = $(this).attr('data-checked-show');
+		var type     = $(this).attr('data-show-hide-type') == "visibility" ? $(this).attr('data-show-hide-type') : "display";
+		var callback = $(this).attr('data-callback-function');
+		var checked  = $(this).prop('checked');
+
+		if (checked) {
+			if (type == "visibility")
+				$(selector).css('opacity', 0).removeClass('invisible').animate({'opacity': 1});
+			else
+				$(selector).hide().removeClass('hidden').fadeIn();
+		} else {
+			if (type == "visibility")
+				$(selector).animate({'opacity': 0});
+			else
+				$(selector).fadeOut();
+		}
+
+		if (callback !== null)
+			window[callback](checked);
+	});
+
+	/* Set Up Tooltips */
+	$('[data-toggle="tooltip"]').tooltip({html: true});
+
 });
 
 var messageTimer;
@@ -299,6 +331,10 @@ function setupContentTable() {
 		case "users":      setupUsersTable();     break;
 		case "user-roles": setupUserRolesTable(); break;
 	}
+}
+
+function formErrorCallback(fieldContainer) {
+	fieldContainer.find('[data-toggle="tooltip"]').tooltip({html: true});
 }
 
 /* Setup Pages */

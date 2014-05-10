@@ -1,18 +1,18 @@
 {{-- jQuery --}}
 @if (Config::get('fractal::loadJquery'))
 
-	<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 
 @endif
 
 {{-- jQuery UI --}}
 @if (Config::get('fractal::loadJqueryUi'))
 
-	<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
 
 @endif
 
-{{-- Bootstrap CSS & JS --}}
+{{-- Bootstrap CSS / JS --}}
 @if (Config::get('fractal::loadBootstrap'))
 
 	<link type="text/css" rel="stylesheet" href="{{ Site::css('bootstrap', 'regulus/fractal') }}" />
@@ -35,6 +35,15 @@
 
 {{-- Handlebars --}}
 <script type="text/javascript" src="{{ Site::js('handlebars.min', 'regulus/fractal') }}"></script>
+
+{{-- Moment --}}
+<script type="text/javascript" src="{{ Site::js('moment.min', 'regulus/fractal') }}"></script>
+
+{{-- Date Time Picker CSS --}}
+<link type="text/css" rel="stylesheet" href="{{ Site::css('bootstrap-datetimepicker.min', 'regulus/fractal') }}" />
+
+{{-- Date Time Picker JS --}}
+<script type="text/javascript" src="{{ Site::js('bootstrap-datetimepicker.min', 'regulus/fractal') }}"></script>
 
 {{-- Formation JS --}}
 <script type="text/javascript" src="{{ Site::js('formation', 'aquanode/formation') }}"></script>
@@ -78,6 +87,7 @@
 	$(document).ready(function(){
 
 		if (contentType !== undefined)
+
 			setupContentTable();
 
 		@if (Site::get('loadFunction') != null && Site::get('loadFunction') != "")
@@ -85,6 +95,12 @@
 			{{ Site::get('loadFunction') }};
 
 		@endif
+
+		/* Set Up Formation JS */
+		Formation.setErrorSettings($.parseJSON('{{ Form::getJsonErrorSettings() }}'));
+		Formation.setErrorCallback('formErrorCallback');
+		Formation.setErrors($.parseJSON('{{ Form::getJsonErrors() }}'));
+
 	});
 </script>
 <script type="text/javascript" src="{{ Site::js('select-helper', 'regulus/fractal') }}"></script>
