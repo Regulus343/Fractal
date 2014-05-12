@@ -115,7 +115,7 @@ class PagesController extends BaseController {
 		if (Form::validated()) {
 			$messages['success'] = Lang::get('fractal::messages.successCreated', array('item' => Format::a('page')));
 
-			$page = ContentPage::create();
+			$page = ContentPage::createNew();
 
 			Activity::log(array(
 				'contentID'   => $page->id,

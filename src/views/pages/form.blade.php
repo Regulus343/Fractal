@@ -48,7 +48,7 @@
 				});
 			};
 
-			Formation.loadTemplates('#content-areas', $.parseJSON('{{ json_encode(Form::getValuesObject('content_areas')) }}'), contentAreaTemplateCallback);
+			Formation.loadTemplates('#content-areas', $.parseJSON('{{ Form::getJsonValues('content_areas') }}'), contentAreaTemplateCallback);
 		});
 
 		function setupContentTypeFields() {
