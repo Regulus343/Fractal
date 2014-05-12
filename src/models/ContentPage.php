@@ -1,12 +1,11 @@
 <?php namespace Regulus\Fractal;
 
-use Illuminate\Database\Eloquent\Model as Eloquent;
-
 use Illuminate\Support\Facades\Config;
 
+use Aquanode\Formation\BaseModel;
 use Aquanode\Formation\Formation as Form;
 
-class ContentPage extends Eloquent {
+class ContentPage extends BaseModel {
 
 	/**
 	 * The database table used by the model.
@@ -16,11 +15,54 @@ class ContentPage extends Eloquent {
 	protected $table = 'content_pages';
 
 	/**
+	 * The fillable fields for the model.
+	 *
+	 * @var    array
+	 */
+	protected $fillable = array(
+		'slug',
+		'title',
+		'layout_template_id',
+		'layout',
+		'user_id',
+		'active',
+		'activated_at',
+	);
+
+	/**
+	 * The special typed fields for the model.
+	 *
+	 * @var    array
+	 */
+	protected static $types = array(
+		'slug'         => 'unique-slug',
+		'activated_at' => 'date-time',
+	);
+
+	/**
+	 * The default values for the model.
+	 *
+	 * @return array
+	 */
+	public static function defaults()
+	{
+		$defaults = array(
+			'active'       => true,
+			'activated_at' => date(Form::getDateTimeFormat()),
+		);
+
+		$defaults = array_merge($defaults, static::addPrefixToDefaults(ContentArea::defaults(), 'content_areas.1'));
+
+		return $defaults;
+	}
+
+	/**
 	 * Get the validation rules used by the model.
 	 *
+	 * @param  mixed    $id
 	 * @return string
 	 */
-	public static function validationRules()
+	public static function validationRules($id = null)
 	{
 		$rules = array(
 			'title' => array('required'),
@@ -43,22 +85,6 @@ class ContentPage extends Eloquent {
 				}
 			}
 		}
-
-		return $rules;
-	}
-
-	/**
-	 * Get the validation rules used by the model.
-	 *
-	 * @param  boolean  $id
-	 * @return string
-	 */
-	public function validationRulesForItem($id = false)
-	{
-		$rules = array(
-			'title' => array('required'),
-			'slug'  => array('required'),
-		);
 
 		return $rules;
 	}
@@ -156,6 +182,29 @@ class ContentPage extends Eloquent {
 	}
 
 	/**
+	 * Get the active status.
+	 *
+	 * @param  mixed    $dateFormat
+	 * @return string
+	 */
+	public function getActiveStatus($dateFormat = false)
+	{
+		if (!$dateFormat)
+			$dateFormat = Fractal::getDateTimeFormat();
+
+		if ($this->active && Fractal::dateTimePast($this->activated_at)) {
+			$status = "Yes";
+		} else {
+			$status = "No";
+
+			if ($this->active && Fractal::dateTimeSet($this->activated_at))
+				$status .= '<div><small><em>To be activated at '.date($dateFormat, strtotime($this->activated_at)).'</em></small></div>';
+		}
+
+		return $status;
+	}
+
+	/**
 	 * Get the last updated date/time.
 	 *
 	 * @param  mixed    $dateFormat
@@ -163,8 +212,10 @@ class ContentPage extends Eloquent {
 	 */
 	public function getLastUpdatedDate($dateFormat = false)
 	{
-		if (!$dateFormat) $dateFormat = Config::get('fractal::dateTimeFormat');
-		return $this->updated_at != "0000-00-00" ? date($dateFormat, strtotime($this->updated_at)) : date($dateFormat, strtotime($this->created_at));
+		if (!$dateFormat)
+			$dateFormat = Fractal::getDateTimeFormat();
+
+		return Fractal::dateTimeSet($this->updated_at) ? date($dateFormat, strtotime($this->updated_at)) : date($dateFormat, strtotime($this->created_at));
 	}
 
 }

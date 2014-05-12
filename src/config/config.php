@@ -240,7 +240,7 @@ return array(
 	|
 	*/
 	'authFilters' => array(
-		'X'        => array('admin'),
+		'x'        => array('admin'),
 		'menus'    => array('admin'),
 		'pages'    => array('admin'),
 		'files'    => array('admin'),

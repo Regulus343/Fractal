@@ -99,8 +99,7 @@ class PagesController extends BaseController {
 		Site::set('title', 'Create Page');
 		Site::set('wysiwyg', true);
 
-		$defaults = array('active' => true);
-		Form::setDefaults($defaults);
+		ContentPage::setDefaultsForNew();
 
 		return View::make(Fractal::view('form'));
 	}
@@ -116,15 +115,7 @@ class PagesController extends BaseController {
 		if (Form::validated()) {
 			$messages['success'] = Lang::get('fractal::messages.successCreated', array('item' => Format::a('page')));
 
-			$page = new ContentPage;
-			$page->title            = ucfirst(trim(Input::get('title')));
-			$page->slug             = Format::uniqueSlug(Input::get('slug'), 'content_pages');
-			$page->content          = trim(Input::get('content'));
-			$page->set_side_content = Input::get('set_side_content') ? true : false;
-			$page->side_content     = Input::get('set_side_content') ? trim(Input::get('side_content')) : '';
-			$page->user_id          = Auth::user()->id;
-			$page->active           = Form::value('active', 'checkbox');
-			$page->save();
+			$page = ContentPage::create();
 
 			Activity::log(array(
 				'contentID'   => $page->id,
@@ -154,7 +145,8 @@ class PagesController extends BaseController {
 		Site::set('titleHeading', 'Update Page: <strong>'.Format::entities($page->title).'</strong>');
 		Site::set('wysiwyg', true);
 
-		Form::setDefaults($page, array('content_areas' => true));
+		$page->setDefaults(array('contentAreas'));
+
 		Form::setErrors();
 
 		return View::make(Fractal::view('form'))
@@ -172,21 +164,13 @@ class PagesController extends BaseController {
 		Site::set('titleHeading', 'Update Page: <strong>'.Format::entities($page->title).'</strong>');
 		Site::set('wysiwyg', true);
 
-		Form::setDefaults($page, array('content_areas' => true));
-
-		Form::setValidationRules(ContentPage::validationRules($page));
+		$page->setValidationRules();
 
 		$messages = array();
 		if (Form::validated()) {
 			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Format::a('page')));
 
-			$page->title            = ucfirst(trim(Input::get('title')));
-			$page->slug             = Format::uniqueSlug(Input::get('slug'), 'content_pages', 'slug', $page->id);
-			$page->content          = trim(Input::get('content'));
-			$page->set_side_content = Input::get('set_side_content') ? true : false;
-			$page->side_content     = Input::get('set_side_content') ? trim(Input::get('side_content')) : '';
-			$page->active           = Form::value('active', 'checkbox');
-			$page->save();
+			$page->saveData();
 
 			Activity::log(array(
 				'contentID'   => $page->id,
@@ -236,8 +220,9 @@ class PagesController extends BaseController {
 
 	public function view($slug = '')
 	{
-		$page = ContentPage::findBySlug($slug);
-		if (empty($page)) return Redirect::to('home');
+		$page = ContentPage::where('slug', $slug)->where('active', true)->where('activated_at', '<=', date('Y-m-d H:i:s'))->first();
+		if (empty($page))
+			return Redirect::to('');
 
 		Site::set('title', $page->title);
 

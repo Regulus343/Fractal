@@ -33,7 +33,7 @@ class CreateContentFilesTable extends Migration {
 			$table->integer('user_id')->default(0);
 
 			$table->timestamps();
-			$table->timestamp('deleted_at');
+			$table->softDeletes();
 		});
 	}
 

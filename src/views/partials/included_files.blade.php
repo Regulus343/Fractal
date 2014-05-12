@@ -46,7 +46,7 @@
 <script type="text/javascript" src="{{ Site::js('bootstrap-datetimepicker.min', 'regulus/fractal') }}"></script>
 
 {{-- Formation JS --}}
-<script type="text/javascript" src="{{ Site::js('formation', 'aquanode/formation') }}"></script>
+@include('formation::load_js')
 
 {{-- Fractal CSS --}}
 <link type="text/css" rel="stylesheet" href="{{ Site::css('fractal', 'regulus/fractal') }}" />
@@ -95,11 +95,6 @@
 			{{ Site::get('loadFunction') }};
 
 		@endif
-
-		/* Set Up Formation JS */
-		Formation.setErrorSettings($.parseJSON('{{ Form::getJsonErrorSettings() }}'));
-		Formation.setErrorCallback('formErrorCallback');
-		Formation.setErrors($.parseJSON('{{ Form::getJsonErrors() }}'));
 
 	});
 </script>

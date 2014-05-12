@@ -5,7 +5,9 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 
-class ContentArea extends Eloquent {
+use Aquanode\Formation\BaseModel;
+
+class ContentArea extends BaseModel {
 
 	/**
 	 * The database table used by the model.
@@ -15,12 +17,35 @@ class ContentArea extends Eloquent {
 	protected $table = 'content_areas';
 
 	/**
+	 * The special typed fields for the model.
+	 *
+	 * @var    string
+	 */
+	protected static $types = array(
+		'updated_at' => 'date-time',
+	);
+
+	/**
+	 * The default values for the model.
+	 *
+	 * @return array
+	 */
+	public static function defaults()
+	{
+		$defaults = array(
+			'content_type' => 'Markdown',
+		);
+
+		return static::addPrefixToDefaults($defaults);
+	}
+
+	/**
 	 * Get the validation rules used by the model.
 	 *
-	 * @param  boolean  $id
-	 * @return string
+	 * @param  mixed    $id
+	 * @return array
 	 */
-	public static function validationRules($id = false)
+	public static function validationRules($id = null)
 	{
 		return array(
 			'title'   => array('required'),

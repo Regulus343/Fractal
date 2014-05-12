@@ -83,9 +83,10 @@ return array(
 				'sort'      => true,
 			),
 			array(
-				'attribute' => 'active',
+				'label'     => 'Active',
+				'method'    => 'getActiveStatus()',
 				'type'      => 'boolean',
-				'sort'      => true,
+				'sort'      => 'active',
 			),
 			array(
 				'label'     => 'Last Updated',

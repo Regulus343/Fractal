@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap.
 
 		created by Cody Jassman
-		version 0.28
-		last updated on May 3, 2014
+		version 0.32
+		last updated on May 11, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -641,6 +641,92 @@ class Fractal {
 	{
 		$menu = Menu::where('name', '=', $name)->first();
 		return $menu->createMarkup($listItemsOnly, $class);
+	}
+
+	/**
+	 * Get the date format.
+	 *
+	 * @return string
+	 */
+	public static function getDateFormat()
+	{
+		return Config::get('fractal::dateFormat');
+	}
+
+	/**
+	 * Get the date-time format.
+	 *
+	 * @return string
+	 */
+	public static function getDateTimeFormat()
+	{
+		return Config::get('fractal::dateTimeFormat');
+	}
+
+	/**
+	 * Check whether a date is set.
+	 *
+	 * @param  string   $date
+	 * @return boolean
+	 */
+	public static function dateSet($date)
+	{
+		return $date != "0000-00-00";
+	}
+
+	/**
+	 * Check whether a date-time is set.
+	 *
+	 * @param  string   $dateTime
+	 * @return boolean
+	 */
+	public static function dateTimeSet($dateTime)
+	{
+		return $dateTime != "0000-00-00 00:00:00";
+	}
+
+	/**
+	 * Check whether a date is past.
+	 *
+	 * @param  string   $date
+	 * @param  mixed    $dateToCompare
+	 * @param  boolean  $includeEqual
+	 * @return boolean
+	 */
+	public static function datePast($date, $dateToCompare = null, $includeEqual = false)
+	{
+		if (is_null($dateToCompare) || $dateToCompare === false)
+			$dateToCompare = date('Y-m-d');
+
+		if (!static::dateSet($date))
+			return false;
+
+		if ($includeEqual)
+			return strtotime($date) <= strtotime($dateToCompare);
+		else
+			return strtotime($date) < strtotime($dateToCompare);
+	}
+
+	/**
+	 * Check whether a date-time is past.
+	 *
+	 * @param  string   $dateTime
+	 * @param  mixed    $dateTimeToCompare
+	 * @param  boolean  $includeEqual
+	 * @return boolean
+	 */
+	public static function dateTimePast($dateTime, $dateTimeToCompare = null, $includeEqual = false)
+	{
+		if (is_null($dateTimeToCompare) || $dateTimeToCompare === false)
+			$dateTimeToCompare = date('Y-m-d H:i:s');
+
+		if (!static::dateTimeSet($dateTime))
+			return false;
+
+		if ($includeEqual)
+			return strtotime($dateTime) <= strtotime($dateTimeToCompare);
+		else
+			return strtotime($dateTime) < strtotime($dateTimeToCompare);
 	}
 
 }

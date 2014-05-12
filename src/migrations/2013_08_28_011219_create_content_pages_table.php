@@ -28,7 +28,7 @@ class CreateContentPagesTable extends Migration {
 			$table->timestamp('activated_at');
 
 			$table->timestamps();
-			$table->timestamp('deleted_at');
+			$table->softDeletes();
 		});
 	}
 

@@ -23,7 +23,7 @@ class CreateContentAreasTable extends Migration {
 			$table->integer('user_id');
 
 			$table->timestamps();
-			$table->timestamp('deleted_at');
+			$table->softDeletes();
 		});
 	}
 

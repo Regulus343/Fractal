@@ -14,8 +14,15 @@
 			<div class="col-md-4">
 				<?=Form::field('content_areas.{{number}}.content_type', 'select', array(
 					'class-field' => 'content-type',
-					'options'     => Form::simpleOptions(array('HTML', 'Markdown'))
+					'options'     => Form::simpleOptions(array('HTML', 'Markdown')),
+					'value'       => 'Markdown',
 				))?>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-4">
+				<?=Form::field('content_areas.{{number}}.updated_at')?>
 			</div>
 		</div>
 
