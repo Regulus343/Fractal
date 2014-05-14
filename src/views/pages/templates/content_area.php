@@ -4,12 +4,14 @@
 
 		<?=Form::hidden('content_areas.{{number}}.id')?>
 
+		<?=Form::field('content_areas.{{number}}.pivot.id')?>
+
 		<div class="row">
 			<div class="col-md-4">
 				<?=Form::field('content_areas.{{number}}.title')?>
 			</div>
 			<div class="col-md-4">
-				<?=Form::field('content_areas.{{number}}.layout_tag')?>
+				<?=Form::field('content_areas.{{number}}.pivot.layout_tag')?>
 			</div>
 			<div class="col-md-4">
 				<?=Form::field('content_areas.{{number}}.content_type', 'select', array(
@@ -17,12 +19,6 @@
 					'options'     => Form::simpleOptions(array('HTML', 'Markdown')),
 					'value'       => 'Markdown',
 				))?>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-md-4">
-				<?=Form::field('content_areas.{{number}}.updated_at')?>
 			</div>
 		</div>
 

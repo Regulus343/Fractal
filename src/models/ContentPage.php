@@ -15,6 +15,13 @@ class ContentPage extends BaseModel {
 	protected $table = 'content_pages';
 
 	/**
+	 * The foreign key for the model.
+	 *
+	 * @var    string
+	 */
+	protected $foreignKey = 'page_id';
+
+	/**
 	 * The fillable fields for the model.
 	 *
 	 * @var    array
@@ -37,6 +44,15 @@ class ContentPage extends BaseModel {
 	protected static $types = array(
 		'slug'         => 'unique-slug',
 		'activated_at' => 'date-time',
+	);
+
+	/**
+	 * The update relations for the model.
+	 *
+	 * @var    array
+	 */
+	protected static $updateRelations = array(
+		'contentAreas',
 	);
 
 	/**
@@ -70,17 +86,18 @@ class ContentPage extends BaseModel {
 		);
 
 		if (Form::post()) {
-			foreach (Form::getValuesObject('content_areas') as $number => $values) {
-				if (Form::getValueFromObject('title', $values) != "" || Form::getValueFromObject('layout_tag', $values) != ""
+			foreach (Form::getValuesObject('content_areas') as $number => $values)
+			{
+				if (Form::getValueFromObject('title', $values) != "" || Form::getValueFromObject('pivot.layout_tag', $values) != ""
 				|| Form::getValueFromObject('content_html', $values) != "" || Form::getValueFromObject('content_markdown', $values) != "")
 				{
 					$contentField = Form::getValueFromObject('content_type', $values) == "HTML" ? "content_html" : "content_markdown";
 
 					$rules = array_merge($rules, array(
-						'content_areas.'.$number.'.title'          => array('required'),
-						'content_areas.'.$number.'.layout_tag'     => array('required'),
-						'content_areas.'.$number.'.content_type'   => array('required'),
-						'content_areas.'.$number.'.'.$contentField => array('required'),
+						'content_areas.'.$number.'.title'            => array('required'),
+						'content_areas.'.$number.'.pivot.layout_tag' => array('required'),
+						'content_areas.'.$number.'.content_type'     => array('required'),
+						'content_areas.'.$number.'.'.$contentField   => array('required'),
 					));
 				}
 			}
@@ -158,17 +175,6 @@ class ContentPage extends BaseModel {
 	public function menuItems()
 	{
 		return $this->hasMany('Regulus\Fractal\MenuItem');
-	}
-
-	/**
-	 * Gets the page by its slug.
-	 *
-	 * @param  string   $slug
-	 * @return Page
-	 */
-	public static function findBySlug($slug)
-	{
-		return static::where('slug', $slug)->first();
 	}
 
 	/**

@@ -17,6 +17,25 @@ class ContentArea extends BaseModel {
 	protected $table = 'content_areas';
 
 	/**
+	 * The foreign key for the model.
+	 *
+	 * @var    string
+	 */
+	protected $foreignKey = 'area_id';
+
+	/**
+	 * The fillable fields for the model.
+	 *
+	 * @var    array
+	 */
+	protected $fillable = array(
+		'title',
+		'content_type',
+		'content',
+		'user_id',
+	);
+
+	/**
 	 * The special typed fields for the model.
 	 *
 	 * @var    string

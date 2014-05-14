@@ -164,6 +164,7 @@ class PagesController extends BaseController {
 		Site::set('titleHeading', 'Update Page: <strong>'.Format::entities($page->title).'</strong>');
 		Site::set('wysiwyg', true);
 
+		$page->setDefaults(array('contentAreas'));
 		$page->setValidationRules();
 
 		$messages = array();
