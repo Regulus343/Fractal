@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap.
 
 		created by Cody Jassman
-		version 0.32
-		last updated on May 11, 2014
+		version 0.33
+		last updated on May 19, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -641,6 +641,21 @@ class Fractal {
 	{
 		$menu = Menu::where('name', '=', $name)->first();
 		return $menu->createMarkup($listItemsOnly, $class);
+	}
+
+	/**
+	 * Get an array of layout tags from a layout string.
+	 *
+	 * @param  string   $layout
+	 * @return array
+	 */
+	public static function getLayoutTagsFromLayout($layout = '')
+	{
+		preg_match_all('/\{\{([a-z0-9\-]*)\}\}/', $layout, $layoutTags);
+		if (isset($layoutTags[1]) && is_array($layoutTags[1]))
+			return $layoutTags[1];
+
+		return array();
 	}
 
 	/**

@@ -53,8 +53,8 @@
 
 {{-- Fractal JS --}}
 <script type="text/javascript">
-	if (baseURL === undefined)
-		var baseURL = "{{ Fractal::url() }}";
+	if (baseUrl === undefined)
+		var baseUrl = "{{ Fractal::url() }}";
 
 	var csrfToken        = '{{ Session::token() }}';
 

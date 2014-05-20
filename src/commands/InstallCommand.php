@@ -49,6 +49,9 @@ class InstallCommand extends Command {
 		$this->info($divider);
 		$this->output->writeln('');
 
+		//install Identify
+		$this->call('identify:install');
+
 		//run database migrations
 		$this->comment('Migrating DB tables...');
 		$this->info($divider);
@@ -61,11 +64,10 @@ class InstallCommand extends Command {
 			if ($key)
 				$this->output->writeln('');
 
-			if ($workbench) {
+			if ($workbench)
 				$prefix = 'workbench';
-			} else {
+			else
 				$prefix = 'vendor';
-			}
 
 			$this->output->writeln('<info>Migrating DB tables:</info> '.$migrationPackage);
 			$this->call('migrate', array(
@@ -101,19 +103,30 @@ class InstallCommand extends Command {
 		$this->info($divider);
 
 		$configPackages = array(
-			'regulus/fractal',
 			'regulus/solid-site',
+			'regulus/tetra-text',
 			'aquanode/formation',
+			'aquanode/elemental',
+			'aquanode/upstream',
 		);
+
+		if (!$workbench)
+			$configPackages = array_merge(array('regulus/fractal'), $configPackages); 
+
 		foreach ($configPackages as $key => $configPackage) {
 			if ($key)
 				$this->output->writeln('');
+
+			$configPath = $configPackage;
+
+			if ($configPackage != "regulus/fractal")
+				$configPath = "regulus/fractal/vendor/".$configPath;
 
 			$this->output->writeln('<info>Publishing configuration:</info> '.$configPackage);
 			$this->call('config:publish', array(
 				'package' => $configPackage,
 				'--env'   => $this->option('env'),
-				'--path'  => 'vendor/'.$configPackage.'/src/config'
+				'--path'  => $prefix.'/'.$configPath.'/src/config'
 			));
 		}
 

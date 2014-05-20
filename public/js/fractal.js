@@ -242,7 +242,7 @@ function searchContent() {
 		$('.alert-dismissable').addClass('hidden');
 
 		$.ajax({
-			url: baseURL + '/'+contentType+'/search',
+			url: baseUrl + '/'+contentType+'/search',
 			type: 'post',
 			data: postData,
 			dataType: 'json',
@@ -354,7 +354,7 @@ function setupPagesTable() {
 var actionDeletePage = function(){
 	$('#modal').modal('hide');
 	$.ajax({
-		url: baseURL + '/pages/' + contentID,
+		url: baseUrl + '/pages/' + contentID,
 		type: 'delete',
 		dataType: 'json',
 		success: function(result){
@@ -389,7 +389,7 @@ function setupFilesTable() {
 var actionDeleteFile = function(){
 	$('#modal').modal('hide');
 	$.ajax({
-		url: baseURL + '/files/' + contentID,
+		url: baseUrl + '/files/' + contentID,
 		type: 'delete',
 		dataType: 'json',
 		success: function(result){
@@ -440,7 +440,7 @@ function setupUsersTable() {
 var actionBanUser = function(){
 	$('#modal').modal('hide');
 	$.ajax({
-		url: baseURL + '/users/ban/' + contentID,
+		url: baseUrl + '/users/ban/' + contentID,
 		dataType: 'json',
 		success: function(result){
 			if (result.resultType == "Success") {
@@ -464,7 +464,7 @@ var actionBanUser = function(){
 var actionUnbanUser = function(){
 	$('#modal').modal('hide');
 	$.ajax({
-		url: baseURL + '/users/unban/' + contentID,
+		url: baseUrl + '/users/unban/' + contentID,
 		dataType: 'json',
 		success: function(result){
 			if (result.resultType == "Success") {
@@ -488,7 +488,7 @@ var actionUnbanUser = function(){
 var actionDeleteUser = function(){
 	$('#modal').modal('hide');
 	$.ajax({
-		url: baseURL + '/users/' + contentID,
+		url: baseUrl + '/users/' + contentID,
 		type: 'delete',
 		dataType: 'json',
 		success: function(result){
@@ -523,7 +523,7 @@ function setupUserRolesTable() {
 var actionDeleteUserRole = function(){
 	$('#modal').modal('hide');
 	$.ajax({
-		url: baseURL + '/user-roles/' + contentID,
+		url: baseUrl + '/user-roles/' + contentID,
 		type: 'delete',
 		dataType: 'json',
 		success: function(result){

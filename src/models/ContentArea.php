@@ -140,7 +140,7 @@ class ContentArea extends BaseModel {
 	 */
 	public function renderContentToLayout($content)
 	{
-		return str_replace(':'.$this->pivot->layout_tag, $this->getRenderedContent(), $content);
+		return str_replace('{{'.$this->pivot->layout_tag.'}}', $this->getRenderedContent(), $content);
 	}
 
 	/**

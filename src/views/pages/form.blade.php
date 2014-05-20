@@ -20,10 +20,24 @@
 			});
 
 			$('#layout-template-id').change(function(){
-				if ($(this).val() != "")
+				var postData = {
+					layout_template_id: 0,
+					layout:             ''
+				};
+
+				if ($(this).val() != "") {
 					$('#layout-area').addClass('hidden');
-				else
+					postData.layout_template_id = $(this).val();
+				} else {
 					$('#layout-area').removeClass('hidden');
+					postData.layout = $('#layout').val();
+				}
+
+				Formation.ajaxForSelect({
+					url:          baseUrl + '/pages/layout-tags',
+					postData:     postData,
+					targetSelect: '.field-layout-tag',
+				});
 			});
 
 			if ($('#active').prop('checked') && $('#activated-at').val() == "")
@@ -52,7 +66,7 @@
 		});
 
 		function setupContentTypeFields() {
-			$('.content-type').off('change').on('change', function(){
+			$('.field-content-type').off('change').on('change', function(){
 				if ($(this).val() == "HTML") {
 					$(this).parents('fieldset').find('.markdown-content-area').addClass('hidden');
 					$(this).parents('fieldset').find('.html-content-area').removeClass('hidden');
@@ -60,6 +74,12 @@
 					$(this).parents('fieldset').find('.html-content-area').addClass('hidden');
 					$(this).parents('fieldset').find('.markdown-content-area').removeClass('hidden');
 				}
+			});
+		}
+
+		function setupContentFields() {
+			$('.field-content-html, .field-content-markdown').off('change').on('change', function(){
+				$(this).parents('fieldset').find('.field-content').val($(this).val());
 			});
 		}
 

@@ -29,26 +29,35 @@ class FractalServiceProvider extends ServiceProvider {
 		include __DIR__.'/../../view_composers.php';
 		include __DIR__.'/../../settings.php';
 
-		//load config for dependent packages
-		if (Config::get('fractal::workbench')) {
-			$pathPrefix = __DIR__.'/../../../vendor/';
-		} else {
-			$pathPrefix = __DIR__.'/../../../../../';
-		}
-		$this->package('regulus/activity-log', null, $pathPrefix.'regulus/activity-log/src');
-		$this->package('regulus/solid-site', null, $pathPrefix.'regulus/solid-site/src');
-		$this->package('regulus/tetra-text', null, $pathPrefix.'regulus/tetra-text/src');
-		$this->package('aquanode/formation', null, $pathPrefix.'aquanode/formation/src');
-		$this->package('aquanode/elemental', null, $pathPrefix.'aquanode/elemental/src');
-		$this->package('aquanode/upstream', null, $pathPrefix.'aquanode/upstream/src');
+		$workbench    = Config::get('fractal::workbench');
+		$exterminator = Config::get('fractal::exterminator');
 
-		if (Config::get('fractal::exterminator'))
-			$this->package('aquanode/exterminator', null, $pathPrefix.'regulus/exterminator/src');
+		//load config for dependent packages
+		if ($workbench)
+			$pathPrefix = __DIR__.'/../../../vendor/';
+		else
+			$pathPrefix = __DIR__.'/../../../../../';
+
+		$configPackages = array(
+			'regulus/fractal',
+			'regulus/solid-site',
+			'regulus/tetra-text',
+			'aquanode/formation',
+			'aquanode/elemental',
+			'aquanode/upstream',
+		);
+
+		if ($exterminator)
+			$configPackages[] = "regulus/exterminator";
+
+		foreach ($configPackages as $configPackage) {
+			$this->package($configPackage, null, $pathPrefix.$configPackage.'/src');
+		}
 
 		//add view namespace for Elemental
 		View::addNamespace('elemental', $pathPrefix.'aquanode/elemental/src/views');
 
-		//alias dependent classes
+		//add aliases for dependent classes
 		$loader = \Illuminate\Foundation\AliasLoader::getInstance();
 		$loader->alias('Fractal',   'Regulus\Fractal\Fractal');
 		$loader->alias('Auth',      'Regulus\Identify\Identify');
@@ -58,12 +67,8 @@ class FractalServiceProvider extends ServiceProvider {
 		$loader->alias('HTML',      'Aquanode\Elemental\Elemental');
 		$loader->alias('Form',      'Aquanode\Formation\Formation');
 
-		if (Config::get('fractal::exterminator'))
+		if ($exterminator)
 			$loader->alias('Dbg', 'Regulus\Exterminator\Exterminator');
-
-		//alias models
-		$loader->alias('Menu',      'Regulus\Fractal\Menu');
-		$loader->alias('Page',      'Regulus\Fractal\Page');
 	}
 
 	/**

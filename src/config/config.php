@@ -58,6 +58,7 @@ return array(
 		'post' => array(
 			'menus/search'      => 'Regulus\Fractal\MenusController@search',
 			'pages/search'      => 'Regulus\Fractal\PagesController@search',
+			'pages/layout-tags' => 'Regulus\Fractal\PagesController@layoutTags',
 			'files/search'      => 'Regulus\Fractal\FilesController@search',
 			'users/search'      => 'Regulus\Fractal\UsersController@search',
 			'user-roles/search' => 'Regulus\Fractal\UserRolesController@search',

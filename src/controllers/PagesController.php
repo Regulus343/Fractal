@@ -101,7 +101,8 @@ class PagesController extends BaseController {
 
 		ContentPage::setDefaultsForNew();
 
-		return View::make(Fractal::view('form'));
+		return View::make(Fractal::view('form'))
+			->with('layoutTagOptions', array());
 	}
 
 	public function store()
@@ -149,8 +150,19 @@ class PagesController extends BaseController {
 
 		Form::setErrors();
 
+		//then add Markdown renderer and render back and forth HTML <-> Markdown
+
+		//then add "Preview" button to Markdown
+
+		//then, on edit, show "View Page" button, target="_blank"
+
+		//then fix calendar icon for activated at
+
+		//then "Add Content Area" which lets you select existing content areas or adding a new one - also, delete beside each that isn't in any pages
+
 		return View::make(Fractal::view('form'))
-			->with('update', true);
+			->with('update', true)
+			->with('layoutTagOptions', Form::simpleOptions($page->getLayoutTags()));
 	}
 
 	public function update($slug)
@@ -228,6 +240,22 @@ class PagesController extends BaseController {
 		Site::set('title', $page->title);
 
 		return View::make(Config::get('fractal::pageView'))->with('page', $page);
+	}
+
+	public function layoutTags()
+	{
+		$input = Input::all();
+		if (!isset($input['layout_template_id']) || !isset($input['layout']))
+			return "";
+
+		$layout = $input['layout'];
+		if ($input['layout_template_id'] != "") {
+			$template = ContentLayoutTemplate::find($input['layout_template_id']);
+			if (!empty($template))
+				$layout = $template->layout;
+		}
+
+		return json_encode(Fractal::getLayoutTagsFromLayout($layout));
 	}
 
 }

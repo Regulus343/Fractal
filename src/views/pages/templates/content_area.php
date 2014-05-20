@@ -4,18 +4,20 @@
 
 		<?=Form::hidden('content_areas.{{number}}.id')?>
 
-		<?=Form::field('content_areas.{{number}}.pivot.id')?>
+		<?=Form::hidden('content_areas.{{number}}.pivot.id')?>
 
 		<div class="row">
 			<div class="col-md-4">
 				<?=Form::field('content_areas.{{number}}.title')?>
 			</div>
 			<div class="col-md-4">
-				<?=Form::field('content_areas.{{number}}.pivot.layout_tag')?>
+				<?=Form::field('content_areas.{{number}}.pivot.layout_tag', 'select', array(
+					'options'     => $layoutTagOptions,
+					'null-option' => 'Select a Layout Tag'
+				))?>
 			</div>
 			<div class="col-md-4">
 				<?=Form::field('content_areas.{{number}}.content_type', 'select', array(
-					'class-field' => 'content-type',
 					'options'     => Form::simpleOptions(array('HTML', 'Markdown')),
 					'value'       => 'Markdown',
 				))?>
@@ -37,5 +39,11 @@
 				))?>
 			</div>
 		</div>
+
+				<?=Form::field('content_areas.{{number}}.content', 'textarea', array(
+					'label'                 => 'Content',
+					'class-field'           => 'tab',
+				))?>
+
 	</fieldset>
 </script>

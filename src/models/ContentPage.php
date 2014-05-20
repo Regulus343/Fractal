@@ -129,7 +129,7 @@ class ContentPage extends BaseModel {
 	/**
 	 * Get the layout for the page.
 	 *
-	 * @return Collection
+	 * @return string
 	 */
 	public function getLayout()
 	{
@@ -140,9 +140,21 @@ class ContentPage extends BaseModel {
 	}
 
 	/**
+	 * Get the layout tags for the page's layout.
+	 *
+	 * @return array
+	 */
+	public function getLayoutTags()
+	{
+		$layout = $this->getLayout();
+
+		return Fractal::getLayoutTagsFromLayout($layout);
+	}
+
+	/**
 	 * Get the rendered content for the page.
 	 *
-	 * @return Collection
+	 * @return string
 	 */
 	public function getRenderedContent()
 	{
