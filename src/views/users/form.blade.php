@@ -110,15 +110,14 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field('roles.', 'checkbox-set', array(
-					'options'     => Form::prepOptions(Regulus\Identify\Role::orderBy('display_order')->orderBy('name')->get(), array('id', 'name')),
-					'label'       => Lang::get('fractal::labels.roles'),
-					'associative' => true,
-					'name-values' => true
+				{{ Form::field('roles', 'checkbox-set', array(
+					'options'        => Form::prepOptions(Regulus\Identify\Role::orderBy('display_order')->orderBy('name')->get(), array('id', 'name')),
+					'label'          => Lang::get('fractal::labels.roles'),
+					'associative'    => true,
+					'name-values'    => true,
 				)) }}
 			</div>
 		</div>
-
 
 		@if (!isset($update) || !$update)
 			<div class="row">

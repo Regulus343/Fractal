@@ -225,11 +225,24 @@ function setMainMessage(message, type) {
 
 function modalConfirm(title, message, action) {
 	$('#modal .modal-title').html(title);
-	$('#modal .modal-body p').html(message);
+	$('#modal .modal-body').html('<p>' + message + '</p>');
 
 	$('#modal').modal('show');
 
 	$('#modal .btn-primary').off('click').on('click', action);
+}
+
+function modalAjax(title, url, callbackFunction) {
+	$('#modal .modal-title').html(title);
+
+	$.ajax(function(){
+		url:     url,
+		type:    'post',
+		success: function(result) {
+			$('#modal .modal-body').html(result);
+			$('#modal').modal('show');
+		}
+	});   
 }
 
 /* Setup Search and Pagination Functions */

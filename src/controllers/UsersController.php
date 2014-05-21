@@ -175,6 +175,7 @@ class UsersController extends BaseController {
 		Site::set('wysiwyg', true);
 
 		Form::setDefaults($user, array('roles' => 'id'));
+
 		Form::setErrors();
 
 		return View::make(Fractal::view('form'))->with('update', true);
