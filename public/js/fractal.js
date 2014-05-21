@@ -212,6 +212,11 @@ $(document).ready(function(){
 	/* Set Up Tooltips */
 	$('[data-toggle="tooltip"]').tooltip({html: true});
 
+	/* Set Up Confirm Modal Actions */
+	$('.modal-confirm[data-url]').click(function(){
+		
+	});
+
 });
 
 var messageTimer;
@@ -235,7 +240,7 @@ function modalConfirm(title, message, action) {
 function modalAjax(title, url, callbackFunction) {
 	$('#modal .modal-title').html(title);
 
-	$.ajax(function(){
+	$.ajax({
 		url:     url,
 		type:    'post',
 		success: function(result) {
