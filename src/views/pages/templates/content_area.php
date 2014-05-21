@@ -18,8 +18,8 @@
 			</div>
 			<div class="col-md-4">
 				<?=Form::field('content_areas.{{number}}.content_type', 'select', array(
-					'options'     => Form::simpleOptions(array('HTML', 'Markdown')),
-					'value'       => 'Markdown',
+					'options' => Form::simpleOptions(array('HTML', 'Markdown')),
+					'value'   => 'Markdown',
 				))?>
 			</div>
 		</div>
@@ -40,10 +40,6 @@
 			</div>
 		</div>
 
-				<?=Form::field('content_areas.{{number}}.content', 'textarea', array(
-					'label'                 => 'Content',
-					'class-field'           => 'tab',
-				))?>
-
+		<?=Form::hidden('content_areas.{{number}}.content')?>
 	</fieldset>
 </script>

@@ -70,10 +70,16 @@
 				if ($(this).val() == "HTML") {
 					$(this).parents('fieldset').find('.markdown-content-area').addClass('hidden');
 					$(this).parents('fieldset').find('.html-content-area').removeClass('hidden');
+					$(this).parents('fieldset').find('.field-content').val($(this).parents('fieldset').find('.field-content-html').val());
 				} else {
 					$(this).parents('fieldset').find('.html-content-area').addClass('hidden');
 					$(this).parents('fieldset').find('.markdown-content-area').removeClass('hidden');
+					$(this).parents('fieldset').find('.field-content').val($(this).parents('fieldset').find('.field-content-markdown').val());
 				}
+			});
+
+			$('.field-content-html, .field-content-markdown').off('change').on('change', function(){
+				$(this).parents('fieldset').find('.field-content').val($(this).val());
 			});
 		}
 
@@ -90,6 +96,19 @@
 	</script>
 
 	{{ Form::openResource() }}
+
+		@if (isset($update) && $update)
+
+			<div class="row">
+				<div class="col-md-12">
+					<a href="{{ $pageUrl }}" target="_blank" class="btn btn-primary pull-right">
+						<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Lang::get('fractal::labels.viewPage') }}
+					</a>
+				</div>
+			</div>
+
+		@endif
+
 		<div class="row">
 			<div class="col-md-4">
 				{{ Form::field('title') }}

@@ -66,9 +66,15 @@ class FractalServiceProvider extends ServiceProvider {
 		$loader->alias('Elemental', 'Aquanode\Elemental\Elemental');
 		$loader->alias('HTML',      'Aquanode\Elemental\Elemental');
 		$loader->alias('Form',      'Aquanode\Formation\Formation');
+		$loader->alias('Markdown',  'MaxHoffmann\Parsedown\ParsedownFacade');
 
 		if ($exterminator)
 			$loader->alias('Dbg', 'Regulus\Exterminator\Exterminator');
+
+		//create "parsedown" singleton for Markdown parsing
+		$this->app->singleton('parsedown', function(){
+			return new \Parsedown;
+		});
 	}
 
 	/**

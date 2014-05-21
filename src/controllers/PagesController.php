@@ -162,6 +162,7 @@ class PagesController extends BaseController {
 
 		return View::make(Fractal::view('form'))
 			->with('update', true)
+			->with('pageUrl', $page->getUrl())
 			->with('layoutTagOptions', Form::simpleOptions($page->getLayoutTags()));
 	}
 

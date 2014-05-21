@@ -16,7 +16,8 @@
 		"regulus/tetra-text": "dev-master",
 		"aquanode/formation": "dev-master",
 		"aquanode/elemental": "dev-master",
-		"aquanode/upstream": "dev-master"
+		"aquanode/upstream": "dev-master",
+		"maxhoffmann/parsedown-laravel": "dev-master"
 	},
 	"autoload": {
 		"classmap": [

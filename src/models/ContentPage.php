@@ -1,6 +1,7 @@
 <?php namespace Regulus\Fractal;
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\URL;
 
 use Aquanode\Formation\BaseModel;
 use Aquanode\Formation\Formation as Form;
@@ -124,6 +125,16 @@ class ContentPage extends BaseModel {
 	public function layoutTemplate()
 	{
 		return $this->belongsTo('Regulus\Fractal\ContentLayoutTemplate', 'layout_template_id');
+	}
+
+	/**
+	 * Get the URL for the page.
+	 *
+	 * @return string
+	 */
+	public function getUrl()
+	{
+		return URL::to(Config::get('fractal::pageUri').'/'.$this->slug);
 	}
 
 	/**

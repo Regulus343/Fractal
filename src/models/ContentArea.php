@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\View;
 
 use Aquanode\Formation\BaseModel;
 
+use MaxHoffmann\Parsedown\ParsedownFacade as Markdown;
+
 class ContentArea extends BaseModel {
 
 	/**
@@ -119,7 +121,7 @@ class ContentArea extends BaseModel {
 
 		//render to Markdown
 		if ($this->content_type == "Markdown")
-			$content = "<div>Testing Markdown</div>";
+			$content = Markdown::parse($this->content);
 
 		//render views in content
 		preg_match_all('/\[view:\"([a-z\:\.\_\-]*)\"\]/', $content, $views);
