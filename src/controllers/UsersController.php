@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\View;
 
 use Aquanode\Formation\Formation as Form;
 use Regulus\ActivityLog\Activity;
@@ -249,7 +249,7 @@ class UsersController extends BaseController {
 		$user->save();
 
 		Activity::log(array(
-			'contentID'   => $user->id,
+			'contentId'   => $user->id,
 			'contentType' => 'User',
 			'description' => 'Banned a User',
 			'details'     => 'Username: '.$user->username,
@@ -279,7 +279,7 @@ class UsersController extends BaseController {
 		$user->save();
 
 		Activity::log(array(
-			'contentID'   => $user->id,
+			'contentId'   => $user->id,
 			'contentType' => 'User',
 			'description' => 'Unbanned a User',
 			'details'     => 'Username: '.$user->username,
@@ -309,7 +309,7 @@ class UsersController extends BaseController {
 		$user->save();
 
 		Activity::log(array(
-			'contentID'   => $user->id,
+			'contentId'   => $user->id,
 			'contentType' => 'User',
 			'description' => 'Deleted a User',
 			'details'     => 'Username: '.$user->username,

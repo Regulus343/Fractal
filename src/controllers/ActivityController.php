@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\View;
 
 use Aquanode\Formation\Formation as Form;
 use Regulus\ActivityLog\Activity;

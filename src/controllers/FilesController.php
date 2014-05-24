@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\View;
 
 use Aquanode\Formation\Formation as Form;
 use Aquanode\Upstream\Upstream;
@@ -197,7 +197,7 @@ class FilesController extends BaseController {
 				$file->save();
 
 				Activity::log(array(
-					'contentID'   => $file->id,
+					'contentId'   => $file->id,
 					'contentType' => 'ContentFile',
 					'description' => 'Created a File',
 					'details'     => 'Filename: '.$file->filename,
@@ -371,7 +371,7 @@ class FilesController extends BaseController {
 				$file->save();
 
 				Activity::log(array(
-					'contentID'   => $file->id,
+					'contentId'   => $file->id,
 					'contentType' => 'ContentFile',
 					'description' => 'Created a File',
 					'details'     => 'Filename: '.$file->filename,
@@ -402,7 +402,7 @@ class FilesController extends BaseController {
 			return $result;
 
 		Activity::log(array(
-			'contentID'   => $file->id,
+			'contentId'   => $file->id,
 			'contentType' => 'ContentFile',
 			'description' => 'Deleted a File',
 			'details'     => 'Filename: '.$file->filename,

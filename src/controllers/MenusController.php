@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\View;
 
 use Aquanode\Formation\Formation as Form;
 use Regulus\ActivityLog\Activity;
@@ -106,7 +106,7 @@ class MenusController extends BaseController {
 			$menu = static::fill($menu);
 
 			Activity::log(array(
-				'contentID'   => $menu->id,
+				'contentId'   => $menu->id,
 				'contentType' => 'Menu',
 				'description' => 'Created a Menu',
 				'details'     => 'Name: '.$menu->name,
@@ -158,7 +158,7 @@ class MenusController extends BaseController {
 			$menu = static::fill($menu);
 
 			Activity::log(array(
-				'contentID'   => $menu->id,
+				'contentId'   => $menu->id,
 				'contentType' => 'Menu',
 				'description' => 'Created a Menu',
 				'details'     => 'Name: '.$menu->name,
@@ -229,7 +229,7 @@ class MenusController extends BaseController {
 			return $result;
 
 		Activity::log(array(
-			'contentID'   => $menu->id,
+			'contentId'   => $menu->id,
 			'contentType' => 'Menu',
 			'description' => 'Deleted a Menu',
 			'details'     => 'Name: '.$menu->name,

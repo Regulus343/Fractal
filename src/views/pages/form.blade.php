@@ -139,7 +139,7 @@
 
 		@include(Fractal::view('pages.templates.content_area', true))
 
-		<a href="" class="btn btn-primary pull-right">
+		<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="pages/add-content-area">
 			<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Lang::get('fractal::labels.addContentArea') }}
 		</a>
 

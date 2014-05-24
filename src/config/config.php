@@ -52,16 +52,17 @@ return array(
 	*/
 	'controllerMethods' => array(
 		'get'  => array(
-			'users/ban/{id}'    => 'Regulus\Fractal\UsersController@ban',
-			'users/unban/{id}'  => 'Regulus\Fractal\UsersController@unban',
+			'users/ban/{id}'         => 'Regulus\Fractal\UsersController@ban',
+			'users/unban/{id}'       => 'Regulus\Fractal\UsersController@unban',
 		),
 		'post' => array(
-			'menus/search'      => 'Regulus\Fractal\MenusController@search',
-			'pages/search'      => 'Regulus\Fractal\PagesController@search',
-			'pages/layout-tags' => 'Regulus\Fractal\PagesController@layoutTags',
-			'files/search'      => 'Regulus\Fractal\FilesController@search',
-			'users/search'      => 'Regulus\Fractal\UsersController@search',
-			'user-roles/search' => 'Regulus\Fractal\UserRolesController@search',
+			'menus/search'           => 'Regulus\Fractal\MenusController@search',
+			'pages/search'           => 'Regulus\Fractal\PagesController@search',
+			'pages/layout-tags'      => 'Regulus\Fractal\PagesController@layoutTags',
+			'pages/add-content-area' => 'Regulus\Fractal\PagesController@addContentArea',
+			'files/search'           => 'Regulus\Fractal\FilesController@search',
+			'users/search'           => 'Regulus\Fractal\UsersController@search',
+			'user-roles/search'      => 'Regulus\Fractal\UserRolesController@search',
 		),
 	),
 

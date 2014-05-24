@@ -85,13 +85,29 @@ class ContentArea extends BaseModel {
 	}
 
 	/**
-	 * The content areas that the page belongs to.
+	 * The content pages that the area belongs to.
 	 *
 	 * @return Collection
 	 */
 	public function contentPages()
 	{
-		return $this->belongsToMany('Regulus\Fractal\ContentPage', 'content_page_areas', 'page_id', 'area_id');
+		return $this->belongsToMany('Regulus\Fractal\ContentPage', 'content_page_areas', 'area_id', 'page_id');
+	}
+
+	/**
+	 * Get the IDs of the content pages.
+	 *
+	 * @return Collection
+	 */
+	public function getContentPageIds()
+	{
+		$ids = array();
+
+		foreach ($this->contentPages as $contentPage) {
+			$ids[] = (int) $contentPage->id;
+		}
+
+		return $ids;
 	}
 
 	/**

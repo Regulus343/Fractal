@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap.
 
 		created by Cody Jassman
-		version 0.33
-		last updated on May 19, 2014
+		version 0.34
+		last updated on May 23, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\View;
 
 use Aquanode\Elemental\Elemental as HTML;
 use Aquanode\Formation\Formation as Form;
@@ -144,6 +145,32 @@ class Fractal {
 			return Config::get('fractal::viewsLocation').$relativeLocation;
 		else
 			return static::$viewsLocation.$relativeLocation;
+	}
+
+	/**
+	 * Get a response for a modal view request.
+	 *
+	 * @param  string   $relativeLocation
+	 * @param  array    $data
+	 * @param  boolean  $root
+	 * @param  boolean  $returnJson
+	 * @return mixed
+	 */
+	public static function modalView($relativeLocation = '', $data = array(), $root = false, $returnJson = true)
+	{
+		if (substr($relativeLocation, 0, 7) != "modals.")
+			$relativeLocation = "modals.".$relativeLocation;
+
+		$response = array(
+			'title'   => isset($data['title']) ? $data['title'] : '',
+			'content' => View::make(static::view($relativeLocation, $root))->with($data)->render(),
+			'buttons' => isset($data['buttons']) && $data['buttons'] ? true : false,
+		);
+
+		if ($returnJson)
+			$response = json_encode($response);
+
+		return $response;
 	}
 
 	/**

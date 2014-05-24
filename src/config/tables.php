@@ -76,6 +76,7 @@ return array(
 			),
 			array(
 				'attribute' => 'title',
+				'class'     => 'title',
 				'sort'      => true,
 			),
 			array(

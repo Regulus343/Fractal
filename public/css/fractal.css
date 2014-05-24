@@ -182,3 +182,28 @@ div.content-side {
 .error-tooltip + .tooltip .tooltip-arrow {
 	border-top-color: #700;
 }
+
+ul#select-content-area {
+	padding: 0;
+	list-style: none;
+}
+
+ul#select-content-area li {
+	margin: 0 0 10px 0;
+	padding: 8px;
+	background-color: #444;
+	color: #fff;
+	cursor: pointer;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+}
+
+ul#select-content-area li.new { background-color: #666; }
+ul#select-content-area li:hover { background-color: #222; }
+
+ul#select-content-area li h3 { display: block; margin: 0 0 4px 0; padding: 0; font-size: 14px; font-weight: bold; }
+ul#select-content-area li div.info { float: right; color: #888; font-size: 12px; font-style: italic; }
+ul#select-content-area li div.info div.actions { float: right; padding-left: 5px; }
+ul#select-content-area li div.info div.actions span.glyphicon-remove { color: #900; font-size: 15px; }
+ul#select-content-area li div.info div.actions span.glyphicon-remove:hover { color: #c00; }

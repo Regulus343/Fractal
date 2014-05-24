@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\View;
 
 use Aquanode\Formation\Formation as Form;
 use Regulus\ActivityLog\Activity;
@@ -187,7 +187,7 @@ class PagesController extends BaseController {
 			$page->saveData();
 
 			Activity::log(array(
-				'contentID'   => $page->id,
+				'contentId'   => $page->id,
 				'contentType' => 'ContentPage',
 				'description' => 'Created a Page',
 				'details'     => 'Title: '.$page->title,
@@ -218,7 +218,7 @@ class PagesController extends BaseController {
 			return $result;
 
 		Activity::log(array(
-			'contentID'   => $page->id,
+			'contentId'   => $page->id,
 			'contentType' => 'ContentPage',
 			'description' => 'Deleted a Page',
 			'details'     => 'Title: '.$page->title,
@@ -227,6 +227,7 @@ class PagesController extends BaseController {
 		$result['resultType'] = "Success";
 		$result['message']    = Lang::get('fractal::messages.successDeleted', array('item' => '<strong>'.$page->title.'</strong>'));
 
+		$page->contentAreas()->sync(array());
 		$page->delete();
 
 		return $result;
@@ -257,6 +258,17 @@ class PagesController extends BaseController {
 		}
 
 		return json_encode(Fractal::getLayoutTagsFromLayout($layout));
+	}
+
+	public function addContentArea($id = false)
+	{
+		$data = array(
+			'title'        => Lang::get('fractal::labels.addContentArea'),
+			'pageId'       => $id,
+			'contentAreas' => ContentArea::orderBy('title')->get(),
+		);
+
+		return Fractal::modalView('add_content_area', $data);
 	}
 
 }
