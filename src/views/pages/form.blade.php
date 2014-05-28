@@ -43,27 +43,55 @@
 			if ($('#active').prop('checked') && $('#activated-at').val() == "")
 				$('#activated-at').val(moment().format('MM/DD/YYYY hh:mm A'));
 
-			//create load template callback function and load templates
-			var contentAreaTemplateCallback = function(item, data) {
-				setupContentTypeFields();
-
-				$('#content-areas fieldset').each(function(){
-					if (item.find('.field-content-type').val() == "HTML") {
-						item.find('.markdown-content-area').addClass('hidden');
-						item.find('.html-content-area').removeClass('hidden');
-
-						item.find('.field-content-html').val(data.content);
-					} else {
-						item.find('.html-content-area').addClass('hidden');
-						item.find('.markdown-content-area').removeClass('hidden');
-
-						item.find('.field-content-markdown').val(data.content);
-					}
-				});
-			};
-
 			Formation.loadTemplates('#content-areas', $.parseJSON('{{ Form::getJsonValues('content_areas') }}'), contentAreaTemplateCallback);
 		});
+
+		//create load template callback function and load templates
+		var contentAreaTemplateCallback = function(item, data) {
+			setupContentTypeFields();
+
+			$('#content-areas fieldset').each(function(){
+				if (item.find('.field-content-type').val() == "HTML") {
+					item.find('.markdown-content-area').addClass('hidden');
+					item.find('.html-content-area').removeClass('hidden');
+
+					if (data !== null)
+						item.find('.field-content-html').val(data.content);
+				} else {
+					item.find('.html-content-area').addClass('hidden');
+					item.find('.markdown-content-area').removeClass('hidden');
+
+					if (data !== null)
+						item.find('.field-content-markdown').val(data.content);
+				}
+			});
+
+			if (data === null) {
+				$('html,body').animate({
+					scrollTop: (item.offset().top - 30) + 'px'
+				}, 750);
+
+				item.find('.field-title').focus();
+			}
+		};
+
+		function selectContentArea() {
+			$('#select-content-area li').off('click').on('click', function(){
+				if ($(this).hasClass('new')) {
+					Formation.loadNewTemplate('#content-areas', contentAreaTemplateCallback);
+				} else {
+					$.ajax({
+						url:      baseUrl + '/pages/get-content-area/' + $(this).attr('data-content-area-id'),
+						dataType: 'json',
+						success:  function(contentArea){
+							Formation.loadTemplate('#content-areas', contentArea, contentAreaTemplateCallback);
+						}
+					});
+				}
+
+				$('#modal').modal('hide');
+			});
+		}
 
 		function setupContentTypeFields() {
 			$('.field-content-type').off('change').on('change', function(){
@@ -139,7 +167,7 @@
 
 		@include(Fractal::view('pages.templates.content_area', true))
 
-		<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="pages/add-content-area">
+		<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="pages/add-content-area{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="get" data-modal-callback-function="selectContentArea">
 			<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Lang::get('fractal::labels.addContentArea') }}
 		</a>
 

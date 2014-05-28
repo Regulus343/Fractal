@@ -2,7 +2,7 @@
 
 	<div id="footer">
 		<div class="pad">
-			<a href="#" class="return-to-top pull-left show-tooltip" title="{{ Lang::get('fractal::labels.returnToTop') }}">
+			<a href="" class="return-to-top pull-left show-tooltip" title="{{ Lang::get('fractal::labels.returnToTop') }}">
 				<span class="glyphicon glyphicon-chevron-up"></span>
 			</a>
 

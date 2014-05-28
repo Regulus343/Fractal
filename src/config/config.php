@@ -52,17 +52,18 @@ return array(
 	*/
 	'controllerMethods' => array(
 		'get'  => array(
-			'users/ban/{id}'         => 'Regulus\Fractal\UsersController@ban',
-			'users/unban/{id}'       => 'Regulus\Fractal\UsersController@unban',
+			'pages/get-content-area/{id}'  => 'Regulus\Fractal\PagesController@getContentArea',
+			'pages/add-content-area/{id?}' => 'Regulus\Fractal\PagesController@addContentArea',
+			'users/ban/{id}'               => 'Regulus\Fractal\UsersController@ban',
+			'users/unban/{id}'             => 'Regulus\Fractal\UsersController@unban',
 		),
 		'post' => array(
-			'menus/search'           => 'Regulus\Fractal\MenusController@search',
-			'pages/search'           => 'Regulus\Fractal\PagesController@search',
-			'pages/layout-tags'      => 'Regulus\Fractal\PagesController@layoutTags',
-			'pages/add-content-area' => 'Regulus\Fractal\PagesController@addContentArea',
-			'files/search'           => 'Regulus\Fractal\FilesController@search',
-			'users/search'           => 'Regulus\Fractal\UsersController@search',
-			'user-roles/search'      => 'Regulus\Fractal\UserRolesController@search',
+			'menus/search'                 => 'Regulus\Fractal\MenusController@search',
+			'pages/search'                 => 'Regulus\Fractal\PagesController@search',
+			'pages/layout-tags'            => 'Regulus\Fractal\PagesController@layoutTags',
+			'files/search'                 => 'Regulus\Fractal\FilesController@search',
+			'users/search'                 => 'Regulus\Fractal\UsersController@search',
+			'user-roles/search'            => 'Regulus\Fractal\UserRolesController@search',
 		),
 	),
 
@@ -343,7 +344,7 @@ return array(
 	| Set this to true if the package is being run from Laravel's Workbench.
 	|
 	*/
-	'workbench' => false,
+	'workbench' => true,
 
 	/*
 	|--------------------------------------------------------------------------

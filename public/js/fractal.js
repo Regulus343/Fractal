@@ -217,9 +217,19 @@ $(document).ready(function(){
 		e.preventDefault();
 
 		var url              = baseUrl + '/' + $(this).attr('data-modal-ajax-uri');
+		var type             = $(this).attr('data-modal-ajax-action') == "get" ? "get" : "post";
 		var callbackFunction = $(this).attr('data-modal-callback-function');
 
-		modalAjax(url, callbackFunction);
+		modalAjax(url, type, callbackFunction);
+	});
+
+	/* Set Up Return To Top */
+	$('a.return-to-top').click(function(e){
+		e.preventDefault();
+
+		$('html,body').animate({
+			scrollTop: 0
+		}, 500);
 	});
 
 });
@@ -242,10 +252,10 @@ function modalConfirm(title, message, action) {
 	$('#modal .btn-primary').off('click').on('click', action);
 }
 
-function modalAjax(url, callbackFunction) {
+function modalAjax(url, type, callbackFunction) {
 	$.ajax({
 		url:      url,
-		type:     'post',
+		type:     type,
 		dataType: 'json',
 		success: function(result) {
 			$('#modal .modal-title').html(result.title);

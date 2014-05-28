@@ -150,18 +150,9 @@ class PagesController extends BaseController {
 
 		Form::setErrors();
 
-		//then add Markdown renderer and render back and forth HTML <-> Markdown
-
-		//then add "Preview" button to Markdown
-
-		//then, on edit, show "View Page" button, target="_blank"
-
-		//then fix calendar icon for activated at
-
-		//then "Add Content Area" which lets you select existing content areas or adding a new one - also, delete beside each that isn't in any pages
-
 		return View::make(Fractal::view('form'))
 			->with('update', true)
+			->with('id', $page->id)
 			->with('pageUrl', $page->getUrl())
 			->with('layoutTagOptions', Form::simpleOptions($page->getLayoutTags()));
 	}
@@ -269,6 +260,11 @@ class PagesController extends BaseController {
 		);
 
 		return Fractal::modalView('add_content_area', $data);
+	}
+
+	public function getContentArea($id = false)
+	{
+		return ContentArea::find($id)->toJson();
 	}
 
 }

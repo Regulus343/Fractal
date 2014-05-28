@@ -4,7 +4,8 @@
 	</li>
 
 	@foreach ($contentAreas as $contentArea)
-		@if (!in_array($pageId, $contentArea->getContentPageIds()))
+
+		@if (!in_array((int) $pageId, $contentArea->getContentPageIds()))
 
 			<li data-content-area-id="{{ $contentArea->id }}">
 				<div class="info">
@@ -17,7 +18,6 @@
 					{{ $contentArea->contentPages()->count() }}
 					{{ Format::pluralize(Lang::get('fractal::labels.page'), $contentArea->contentPages()->count()) }}
 				</div>
-
 
 				<h3>{{ $contentArea->title }}</h3>
 			</li>

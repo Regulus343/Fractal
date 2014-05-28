@@ -176,6 +176,9 @@ div.content-side {
 	border-radius: 8px; -webkit-border-radius: 8px; -moz-border-radius: 8px;
 }
 
+.modal-header { padding-bottom: 6px; color: #444; }
+.modal-body { margin: 10px; padding: 10px; max-height: 480px; overflow-y: auto; }
+
 .error-tooltip + .tooltip .tooltip-inner {
 	background-color: #700;
 }
@@ -199,8 +202,10 @@ ul#select-content-area li {
 	-webkit-border-radius: 6px;
 }
 
-ul#select-content-area li.new { background-color: #666; }
 ul#select-content-area li:hover { background-color: #222; }
+
+ul#select-content-area li.new { background-color: #428bca; }
+ul#select-content-area li.new:hover { background-color: #357ebd; }
 
 ul#select-content-area li h3 { display: block; margin: 0 0 4px 0; padding: 0; font-size: 14px; font-weight: bold; }
 ul#select-content-area li div.info { float: right; color: #888; font-size: 12px; font-style: italic; }
