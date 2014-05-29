@@ -148,13 +148,11 @@ class PagesController extends BaseController {
 
 		$page->setDefaults(array('contentAreas'));
 
-		Form::setErrors();
-
 		return View::make(Fractal::view('form'))
 			->with('update', true)
 			->with('id', $page->id)
 			->with('pageUrl', $page->getUrl())
-			->with('layoutTagOptions', Form::simpleOptions($page->getLayoutTags()));
+			->with('layoutTagOptions', Form::simpleOptions($page->getLayoutTags(true)));
 	}
 
 	public function update($slug)

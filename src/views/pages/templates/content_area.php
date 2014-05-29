@@ -19,7 +19,7 @@
 			<div class="col-md-4">
 				<?=Form::field('content_areas.{{number}}.content_type', 'select', array(
 					'options' => Form::simpleOptions(array('HTML', 'Markdown')),
-					'value'   => 'Markdown',
+					'value'   => Fractal::getSetting('Default Content Area Type'),
 				))?>
 			</div>
 		</div>

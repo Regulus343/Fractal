@@ -19,25 +19,8 @@
 				$('#slug').val(slug);
 			});
 
-			$('#layout-template-id').change(function(){
-				var postData = {
-					layout_template_id: 0,
-					layout:             ''
-				};
-
-				if ($(this).val() != "") {
-					$('#layout-area').addClass('hidden');
-					postData.layout_template_id = $(this).val();
-				} else {
-					$('#layout-area').removeClass('hidden');
-					postData.layout = $('#layout').val();
-				}
-
-				Formation.ajaxForSelect({
-					url:          baseUrl + '/pages/layout-tags',
-					postData:     postData,
-					targetSelect: '.field-layout-tag',
-				});
+			$('#layout-template-id, #layout').change(function(){
+				getLayoutTags();
 			});
 
 			if ($('#active').prop('checked') && $('#activated-at').val() == "")
@@ -46,23 +29,45 @@
 			Formation.loadTemplates('#content-areas', $.parseJSON('{{ Form::getJsonValues('content_areas') }}'), contentAreaTemplateCallback);
 		});
 
+		function getLayoutTags() {
+			var postData = {
+				layout_template_id: 0,
+				layout:             ''
+			};
+
+			if ($('#layout-template-id').val() != "") {
+				$('#layout-area').addClass('hidden');
+				postData.layout_template_id = $('#layout-template-id').val();
+			} else {
+				$('#layout-area').removeClass('hidden');
+				postData.layout = $('#layout').val();
+			}
+
+			Formation.ajaxForSelect({
+				url:          baseUrl + '/pages/layout-tags',
+				postData:     postData,
+				targetSelect: '.field-layout-tag',
+			});
+		}
+
 		//create load template callback function and load templates
 		var contentAreaTemplateCallback = function(item, data) {
+			getLayoutTags();
 			setupContentTypeFields();
 
 			$('#content-areas fieldset').each(function(){
-				if (item.find('.field-content-type').val() == "HTML") {
-					item.find('.markdown-content-area').addClass('hidden');
-					item.find('.html-content-area').removeClass('hidden');
-
-					if (data !== null)
-						item.find('.field-content-html').val(data.content);
-				} else {
+				if (item.find('.field-content-type').val() != "HTML") {
 					item.find('.html-content-area').addClass('hidden');
 					item.find('.markdown-content-area').removeClass('hidden');
 
 					if (data !== null)
 						item.find('.field-content-markdown').val(data.content);
+				} else {
+					item.find('.markdown-content-area').addClass('hidden');
+					item.find('.html-content-area').removeClass('hidden');
+
+					if (data !== null)
+						item.find('.field-content-html').val(data.content);
 				}
 			});
 

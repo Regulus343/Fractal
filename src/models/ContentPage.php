@@ -140,14 +140,22 @@ class ContentPage extends BaseModel {
 	/**
 	 * Get the layout for the page.
 	 *
+	 * @param  array    $usePostData
 	 * @return string
 	 */
-	public function getLayout()
+	public function getLayout($usePostData = false)
 	{
-		if ($this->layoutTemplate)
-			return $this->layoutTemplate->layout;
+		if ($usePostData && Input::old('layout')) {
+			if (Input::old('layout_template_id'))
+				return Input::old('layout_template_id');
 
-		return $this->layout;
+			return Input::old('layout');
+		} else {
+			if ($this->layoutTemplate)
+				return $this->layoutTemplate->layout;
+
+			return $this->layout;
+		}
 	}
 
 	/**

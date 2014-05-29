@@ -53,6 +53,16 @@ class SettingsTableSeeder extends Seeder {
 				'updated_at'    => $timestamp,
 			),
 			array(
+				'name'          => 'Default Content Area Type',
+				'value'         => 'Markdown',
+				'type'          => 'Text',
+				'category'      => 'Pages',
+				'options'       => 'HTML, Markdown',
+				'display_order' => $defaultDisplayOrder,
+				'created_at'    => $timestamp,
+				'updated_at'    => $timestamp,
+			),
+			array(
 				'name'          => 'Default Image Thumbnail Size',
 				'value'         => 120,
 				'type'          => 'Integer',
