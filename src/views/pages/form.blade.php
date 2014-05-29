@@ -134,7 +134,7 @@
 
 			<div class="row">
 				<div class="col-md-12">
-					<a href="{{ $pageUrl }}" target="_blank" class="btn btn-primary pull-right">
+					<a href="{{ $pageUrl }}" target="_blank" class="btn btn-default pull-right">
 						<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Lang::get('fractal::labels.viewPage') }}
 					</a>
 				</div>

@@ -22,6 +22,8 @@ return array(
 	'deletePage'           => 'Delete Page',
 	'addContentArea'       => 'Add Content Area',
 	'createNewContentArea' => 'Create New Content Area',
+	'removeContentArea'    => 'Remove Content Area',
+	'deleteContentArea'    => 'Delete Content Area',
 
 	'uploadFile'           => 'Upload File',
 	'editFile'             => 'Edit File',

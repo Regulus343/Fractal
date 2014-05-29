@@ -9,9 +9,9 @@
 
 			<li data-content-area-id="{{ $contentArea->id }}">
 				<div class="info">
-					@if ($contentArea->contentPages()->count())
+					@if (!$contentArea->contentPages()->count())
 						<div class="actions">
-							<span class="glyphicon glyphicon-remove red"></span>
+							<span class="glyphicon glyphicon-remove red" title="{{ Lang::get('fractal::labels.deleteContentArea') }}"></span>
 						</div>
 					@endif
 
