@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\View;
 
 use Aquanode\Formation\BaseModel;
 
-use MaxHoffmann\Parsedown\ParsedownFacade as Markdown;
-
 class ContentArea extends BaseModel {
 
 	/**
@@ -117,38 +115,7 @@ class ContentArea extends BaseModel {
 	 */
 	public function getRenderedContent()
 	{
-		$content = $this->content;
-
-		//add file URLs to content
-		preg_match_all('/file:([0-9]*)/', $content, $fileIds);
-		if (isset($fileIds[0]) && !empty($fileIds[0])) {
-			$files = ContentFile::whereIn('id', $fileIds[1])->get();
-
-			for ($f = 0; $f < count($fileIds[0]); $f++) {
-				$fileUrl = "";
-				foreach ($files as $file) {
-					if ((int) $file->id == (int) $fileIds[1][$f])
-						$fileUrl = $file->getUrl();
-				}
-
-				$content = str_replace($fileIds[0][$f], $fileUrl, $content);
-			}
-		}
-
-		//render to Markdown
-		if ($this->content_type == "Markdown")
-			$content = Markdown::parse($this->content);
-
-		//render views in content
-		preg_match_all('/\[view:\"([a-z\:\.\_\-]*)\"\]/', $content, $views);
-		if (isset($views[0]) && !empty($views[0])) {
-			for ($v = 0; $v < count($views[0]); $v++) {
-				$view    = View::make($views[1][$v])->render();
-				$content = str_replace($views[0][$v], $view, $content);
-			}
-		}
-
-		return $content;
+		return Fractal::renderContent($this->content, $this->content_type);
 	}
 
 	/**

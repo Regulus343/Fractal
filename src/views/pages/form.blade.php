@@ -2,7 +2,14 @@
 
 @section(Config::get('fractal::section'))
 
+	<script type="text/javascript" src="{{ Site::js('markdown.converter', 'regulus/fractal') }}"></script>
+	<script type="text/javascript" src="{{ Site::js('markdown.sanitizer', 'regulus/fractal') }}"></script>
 	<script type="text/javascript">
+		var converter = Markdown.getSanitizingConverter();
+
+		var markdownContentField;
+		var markdownContentUpdateTimer;
+
 		$(document).ready(function(){
 
 			@if (!isset($update) || !$update)
@@ -27,6 +34,15 @@
 				$('#activated-at').val(moment().format('MM/DD/YYYY hh:mm A'));
 
 			Formation.loadTemplates('#content-areas', $.parseJSON('{{ Form::getJsonValues('content_areas') }}'), contentAreaTemplateCallback);
+
+			$('form').submit(function(e){
+				$('#content-areas fieldset').each(function(){
+					if ($(this).find('.field-content-type').val() == "HTML")
+						$(this).find('.field-content').val(CKEDITOR.instances[$(this).find('.field-content-html').attr('id')].getData());
+					else
+						$(this).find('.field-content').val($(this).find('.field-content-markdown').val());
+				});
+			});
 		});
 
 		function getLayoutTags() {
@@ -46,7 +62,7 @@
 			Formation.ajaxForSelect({
 				url:          baseUrl + '/pages/layout-tags',
 				postData:     postData,
-				targetSelect: '.field-layout-tag',
+				targetSelect: '.field-pivot-layout-tag',
 			});
 		}
 
@@ -55,21 +71,51 @@
 			getLayoutTags();
 			setupContentTypeFields();
 
-			$('#content-areas fieldset').each(function(){
-				if (item.find('.field-content-type').val() != "HTML") {
-					item.find('.html-content-area').addClass('hidden');
-					item.find('.markdown-content-area').removeClass('hidden');
+			if (item.find('.field-content-type').val() != "HTML") {
+				item.find('.html-content-area').addClass('hidden');
+				item.find('.markdown-content-area').removeClass('hidden');
 
-					if (data !== null)
-						item.find('.field-content-markdown').val(data.content);
-				} else {
-					item.find('.markdown-content-area').addClass('hidden');
-					item.find('.html-content-area').removeClass('hidden');
+				if (data !== null)
+					item.find('.field-content-markdown').val(data.content);
+			} else {
+				item.find('.markdown-content-area').addClass('hidden');
+				item.find('.html-content-area').removeClass('hidden');
 
-					if (data !== null)
-						item.find('.field-content-html').val(data.content);
-				}
-			});
+				if (data !== null)
+					item.find('.field-content-html').val(data.content);
+			}
+
+			//set up WYSIWYG editor for HTML content field
+			var htmlField = item.find('.field-content-html');
+			if (htmlField)
+				CKEDITOR.replace(htmlField.attr('id'));
+
+			//set up Markdown content field action preview window
+			var markdownField = item.find('.field-content-markdown');
+			if (markdownField) {
+				markdownField.on('focus', function(){
+					renderMarkdown($(this));
+					$('#markdown-preview').fadeIn();
+				}).on('keydown', function(e){
+					if (e.keyCode == 9) {
+						var myValue = "\t";
+						var startPos = this.selectionStart;
+						var endPos = this.selectionEnd;
+						var scrollTop = this.scrollTop;
+						this.value = this.value.substring(0, startPos) + myValue + this.value.substring(endPos,this.value.length);
+						this.focus();
+						this.selectionStart = startPos + myValue.length;
+						this.selectionEnd = startPos + myValue.length;
+						this.scrollTop = scrollTop;
+
+						e.preventDefault();
+					}
+				}).on('keyup', function(){
+					renderMarkdown($(this));
+				}).on('blur', function(){
+					$('#markdown-preview').fadeOut();
+				});
+			}
 
 			if (data === null) {
 				$('html,body').animate({
@@ -88,7 +134,7 @@
 					$.ajax({
 						url:      baseUrl + '/pages/get-content-area/' + $(this).attr('data-content-area-id'),
 						dataType: 'json',
-						success:  function(contentArea){
+						success:  function(contentArea) {
 							Formation.loadTemplate('#content-areas', contentArea, contentAreaTemplateCallback);
 						}
 					});
@@ -122,11 +168,38 @@
 			});
 		}
 
+		function renderMarkdown(field) {
+			$('#markdown-preview-content').html(converter.makeHtml(field.val()));
+			$('#markdown-preview-content').animate({scrollTop: $('#markdown-preview-content').height()}, 500);
+
+			markdownContentField       = field;
+			markdownContentUpdateTimer = setTimeout(incrementMarkdownContentUpdateTimer, 4000);
+		}
+
+		function incrementMarkdownContentUpdateTimer() {
+			clearTimeout(markdownContentUpdateTimer);
+
+			$.ajax({
+				type:     'post',
+				url:      baseUrl + '/pages/render-markdown-content',
+				data:     {content: markdownContentField.val()},
+				success:  function(content) {
+					$('#markdown-preview-content').html(content);
+					$('#markdown-preview-content').animate({scrollTop: $('#markdown-preview-content').height()}, 500);
+				}
+			});
+		}
+
 		function activeCheckedCallback(checked) {
 			if (checked)
 				$('#activated-at').val(moment().format('MM/DD/YYYY hh:mm A'));
 		}
 	</script>
+
+	<div id="markdown-preview">
+		<div id="markdown-preview-bg"></div>
+		<div id="markdown-preview-content"></div>
+	</div>
 
 	{{ Form::openResource() }}
 

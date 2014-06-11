@@ -2,7 +2,7 @@
 
 return array(
 
-	'version'              => '0.34',
+	'version'              => '0.37',
 
 	'create'               => 'Create',
 	'edit'                 => 'Edit',

@@ -195,7 +195,8 @@ class ContentPage extends BaseModel {
 	{
 		return $this
 			->belongsToMany('Regulus\Fractal\ContentArea', 'content_page_areas', 'page_id', 'area_id')
-			->withPivot('layout_tag');
+			->withPivot('layout_tag')
+			->orderBy('title');
 	}
 
 	/**

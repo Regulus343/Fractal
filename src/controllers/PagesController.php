@@ -249,6 +249,11 @@ class PagesController extends BaseController {
 		return json_encode(Fractal::getLayoutTagsFromLayout($layout));
 	}
 
+	public function renderMarkdownContent()
+	{
+		return Fractal::renderMarkdownContent(Input::get('content'));
+	}
+
 	public function addContentArea($id = false)
 	{
 		$data = array(

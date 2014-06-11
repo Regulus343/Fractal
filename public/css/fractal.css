@@ -5,6 +5,8 @@ html, body { margin: 0; padding: 0; height: 100%; }
 a#logo { padding-top: 10px; padding-bottom: 0; }
 a#logo img { height: 30px; border: none; }
 
+h1, h2, h3, h4, h5, h6 { margin-top: 0; }
+
 table.table { margin-bottom: 10px; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-collapse: separate; }
 
 table.table-bordered { border-color: #aaa; }
@@ -184,6 +186,38 @@ div.content-side {
 }
 .error-tooltip + .tooltip .tooltip-arrow {
 	border-top-color: #700;
+}
+
+div#markdown-preview {
+	z-index: 5000;
+	display: none;
+	position: fixed;
+	top: 20px;
+	left: 50%;
+	margin-left: -350px;
+	width: 700px;
+	height: 240px;
+	overflow-y: hidden;
+}
+div#markdown-preview div#markdown-preview-bg {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #fff;
+	border: 1px solid #888;
+	border-radius: 6px; -webkit-border-radius: 6px; -moz-border-radius: 6px;
+	opacity: 0.9;
+	filter: alpha(opacity=90);
+}
+div#markdown-preview div#markdown-preview-content {
+	z-index: 5010;
+	position: relative;
+	margin: 6px;
+	padding: 6px;
+	height: 228px;
+	overflow-y: auto;
 }
 
 ul#select-content-area {

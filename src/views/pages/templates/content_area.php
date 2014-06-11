@@ -4,8 +4,6 @@
 
 		<?=Form::hidden('content_areas.{{number}}.id')?>
 
-		<?=Form::hidden('content_areas.{{number}}.pivot.id')?>
-
 		<div class="row">
 			<div class="col-md-4">
 				<?=Form::field('content_areas.{{number}}.title')?>

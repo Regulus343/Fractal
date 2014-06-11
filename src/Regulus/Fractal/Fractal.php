@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap.
 
 		created by Cody Jassman
-		version 0.34
-		last updated on May 23, 2014
+		version 0.37
+		last updated on June 10, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -23,6 +23,8 @@ use Aquanode\Elemental\Elemental as HTML;
 use Aquanode\Formation\Formation as Form;
 use Regulus\SolidSite\SolidSite as Site;
 use Regulus\TetraText\TetraText as Format;
+
+use MaxHoffmann\Parsedown\ParsedownFacade as Markdown;
 
 class Fractal {
 
@@ -457,6 +459,155 @@ class Fractal {
 	public static function createTable($content = array(), $bodyOnly = false)
 	{
 		return HTML::table(Config::get('fractal::tables.'.static::getContentTypeCamelCase()), $content, $bodyOnly);
+	}
+
+	/**
+	 * Render content for a content area.
+	 *
+	 * @param  string   $content
+	 * @param  string   $contentType
+	 * @return string
+	 */
+	public static function renderContent($content, $contentType = 'HTML')
+	{
+		//add file images to content
+		$content = static::renderContentImages($content, '/\!\[file:([0-9]*)\]/'); //Markdown style image replacement
+		$content = static::renderContentImages($content, '/\[image:([0-9]*)\]/'); //custom "image" replacement tag to match others
+
+		//add file links to content
+		preg_match_all('/\[file:([0-9]*)\]/', $content, $fileIds);
+		if (isset($fileIds[0]) && !empty($fileIds[0])) {
+			$files = ContentFile::whereIn('id', $fileIds[1])->get();
+
+			for ($f = 0; $f < count($fileIds[0]); $f++) {
+				$name = "";
+				$url  = "";
+				foreach ($files as $file) {
+					if ((int) $file->id == (int) $fileIds[1][$f]) {
+						$name = $file->name;
+						$url  = $file->getUrl();
+					}
+				}
+
+				if (substr($url, 0, strlen(Config::get('app.url'))) == Config::get('app.url'))
+					$link = '<a href="'.$url.'">'.$name.'</a>';
+				else
+					$link = '<a href="'.$url.'" target="_blank">'.$name.'</a>';
+
+				$content = str_replace($fileIds[0][$f], $link, $content);
+			}
+		}
+
+		//add file URLs to content
+		preg_match_all('/file:([0-9]*)/', $content, $fileIds);
+		if (isset($fileIds[0]) && !empty($fileIds[0])) {
+			$files = ContentFile::whereIn('id', $fileIds[1])->get();
+
+			for ($f = 0; $f < count($fileIds[0]); $f++) {
+				$url = "";
+				foreach ($files as $file) {
+					if ((int) $file->id == (int) $fileIds[1][$f])
+						$url = $file->getUrl();
+				}
+
+				$content = str_replace($fileIds[0][$f], $url, $content);
+			}
+		}
+
+		//add page links to content
+		preg_match_all('/\[page:([a-z\-]*)\]/', $content, $pageSlugs);
+		if (isset($pageSlugs[0]) && !empty($pageSlugs[0])) {
+			$pages = ContentPage::whereIn('slug', $pageSlugs[1])->get();
+
+			for ($f = 0; $f < count($pageSlugs[0]); $f++) {
+				$title = "";
+				$url   = "";
+				foreach ($pages as $page) {
+					if ((int) $page->slug == (int) $pageSlugs[1][$f]) {
+						$title = $page->title;
+						$url   = $page->getUrl();
+					}
+				}
+
+				$link = '<a href="'.$url.'">'.$title.'</a>';
+
+				$content = str_replace($pageSlugs[0][$f], $link, $content);
+			}
+		}
+
+		//add page links to content
+		preg_match_all('/page:([a-z\-]*)/', $content, $pageSlugs);
+		if (isset($pageSlugs[0]) && !empty($pageSlugs[0])) {
+			$pages = ContentPage::whereIn('slug', $pageSlugs[1])->get();
+
+			for ($f = 0; $f < count($pageSlugs[0]); $f++) {
+				$url   = "";
+				foreach ($pages as $page) {
+					if ((int) $page->slug == (int) $pageSlugs[1][$f])
+						$url = $page->getUrl();
+				}
+
+				$content = str_replace($pageSlugs[0][$f], $url, $content);
+			}
+		}
+
+		//render views in content
+		preg_match_all('/\[view:\"([a-z\:\.\_\-]*)\"\]/', $content, $views);
+		if (isset($views[0]) && !empty($views[0])) {
+			for ($v = 0; $v < count($views[0]); $v++) {
+				$view    = View::make($views[1][$v])->render();
+				$content = str_replace($views[0][$v], $view, $content);
+			}
+		}
+
+		//render to Markdown
+		if (strtolower($contentType) == "markdown")
+			$content = Markdown::parse($content);
+
+		return $content;
+	}
+
+	/**
+	 * Render Markdown content for a content area.
+	 *
+	 * @param  string   $content
+	 * @return string
+	 */
+	public static function renderMarkdownContent($content)
+	{
+		return static::renderContent($content, 'Markdown');
+	}
+
+	/**
+	 * Render Markdown content for a content area.
+	 *
+	 * @param  string   $content
+	 * @param  string   $expression
+	 * @return string
+	 */
+	public static function renderContentImages($content, $expression)
+	{
+		preg_match_all($expression, $content, $fileIds);
+		if (isset($fileIds[0]) && !empty($fileIds[0])) {
+			$files = ContentFile::whereIn('id', $fileIds[1])->get();
+
+			for ($f = 0; $f < count($fileIds[0]); $f++) {
+				$name = "";
+				$url  = "";
+				foreach ($files as $file) {
+					if ((int) $file->id == (int) $fileIds[1][$f]) {
+						$name = $file->name;
+						$url  = $file->getUrl();
+					}
+				}
+
+				$image = '<img src="'.$url.'" alt="'.$name.'" title="'.$name.'" />';
+
+				$content = str_replace($fileIds[0][$f], $image, $content);
+			}
+		}
+
+		return $content;
 	}
 
 	/**
