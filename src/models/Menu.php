@@ -1,12 +1,10 @@
 <?php namespace Regulus\Fractal;
 
-use Illuminate\Database\Eloquent\Model as Eloquent;
+use Aquanode\Formation\BaseModel;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
-
-use Aquanode\Formation\BaseModel;
 
 class Menu extends BaseModel {
 

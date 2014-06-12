@@ -1,11 +1,10 @@
 <?php namespace Regulus\Fractal;
 
-use Illuminate\Database\Eloquent\Model as Eloquent;
+use Aquanode\Formation\BaseModel;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
 
-use Aquanode\Formation\BaseModel;
 use Regulus\SolidSite\SolidSite as Site;
 use Regulus\TetraText\TetraText as Format;
 

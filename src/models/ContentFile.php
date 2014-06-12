@@ -1,12 +1,12 @@
 <?php namespace Regulus\Fractal;
 
-use Illuminate\Database\Eloquent\Model as Eloquent;
+use Aquanode\Formation\BaseModel;
 
 use Illuminate\Support\Facades\Config;
 
 use Regulus\SolidSite\SolidSite as Site;
 
-class ContentFile extends Eloquent {
+class ContentFile extends BaseModel {
 
 	/**
 	 * The database table used by the model.
@@ -21,7 +21,7 @@ class ContentFile extends Eloquent {
 	 * @param  boolean  $id
 	 * @return string
 	 */
-	public static function validationRules($id = false)
+	public static function validationRules($id = null)
 	{
 		$rules = array(
 			'name' => array('required'),

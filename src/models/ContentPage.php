@@ -1,9 +1,10 @@
 <?php namespace Regulus\Fractal;
 
+use Aquanode\Formation\BaseModel;
+
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
 
-use Aquanode\Formation\BaseModel;
 use Aquanode\Formation\Formation as Form;
 
 class ContentPage extends BaseModel {

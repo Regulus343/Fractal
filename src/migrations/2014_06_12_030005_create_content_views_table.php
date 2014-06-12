@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateContentLayoutTemplatesTable extends Migration {
+class CreateContentViewsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,17 +12,15 @@ class CreateContentLayoutTemplatesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('content_layout_templates', function(Blueprint $table)
+		Schema::create('content_views', function(Blueprint $table)
 		{
 			$table->increments('id');
-
-			$table->string('name', 120);
-			$table->text('layout');
-
 			$table->integer('user_id');
-
+			$table->integer('content_id');
+			$table->string('content_type', 72);
+			$table->string('ip_address', 64);
+			$table->string('user_agent');
 			$table->timestamps();
-			$table->softDeletes();
 		});
 	}
 
@@ -33,7 +31,7 @@ class CreateContentLayoutTemplatesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('content_layout_templates');
+		Schema::drop('content_views');
 	}
 
 }
