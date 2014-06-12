@@ -5,10 +5,11 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
 
+use Aquanode\Formation\BaseModel;
 use Regulus\SolidSite\SolidSite as Site;
 use Regulus\TetraText\TetraText as Format;
 
-class MenuItem extends Eloquent {
+class MenuItem extends BaseModel {
 
 	/**
 	 * The database table used by the model.
@@ -16,87 +17,6 @@ class MenuItem extends Eloquent {
 	 * @var    string
 	 */
 	protected $table = 'menu_items';
-
-	/**
-	 * The form setup for the model.
-	 *
-	 * @var    string
-	 */
-	/*public static $form = array(
-		'menu_id' => array(
-			'type'       => 'select',
-			'options'    => 'menuOptions',
-			'nullOption' => 'Select a menu',
-			'label'      => 'Menu',
-			'rules'      => array('required'),
-		),
-		'parent_id' => array(
-			'type'       => 'select',
-			'options'    => 'menuItemOptions',
-			'nullOption' => 'Select a parent',
-			'label'      => 'Parent Menu Item',
-		),
-		'page_id' => array(
-			'type'       => 'select',
-			'options'    => 'pageOptions',
-			'nullOption' => 'Select a page',
-			'label'      => 'Parent Menu Item',
-		),
-		'uri' => array(
-			'type'       => 'text',
-			'label'      => 'URI',
-		),
-		'label' => array(
-			'type'       => 'text',
-			'rules'      => array('required'),
-		),
-		'class' => array(
-			'type'       => 'text',
-		),
-		'display_order' => array(
-			'type'       => 'select',
-			'options'    => 'displayOrderOptions',
-		),
-		'auth_status' => array(
-			'type'       => 'select',
-			'options'    => array(
-				'All',
-				'Logged In',
-				'Logged Out',
-			),
-			'label'      => 'Authorization Status',
-		),
-		'auth_roles' => array(
-			'type'       => 'checkbox-set',
-			'options'    => 'authRoleOptions',
-			'label'      => 'Authorization Roles',
-		),
-		'active' => array(
-			'type'       => 'checkbox',
-		),
-	);*/
-
-	/**
-	 * The form setup for the model.
-	 *
-	 * @var    string
-	 */
-	public static function fields()
-	{
-		return array(
-			'parent_id'       => true,
-			'page_id'         => true,
-			'uri'             => true,
-			'label'           => true,
-			'icon'            => true,
-			'class'           => true,
-			'additional_info' => true,
-			'display_order'   => true,
-			'auth_status'     => array(0, 1, 2),
-			'auth_roles'      => true,
-			'active'          => 'checkbox',
-		);
-	}
 
 	/**
 	 * The menu that the menu items belong to.

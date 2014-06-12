@@ -6,7 +6,9 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
 
-class Menu extends Eloquent {
+use Aquanode\Formation\BaseModel;
+
+class Menu extends BaseModel {
 
 	/**
 	 * The database table used by the model.
@@ -16,17 +18,30 @@ class Menu extends Eloquent {
 	protected $table = 'menus';
 
 	/**
-	 * The form setup for the model.
+	 * The foreign key for the model.
 	 *
 	 * @var    string
 	 */
-	public static function fields()
-	{
-		return array(
-			'name' => true,
-			'cms'  => 'checkbox',
-		);
-	}
+	protected $foreignKey = 'menu_id';
+
+	/**
+	 * The fillable fields for the model.
+	 *
+	 * @var    array
+	 */
+	protected $fillable = array(
+		'name',
+		'cms',
+	);
+
+	/**
+	 * The special typed fields for the model.
+	 *
+	 * @var    array
+	 */
+	protected static $types = array(
+		'cms' => 'checkbox',
+	);
 
 	/**
 	 * Get the validation rules used by the model.

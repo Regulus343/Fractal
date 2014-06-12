@@ -132,10 +132,11 @@ class MenusController extends BaseController {
 		Site::set('title', $menu->name.' (Menu)');
 		Site::set('titleHeading', 'Update Menu: <strong>'.Format::entities($menu->name).'</strong>');
 
-		Form::setDefaults($menu, array('items' => true));
-		Form::setErrors();
+		$menu->setDefaults(array('items'));
 
-		return View::make(Fractal::view('form'))->with('update', true)->with('menu', $menu);
+		return View::make(Fractal::view('form'))
+			->with('update', true)
+			->with('menu', $menu);
 	}
 
 	public function update($id)

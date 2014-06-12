@@ -268,6 +268,7 @@
 			</div>
 		</div>
 
+		{{-- Content Areas --}}
 		<div id="content-areas" data-template-id="content-area-template"></div>
 
 		@include(Fractal::view('pages.templates.content_area', true))

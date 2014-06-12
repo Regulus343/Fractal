@@ -48,15 +48,6 @@ class ContentPage extends BaseModel {
 	);
 
 	/**
-	 * The update relations for the model.
-	 *
-	 * @var    array
-	 */
-	protected static $updateRelations = array(
-		'contentAreas',
-	);
-
-	/**
 	 * The default values for the model.
 	 *
 	 * @return array

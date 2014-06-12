@@ -18,6 +18,8 @@
 				}
 			});
 
+			Formation.loadTemplates('#menu-items', $.parseJSON('{{ Form::getJsonValues('items') }}'));
+
 			<?php /*@foreach (Form::getDefaultsObject('items') as $item)
 				console.log('{{ $item->id }}');
 
@@ -63,9 +65,9 @@
 		@endif
 
 		{{-- Menu Items --}}
-		@include(Fractal::view('menus.templates.menu_item', true))
+		<div id="menu-items" data-template-id="menu-item-template"></div>
 
-		<div id="menu-items"></div>
+		@include(Fractal::view('menus.templates.menu_item', true))
 
 		<a href="" class="btn btn-default pull-right">
 			<span class="glyphicon glyphicon-plus"></span>&nbsp; {{ Lang::get('fractal::labels.addMenuItem') }}
