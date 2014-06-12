@@ -10,6 +10,8 @@
 		var markdownContentField;
 		var markdownContentUpdateTimer;
 
+		var contentAreaId;
+
 		$(document).ready(function(){
 
 			@if (!isset($update) || !$update)
@@ -126,21 +128,46 @@
 			}
 		};
 
-		function selectContentArea() {
-			$('#select-content-area li').off('click').on('click', function(){
-				if ($(this).hasClass('new')) {
-					Formation.loadNewTemplate('#content-areas', contentAreaTemplateCallback);
-				} else {
-					$.ajax({
-						url:      baseUrl + '/pages/get-content-area/' + $(this).attr('data-content-area-id'),
-						dataType: 'json',
-						success:  function(contentArea) {
-							Formation.loadTemplate('#content-areas', contentArea, contentAreaTemplateCallback);
-						}
-					});
+		var deleteContentArea = function() {
+			$.ajax({
+				url:      baseUrl + '/pages/delete-content-area/' + contentAreaId,
+				success:  function(result) {
+					if (result == "Success") {
+						$('#modal-secondary').hide();
+						$('#select-content-area li[data-content-area-id="'+contentAreaId+'"]').remove();
+					}
 				}
+			});
+		}
 
-				$('#modal').modal('hide');
+		function selectContentAreaActions() {
+			$('#select-content-area li').off('click').on('click', function(e){
+				if (!$(e.target).hasClass('delete')) {
+					if ($(this).hasClass('new')) {
+						Formation.loadNewTemplate('#content-areas', contentAreaTemplateCallback);
+					} else {
+						$.ajax({
+							url:      baseUrl + '/pages/get-content-area/' + $(this).attr('data-content-area-id'),
+							dataType: 'json',
+							success:  function(contentArea) {
+								Formation.loadTemplate('#content-areas', contentArea, contentAreaTemplateCallback);
+							}
+						});
+					}
+
+					$('#modal').modal('hide');
+				}
+			});
+
+			$('#select-content-area li span.delete').off('click').on('click', function(){
+				contentAreaId = $(this).parents('li').attr('data-content-area-id');
+
+				modalConfirm(
+					fractalLabels.deleteContentArea,
+					fractalMessages.confirmDelete.replace(':item', fractalLabels.contentArea),
+					deleteContentArea,
+					'modal-secondary'
+				);
 			});
 		}
 
@@ -173,7 +200,7 @@
 			$('#markdown-preview-content').animate({scrollTop: $('#markdown-preview-content').height()}, 500);
 
 			markdownContentField       = field;
-			markdownContentUpdateTimer = setTimeout(incrementMarkdownContentUpdateTimer, 4000);
+			markdownContentUpdateTimer = setTimeout(incrementMarkdownContentUpdateTimer, 3000);
 		}
 
 		function incrementMarkdownContentUpdateTimer() {
@@ -245,7 +272,7 @@
 
 		@include(Fractal::view('pages.templates.content_area', true))
 
-		<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="pages/add-content-area{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="get" data-modal-callback-function="selectContentArea">
+		<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="pages/add-content-area{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="get" data-modal-callback-function="selectContentAreaActions">
 			<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Lang::get('fractal::labels.addContentArea') }}
 		</a>
 

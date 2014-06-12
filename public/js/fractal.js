@@ -243,33 +243,41 @@ function setMainMessage(message, type) {
 	messageTimer = setTimeout("$('.alert-dismissable-hide').fadeOut();", messageShowTime);
 }
 
-function modalConfirm(title, message, action) {
-	$('#modal .modal-title').html(title);
-	$('#modal .modal-body').html('<p>' + message + '</p>');
+function modalConfirm(title, message, action, modalId) {
+	if (modalId === undefined)
+		modalId = "modal";
 
-	$('#modal').modal('show');
+	$('#'+modalId+' .modal-title').html(title);
+	$('#'+modalId+' .modal-body').html('<p>' + message + '</p>');
+	$('#'+modalId+' .modal-footer').show();
 
-	$('#modal .btn-primary').off('click').on('click', action);
+	$('#'+modalId).modal('show');
+
+	if (action !== undefined && action !== null)
+		$('#'+modalId+' .btn-primary').off('click').on('click', action);
 }
 
-function modalAjax(url, type, callbackFunction) {
+function modalAjax(url, type, callbackFunction, modalId) {
+	if (modalId === undefined)
+		modalId = "modal";
+
 	$.ajax({
-		url:      url,
 		type:     type,
+		url:      url,
 		dataType: 'json',
 		success: function(result) {
-			$('#modal .modal-title').html(result.title);
-			$('#modal .modal-body').html(result.content);
+			$('#'+modalId+' .modal-title').html(result.title);
+			$('#'+modalId+' .modal-body').html(result.content);
 
 			if (result.buttons)
-				$('#modal .modal-footer').show();
+				$('#'+modalId+' .modal-footer').show();
 			else
-				$('#modal .modal-footer').hide();
+				$('#'+modalId+' .modal-footer').hide();
 
-			if (callbackFunction !== undefined)
+			if (callbackFunction !== undefined && callbackFunction !== null)
 				window[callbackFunction]();
 
-			$('#modal').modal('show');
+			$('#'+modalId).modal('show');
 		}
 	});
 }

@@ -489,12 +489,14 @@ class Fractal {
 					}
 				}
 
-				if (substr($url, 0, strlen(Config::get('app.url'))) == Config::get('app.url'))
-					$link = '<a href="'.$url.'">'.$name.'</a>';
-				else
-					$link = '<a href="'.$url.'" target="_blank">'.$name.'</a>';
+				if ($url != "") {
+					if (substr($url, 0, strlen(Config::get('app.url'))) == Config::get('app.url'))
+						$link = '<a href="'.$url.'">'.$name.'</a>';
+					else
+						$link = '<a href="'.$url.'" target="_blank">'.$name.'</a>';
 
-				$content = str_replace($fileIds[0][$f], $link, $content);
+					$content = str_replace($fileIds[0][$f], $link, $content);
+				}
 			}
 		}
 
@@ -510,7 +512,8 @@ class Fractal {
 						$url = $file->getUrl();
 				}
 
-				$content = str_replace($fileIds[0][$f], $url, $content);
+				if ($url != "")
+					$content = str_replace($fileIds[0][$f], $url, $content);
 			}
 		}
 
@@ -523,15 +526,16 @@ class Fractal {
 				$title = "";
 				$url   = "";
 				foreach ($pages as $page) {
-					if ((int) $page->slug == (int) $pageSlugs[1][$f]) {
+					if ($page->slug == $pageSlugs[1][$f]) {
 						$title = $page->title;
 						$url   = $page->getUrl();
 					}
 				}
 
-				$link = '<a href="'.$url.'">'.$title.'</a>';
-
-				$content = str_replace($pageSlugs[0][$f], $link, $content);
+				if ($url != "") {
+					$link    = '<a href="'.$url.'">'.$title.'</a>';
+					$content = str_replace($pageSlugs[0][$f], $link, $content);
+				}
 			}
 		}
 
@@ -541,13 +545,14 @@ class Fractal {
 			$pages = ContentPage::whereIn('slug', $pageSlugs[1])->get();
 
 			for ($f = 0; $f < count($pageSlugs[0]); $f++) {
-				$url   = "";
+				$url = "";
 				foreach ($pages as $page) {
-					if ((int) $page->slug == (int) $pageSlugs[1][$f])
+					if ($page->slug == $pageSlugs[1][$f])
 						$url = $page->getUrl();
 				}
 
-				$content = str_replace($pageSlugs[0][$f], $url, $content);
+				if ($url != "")
+					$content = str_replace($pageSlugs[0][$f], $url, $content);
 			}
 		}
 
@@ -601,9 +606,10 @@ class Fractal {
 					}
 				}
 
-				$image = '<img src="'.$url.'" alt="'.$name.'" title="'.$name.'" />';
-
-				$content = str_replace($fileIds[0][$f], $image, $content);
+				if ($url != "") {
+					$image   = '<img src="'.$url.'" alt="'.$name.'" title="'.$name.'" />';
+					$content = str_replace($fileIds[0][$f], $image, $content);
+				}
 			}
 		}
 

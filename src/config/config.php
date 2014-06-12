@@ -52,19 +52,20 @@ return array(
 	*/
 	'controllerMethods' => array(
 		'get'  => array(
-			'pages/get-content-area/{id}'   => 'Regulus\Fractal\PagesController@getContentArea',
-			'pages/add-content-area/{id?}'  => 'Regulus\Fractal\PagesController@addContentArea',
-			'users/ban/{id}'                => 'Regulus\Fractal\UsersController@ban',
-			'users/unban/{id}'              => 'Regulus\Fractal\UsersController@unban',
+			'pages/add-content-area/{id?}'   => 'Regulus\Fractal\PagesController@addContentArea',
+			'pages/get-content-area/{id}'    => 'Regulus\Fractal\PagesController@getContentArea',
+			'pages/delete-content-area/{id}' => 'Regulus\Fractal\PagesController@deleteContentArea',
+			'users/ban/{id}'                 => 'Regulus\Fractal\UsersController@ban',
+			'users/unban/{id}'               => 'Regulus\Fractal\UsersController@unban',
 		),
 		'post' => array(
-			'menus/search'                  => 'Regulus\Fractal\MenusController@search',
-			'pages/search'                  => 'Regulus\Fractal\PagesController@search',
-			'pages/layout-tags'             => 'Regulus\Fractal\PagesController@layoutTags',
-			'pages/render-markdown-content' => 'Regulus\Fractal\PagesController@renderMarkdownContent',
-			'files/search'                  => 'Regulus\Fractal\FilesController@search',
-			'users/search'                  => 'Regulus\Fractal\UsersController@search',
-			'user-roles/search'             => 'Regulus\Fractal\UserRolesController@search',
+			'menus/search'                   => 'Regulus\Fractal\MenusController@search',
+			'pages/search'                   => 'Regulus\Fractal\PagesController@search',
+			'pages/layout-tags'              => 'Regulus\Fractal\PagesController@layoutTags',
+			'pages/render-markdown-content'  => 'Regulus\Fractal\PagesController@renderMarkdownContent',
+			'files/search'                   => 'Regulus\Fractal\FilesController@search',
+			'users/search'                   => 'Regulus\Fractal\UsersController@search',
+			'user-roles/search'              => 'Regulus\Fractal\UserRolesController@search',
 		),
 	),
 

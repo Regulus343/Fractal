@@ -43,6 +43,7 @@ return array(
 	'menu'                 => 'Menu',
 	'menuItem'             => 'Menu Item',
 	'page'                 => 'Page',
+	'contentArea'          => 'Content Area',
 	'file'                 => 'File',
 	'filename'             => 'Filename',
 	'image'                => 'Image',

@@ -11,7 +11,7 @@
 				<div class="info">
 					@if (!$contentArea->contentPages()->count())
 						<div class="actions">
-							<span class="glyphicon glyphicon-remove red" title="{{ Lang::get('fractal::labels.deleteContentArea') }}"></span>
+							<span class="glyphicon glyphicon-remove red delete" title="{{ Lang::get('fractal::labels.deleteContentArea') }}"></span>
 						</div>
 					@endif
 

@@ -270,4 +270,17 @@ class PagesController extends BaseController {
 		return ContentArea::find($id)->toJson();
 	}
 
+	public function deleteContentArea($id)
+	{
+		$contentArea = ContentArea::find($id);
+		if ($contentArea) {
+			if (!$contentArea->contentPages()->count()) {
+				$contentArea->delete();
+				return "Success";
+			}
+		}
+
+		return "Error";
+	}
+
 }
