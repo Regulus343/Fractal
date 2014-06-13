@@ -20,6 +20,7 @@ class CreateContentViewsTable extends Migration {
 			$table->string('content_type', 72);
 			$table->string('ip_address', 64);
 			$table->string('user_agent');
+			$table->integer('views')->default(1);
 			$table->timestamps();
 		});
 	}

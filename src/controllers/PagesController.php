@@ -230,6 +230,8 @@ class PagesController extends BaseController {
 
 		Site::set('title', $page->title);
 
+		$page->logView();
+
 		return View::make(Config::get('fractal::pageView'))->with('page', $page);
 	}
 

@@ -248,4 +248,24 @@ class ContentPage extends BaseModel {
 		return Fractal::dateTimeSet($this->updated_at) ? date($dateFormat, strtotime($this->updated_at)) : date($dateFormat, strtotime($this->created_at));
 	}
 
+	/**
+	 * Log the page view.
+	 *
+	 * @return void
+	 */
+	public function logView()
+	{
+		ContentView::log($this);
+	}
+
+	/**
+	 * Get the number of page views.
+	 *
+	 * @return void
+	 */
+	public function getViews()
+	{
+		return ContentView::getViewsForItem($this);
+	}
+
 }
