@@ -73,6 +73,15 @@ class SettingsTableSeeder extends Seeder {
 				'updated_at'    => $timestamp,
 			),
 			array(
+				'name'          => 'Display Unique Content Views',
+				'value'         => true,
+				'type'          => 'Boolean',
+				'developer'     => true,
+				'display_order' => $defaultDisplayOrder,
+				'created_at'    => $timestamp,
+				'updated_at'    => $timestamp,
+			),
+			array(
 				'name'          => 'Default Image Thumbnail Size',
 				'value'         => 120,
 				'type'          => 'Integer',

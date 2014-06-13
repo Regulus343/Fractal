@@ -268,4 +268,14 @@ class ContentPage extends BaseModel {
 		return ContentView::getViewsForItem($this);
 	}
 
+	/**
+	 * Get the number of unique page views.
+	 *
+	 * @return void
+	 */
+	public function getUniqueViews()
+	{
+		return ContentView::getUniqueViewsForItem($this);
+	}
+
 }

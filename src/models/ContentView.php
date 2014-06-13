@@ -85,9 +85,10 @@ class ContentView extends BaseModel {
 	 * Get the number of views for a content item.
 	 *
 	 * @param  object   $contentItem
+	 * @param  boolean  $unique
 	 * @return integer
 	 */
-	public static function getViewsForItem($contentItem)
+	public static function getViewsForItem($contentItem, $unique = false)
 	{
 		//require an object with an ID
 		if (!is_object($contentItem) || !isset($contentItem->id))
@@ -100,10 +101,27 @@ class ContentView extends BaseModel {
 
 		$views = static::select(\DB::raw('sum(views) as total'))
 			->where('content_id', $contentId)
-			->where('content_type', $contentType)
-			->first();
+			->where('content_type', $contentType);
+
+		if ($unique) {
+			$views = $views->groupBy('ip_address')->get();
+			return $views->count();
+		} else {
+			$views = $views->first();
+		}
 
 		return (int) $views->total;
+	}
+
+	/**
+	 * Get the number of views for a content item.
+	 *
+	 * @param  object   $contentItem
+	 * @return integer
+	 */
+	public static function getUniqueViewsForItem($contentItem)
+	{
+		return static::getViewsForItem($contentItem, true);
 	}
 
 	/**
