@@ -90,6 +90,10 @@ return array(
 				'sort'      => 'active',
 			),
 			array(
+				'label'     => 'Views',
+				'method'    => 'getViews()',
+			),
+			array(
 				'label'     => 'Last Updated',
 				'method'    => 'getLastUpdatedDate()',
 				'sort'      => 'updated_at',
