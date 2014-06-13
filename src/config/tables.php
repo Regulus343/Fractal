@@ -92,6 +92,7 @@ return array(
 			array(
 				'label'     => (Fractal::getSetting('Display Unique Content Views') ? 'Unique ' : '').'Views',
 				'method'    => (Fractal::getSetting('Display Unique Content Views') ? 'getUniqueViews()' : 'getViews()'),
+				'bodyClass' => 'text-align-right',
 			),
 			array(
 				'label'     => 'Last Updated',

@@ -37,9 +37,7 @@ class PagesController extends BaseController {
 			$pages->where(function($query) use ($data) {
 				$query
 					->where('title', 'like', $data['likeTerms'])
-					->orWhere('slug', 'like', $data['likeTerms'])
-					->orWhere('content', 'like', $data['likeTerms'])
-					->orWhere('side_content', 'like', $data['likeTerms']);
+					->orWhere('slug', 'like', $data['likeTerms']);
 			});
 		}
 		$pages = $pages->paginate($data['itemsPerPage']);
@@ -72,9 +70,7 @@ class PagesController extends BaseController {
 			$pages->where(function($query) use ($data) {
 				$query
 					->where('title', 'like', $data['likeTerms'])
-					->orWhere('slug', 'like', $data['likeTerms'])
-					->orWhere('content', 'like', $data['likeTerms'])
-					->orWhere('side_content', 'like', $data['likeTerms']);
+					->orWhere('slug', 'like', $data['likeTerms']);
 			});
 		}
 		$pages = $pages->paginate($data['itemsPerPage']);
