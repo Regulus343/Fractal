@@ -1,6 +1,6 @@
 <script id="menu-item-template" type="text/x-handlebars-template">
 	<fieldset id="menu-item-{{number}}" data-item-number="{{number}}" data-item-id="{{id}}">
-		<legend><?=Lang::get('fractal::labels.menuItem')?> {{number}}</legend>
+		<legend><?=Lang::get('fractal::labels.menuItem')?></legend>
 
 		<?=Form::hidden('items.{{number}}.id')?>
 

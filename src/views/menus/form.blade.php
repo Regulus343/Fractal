@@ -110,11 +110,10 @@
 				if (menuItemHierarchy[menuItemLevel][itemNumber] === undefined)
 					menuItemHierarchy[menuItemLevel][itemNumber] = parentNumber;
 
-				menuItemHierarchy[menuItemLevel].push();
-
-				if (menuItemLevel) {
+				if (menuItemLevel)
 					$(this).attr('class', 'indent-level-'+menuItemLevel);
-				}
+				else
+					$(this).removeAttr('class');
 			});
 
 			return menuItemHierarchy;
