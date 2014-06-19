@@ -4,48 +4,130 @@
 
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$('.item-type').change(function(){
-				var itemID = $(this).attr('id').replace('item-', '').replace('-type', '');
+			Formation.loadTemplates('#menu-items', $.parseJSON('{{ Form::getJsonValues('items') }}'), menuItemTemplateCallback);
+		});
+
+		var menuItemLevel = 0;
+		var menuItemTemplateCallback = function(item, data) {
+			//order menu items under their parent menu items and by display order
+			if (Formation.allItemsLoaded())
+				formatItemHierarchy();
+
+			if (data.type == "URI") {
+				item.find('.uri-area').removeClass('hidden');
+				item.find('.page-area').addClass('hidden');
+			} else {
+				item.find('.uri-area').addClass('hidden');
+				item.find('.page-area').removeClass('hidden');
+			}
+
+			item.find('.field-type').change(function(){
 				if ($(this).val() == "URI") {
-					$('#item-'+itemID+'-uri-area').removeClass('hidden');
-					$('#item-'+itemID+'-page-area').addClass('hidden');
+					item.find('.uri-area').removeClass('hidden');
+					item.find('.page-area').addClass('hidden');
 				} else if ($(this).val() == "Content Page") {
-					$('#item-'+itemID+'-uri-area').addClass('hidden');
-					$('#item-'+itemID+'-page-area').removeClass('hidden');
+					item.find('.uri-area').addClass('hidden');
+					item.find('.page-area').removeClass('hidden');
 				} else {
-					$('#item-'+itemID+'-uri-area').addClass('hidden');
-					$('#item-'+itemID+'-page-area').addClass('hidden');
+					item.find('.uri-area').addClass('hidden');
+					item.find('.page-area').addClass('hidden');
 				}
 			});
 
-			Formation.loadTemplates('#menu-items', $.parseJSON('{{ Form::getJsonValues('items') }}'));
+			item.find('.field-parent-id').change(function(){
+				formatItemHierarchy();
 
-			<?php /*@foreach (Form::getDefaultsObject('items') as $item)
-				console.log('{{ $item->id }}');
+				$('html,body').animate({
+					scrollTop: (item.offset().top - 180) + 'px'
+				}, 750);
+			});
 
-				var source   = $("#item-template").html();
-				var template = Handlebars.compile(source);
-				var context  = {id: "{{ $item->id }}"};
-				var html     = template(context);
+			item.find('.field-display-order').change(function(){
+				formatItemHierarchy();
 
-				$('#menu-items').append(html);
+				$('html,body').animate({
+					scrollTop: (item.offset().top - 180) + 'px'
+				}, 750);
+			});
+		};
 
-				@foreach ($item as $field => $value)
-					$('#items-{{ $item->id }}-{{ str_replace('_', '-', $field) }}').val('{{ $value }}');
-					//console.log('{{ $field }}');
-					//console.log('{{ $value }}');
-					//console.log('------------');
-				@endforeach
+		function formatItemHierarchy() {
+			var menuItemHierarchy = getMenuItemHierarchy();
+			var positionedItems   = [];
 
-				@if ($item->type == "URI")
-					$('#item-{{ $item->id }} .uri-area').removeClass('hidden');
-					$('#item-{{ $item->id }} .page-area').addClass('hidden');
-				@else
-					$('#item-{{ $item->id }} .uri-area').addClass('hidden');
-					$('#item-{{ $item->id }} .page-area').removeClass('hidden');
-				@endif
-			@endforeach*/ ?>
-		});
+			for (level = 0; level < menuItemHierarchy.length; level++) {
+				var itemNumbers = menuItemHierarchy[level];
+				for (var itemNumber in itemNumbers)
+				{
+					var parentNumber = itemNumbers[itemNumber];
+					if ($.inArray(itemNumber, positionedItems) < 0) {
+						var item           = $('#menu-items fieldset[data-item-number="'+itemNumber+'"]');
+						var lastItemNumber = 0;
+						for (var itemNumberMatch in itemNumbers) {
+							if (itemNumberMatch != itemNumber) {
+								var parentNumberMatch = itemNumbers[itemNumberMatch];
+								if (parentNumberMatch == parentNumber && $.inArray(itemNumberMatch, positionedItems) >= 0) {
+									var itemMatch      = $('#menu-items fieldset[data-item-number="'+itemNumberMatch+'"]');
+									var itemOrder      = parseInt(item.find('.field-display-order').val());
+									var itemMatchOrder = parseInt(itemMatch.find('.field-display-order').val());
+									if (itemOrder > itemMatchOrder)
+										lastItemNumber = itemNumberMatch;
+								}
+							}
+						}
+
+						if (lastItemNumber) {
+							item.insertAfter($('#menu-items fieldset[data-item-number="'+lastItemNumber+'"]'));
+							positionedItems.push(itemNumber);
+						} else {
+							if (parentNumber) {
+								item.insertAfter($('#menu-items fieldset[data-item-number="'+parentNumber+'"]'));
+								positionedItems.push(itemNumber);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		function getMenuItemHierarchy() {
+			var menuItemHierarchy = [];
+
+			$('#menu-items fieldset').each(function(){
+				menuItemLevel    = 0;
+				var itemNumber   = $(this).attr('data-item-number');
+				var parentId     = $(this).find('.field-parent-id').val();
+				var parentNumber = parseInt($('#menu-items fieldset[data-item-id="'+parentId+'"]').attr('data-item-number'));
+
+				if (isNaN(parentNumber))
+					parentNumber = 0;
+
+				addMenuItemLevel(parentId);
+
+				if (menuItemHierarchy[menuItemLevel] === undefined)
+					menuItemHierarchy[menuItemLevel] = [];
+
+				if (menuItemHierarchy[menuItemLevel][itemNumber] === undefined)
+					menuItemHierarchy[menuItemLevel][itemNumber] = parentNumber;
+
+				menuItemHierarchy[menuItemLevel].push();
+
+				if (menuItemLevel) {
+					$(this).attr('class', 'indent-level-'+menuItemLevel);
+				}
+			});
+
+			return menuItemHierarchy;
+		}
+
+		function addMenuItemLevel(id) {
+			if (id != "" && id) {
+				menuItemLevel ++;
+				addMenuItemLevel($('#menu-items fieldset[data-item-id="'+id+'"]').find('.field-parent-id').val());
+			}
+
+			return menuItemLevel;
+		}
 	</script>
 
 	{{ Form::openResource() }}
@@ -69,76 +151,16 @@
 
 		@include(Fractal::view('menus.templates.menu_item', true))
 
-		<a href="" class="btn btn-default pull-right">
+		<a href="" class="btn btn-primary add-menu-item pull-right">
 			<span class="glyphicon glyphicon-plus"></span>&nbsp; {{ Lang::get('fractal::labels.addMenuItem') }}
 		</a>
-		<div class="clear"></div>
 
-		<?php /*@if (isset($menu))
-			@foreach ($menu->items as $item)
-				<fieldset>
-					<div class="row">
-						<div class="col-md-12">
-							{{ Form::field('items.'.$item->id.'.label') }}
-						</div>
-					</div>
+		<div class="row">
+			<div class="col-md-12">
+				{{ Form::field(Form::submitResource(Lang::get('fractal::labels.menu'), (isset($update) && $update)), 'button') }}
+			</div>
+		</div>
 
-					<div class="row">
-						<div class="col-md-6">
-							{{ Form::field('items.'.$item->id.'.type', 'select', array('class' => 'item-type', 'options' => $typeOptions, 'null-option' => 'Select a type')) }}
-						</div><div class="col-md-6">
-							<div id="item-{{ $item->id }}-uri-area"{{ HTML::hiddenArea(Form::value('items.'.$item->id.'.type') != "URI") }}>
-								{{ Form::field('items.'.$item->id.'.uri', 'text', array('label' => 'URI')) }}
-							</div>
-
-							<div id="item-{{ $item->id }}-page-area"{{ HTML::hiddenArea(Form::value('items.'.$item->id.'.type') != "Content Page") }}>
-								{{ Form::field('items.'.$item->id.'.page_id', 'select', array('label' => 'Page', 'options' => $pageOptions, 'null-option' => 'Select a page')) }}
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-6">
-							{{ Form::field('items.'.$item->id.'.parent_id', 'select', array('label' => 'Parent Menu Item', 'options' => Form::prepOptions($menu->items, array('id', 'label')), 'null-option' => 'Select a parent menu item')) }}
-						</div><div class="col-md-6">
-							{{ Form::field('items.'.$item->id.'.display_order', 'select', array('options' => Form::numberOptions(1, 100))) }}
-						</div>
-					</div>
-
-					@if (Site::developer())
-						<div class="row">
-							<div class="col-md-6">
-								{{ Form::field('items.'.$item->id.'.icon') }}
-							</div><div class="col-md-6">
-								{{ Form::field('items.'.$item->id.'.class') }}
-							</div>
-						</div>
-					@else
-						{{ Form::hidden('items.'.$item->id.'.icon') }}
-						{{ Form::hidden('items.'.$item->id.'.class') }}
-					@endif
-
-					@if (Auth::is('admin'))
-						<div class="row">
-							<div class="col-md-6">
-								{{ Form::field('items.'.$item->id.'.auth_status', 'select', array('options' => array('All', 'Logged In', 'Logged Out'))) }}
-							</div><div class="col-md-6">
-								{{ Form::field('items.'.$item->id.'.auth_roles') }}
-							</div>
-						</div>
-					@else
-						{{ Form::hidden('items.'.$item->id.'.auth_status') }}
-						{{ Form::hidden('items.'.$item->id.'.auth_roles') }}
-					@endif
-
-					{{ Form::field('items.'.$item->id.'.active', 'checkbox') }}
-
-					{{ Form::hidden('items.'.$item->id.'.id') }}
-				</fieldset>
-			@endforeach
-		@endif*/ ?>
-
-		{{ Form::field(Form::submitResource(Lang::get('fractal::labels.menu'), (isset($update) && $update)), 'button') }}
 	{{ Form::close() }}
 
 @stop

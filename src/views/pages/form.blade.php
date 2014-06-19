@@ -68,7 +68,6 @@
 			});
 		}
 
-		//create load template callback function and load templates
 		var contentAreaTemplateCallback = function(item, data) {
 			getLayoutTags();
 			setupContentTypeFields();
@@ -304,6 +303,7 @@
 				{{ Form::field(Form::submitResource(Lang::get('fractal::labels.page'), (isset($update) && $update)), 'button') }}
 			</div>
 		</div>
+
 	{{ Form::close() }}
 
 @stop

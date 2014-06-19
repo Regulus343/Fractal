@@ -4,6 +4,8 @@
 
 		<?=Form::hidden('content_areas.{{number}}.id')?>
 
+		<?=Form::hidden('content_areas.{{number}}.content')?>
+
 		<div class="row">
 			<div class="col-md-4">
 				<?=Form::field('content_areas.{{number}}.title')?>
@@ -41,7 +43,5 @@
 		<a href="" class="btn btn-danger btn-xs remove-template-item pull-right">
 			<span class="glyphicon glyphicon-remove-circle"></span>&nbsp; <?=Lang::get('fractal::labels.removeContentArea')?>
 		</a>
-
-		<?=Form::hidden('content_areas.{{number}}.content')?>
 	</fieldset>
 </script>

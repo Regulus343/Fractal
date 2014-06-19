@@ -106,6 +106,10 @@ fieldset legend {
 	line-height: 1em;
 }
 
+fieldset.indent-level-1 { margin-left: 32px; }
+fieldset.indent-level-2 { margin-left: 64px; }
+fieldset.indent-level-3 { margin-left: 96px; }
+
 .red { color: #900; }
 .green { color: #060; }
 

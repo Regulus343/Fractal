@@ -2,7 +2,7 @@
 
 return array(
 
-	'version'              => '0.37',
+	'version'              => '0.39',
 
 	'create'               => 'Create',
 	'edit'                 => 'Edit',
@@ -15,6 +15,7 @@ return array(
 	'createMenu'           => 'Create Menu',
 	'editMenu'             => 'Edit Menu',
 	'deleteMenu'           => 'Delete Menu',
+	'removeMenuItem'       => 'Remove Menu Item',
 
 	'createPage'           => 'Create Page',
 	'editPage'             => 'Edit Page',

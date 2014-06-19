@@ -66,7 +66,7 @@ class Menu extends BaseModel {
 	 */
 	public function items()
 	{
-		return $this->hasMany('Regulus\Fractal\MenuItem')->orderBy('display_order');
+		return $this->hasMany('Regulus\Fractal\MenuItem')->orderBy('parent_id')->orderBy('display_order');
 	}
 
 	/**
