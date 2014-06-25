@@ -39,6 +39,9 @@
 {{-- Moment --}}
 <script type="text/javascript" src="{{ Site::js('moment.min', 'regulus/fractal') }}"></script>
 
+{{-- Inflection --}}
+<script type="text/javascript" src="{{ Site::js('inflection', 'regulus/fractal') }}"></script>
+
 {{-- Date Time Picker CSS --}}
 <link type="text/css" rel="stylesheet" href="{{ Site::css('bootstrap-datetimepicker.min', 'regulus/fractal') }}" />
 

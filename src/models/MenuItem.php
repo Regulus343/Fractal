@@ -18,6 +18,29 @@ class MenuItem extends BaseModel {
 	protected $table = 'menu_items';
 
 	/**
+	 * The fillable fields for the model.
+	 *
+	 * @var    array
+	 */
+	protected $fillable = array(
+		'name',
+		'cms',
+		'menu_id',
+		'parent_id',
+		'type',
+		'page_id',
+		'uri',
+		'label',
+		'icon',
+		'class',
+		'additional_info',
+		'display_order',
+		'auth_status',
+		'auth_roles',
+		'active',
+	);
+
+	/**
 	 * The menu that the menu items belong to.
 	 *
 	 * @return Menu

@@ -29,14 +29,14 @@ class UsersController extends BaseController {
 		Site::setMulti(array('section', 'subSection', 'title'), $section);
 
 		//set content type and views location
-		Fractal::setContentType('users', true);
+		Fractal::setContentType('user', true);
 	}
 
 	public function index()
 	{
 		$data = Fractal::setupPagination('Users');
 
-		$users = User::where('deleted', false)->orderBy($data['sortField'], $data['sortOrder']);
+		$users = User::orderBy($data['sortField'], $data['sortOrder']);
 		if ($data['sortField'] == "last_name") $users->orderBy('first_name', $data['sortOrder']);
 		if ($data['sortField'] != "id")        $users->orderBy('id', 'asc');
 		if ($data['terms'] != "") {
@@ -73,7 +73,7 @@ class UsersController extends BaseController {
 	{
 		$data = Fractal::setupPagination('Users');
 
-		$users = User::where('deleted', false)->orderBy($data['sortField'], $data['sortOrder']);
+		$users = User::orderBy($data['sortField'], $data['sortOrder']);
 		if ($data['sortField'] == "last_name") $users->orderBy('first_name', $data['sortOrder']);
 		if ($data['sortField'] != "id")        $users->orderBy('id', 'asc');
 		if ($data['terms'] != "") {
@@ -301,12 +301,7 @@ class UsersController extends BaseController {
 		if (empty($user))
 			return $result;
 
-		if ($user->deleted)
-			return $result;
-
-		$user->deleted    = true;
-		$user->deleted_at = date('Y-m-d H:i:s');
-		$user->save();
+		$user->delete();
 
 		Activity::log(array(
 			'contentId'   => $user->id,

@@ -24,7 +24,7 @@ class PagesController extends BaseController {
 		Site::setMulti(array('subSection', 'title'), $subSection);
 
 		//set content type and views location
-		Fractal::setContentType('pages', true);
+		Fractal::setContentType('page', true);
 	}
 
 	public function index()
@@ -115,7 +115,7 @@ class PagesController extends BaseController {
 			$page = ContentPage::createNew();
 
 			Activity::log(array(
-				'contentID'   => $page->id,
+				'contentId'   => $page->id,
 				'contentType' => 'ContentPage',
 				'description' => 'Created a Page',
 				'details'     => 'Title: '.$page->title,

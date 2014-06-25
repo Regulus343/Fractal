@@ -26,9 +26,9 @@ class UserRolesController extends BaseController {
 		Site::set('section', 'Users');
 		Site::setMulti(array('subSection', 'title'), $subSection);
 
-		Fractal::setContentType('user-roles', true);
+		Fractal::setContentType('user-role', true);
 
-		Site::set('defaultSorting', array('field' => 'display_order', 'order' => 'desc'));
+		Site::set('defaultSorting', array('field' => 'display_order', 'order' => 'asc'));
 
 		Fractal::setViewsLocation('users.roles');
 	}
@@ -201,7 +201,7 @@ class UserRolesController extends BaseController {
 		$existingUsers = $role->users()->count();
 		if ($existingUsers) {
 			$messageData = array(
-				'item'        => Lang::get('fractal::labels.role'),
+				'item'        => Lang::get('fractal::labels.userRole'),
 				'total'       => $existingUsers,
 				'relatedItem' => Format::pluralize(strtolower(Lang::get('fractal::labels.user')), $existingUsers),
 			);

@@ -24,7 +24,7 @@ class MenusController extends BaseController {
 		Site::setMulti(array('subSection', 'title'), $subSection);
 
 		//set content type and views location
-		Fractal::setContentType('menus', true);
+		Fractal::setContentType('menu', true);
 
 		Site::set('defaultSorting', array('field' => 'cms'));
 	}
@@ -101,9 +101,7 @@ class MenusController extends BaseController {
 		if (Form::validated()) {
 			$messages['success'] = Lang::get('fractal::messages.successCreated', array('item' => Format::a('menu')));
 
-			//save menu
-			$menu = new Menu;
-			$menu = static::fill($menu);
+			$menu = Menu::createNew();
 
 			Activity::log(array(
 				'contentId'   => $menu->id,
@@ -155,8 +153,7 @@ class MenusController extends BaseController {
 		if (Form::validated()) {
 			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Format::a('menu')));
 
-			//save menu
-			$menu = static::fill($menu);
+			$menu->saveData();
 
 			Activity::log(array(
 				'contentId'   => $menu->id,

@@ -45,7 +45,6 @@ $(document).ready(function(){
 
 	/* Setup Number Fields */
 	$('input[type="number"], input.number').keyup(function(){
-		console.log($(this).val());
 		if (isNaN($(this).val()) || $(this).val() == "") $(this).val('');
 	}).change(function(){
 		if (isNaN($(this).val()) || $(this).val() == "") $(this).val('');

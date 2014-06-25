@@ -261,7 +261,7 @@ class ContentPage extends BaseModel {
 	/**
 	 * Get the number of page views.
 	 *
-	 * @return void
+	 * @return Collection
 	 */
 	public function getViews()
 	{
@@ -271,7 +271,7 @@ class ContentPage extends BaseModel {
 	/**
 	 * Get the number of unique page views.
 	 *
-	 * @return void
+	 * @return Collection
 	 */
 	public function getUniqueViews()
 	{

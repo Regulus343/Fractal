@@ -55,8 +55,8 @@ return array(
 			'pages/add-content-area/{id?}'   => 'Regulus\Fractal\PagesController@addContentArea',
 			'pages/get-content-area/{id}'    => 'Regulus\Fractal\PagesController@getContentArea',
 			'pages/delete-content-area/{id}' => 'Regulus\Fractal\PagesController@deleteContentArea',
-			'users/ban/{id}'                 => 'Regulus\Fractal\UsersController@ban',
-			'users/unban/{id}'               => 'Regulus\Fractal\UsersController@unban',
+			'users/{id}/ban'                 => 'Regulus\Fractal\UsersController@ban',
+			'users/{id}/unban'               => 'Regulus\Fractal\UsersController@unban',
 		),
 		'post' => array(
 			'menus/search'                   => 'Regulus\Fractal\MenusController@search',

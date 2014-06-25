@@ -27,11 +27,12 @@ return array(
 
 	'confirmActivate'        => 'Are you sure you want to activate this :item?',
 	'confirmDelete'          => 'Are you sure you want to delete this :item?',
+	'confirmDeleteWithName'  => 'Are you sure you want to delete the :item entitled &ldquo;<strong>:name</strong>&rdquo;?',
 	'confirmDeletePermanent' => 'This action cannot be undone.',
 	'confirmUndelete'        => 'Are you sure you want to undelete this :item?',
 
-	'confirmBanUser'         => 'Are you sure you want to ban this user?',
-	'confirmUnbanUser'       => 'Are you sure you want to unban this user?',
+	'confirmBanUser'         => 'Are you sure you want to ban the user named &ldquo;<strong>:name</strong>&rdquo;?',
+	'confirmUnbanUser'       => 'Are you sure you want to unban the user named &ldquo;<strong>:name</strong>&rdquo;?',
 
 	'displayingItems'        => 'Displaying <strong>:total</strong> :items.',
 	'displayingItemsOfTotal' => 'Displaying <strong>:start - :end</strong> of <strong>:total</strong> :items.',

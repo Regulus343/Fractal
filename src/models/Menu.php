@@ -16,13 +16,6 @@ class Menu extends BaseModel {
 	protected $table = 'menus';
 
 	/**
-	 * The foreign key for the model.
-	 *
-	 * @var    string
-	 */
-	protected $foreignKey = 'menu_id';
-
-	/**
 	 * The fillable fields for the model.
 	 *
 	 * @var    array

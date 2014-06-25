@@ -45,15 +45,19 @@ return array(
 						'icon'       => 'edit',
 						'uri'        => Config::get('fractal::baseUri').'/menus/:id/edit',
 						'attributes' => array(
-							'title'        => Lang::get('fractal::labels.editMenu'),
+							'title'          => Lang::get('fractal::labels.editMenu'),
 						),
 					),
 					array(
 						'icon'       => 'remove',
-						'class'      => 'delete-menu red',
+						'class'      => 'action-item red',
 						'attributes' => array(
-							'data-menu-id' => ':id',
-							'title'        => Lang::get('fractal::labels.deleteMenu'),
+							'data-item-id'         => ':id',
+							'data-item-name'       => ':title',
+							'data-action'          => 'delete',
+							'data-action-type'     => 'delete',
+							'data-action-message'  => 'confirmDelete',
+							'title'                => Lang::get('fractal::labels.deleteMenu'),
 						),
 					),
 				),
@@ -120,10 +124,14 @@ return array(
 					),
 					array(
 						'icon'       => 'remove',
-						'class'      => 'delete-page red',
+						'class'      => 'action-item red',
 						'attributes' => array(
-							'data-page-id' => ':id',
-							'title'        => Lang::get('fractal::labels.deletePage'),
+							'data-item-id'        => ':id',
+							'data-item-name'      => ':title',
+							'data-action'         => 'delete',
+							'data-action-type'    => 'delete',
+							'data-action-message' => 'confirmDelete',
+							'title'               => Lang::get('fractal::labels.deletePage'),
 						),
 					),
 				),
@@ -188,10 +196,14 @@ return array(
 					),
 					array(
 						'icon'       => 'remove',
-						'class'      => 'delete-file red',
+						'class'      => 'action-item red',
 						'attributes' => array(
-							'data-file-id' => ':id',
-							'title'        => Lang::get('fractal::labels.deleteFile'),
+							'data-item-id'        => ':id',
+							'data-item-name'      => ':name',
+							'data-action'         => 'delete',
+							'data-action-type'    => 'delete',
+							'data-action-message' => 'confirmDelete',
+							'title'               => Lang::get('fractal::labels.deleteFile'),
 						),
 					),
 				),
@@ -269,7 +281,7 @@ return array(
 					),
 					array(
 						'icon'           => 'ban-circle',
-						'class'          => 'ban-user red',
+						'class'          => 'action-item ban-user red',
 						'classModifiers' => array(
 							'hidden' => array(
 								'banned' => true,
@@ -279,13 +291,16 @@ return array(
 							),
 						),
 						'attributes'     => array(
-							'data-user-id' => ':id',
-							'title'        => Lang::get('fractal::labels.banUser'),
+							'data-item-id'         => ':id',
+							'data-item-name'       => ':username',
+							'data-action-function' => 'actionBanUser',
+							'data-action-message'  => 'confirmBanUser',
+							'title'                => Lang::get('fractal::labels.banUser'),
 						),
 					),
 					array(
 						'icon'           => 'ok-circle',
-						'class'          => 'unban-user',
+						'class'          => 'action-item unban-user',
 						'classModifiers' => array(
 							'hidden'       => array(
 								'banned' => false,
@@ -295,21 +310,28 @@ return array(
 							),
 						),
 						'attributes'     => array(
-							'data-user-id' => ':id',
-							'title'        => Lang::get('fractal::labels.unbanUser'),
+							'data-item-id'         => ':id',
+							'data-item-name'       => ':username',
+							'data-action-function' => 'actionUnbanUser',
+							'data-action-message'  => 'confirmUnbanUser',
+							'title'                => Lang::get('fractal::labels.unbanUser'),
 						),
 					),
 					array(
 						'icon'           => 'remove',
-						'class'          => 'delete-user red',
+						'class'          => 'action-item red',
 						'classModifiers' => array(
 							'invisible'    => array(
 								'id' => 1,
 							),
 						),
 						'attributes'     => array(
-							'data-user-id' => ':id',
-							'title'        => Lang::get('fractal::labels.deleteUser'),
+							'data-item-id'        => ':id',
+							'data-item-name'      => ':username',
+							'data-action'         => 'delete',
+							'data-action-type'    => 'delete',
+							'data-action-message' => 'confirmDelete',
+							'title'               => Lang::get('fractal::labels.deleteUser'),
 						),
 					),
 				),
@@ -367,22 +389,26 @@ return array(
 					),
 					array(
 						'icon'       => 'remove',
-						'class'      => 'delete-user-role red',
+						'class'      => 'action-item red',
 						'classModifiers' => array(
 							'invisible'    => array(
 								'id' => 1,
 							),
 						),
 						'attributes' => array(
-							'data-role-id' => ':id',
-							'title'        => Lang::get('fractal::labels.deleteRole'),
+							'data-item-id'        => ':id',
+							'data-item-name'      => ':title',
+							'data-action'         => 'delete',
+							'data-action-type'    => 'delete',
+							'data-action-message' => 'confirmDelete',
+							'title'               => Lang::get('fractal::labels.deleteRole'),
 						),
 					),
 				),
 			),
 		),
 		'rows' => array(
-			'idPrefix' => 'role',
+			'idPrefix' => 'user-role',
 		),
 	),
 

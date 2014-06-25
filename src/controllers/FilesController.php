@@ -29,7 +29,7 @@ class FilesController extends BaseController {
 		Site::setMulti(array('subSection', 'title'), $subSection);
 
 		//set content type and views location
-		Fractal::setContentType('files', true);
+		Fractal::setContentType('file', true);
 	}
 
 	public function index()

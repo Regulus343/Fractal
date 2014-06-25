@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap.
 
 		created by Cody Jassman
-		version 0.39
-		last updated on June 18, 2014
+		version 0.41
+		last updated on June 25, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -129,7 +129,7 @@ class Fractal {
 	public static function setViewsLocation($directory = null)
 	{
 		if (is_null($directory))
-			$directory = static::getContentType();
+			$directory = Str::plural(static::getContentType());
 
 		static::$viewsLocation = Config::get('fractal::viewsLocation').$directory.'.';
 	}
@@ -427,7 +427,7 @@ class Fractal {
 	public static function getSortableFieldsForTable($name = null)
 	{
 		if (is_null($name))
-			$name = Fractal::getContentType();
+			$name = Str::plural(Fractal::getContentType());
 
 		$fields      = array();
 		$tableConfig = Config::get('fractal::tables.'.$name);
@@ -458,7 +458,7 @@ class Fractal {
 	 */
 	public static function createTable($content = array(), $bodyOnly = false)
 	{
-		return HTML::table(Config::get('fractal::tables.'.static::getContentTypeCamelCase()), $content, $bodyOnly);
+		return HTML::table(Config::get('fractal::tables.'.Str::plural(static::getContentTypeCamelCase())), $content, $bodyOnly);
 	}
 
 	/**
@@ -810,6 +810,9 @@ class Fractal {
 	public static function getMenuArray($name = 'Main')
 	{
 		$menu = Menu::where('name', '=', $name)->first();
+		if (empty($menu))
+			return array();
+
 		return $menu->createArray();
 	}
 
@@ -824,6 +827,9 @@ class Fractal {
 	public static function getMenuMarkup($name = 'Main', $listItemsOnly = false, $class = '')
 	{
 		$menu = Menu::where('name', '=', $name)->first();
+		if (empty($menu))
+			return "";
+
 		return $menu->createMarkup($listItemsOnly, $class);
 	}
 
