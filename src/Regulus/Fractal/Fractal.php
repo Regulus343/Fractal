@@ -565,6 +565,15 @@ class Fractal {
 			}
 		}
 
+		//embed YouTube videos in content
+		preg_match_all('/\[youtube:([A-Za-z0-9\_\-]{11})\]/', $content, $videos);
+		if (isset($videos[0]) && !empty($videos[0])) {
+			for ($v = 0; $v < count($videos[0]); $v++) {
+				$video   = '<iframe width="420" height="315" src="http://www.youtube.com/embed/'.$videos[1][$v].'" frameborder="0" allowfullscreen></iframe>';
+				$content = str_replace($videos[0][$v], $video, $content);
+			}
+		}
+
 		//render to Markdown
 		if (strtolower($contentType) == "markdown")
 			$content = Markdown::parse($content);

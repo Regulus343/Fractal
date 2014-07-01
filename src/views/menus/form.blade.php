@@ -5,6 +5,12 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			Formation.loadTemplates('#menu-items', $.parseJSON('{{ Form::getJsonValues('items') }}'), menuItemTemplateCallback);
+
+			$('.add-menu-item').click(function(e){
+				e.preventDefault();
+
+				Formation.loadNewTemplate('#menu-items', menuItemTemplateCallback);
+			});
 		});
 
 		var menuItemLevel = 0;
@@ -13,12 +19,14 @@
 			if (Formation.allItemsLoaded())
 				formatItemHierarchy();
 
-			if (data.type == "URI") {
-				item.find('.uri-area').removeClass('hidden');
-				item.find('.page-area').addClass('hidden');
-			} else {
-				item.find('.uri-area').addClass('hidden');
-				item.find('.page-area').removeClass('hidden');
+			if (data !== null) {
+				if (data.type == "URI") {
+					item.find('.uri-area').removeClass('hidden');
+					item.find('.page-area').addClass('hidden');
+				} else {
+					item.find('.uri-area').addClass('hidden');
+					item.find('.page-area').removeClass('hidden');
+				}
 			}
 
 			item.find('.field-type').change(function(){
@@ -49,6 +57,14 @@
 					scrollTop: (item.offset().top - 180) + 'px'
 				}, 750);
 			});
+
+			if (data === null) {
+				$('html, body').animate({
+					scrollTop: (item.offset().top - 30) + 'px'
+				}, 750);
+
+				item.find('.field-label').focus();
+			}
 		};
 
 		function formatItemHierarchy() {

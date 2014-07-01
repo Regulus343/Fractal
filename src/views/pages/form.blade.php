@@ -12,6 +12,8 @@
 
 		var contentAreaId;
 
+		var addingContentArea = false;
+
 		$(document).ready(function(){
 
 			@if (!isset($update) || !$update)
@@ -99,15 +101,15 @@
 					$('#markdown-preview').fadeIn();
 				}).on('keydown', function(e){
 					if (e.keyCode == 9) {
-						var myValue = "\t";
-						var startPos = this.selectionStart;
-						var endPos = this.selectionEnd;
+						var myValue   = "\t";
+						var startPos  = this.selectionStart;
+						var endPos    = this.selectionEnd;
 						var scrollTop = this.scrollTop;
-						this.value = this.value.substring(0, startPos) + myValue + this.value.substring(endPos,this.value.length);
+						this.value    = this.value.substring(0, startPos) + myValue + this.value.substring(endPos,this.value.length);
 						this.focus();
 						this.selectionStart = startPos + myValue.length;
-						this.selectionEnd = startPos + myValue.length;
-						this.scrollTop = scrollTop;
+						this.selectionEnd   = startPos + myValue.length;
+						this.scrollTop      = scrollTop;
 
 						e.preventDefault();
 					}
@@ -118,19 +120,21 @@
 				});
 			}
 
-			if (data === null) {
-				$('html,body').animate({
+			if (addingContentArea) {
+				$('html, body').animate({
 					scrollTop: (item.offset().top - 30) + 'px'
 				}, 750);
 
 				item.find('.field-title').focus();
 			}
+
+			addingContentArea = false;
 		};
 
 		var deleteContentArea = function() {
 			$.ajax({
-				url:      baseUrl + '/pages/delete-content-area/' + contentAreaId,
-				success:  function(result) {
+				url:     baseUrl + '/pages/delete-content-area/' + contentAreaId,
+				success: function(result) {
 					if (result == "Success") {
 						$('#modal-secondary').hide();
 						$('#select-content-area li[data-content-area-id="'+contentAreaId+'"]').remove();
@@ -143,12 +147,14 @@
 			$('#select-content-area li').off('click').on('click', function(e){
 				if (!$(e.target).hasClass('delete')) {
 					if ($(this).hasClass('new')) {
+						addingContentArea = true;
 						Formation.loadNewTemplate('#content-areas', contentAreaTemplateCallback);
 					} else {
 						$.ajax({
 							url:      baseUrl + '/pages/get-content-area/' + $(this).attr('data-content-area-id'),
 							dataType: 'json',
 							success:  function(contentArea) {
+								addingContentArea = true;
 								Formation.loadTemplate('#content-areas', contentArea, contentAreaTemplateCallback);
 							}
 						});
@@ -200,6 +206,7 @@
 
 			markdownContentField       = field;
 			markdownContentUpdateTimer = setTimeout(incrementMarkdownContentUpdateTimer, 3000);
+			console.log('rendered!' + Math.random(1, 100000));
 		}
 
 		function incrementMarkdownContentUpdateTimer() {
