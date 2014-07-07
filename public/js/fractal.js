@@ -2,6 +2,12 @@ var contentId;
 var messageShowTime = 5000;
 var searching       = false;
 
+var itemAction;
+var itemActionType;
+var itemActionMessage;
+var itemActionUrl;
+var itemActionFunction;
+
 $(document).ready(function(){
 
 	/* Setup Tooltips */
@@ -45,6 +51,7 @@ $(document).ready(function(){
 
 	/* Setup Number Fields */
 	$('input[type="number"], input.number').keyup(function(){
+		console.log($(this).val());
 		if (isNaN($(this).val()) || $(this).val() == "") $(this).val('');
 	}).change(function(){
 		if (isNaN($(this).val()) || $(this).val() == "") $(this).val('');
@@ -281,6 +288,11 @@ function modalAjax(url, type, callbackFunction, modalId) {
 	});
 }
 
+function capitalizeFirstLetter(string)
+{
+	return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 /* Setup Search and Pagination Functions */
 function searchContent() {
 	if (!searching) {
@@ -291,7 +303,7 @@ function searchContent() {
 		$('.alert-dismissable').addClass('hidden');
 
 		$.ajax({
-			url: baseUrl + '/'+contentType+'/search',
+			url: currentUrl+'/search',
 			type: 'post',
 			data: postData,
 			dataType: 'json',
@@ -373,17 +385,74 @@ function setupPagination() {
 	});
 }
 
-function setupContentTable() {
-	switch (contentType) {
-		case "pages":      setupPagesTable();     break;
-		case "files":      setupFilesTable();     break;
-		case "users":      setupUsersTable();     break;
-		case "user-roles": setupUserRolesTable(); break;
-	}
-}
-
 function formErrorCallback(fieldContainer) {
 	fieldContainer.find('[data-toggle="tooltip"]').tooltip({html: true});
+}
+
+/* Setup Content */
+function setupContentTable() {
+	/* Setup Actions */
+	$('.action-item').click(function(e){
+		e.preventDefault();
+
+		contentId = $(this).attr('data-item-id');
+
+		var itemType = fractalLabels[contentType.replace(/\-/g, '_').camelize(true)].toLowerCase();
+		var itemName = $(this).attr('data-item-name');
+
+		itemAction         = $(this).attr('data-action');
+		itemActionType     = $(this).attr('data-action-type') !== undefined ? $(this).attr('data-action-type') : 'post';
+		itemActionMessage  = $(this).attr('data-action-message');
+		itemActionUrl      = $(this).attr('data-action-url');
+		itemActionFunction = $(this).attr('data-action-function');
+
+		if (itemName !== undefined && itemName != "" && fractalMessages[itemActionMessage+'WithName'] !== undefined)
+			itemActionMessage += 'WithName';
+
+		var confirmTitle   = fractalLabels[itemAction+capitalizeFirstLetter(contentType)];
+		var confirmMessage = fractalMessages[itemActionMessage].replace(':item', itemType);
+
+		if (itemName !== undefined)
+			confirmMessage = confirmMessage.replace(':name', itemName);
+
+		if (itemActionFunction !== undefined)
+			modalConfirm(confirmTitle, confirmMessage, window[itemActionFunction]);
+		else
+			modalConfirm(confirmTitle, confirmMessage, actionItem);
+	});
+
+	/* Setup Tooltips */
+	$('table td.actions a[title]').tooltip();
+}
+
+var actionItem = function(){
+	$('#modal').modal('hide');
+
+	var url = baseUrl + '/'+contentType.pluralize()+'/' + contentId;
+
+	if (itemActionType != "delete")
+		url += '/' + itemAction;
+
+	if (itemActionUrl !== undefined && itemActionUrl != "")
+		url = itemActionUrl;
+
+	$.ajax({
+		url:      url,
+		type:     itemActionType,
+		dataType: 'json',
+		success:  function(result){
+			if (result.resultType == "Success") {
+				$('#'+contentType+'-'+contentId).addClass('hidden');
+
+				setMainMessage(result.message, 'success');
+			} else {
+				setMainMessage(result.message, 'error');
+			}
+		},
+		error: function(){
+			setMainMessage(fractalMessages.errorGeneral, 'error');
+		}
+	});
 }
 
 /* Setup Pages */
@@ -488,10 +557,11 @@ function setupUsersTable() {
 
 var actionBanUser = function(){
 	$('#modal').modal('hide');
+
 	$.ajax({
-		url: baseUrl + '/users/ban/' + contentId,
+		url:      baseUrl + '/users/' + contentId + '/ban',
 		dataType: 'json',
-		success: function(result){
+		success:  function(result){
 			if (result.resultType == "Success") {
 				$('#user-'+contentId).addClass('danger');
 				$('#user-'+contentId+' td.actions a.ban-user').addClass('hidden');
@@ -512,10 +582,11 @@ var actionBanUser = function(){
 
 var actionUnbanUser = function(){
 	$('#modal').modal('hide');
+
 	$.ajax({
-		url: baseUrl + '/users/unban/' + contentId,
+		url:      baseUrl + '/users/' + contentId + '/unban',
 		dataType: 'json',
-		success: function(result){
+		success:  function(result){
 			if (result.resultType == "Success") {
 				$('#user-'+contentId).removeClass('danger');
 				$('#user-'+contentId+' td.actions a.unban-user').addClass('hidden');
