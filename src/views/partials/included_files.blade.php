@@ -59,18 +59,20 @@
 	if (baseUrl === undefined)
 		var baseUrl = "{{ Fractal::url() }}";
 
-	var csrfToken        = '{{ Session::token() }}';
+	var currentUrl       = "{{ Request::url() }}";
+
+	var csrfToken        = "{{ Session::token() }}";
 
 	var fractalLabels    = {{ json_encode(Lang::get('fractal::labels')) }};
 	var fractalMessages  = {{ json_encode(Lang::get('fractal::messages')) }};
 
-	var contentType      = '{{ Fractal::getContentType() }}';
+	var contentType      = "{{ Fractal::getContentType() }}";
 	var page             = {{ Fractal::getCurrentPage() }};
 	var lastPage         = {{ Fractal::getLastPage() }};
 	var previousLastPage = lastPage;
 
-	var sortField        = '{{ Fractal::getContentTypeFilter('sortField', 'id') }}';
-	var sortOrder        = '{{ Fractal::getContentTypeFilter('sortOrder', 'asc') }}';
+	var sortField        = "{{ Fractal::getContentTypeFilter('sortField', 'id') }}";
+	var sortOrder        = "{{ Fractal::getContentTypeFilter('sortOrder', 'asc') }}";
 
 	function strToSlug(string) {
 		var slug = string.toLowerCase()

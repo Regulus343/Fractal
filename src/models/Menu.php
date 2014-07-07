@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
 
+use Aquanode\Formation\Formation as Form;
+
 class Menu extends BaseModel {
 
 	/**
@@ -14,6 +16,13 @@ class Menu extends BaseModel {
 	 * @var    string
 	 */
 	protected $table = 'menus';
+
+	/**
+	 * The foreign key for the model.
+	 *
+	 * @var    string
+	 */
+	protected $foreignKey = 'menu_id';
 
 	/**
 	 * The fillable fields for the model.
@@ -43,11 +52,32 @@ class Menu extends BaseModel {
 	public static function validationRules($id = false)
 	{
 		$rules = array(
-			'name' => array('required', 'unique:menus'),
+			'name' => array('required', 'unique:menus,name'),
 		);
 
 		if ($id)
-			$rules['name'][1] .= ",name,".$id;
+			$rules['name'][1] .= ",".$id;
+
+		if (Form::post()) {
+			foreach (Form::getValuesObject('items') as $number => $values)
+			{
+				if (Form::getValueFromObject('label', $values) != "")
+				{
+					$itemRules = array(
+						'items.'.$number.'.label' => array('required'),
+						'items.'.$number.'.type'  => array('required'),
+					);
+
+					$type = Form::getValueFromObject('type', $values);
+					if ($type != "") {
+						$contentField = $type == "URI" ? "uri" : "page_id";
+						$itemRules['items.'.$number.'.'.$contentField] = array('required');
+					}
+
+					$rules = array_merge($rules, $itemRules);
+				}
+			}
+		}
 
 		return $rules;
 	}

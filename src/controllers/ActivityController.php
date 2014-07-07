@@ -23,7 +23,7 @@ class ActivityController extends BaseController {
 		$subSection = "User Activity";
 		Site::setMulti(array('subSection', 'title'), $subSection);
 
-		Fractal::setContentType('activity');
+		Fractal::setContentType('activities');
 
 		Site::set('defaultSorting', array('order' => 'desc'));
 

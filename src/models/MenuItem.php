@@ -41,6 +41,15 @@ class MenuItem extends BaseModel {
 	);
 
 	/**
+	 * The special typed fields for the model.
+	 *
+	 * @var    array
+	 */
+	protected static $types = array(
+		'active' => 'checkbox',
+	);
+
+	/**
 	 * The menu that the menu items belong to.
 	 *
 	 * @return Menu

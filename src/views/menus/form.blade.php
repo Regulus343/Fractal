@@ -19,7 +19,7 @@
 			if (Formation.allItemsLoaded())
 				formatItemHierarchy();
 
-			if (data !== null) {
+			if (data !== null && data.type != "") {
 				if (data.type == "URI") {
 					item.find('.uri-area').removeClass('hidden');
 					item.find('.page-area').addClass('hidden');
@@ -62,6 +62,18 @@
 				$('html, body').animate({
 					scrollTop: (item.offset().top - 30) + 'px'
 				}, 750);
+
+				//set display order to greatest value
+				var displayOrder = 0;
+				$('#menu-items fieldset').each(function(){
+					var fieldParentId     = $(this).find('.field-parent-id').val();
+					var fieldDisplayOrder = parseInt($(this).find('.field-display-order').val());
+					if ((fieldParentId == "" || fieldParentId == null) && fieldDisplayOrder > displayOrder)
+						displayOrder = fieldDisplayOrder;
+				});
+				displayOrder ++;
+
+				item.find('.field-display-order').val(displayOrder);
 
 				item.find('.field-label').focus();
 			}

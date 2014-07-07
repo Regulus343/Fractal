@@ -22,11 +22,11 @@
 			</div>
 
 			<div class="col-md-4">
-				<div class="uri-area">
+				<div class="uri-area hidden">
 					<?=Form::field('items.{{number}}.uri', 'text', array('label' => 'URI'))?>
 				</div>
 
-				<div class="page-area">
+				<div class="page-area hidden">
 					<?=Form::field('items.{{number}}.page_id', 'select', array(
 						'label'       => 'Page',
 						'options'     => $pageOptions,

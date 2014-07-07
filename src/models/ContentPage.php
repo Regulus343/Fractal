@@ -45,6 +45,7 @@ class ContentPage extends BaseModel {
 	 */
 	protected static $types = array(
 		'slug'         => 'unique-slug',
+		'active'       => 'checkbox',
 		'activated_at' => 'date-time',
 	);
 

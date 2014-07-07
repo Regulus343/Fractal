@@ -39,6 +39,7 @@ class FractalServiceProvider extends ServiceProvider {
 			$pathPrefix = __DIR__.'/../../../../../';
 
 		$configPackages = array(
+			'regulus/activity-log',
 			'regulus/fractal',
 			'regulus/solid-site',
 			'regulus/tetra-text',

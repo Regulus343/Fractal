@@ -1,5 +1,5 @@
 <div class="col-md-4 padding-0">
-	{{ Form::open(Fractal::url(Fractal::getContentType().'/search'), 'post', array('id' => 'form-search')) }}
+	{{ Form::open(Fractal::url(Request::url().'/search'), 'post', array('id' => 'form-search')) }}
 
 		{{ Form::text('search', null, array('placeholder' => Lang::get('fractal::labels.searchBox'))) }}
 
