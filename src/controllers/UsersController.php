@@ -115,6 +115,7 @@ class UsersController extends BaseController {
 			$defaults['roles.'.$defaultRole->id] = $defaultRole->id;
 
 		Form::setDefaults($defaults);
+		Form::setErrors();
 
 		return View::make(Fractal::view('form'));
 	}
@@ -159,8 +160,10 @@ class UsersController extends BaseController {
 			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
 		}
 
-		return View::make(Fractal::view('form'))
-			->with('messages', $messages);
+		return Redirect::to(Fractal::uri('users/create'))
+			->with('messages', $messages)
+			->with('errors', Form::getErrors())
+			->withInput();
 	}
 
 	public function edit($username)
@@ -175,7 +178,6 @@ class UsersController extends BaseController {
 		Site::set('wysiwyg', true);
 
 		Form::setDefaults($user, array('roles' => 'id'));
-
 		Form::setErrors();
 
 		return View::make(Fractal::view('form'))->with('update', true);

@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap.
 
 		created by Cody Jassman
-		version 0.42
-		last updated on July 6, 2014
+		version 0.45
+		last updated on July 7, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -354,8 +354,8 @@ class Fractal {
 		} else {
 			static::$pagination['result']['message'] = Lang::get('fractal::messages.searchResults', array(
 				'terms' => static::$pagination['terms'],
-				'total' => static::$pagination['content']->count(),
-				'items' => Format::pluralize(strtolower($item), static::$pagination['content']->count()),
+				'total' => static::$pagination['content']->getTotal(),
+				'items' => Format::pluralize(strtolower($item), static::$pagination['content']->getTotal()),
 			));
 		}
 

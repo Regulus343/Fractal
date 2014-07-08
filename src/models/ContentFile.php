@@ -27,11 +27,8 @@ class ContentFile extends BaseModel {
 			'name' => array('required'),
 		);
 
-		if ($id) {
-			$rules['name'][1] = 'unique:content_files,name,'.$id;
-		} else {
+		if (!$id)
 			$rules['file'] = array('required');
-		}
 
 		return $rules;
 	}

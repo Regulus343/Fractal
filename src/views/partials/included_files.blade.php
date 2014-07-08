@@ -92,7 +92,6 @@
 	$(document).ready(function(){
 
 		if (contentType !== undefined)
-
 			setupContentTable();
 
 		@if (Site::get('loadFunction') != null && Site::get('loadFunction') != "")
@@ -104,7 +103,7 @@
 	});
 </script>
 <script type="text/javascript" src="{{ Site::js('select-helper', 'regulus/fractal') }}"></script>
-<script type="text/javascript" src="{{ Site::js('fractal', 'regulus/fractal') }}"></script>
+<script type="text/javascript" src="{{ Site::js('fractal/core', 'regulus/fractal') }}"></script>
 
 {{-- Quick Styles --}}
 <link type="text/css" rel="stylesheet" href="{{ Site::css('quick-styles.min', 'regulus/fractal') }}" />

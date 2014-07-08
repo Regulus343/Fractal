@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 
 use Aquanode\Formation\Formation as Form;
+use Regulus\ActivityLog\Activity;
 use Regulus\SolidSite\SolidSite as Site;
 use Regulus\TetraText\TetraText as Format;
 
@@ -31,14 +32,59 @@ class SettingsController extends BaseController {
 			$settings->where('developer', false);
 
 		$settings = $settings->get();
-
 		$defaults = array();
 		foreach ($settings as $setting) {
-			$defaults['setting_'.$setting->id] = $setting->value;
+			$defaults[$setting->getFieldName()] = $setting->value;
 		}
 		Form::setDefaults($defaults);
+		Form::setErrors();
 
 		return View::make(Fractal::view('list'))->with('settings', $settings);
+	}
+
+	public function postIndex()
+	{
+		$values = Input::all();
+
+		$settings = Setting::orderBy('category')->orderBy('display_order')->orderBy('name');
+		if (!Site::developer())
+			$settings->where('developer', false);
+
+		$settings = $settings->get();
+		$labels   = array();
+		$rules    = array();
+		foreach ($settings as $setting) {
+			$labels[$setting->getFieldName()] = $setting->getLabel();
+
+			if ($setting->rules != "")
+				$rules[$setting->getFieldName()] = explode(', ', $setting->rules);
+		}
+		Form::setLabels($labels);
+		Form::setValidationRules($rules);
+
+		$messages = array();
+		if (Form::validated()) {
+			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Lang::get('fractal::labels.settings')));
+
+			foreach ($settings as $setting) {
+				if (isset($values[$setting->getFieldName()])) {
+					$setting->value = $values[$setting->getFieldName()];
+					$setting->save();
+				}
+			}
+
+			Activity::log(array(
+				'contentType' => 'Setting',
+				'description' => 'Updated Settings',
+			));
+		} else {
+			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
+		}
+
+		return Redirect::to(Fractal::uri('settings'))
+			->with('messages', $messages)
+			->with('errors', Form::getErrors())
+			->withInput();
 	}
 
 }

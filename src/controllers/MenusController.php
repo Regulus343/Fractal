@@ -88,6 +88,8 @@ class MenusController extends BaseController {
 	{
 		Site::set('title', 'Create Menu');
 
+		Form::setErrors();
+
 		return View::make(Fractal::view('form'));
 	}
 
@@ -116,8 +118,10 @@ class MenusController extends BaseController {
 			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
 		}
 
-		return View::make(Fractal::view('form'))
-			->with('messages', $messages);
+		return Redirect::to(Fractal::uri('menus/create'))
+			->with('messages', $messages)
+			->with('errors', Form::getErrors())
+			->withInput();
 	}
 
 	public function edit($id)
@@ -173,46 +177,6 @@ class MenusController extends BaseController {
 				->with('errors', Form::getErrors())
 				->withInput();
 		}
-	}
-
-	private function fill($menu)
-	{
-		$menu = Form::addValues($menu, Menu::fields());
-		$menu->save();
-
-		//add menu items
-		$menuItems = Input::get('items');
-		
-		//add or update menu items in form
-		$fields      = MenuItem::fields();
-		$menuItemIds = array();
-
-		foreach ($menuItems as $itemData) {
-			$exists = false;
-			$item   = new MenuItem;
-			foreach ($menu->items as $itemListed) {
-				if ($itemData['id'] == $itemListed->id) {
-					$exists = true;
-					$item   = $itemListed;
-				}
-			}
-
-			if (!$exists)
-				$item->menu_id = $menu->id;
-
-			$item = Form::addValues($item, $fields);
-			$item->save();
-
-			$menuItemIds[] = $item->save();
-		}
-
-		//delete menu items that have been removed by form
-		foreach ($menu->items as $item) {
-			if (!in_array($item->id, $menuItemIds))
-				$item->delete();
-		}
-
-		return $menu;
 	}
 
 	public function destroy($id)

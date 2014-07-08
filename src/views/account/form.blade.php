@@ -64,17 +64,6 @@
 			</div>
 		</div>
 
-		<div class="row">
-			<div class="col-md-12">
-				{{ Form::field('roles', 'checkbox-set', array(
-					'options'        => Form::prepOptions(Regulus\Identify\Role::orderBy('display_order')->orderBy('name')->get(), array('id', 'name')),
-					'label'          => Lang::get('fractal::labels.roles'),
-					'associative'    => true,
-					'name-values'    => true,
-				)) }}
-			</div>
-		</div>
-
 		@if (!isset($update) || !$update)
 			<div class="row">
 				<div class="col-md-4">
@@ -92,17 +81,7 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field(null, 'checkbox-set', array(
-					'options'     => array('active' => 'Active', 'banned' => 'Banned'),
-					'label'       => Lang::get('fractal::labels.statuses'),
-					'associative' => true
-				)) }}
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-md-12">
-				{{ Form::field(Form::submitResource(Lang::get('fractal::labels.user'), (isset($update) && $update)), 'button') }}
+				{{ Form::field(Form::submitResource(null, true), 'button') }}
 			</div>
 		</div>
 	{{ Form::close() }}

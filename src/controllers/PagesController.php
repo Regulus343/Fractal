@@ -96,6 +96,7 @@ class PagesController extends BaseController {
 		Site::set('wysiwyg', true);
 
 		ContentPage::setDefaultsForNew();
+		Form::setErrors();
 
 		return View::make(Fractal::view('form'))
 			->with('layoutTagOptions', array());
@@ -127,8 +128,10 @@ class PagesController extends BaseController {
 			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
 		}
 
-		return View::make(Fractal::view('form'))
-			->with('messages', $messages);
+		return Redirect::to(Fractal::uri('pages/create'))
+			->with('messages', $messages)
+			->with('errors', Form::getErrors())
+			->withInput();
 	}
 
 	public function edit($slug)
@@ -143,6 +146,7 @@ class PagesController extends BaseController {
 		Site::set('wysiwyg', true);
 
 		$page->setDefaults(array('contentAreas'));
+		Form::setErrors();
 
 		return View::make(Fractal::view('form'))
 			->with('update', true)

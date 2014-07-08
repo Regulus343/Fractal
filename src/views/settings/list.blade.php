@@ -31,44 +31,7 @@
 			@endif
 
 			<div class="col-md-4">
-				@if ($setting->type == "Boolean")
-
-					{{ Form::field('setting_'.$setting->id, 'radio-set', array('label' => $setting->name, 'options' => Form::booleanOptions())) }}
-
-				@elseif ($setting->type == "Integer")
-
-					<?php $range = true;
-					$options     = explode(':', $setting->options);
-					if (count($options) == 1) {
-						$range   = false;
-						$options = explode(', ', $setting->options);
-					} ?>
-
-					@if (count($options) >= 2)
-
-						@if ($range)
-							{{ Form::field('setting_'.$setting->id, 'select', array(
-								'label'   => $setting->name,
-								'options' => Form::numberOptions($options[0], $options[1], (isset($options[2]) ? $options[2] : 1)),
-							)) }}
-						@else
-							{{ Form::field('setting_'.$setting->id, 'select', array(
-								'label'   => $setting->name,
-								'options' => Form::simpleOptions($options),
-							)) }}
-						@endif
-
-					@else
-
-						{{ Form::field('setting_'.$setting->id, 'number', array('label' => $setting->name)) }}
-
-					@endif
-
-				@else
-
-					{{ Form::field('setting_'.$setting->id, 'text', array('label' => $setting->name)) }}
-
-				@endif
+				{{ $setting->getField() }}
 			</div>
 
 			<?php $settingsDisplayed ++; ?>

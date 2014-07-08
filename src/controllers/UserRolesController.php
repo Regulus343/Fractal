@@ -97,6 +97,9 @@ class UserRolesController extends BaseController {
 	{
 		Site::set('title', 'Create User Role');
 		Site::set('wysiwyg', true);
+
+		Form::setErrors();
+
 		return View::make(Fractal::view('form'));
 	}
 
@@ -127,8 +130,10 @@ class UserRolesController extends BaseController {
 			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
 		}
 
-		return View::make(Fractal::view('form'))
-			->with('messages', $messages);
+		return Redirect::to(Fractal::uri('user-roles/create'))
+			->with('messages', $messages)
+			->with('errors', Form::getErrors())
+			->withInput();
 	}
 
 	public function edit($id)

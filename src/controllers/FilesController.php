@@ -106,6 +106,7 @@ class FilesController extends BaseController {
 			'thumbnail_height' => $thumbnailSize,
 		);
 		Form::setDefaults($defaults);
+		Form::setErrors();
 
 		return View::make(Fractal::view('form'))->with('update', false);
 	}
@@ -120,10 +121,10 @@ class FilesController extends BaseController {
 		if (Form::validated()) {
 			//get original uploaded filename
 			$originalFilename  = isset($_FILES['file']['name']) ? $_FILES['file']['name'] : '';
-			$originalExtension = File::extension($originalFilename);
+			$originalExtension = strtolower(File::extension($originalFilename));
 
 			//make sure filename is unique and then again remove extension to set basename
-			$basename = str_replace('-'.$originalExtension, '', Format::unique(Format::slug(Input::get('name')).'.'.$originalExtension, 'content_files', 'filename', false, true));
+			$basename = str_replace('.'.$originalExtension, '', Format::unique(Format::slug(Input::get('name')).'.'.$originalExtension, 'content_files', 'filename'));
 
 			$config = array(
 				'path'            => 'uploads',
@@ -155,8 +156,8 @@ class FilesController extends BaseController {
 					$config['imgCrop']          = Form::value('crop', 'checkbox');
 				}
 
-				$config['imgThumb']         = Form::value('create_thumbnail', 'checkbox');
-				$config['imgDimensions']    = array(
+				$config['imgThumb']      = Form::value('create_thumbnail', 'checkbox');
+				$config['imgDimensions'] = array(
 					'w'  => (int) $width,
 					'h'  => (int) $height,
 					'tw' => (int) Input::get('thumbnail_width') > 0  ? (int) Input::get('thumbnail_width')  : $defaultThumbnailSize,
@@ -206,15 +207,16 @@ class FilesController extends BaseController {
 				return Redirect::to(Fractal::uri('files'))
 					->with('messages', $messages);
 			} else {
-				var_dump($result); exit;
 				$messages['error'] = $result['error'];
 			}
 		} else {
 			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
 		}
 
-		return View::make(Fractal::view('form'))
-			->with('messages', $messages);
+		return Redirect::to(Fractal::uri('files/create'))
+			->with('messages', $messages)
+			->with('errors', Form::getErrors())
+			->withInput();
 	}
 
 	public function edit($id)
@@ -254,10 +256,10 @@ class FilesController extends BaseController {
 			if (isset($_FILES['file']['name']) && $_FILES['file']['name'] != "") {
 				//get original uploaded filename
 				$originalFilename  = isset($_FILES['file']['name']) ? $_FILES['file']['name'] : '';
-				$originalExtension = File::extension($originalFilename);
+				$originalExtension = strtolower(File::extension($originalFilename));
 
 				//make sure filename is unique and then again remove extension to set basename
-				$basename = str_replace('-'.$originalExtension, '', Format::unique(Format::slug(Input::get('name')).'.'.$originalExtension, 'content_files', 'filename', $id, true));
+				$basename = str_replace('.'.$originalExtension, '', Format::unique(Format::slug(Input::get('name')).'.'.$originalExtension, 'content_files', 'filename', $id));
 				$filename = $basename.'.'.$originalExtension;
 
 				$tempBasename = md5(rand(1000, 9999999));
@@ -290,8 +292,8 @@ class FilesController extends BaseController {
 						$config['imgCrop']          = Form::value('crop', 'checkbox');
 					}
 
-					$config['imgThumb']         = Form::value('create_thumbnail', 'checkbox');
-					$config['imgDimensions']    = array(
+					$config['imgThumb']      = Form::value('create_thumbnail', 'checkbox');
+					$config['imgDimensions'] = array(
 						'w'  => (int) $width,
 						'h'  => (int) $height,
 						'tw' => (int) Input::get('thumbnail_width') > 0  ? (int) Input::get('thumbnail_width')  : $defaultThumbnailSize,
@@ -323,7 +325,7 @@ class FilesController extends BaseController {
 				}
 			} else {
 				//make sure filename is unique and then again remove extension to set basename
-				$basename = str_replace('-'.File::extension($file->filename), '', Format::uniqueSlug(Format::slug(Input::get('name')).'.'.File::extension($file->filename), 'content_files', $id, false, 'filename'));
+				$basename = str_replace('.'.File::extension($file->filename), '', Format::unique(Format::slug(Input::get('name')).'.'.File::extension($file->filename), 'content_files', 'filename', $id));
 				$filename = $basename.'.'.File::extension($file->filename);
 			}
 
@@ -339,7 +341,7 @@ class FilesController extends BaseController {
 			}
 
 			if (!$result['error']) {
-				$messages['success'] = Lang::get('fractal::messages.successCreated', array('item' => Format::a('file')));
+				$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Format::a('file')));
 
 				$file->name      = ucfirst(trim(Input::get('name')));
 				$file->filename  = $filename;
@@ -386,8 +388,10 @@ class FilesController extends BaseController {
 			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
 		}
 
-		return View::make(Fractal::view('form'))
-			->with('messages', $messages);
+		return Redirect::to(Fractal::uri('files/'.$id.'/edit'))
+			->with('messages', $messages)
+			->with('errors', Form::getErrors())
+			->withInput();
 	}
 
 	public function destroy($id)

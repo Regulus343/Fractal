@@ -12,7 +12,7 @@
 			<div class="col-md-3">
 				<?=Form::field('items.{{number}}.parent_id', 'select', array(
 					'label'       => 'Parent Menu Item',
-					'options'     => Form::prepOptions($menu->items, array('id', 'label')),
+					'options'     => isset($menu) ? Form::prepOptions($menu->items, array('id', 'label')) : [],
 					'null-option' => 'Select a parent menu item',
 				))?>
 			</div>
