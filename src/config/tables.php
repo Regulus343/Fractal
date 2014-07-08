@@ -412,12 +412,16 @@ return array(
 		),
 	),
 
-	'activity' => array(
+	'activities' => array(
 		'table' => array(
 			'class'         => 'table-striped table-bordered table-hover table-sortable',
 			'noDataMessage' => Lang::get('fractal::messages.noItems', array('items' => Str::plural(Lang::get('fractal::labels.activity')))),
 		),
 		'columns' => array(
+			array(
+				'label'     => '',
+				'method'    => 'getIconMarkup()',
+			),
 			array(
 				'attribute' => 'id',
 				'sort'      => true,
