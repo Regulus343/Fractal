@@ -86,7 +86,8 @@ div.passwords-check span { padding-top: 26px; font-size: 28px; }
 
 .form-group.checkbox { margin: 0; }
 
-.checkbox label input[type="checkbox"] { float: none; }
+.checkbox label { float: none; padding-left: 2px; }
+.checkbox input[type="checkbox"] { position: static; margin-left: 0; }
 
 fieldset {
 	margin: 10px 0;
@@ -254,3 +255,8 @@ ul#select-content-area li div.info { float: right; color: #888; font-size: 12px;
 ul#select-content-area li div.info div.actions { float: right; padding-left: 5px; }
 ul#select-content-area li div.info div.actions span.glyphicon-remove { color: #900; font-size: 15px; }
 ul#select-content-area li div.info div.actions span.glyphicon-remove:hover { color: #c00; }
+
+/* Fix Calendar Glyphicon */
+.glyphicon-calendar:before { 
+	content: "\d83d\dcc5";
+}

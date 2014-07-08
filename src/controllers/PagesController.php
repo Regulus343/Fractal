@@ -258,6 +258,7 @@ class PagesController extends BaseController {
 
 	public function addContentArea($id = false)
 	{
+		var_dump('x'); exit;
 		$data = array(
 			'title'        => Lang::get('fractal::labels.addContentArea'),
 			'pageId'       => $id,

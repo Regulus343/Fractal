@@ -12,11 +12,21 @@
 
 @endif
 
+{{-- Moment --}}
+<script type="text/javascript" src="{{ Site::js('moment.min', 'regulus/fractal') }}"></script>
+
 {{-- Bootstrap CSS / JS --}}
 @if (Config::get('fractal::loadBootstrap'))
 
-	<link type="text/css" rel="stylesheet" href="{{ Site::css('bootstrap', 'regulus/fractal') }}" />
+	<link type="text/css" rel="stylesheet" href="{{ Site::css('bootstrap.min', 'regulus/fractal') }}" />
+	<link type="text/css" rel="stylesheet" href="{{ Site::css('bootstrap-theme.min', 'regulus/fractal') }}" />
 	<script type="text/javascript" src="{{ Site::js('bootstrap.min', 'regulus/fractal') }}"></script>
+
+	{{-- Bootstrap Date Time Picker CSS --}}
+	<link type="text/css" rel="stylesheet" href="{{ Site::css('bootstrap-datetimepicker.min', 'regulus/fractal') }}" />
+
+	{{-- Bootstrap Date Time Picker JS --}}
+	<script type="text/javascript" src="{{ Site::js('bootstrap-datetimepicker.min', 'regulus/fractal') }}"></script>
 
 @endif
 
@@ -35,9 +45,6 @@
 
 {{-- Handlebars --}}
 <script type="text/javascript" src="{{ Site::js('handlebars.min', 'regulus/fractal') }}"></script>
-
-{{-- Moment --}}
-<script type="text/javascript" src="{{ Site::js('moment.min', 'regulus/fractal') }}"></script>
 
 {{-- Inflection --}}
 <script type="text/javascript" src="{{ Site::js('inflection', 'regulus/fractal') }}"></script>
