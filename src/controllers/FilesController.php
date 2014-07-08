@@ -200,6 +200,7 @@ class FilesController extends BaseController {
 				Activity::log(array(
 					'contentId'   => $file->id,
 					'contentType' => 'ContentFile',
+					'action'      => 'Create',
 					'description' => 'Created a File',
 					'details'     => 'Filename: '.$file->filename,
 				));
@@ -375,7 +376,8 @@ class FilesController extends BaseController {
 				Activity::log(array(
 					'contentId'   => $file->id,
 					'contentType' => 'ContentFile',
-					'description' => 'Created a File',
+					'action'      => 'Update',
+					'description' => 'Updated a File',
 					'details'     => 'Filename: '.$file->filename,
 				));
 
@@ -408,6 +410,7 @@ class FilesController extends BaseController {
 		Activity::log(array(
 			'contentId'   => $file->id,
 			'contentType' => 'ContentFile',
+			'action'      => 'Delete',
 			'description' => 'Deleted a File',
 			'details'     => 'Filename: '.$file->filename,
 		));

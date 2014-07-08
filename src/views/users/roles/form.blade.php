@@ -13,7 +13,11 @@
 			</div>
 		</div>
 
-		{{ Form::field(Form::submitResource(Lang::get('fractal::labels.role'), (isset($update) && $update)), 'button') }}
+		<div class="row">
+			<div class="col-md-12">
+				{{ Form::field(Form::submitResource(Lang::get('fractal::labels.role'), (isset($update) && $update)), 'button') }}
+			</div>
+		</div>
 	{{ Form::close() }}
 
 @stop

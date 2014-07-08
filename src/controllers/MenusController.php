@@ -108,6 +108,7 @@ class MenusController extends BaseController {
 			Activity::log(array(
 				'contentId'   => $menu->id,
 				'contentType' => 'Menu',
+				'action'      => 'Create',
 				'description' => 'Created a Menu',
 				'details'     => 'Name: '.$menu->name,
 			));
@@ -162,7 +163,8 @@ class MenusController extends BaseController {
 			Activity::log(array(
 				'contentId'   => $menu->id,
 				'contentType' => 'Menu',
-				'description' => 'Created a Menu',
+				'action'      => 'Update',
+				'description' => 'Updated a Menu',
 				'details'     => 'Name: '.$menu->name,
 				'updated'     => true,
 			));
@@ -193,6 +195,7 @@ class MenusController extends BaseController {
 		Activity::log(array(
 			'contentId'   => $menu->id,
 			'contentType' => 'Menu',
+			'action'      => 'Delete',
 			'description' => 'Deleted a Menu',
 			'details'     => 'Name: '.$menu->name,
 		));

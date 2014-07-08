@@ -96,4 +96,6 @@ return array(
 	'addMenuItem'          => 'Add Menu Item',
 	'addContentArea'       => 'Add Content Area',
 
+	'yourAccount'          => 'your account',
+
 );

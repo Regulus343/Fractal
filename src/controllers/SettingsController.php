@@ -75,6 +75,7 @@ class SettingsController extends BaseController {
 
 			Activity::log(array(
 				'contentType' => 'Setting',
+				'action'      => 'Update',
 				'description' => 'Updated Settings',
 			));
 		} else {

@@ -124,6 +124,14 @@ class UserRolesController extends BaseController {
 			$role->name = ucfirst(trim(Input::get('name')));
 			$role->save();
 
+			Activity::log(array(
+				'contentId'   => $role->id,
+				'contentType' => 'UserRole',
+				'action'      => 'Create',
+				'description' => 'Created a User Role',
+				'details'     => 'Role: '.$role->name,
+			));
+
 			return Redirect::to(Fractal::uri('user-roles'))
 				->with('messages', $messages);
 		} else {
@@ -180,6 +188,14 @@ class UserRolesController extends BaseController {
 			$role->name = ucfirst(trim(Input::get('name')));
 			$role->save();
 
+			Activity::log(array(
+				'contentId'   => $role->id,
+				'contentType' => 'UserRole',
+				'action'      => 'Update',
+				'description' => 'Updated a User Role',
+				'details'     => 'Role: '.$role->name,
+			));
+
 			return Redirect::to(Fractal::uri('user-roles'))
 				->with('messages', $messages);
 		} else {
@@ -217,6 +233,7 @@ class UserRolesController extends BaseController {
 		Activity::log(array(
 			'contentId'   => $role->id,
 			'contentType' => 'Role',
+			'action'      => 'Delete',
 			'description' => 'Deleted a Role',
 			'details'     => 'Role: '.$role->name,
 		));

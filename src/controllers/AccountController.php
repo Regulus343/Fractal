@@ -58,7 +58,7 @@ class AccountController extends BaseController {
 
 		$messages = array();
 		if (Form::validated()) {
-			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Format::a('user')));
+			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Lang::get('fractal::labels.yourAccount')));
 
 			$user->fill(Input::except('csrf_token', 'password', 'password_confirmation'));
 			$user->first_name = Format::name($user->first_name);

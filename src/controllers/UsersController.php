@@ -143,7 +143,7 @@ class UsersController extends BaseController {
 
 		$messages = array();
 		if (Form::validated()) {
-			$messages['success'] = Lang::get('fractal::messages.successCreated', array('item' => Format::a('user')));
+			$messages['success'] = Lang::get('fractal::messages.successCreated', array('item' => 'a user'));
 
 			$user = new User;
 			$user->fill(Input::except('csrf_token', 'roles', 'password', 'password_confirmation'));
@@ -153,6 +153,14 @@ class UsersController extends BaseController {
 			$user->save();
 
 			$user->roles()->sync(Input::get('roles'));
+
+			Activity::log(array(
+				'contentId'   => $user->id,
+				'contentType' => 'User',
+				'action'      => 'Create',
+				'description' => 'Created a User',
+				'details'     => 'Username: '.$user->username,
+			));
 
 			return Redirect::to(Fractal::uri('users'))
 				->with('messages', $messages);
@@ -211,7 +219,7 @@ class UsersController extends BaseController {
 
 		$messages = array();
 		if (Form::validated()) {
-			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Format::a('user')));
+			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => 'a user'));
 
 			$user->fill(Input::except('csrf_token', 'roles'));
 			$user->first_name = Format::name($user->first_name);
@@ -219,6 +227,14 @@ class UsersController extends BaseController {
 			$user->save();
 
 			$user->roles()->sync(Input::get('roles'));
+
+			Activity::log(array(
+				'contentId'   => $user->id,
+				'contentType' => 'User',
+				'action'      => 'Update',
+				'description' => 'Updated a User',
+				'details'     => 'Username: '.$user->username,
+			));
 
 			return Redirect::to(Fractal::uri('users'))
 				->with('messages', $messages);
@@ -253,6 +269,7 @@ class UsersController extends BaseController {
 		Activity::log(array(
 			'contentId'   => $user->id,
 			'contentType' => 'User',
+			'action'      => 'Ban',
 			'description' => 'Banned a User',
 			'details'     => 'Username: '.$user->username,
 		));
@@ -283,6 +300,7 @@ class UsersController extends BaseController {
 		Activity::log(array(
 			'contentId'   => $user->id,
 			'contentType' => 'User',
+			'action'      => 'Unban',
 			'description' => 'Unbanned a User',
 			'details'     => 'Username: '.$user->username,
 		));
@@ -308,6 +326,7 @@ class UsersController extends BaseController {
 		Activity::log(array(
 			'contentId'   => $user->id,
 			'contentType' => 'User',
+			'action'      => 'Delete',
 			'description' => 'Deleted a User',
 			'details'     => 'Username: '.$user->username,
 		));

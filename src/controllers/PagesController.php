@@ -118,6 +118,7 @@ class PagesController extends BaseController {
 			Activity::log(array(
 				'contentId'   => $page->id,
 				'contentType' => 'ContentPage',
+				'action'      => 'Create',
 				'description' => 'Created a Page',
 				'details'     => 'Title: '.$page->title,
 			));
@@ -178,7 +179,8 @@ class PagesController extends BaseController {
 			Activity::log(array(
 				'contentId'   => $page->id,
 				'contentType' => 'ContentPage',
-				'description' => 'Created a Page',
+				'action'      => 'Update',
+				'description' => 'Updated a Page',
 				'details'     => 'Title: '.$page->title,
 				'updated'     => true,
 			));
@@ -209,6 +211,7 @@ class PagesController extends BaseController {
 		Activity::log(array(
 			'contentId'   => $page->id,
 			'contentType' => 'ContentPage',
+			'action'      => 'Delete',
 			'description' => 'Deleted a Page',
 			'details'     => 'Title: '.$page->title,
 		));
@@ -258,7 +261,6 @@ class PagesController extends BaseController {
 
 	public function addContentArea($id = false)
 	{
-		var_dump('x'); exit;
 		$data = array(
 			'title'        => Lang::get('fractal::labels.addContentArea'),
 			'pageId'       => $id,
