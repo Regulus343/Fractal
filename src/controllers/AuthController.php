@@ -2,7 +2,6 @@
 
 use \BaseController;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
@@ -11,7 +10,8 @@ use Illuminate\Support\Facades\View;
 
 use Aquanode\Formation\Formation as Form;
 use Regulus\ActivityLog\Activity;
-use Regulus\Identify\User as User;
+use Regulus\Identify\Identify as Auth;
+use Regulus\Identify\User;
 use Regulus\SolidSite\SolidSite as Site;
 
 class AuthController extends BaseController {

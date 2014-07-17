@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 
+use Regulus\Identify\Identify as Auth;
 use Regulus\SolidSite\SolidSite as Site;
 
 $baseUri = Config::get('fractal::baseUri');
@@ -29,11 +30,21 @@ Route::filter('fractal-auth', function() use ($baseUri)
 	$uriSegments = explode('/', $path);
 	$uriToCheck  = isset($uriSegments[1]) ? $uriSegments[1] : '';
 
-	if (!Fractal::auth() && !in_array($uriToCheck, ['login', 'activate', 'forgot-password', 'reset-password'])) {
-		Session::set('returnUri', $path);
+	if (!in_array($uriToCheck, ['login', 'logout', 'activate', 'forgot-password', 'reset-password'])) {
+		if (!Fractal::auth()) {
+			Session::set('returnUri', $path);
 
-		return Redirect::to($baseUri.'/login')
-			->with('messages', array('error' => Lang::get('fractal::messages.errorLogInRequired')));
+			return Redirect::to($baseUri.'/login')
+				->with('messages', array('error' => Lang::get('fractal::messages.errorLogInRequired')));
+		}
+
+		$cmsRoles = Fractal::getSetting('CMS Roles', 'admin');
+		if (Auth::isNot($cmsRoles)) {
+			if (Config::get('fractal::userRoleNoCmsAccessLogOut'))
+				Auth::logout();
+
+			return Redirect::to(Config::get('fractal::userRoleNoCmsAccessUri'));
+		}
 	}
 });
 

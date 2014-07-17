@@ -34,6 +34,15 @@ class SettingsTableSeeder extends Seeder {
 				'updated_at'    => $timestamp,
 			),
 			array(
+				'name'          => 'CMS Roles',
+				'value'         => 'admin, mod',
+				'type'          => 'List',
+				'options'       => 'Role::getSelectable()',
+				'developer'     => true,
+				'created_at'    => $timestamp,
+				'updated_at'    => $timestamp,
+			),
+			array(
 				'name'          => 'Auto Format Titles',
 				'value'         => true,
 				'type'          => 'Boolean',

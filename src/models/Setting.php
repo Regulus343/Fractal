@@ -63,6 +63,14 @@ class Setting extends Eloquent {
 			if ($this->options != "") {
 				$options = explode(', ', $this->options);
 
+				//options is a method; call it to get actual options
+				if (count($options) == 1 && strpos($options[0], '::') !== false) {
+					$function = explode('::', $options[0]);
+					$class    = $function[0];
+					$method   = substr($function[1], 0, (strlen($function[1]) - 2));
+					$options  = $class::{$method}();
+				}
+
 				$html = Form::field($name, 'select', array(
 					'label'   => $this->getLabel(),
 					'options' => Form::simpleOptions($options),
@@ -110,6 +118,9 @@ class Setting extends Eloquent {
 	{
 		$setting = static::where('name', '=', $name)->first();
 		if (empty($setting)) return $default;
+
+		if ($setting->type == "List")
+			return explode(', ', $setting->value);
 
 		return $setting->value;
 	}

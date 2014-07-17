@@ -136,6 +136,33 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
+	| User Role No CMS Access URI
+	|--------------------------------------------------------------------------
+	|
+	| The URI to redirect a user to if they log in successfully but they don't
+	| have a user role assigned that grants access to the CMS. By default,
+	| the setting is blank so the user will be redirected to the website's home
+	| page. If you want to redirect to a non-CMS account page, you may set it
+	| to something like "account" and set "userRoleNoCmsAccessLogOut" to false.
+	|
+	*/
+	'userRoleNoCmsAccessUri' => '',
+
+	/*
+	|--------------------------------------------------------------------------
+	| User Role No CMS Access Log Out
+	|--------------------------------------------------------------------------
+	|
+	| Automatically log a user out if they attempt to access a CMS route but
+	| don't have a user role assigned that grants access to the CMS. You may
+	| set this to false if you would instead like to redirect a user to a
+	| non-CMS account page using the "userRoleNoCmsAccessUri" setting above.
+	|
+	*/
+	'userRoleNoCmsAccessLogOut' => true,
+
+	/*
+	|--------------------------------------------------------------------------
 	| Logo
 	|--------------------------------------------------------------------------
 	|
