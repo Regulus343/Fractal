@@ -25,9 +25,11 @@ $baseUri = Config::get('fractal::baseUri');
 
 Route::filter('fractal-auth', function() use ($baseUri)
 {
-	$path = Request::path();
+	$path        = Request::path();
 	$uriSegments = explode('/', $path);
-	if (!Fractal::auth() && end($uriSegments) != "login") {
+	$uriToCheck  = isset($uriSegments[1]) ? $uriSegments[1] : '';
+
+	if (!Fractal::auth() && !in_array($uriToCheck, ['login', 'activate', 'forgot-password', 'reset-password'])) {
 		Session::set('returnUri', $path);
 
 		return Redirect::to($baseUri.'/login')
@@ -42,6 +44,7 @@ $authFilters = Config::get('fractal::authFilters');
 Route::filter('roles', function() use ($baseUri, $authFilters)
 {
 	$uriSegments = explode('/', Request::path());
+
 	foreach ($authFilters as $filterUri => $allowedRoles) {
 		foreach ($uriSegments as $prefixUri => $suffixUri) {
 			if ($prefixUri == $filterUri || $prefixUri.'/'.$suffixUri == $filterUri) {

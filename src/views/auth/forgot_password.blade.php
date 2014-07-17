@@ -4,10 +4,7 @@
 
 	<script type="text/javascript">
 		$(document).ready(function(){
-			if ($('#username').val() != "")
-				$('#password').focus();
-			else
-				$('#username').focus();
+			$('#username').focus();
 		});
 	</script>
 
@@ -18,11 +15,9 @@
 
 		{{ Form::field('username') }}
 
-		{{ Form::field('password') }}
+		<a href="{{ Fractal::url('login') }}" class="pull-right">{{ Lang::get('fractal::labels.returnToLogIn') }}</a>
 
-		<a href="{{ Fractal::url('forgot-password') }}" class="pull-right">{{ Lang::get('fractal::labels.forgotYourPassword') }}</a>
-
-		{{ Form::field('[ICON: share-alt]'.Lang::get('fractal::labels.logIn'), 'button') }}
+		{{ Form::field('[ICON: share-alt]'.Lang::get('fractal::labels.resetPassword'), 'button') }}
 	{{ Form::close() }}
 
 @stop

@@ -55,9 +55,10 @@ foreach (array('get', 'post') as $type) {
 Route::get($baseUri.'/developer/{off?}', 'Regulus\Fractal\CoreController@getDeveloper');
 
 /* Setup Authorization Routes */
-Route::get($baseUri.'/login', Config::get('fractal::authController').'@getLogin');
-Route::post($baseUri.'/login', Config::get('fractal::authController').'@postLogin');
-Route::get($baseUri.'/logout', Config::get('fractal::authController').'@getLogout');
+Route::any($baseUri.'/login', Config::get('fractal::authController').'@login');
+Route::get($baseUri.'/logout', Config::get('fractal::authController').'@logout');
+Route::any($baseUri.'/forgot-password', Config::get('fractal::authController').'@forgotPassword');
+Route::any($baseUri.'/reset-password/{id?}/{code?}', Config::get('fractal::authController').'@resetPassword');
 
 Route::controller($baseUri.'/auth', Config::get('fractal::authController'));
 

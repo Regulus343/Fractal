@@ -252,12 +252,13 @@ return array(
 			),
 			array(
 				'label'     => 'Activated',
-				'attribute' => 'active',
+				'method'    => 'isActivated()',
 				'type'      => 'boolean',
 				'sort'      => true,
 			),
 			array(
-				'attribute' => 'banned',
+				'label'     => 'Banned',
+				'method'    => 'isBanned()',
 				'type'      => 'boolean',
 				'class'     => 'banned',
 				'sort'      => true,
@@ -284,7 +285,7 @@ return array(
 						'class'          => 'action-item ban-user red',
 						'classModifiers' => array(
 							'hidden' => array(
-								'banned' => true,
+								'isBanned()' => true,
 							),
 							'invisible' => array(
 								'id' => 1,
@@ -303,10 +304,10 @@ return array(
 						'class'          => 'action-item unban-user',
 						'classModifiers' => array(
 							'hidden'       => array(
-								'banned' => false,
+								'isBanned()' => false,
 							),
 							'invisible'    => array(
-								'id'     => 1,
+								'id' => 1,
 							),
 						),
 						'attributes'     => array(
@@ -341,10 +342,10 @@ return array(
 			'idPrefix'       => 'user',
 			'classModifiers' => array(
 				'warning' => array(
-					'active' => false,
+					'isActivated()' => false,
 				),
 				'danger' => array(
-					'banned' => true,
+					'isBanned()'    => true,
 				),
 			),
 		),

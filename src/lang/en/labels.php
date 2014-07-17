@@ -2,7 +2,7 @@
 
 return array(
 
-	'version'              => '0.45',
+	'version'              => '0.4.7a',
 
 	'create'               => 'Create',
 	'edit'                 => 'Edit',
@@ -98,4 +98,9 @@ return array(
 
 	'yourAccount'          => 'your account',
 
+	'logIn'                => 'Log In',
+	'logOut'               => 'Log Out',
+	'forgotYourPassword'   => 'Forgot your password?',
+	'returnToLogIn'        => 'Return to log in',
+	'resetPassword'        => 'Reset Password',
 );

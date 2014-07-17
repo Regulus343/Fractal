@@ -1,9 +1,7 @@
 Fractal
 =======
 
-**A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap.**
-
-**Please note that Fractal is still PRE-ALPHA and is not yet recommended for production use but is expected to go into ALPHA mid-July 2014.**
+**A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap 3.**
 
 Fractal is a simple yet versative Admin/CMS base for Laravel 4. It is built to work with Twitter Bootstrap by default and can be completely customized to work how you, the developer, want it to. The core philosophy behind Fractal is:
 
@@ -29,6 +27,8 @@ Some of the things you can do with Fractal:
 - Easily add or remove controllers
 - Easily use custom views
 - Easily build forms (due to use of Formation package)
+
+**Please note that Fractal is still considered Alpha software.**
 
 ## Table of Contents
 

@@ -255,14 +255,13 @@ class UsersController extends BaseController {
 			'message'    => Lang::get('fractal::messages.errorGeneral'),
 		);
 
-		$user = \User::find($id);
+		$user = User::find($id);
 		if (empty($user))
 			return $result;
 
-		if ($user->banned)
+		if ($user->isBanned())
 			return $result;
 
-		$user->banned    = true;
 		$user->banned_at = date('Y-m-d H:i:s');
 		$user->save();
 
@@ -275,7 +274,7 @@ class UsersController extends BaseController {
 		));
 
 		$result['resultType'] = "Success";
-		$result['message']    = Lang::get('fractal::messages.successBanned', array('item' => '<strong>'.$user->username.'</strong>'));
+		$result['message']    = Lang::get('fractal::messages.successBanned', array('item' => $user->username));
 		return $result;
 	}
 
@@ -286,15 +285,14 @@ class UsersController extends BaseController {
 			'message'    => Lang::get('fractal::messages.errorGeneral'),
 		);
 
-		$user = \User::find($id);
+		$user = User::find($id);
 		if (empty($user))
 			return $result;
 
-		if (!$user->banned)
+		if (!$user->isBanned())
 			return $result;
 
-		$user->banned    = false;
-		$user->banned_at = "0000-00-00 00:00:00";
+		$user->banned_at = null;
 		$user->save();
 
 		Activity::log(array(
