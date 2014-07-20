@@ -140,6 +140,11 @@ fieldset.indent-level-3 { margin-left: 96px; }
 
 #footer div.pad { padding: 24px 24px 0 24px; }
 
+#footer ul.menu { position: relative; z-index: 30; list-style: none; text-align: left; }
+#footer ul.menu li { display: inline-block; margin: 0 12px 0 0; }
+
+#footer p { float: right; }
+
 @media (min-width: 768px) {
 	#footer { width: 720px; }
 }
@@ -154,7 +159,7 @@ fieldset.indent-level-3 { margin-left: 96px; }
 
 #footer a { color: #ccc; }
 #footer a:hover { color: #fff; }
-#footer p.fractal { color: #555; font-size: 11px; }
+#footer p.fractal { clear: right; color: #555; font-size: 11px; }
 #footer p.fractal a { z-index: 500; position: relative; color: #999; }
 #footer p.fractal a:hover { color: #d00; }
 

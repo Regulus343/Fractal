@@ -46,18 +46,16 @@ class SettingsController extends BaseController {
 	{
 		$values = Input::all();
 
-		$settings = Setting::orderBy('category')->orderBy('display_order')->orderBy('name');
-		if (!Site::developer())
-			$settings->where('developer', false);
-
-		$settings = $settings->get();
+		$settings = Setting::orderBy('category')->orderBy('display_order')->orderBy('name')->get();
 		$labels   = array();
 		$rules    = array();
 		foreach ($settings as $setting) {
-			$labels[$setting->getFieldName()] = $setting->getLabel();
+			if (Site::developer() || ! (bool) $setting->developer) {
+				$labels[$setting->getFieldName()] = $setting->getLabel();
 
-			if ($setting->rules != "")
-				$rules[$setting->getFieldName()] = explode(', ', $setting->rules);
+				if ($setting->rules != "")
+					$rules[$setting->getFieldName()] = explode(', ', $setting->rules);
+			}
 		}
 		Form::setLabels($labels);
 		Form::setValidationRules($rules);
@@ -72,6 +70,8 @@ class SettingsController extends BaseController {
 					$setting->save();
 				}
 			}
+
+			Fractal::exportSettings($settings);
 
 			Activity::log(array(
 				'contentType' => 'Setting',

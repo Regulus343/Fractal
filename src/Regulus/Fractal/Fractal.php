@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap.
 
 		created by Cody Jassman
-		version 0.4.7a
-		last updated on July 17, 2014
+		version 0.4.9a
+		last updated on July 20, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -191,6 +191,24 @@ class Fractal {
 	}
 
 	/**
+	 * Export the settings to a PHP array config file.
+	 *
+	 * @param  mixed    $settings
+	 * @param  boolean  $fromCli
+	 * @return void
+	 */
+	public static function exportSettings($settings = null, $fromCli = false)
+	{
+		$array = Setting::createArray($settings);
+		$path  = "app/config/packages/regulus/fractal/settings.php";
+
+		if (!$fromCli)
+			$path = "../".$path;
+
+		ArrayFile::save($path, $array);
+	}
+
+	/**
 	 * Set the current content type.
 	 *
 	 * @param  string   $contentType
@@ -237,7 +255,7 @@ class Fractal {
 		if (is_null($contentType))
 			$contentType = static::getContentType();
 
-		return str_replace(' ', '', ucwords(str_replace('-', ' ', $contentType)));
+		return static::toUpperCase($contentType);
 	}
 
 	/**
@@ -248,8 +266,33 @@ class Fractal {
 	 */
 	public static function getContentTypeCamelCase($contentType = null)
 	{
-		$contentType = static::getContentTypeUpperCase($contentType);
-		return strtolower(substr($contentType, 0, 1)).substr($contentType, 1);
+		if (is_null($contentType))
+			$contentType = static::getContentType();
+
+		return static::toCamelCase($contentType);
+	}
+
+	/**
+	 * Turn a dashed or underscored string to uppercase words with no spaces.
+	 *
+	 * @param  string   $string
+	 * @return string
+	 */
+	public static function toUpperCase($string)
+	{
+		return str_replace(' ', '', ucwords(str_replace('-', ' ', str_replace('_', ' ', strtolower($string)))));
+	}
+
+	/**
+	 * Turn a dashed or underscored string to camelcase format.
+	 *
+	 * @param  string   $string
+	 * @return string
+	 */
+	public static function toCamelCase($string)
+	{
+		$string = static::toUpperCase($string);
+		return strtolower(substr($string, 0, 1)).substr($string, 1);
 	}
 
 	/**

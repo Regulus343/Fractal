@@ -23,6 +23,7 @@
 		"classmap": [
 			"src/commands",
 			"src/controllers",
+			"src/libraries",
 			"src/migrations",
 			"src/models",
 			"src/seeds"

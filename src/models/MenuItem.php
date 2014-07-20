@@ -118,7 +118,7 @@ class MenuItem extends BaseModel {
 	 *
 	 * @return string
 	 */
-	public function getURI()
+	public function getUri()
 	{
 		if ($this->menu->cms) {
 			$uri = Config::get('fractal::baseUri');
@@ -139,9 +139,9 @@ class MenuItem extends BaseModel {
 	 *
 	 * @return string
 	 */
-	public function getURL()
+	public function getUrl()
 	{
-		return URL::to($this->getURI());
+		return URL::to($this->getUri());
 	}
 
 	/**
@@ -151,12 +151,16 @@ class MenuItem extends BaseModel {
 	 */
 	public function getClass($selectedClass = 'active')
 	{
-		$class = $this->class;
-		if (! (int) $this->parent_id) {
-			$class .= Site::selectBy('section', $this->label, true, $selectedClass);
-		} else {
-			$class .= Site::selectBy('subSection', $this->label, true, $selectedClass);
-		}
+		$defaultClass = $this->class;
+		$class        = $defaultClass;
+		$checked      = ! (int) $this->parent_id ? "section" : "subSection";
+
+		//add selected class to default class if menu item is selected
+		$class .= Site::selectBy($checked, $this->label, true, $selectedClass);
+
+		//if nothing was found and menu item is for a content page, check it's title
+		if ($class == $defaultClass && $this->type == "Content Page" && $this->page)
+			$class .= Site::selectBy($checked, $this->page->title, true, $selectedClass);
 
 		return $class;
 	}

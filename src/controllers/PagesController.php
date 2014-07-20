@@ -225,13 +225,14 @@ class PagesController extends BaseController {
 		return $result;
 	}
 
-	public function view($slug = '')
+	public function view($slug = 'home')
 	{
 		$page = ContentPage::where('slug', $slug)->where('active', true)->where('activated_at', '<=', date('Y-m-d H:i:s'))->first();
 		if (empty($page))
 			return Redirect::to('');
 
-		Site::set('title', $page->title);
+		Site::setMulti(array('section', 'subSection', 'title'), $page->title);
+		Site::set('menus', 'Front');
 
 		$page->logView();
 

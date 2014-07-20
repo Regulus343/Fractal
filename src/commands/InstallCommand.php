@@ -6,6 +6,8 @@ use Symfony\Component\Console\Input\InputArgument;
 
 use Illuminate\Support\Facades\Config;
 
+use Regulus\Fractal\Fractal;
+
 class InstallCommand extends Command {
 
 	/**
@@ -130,6 +132,12 @@ class InstallCommand extends Command {
 			));
 		}
 
+		$this->output->writeln('');
+
+		//export default settings
+		$this->comment('Exporting Fractal\'s default settings from database to config file...');
+		Fractal::exportSettings(null, true);
+		$this->info('Fractal settings exported');
 		$this->output->writeln('');
 
 		//publish assets for Fractal and its required packages

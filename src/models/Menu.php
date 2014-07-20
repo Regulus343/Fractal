@@ -103,7 +103,7 @@ class Menu extends BaseModel {
 		foreach ($this->items as $menuItem) {
 			if (! (int) $menuItem->parent_id && $menuItem->isVisible()) {
 				$menuArray[] = (object) array(
-					'uri'         => $menuItem->getURI(),
+					'uri'         => $menuItem->getUri(),
 					'label'       => $menuItem->getLabel(),
 					'class'       => $menuItem->getClass(),
 					'anchorClass' => $menuItem->getAnchorClass(),
@@ -148,7 +148,7 @@ class Menu extends BaseModel {
 				if (! (int) $menuItem->parent_id && $menuItem->active) {
 					if ($added < 3) {
 						if ($menuItems != "") $menuItems .= ', ';
-						$menuItems .= '<a href="'.$menuItem->getURL().'" target="_blank">'.$menuItem->label.'</a>';
+						$menuItems .= '<a href="'.$menuItem->getUrl().'" target="_blank">'.$menuItem->label.'</a>';
 						$added ++;
 					} else {
 						$menuItems .= '...';

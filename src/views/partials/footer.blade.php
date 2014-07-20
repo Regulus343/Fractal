@@ -17,6 +17,12 @@
 					@endif
 				</p>
 			@endif
+
+			@if (Site::get('menus') == "Front")
+				<ul class="menu">
+					{{ Fractal::getMenuMarkup('Footer', true) }}
+				</ul>
+			@endif
 		</div><!-- /.pad -->
 	</div><!-- /#footer -->
 

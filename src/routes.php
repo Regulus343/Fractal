@@ -71,8 +71,12 @@ if ($pageUri == "") {
 		$pages = ContentPage::select('slug')->where('active', '=', true)->get();
 		foreach ($pages as $page) {
 			Route::get('{'.$page->slug.'}', $pageMethod);
+
+			if (Config::get('fractal::useHomePageForRoot') && $page->slug == "home")
+				Route::get('', $pageMethod);
 		}
 	}
 } else {
 	Route::get($pageUri.'/{slug}', $pageMethod);
+	Route::get('', $pageMethod);
 }

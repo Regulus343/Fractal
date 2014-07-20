@@ -108,6 +108,25 @@ class Setting extends Eloquent {
 	}
 
 	/**
+	 * Get the value of a setting.
+	 *
+	 * @return mixed
+	 */
+	public function getValue()
+	{
+		if ($this->type == "List")
+			return explode(', ', $this->value);
+
+		if ($this->type == "Integer")
+			return (int) $this->value;
+
+		if ($this->type == "Boolean")
+			return (bool) $this->value;
+
+		return $this->value;
+	}
+
+	/**
 	 * Get the value of a setting by name.
 	 *
 	 * @param  string   $name
@@ -116,13 +135,36 @@ class Setting extends Eloquent {
 	 */
 	public static function value($name, $default = false)
 	{
-		$setting = static::where('name', '=', $name)->first();
+		//first, attempt to get the value from "settings" config file
+		$value = Config::get('fractal::settings.'.Fractal::toCamelCase($name));
+
+		if (!is_null($value))
+			return $value;
+
+		//if that doesn't work, get the value from the database
+		$setting = static::where('name', $name)->first();
 		if (empty($setting)) return $default;
 
-		if ($setting->type == "List")
-			return explode(', ', $setting->value);
+		return $setting->getValue();
+	}
 
-		return $setting->value;
+	/**
+	 * Create an array of all the settings.
+	 *
+	 * @param  mixed    $settings
+	 * @return array
+	 */
+	public static function createArray($settings = null)
+	{
+		if (is_null($settings))
+			$settings = static::orderBy('category')->orderBy('display_order')->orderBy('name')->get();
+
+		$array = array();
+		foreach ($settings as $setting) {
+			$array[Fractal::toCamelCase($setting->name)] = $setting->getValue();
+		}
+
+		return $array;
 	}
 
 }

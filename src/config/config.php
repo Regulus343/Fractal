@@ -136,6 +136,20 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
+	| Website Content Home Page for Root
+	|--------------------------------------------------------------------------
+	|
+	| By default, the web root such as "http://website.com" will be routed to
+	| the page will the slug "home" if it exists. Set this to false if you have
+	| your own custom route mapped in your app. Since the app's routes file
+	| will overwrite the routes mapped within Fractal, you should not even need
+	| to adjust this, but it is here just in case.
+	|
+	*/
+	'useHomePageForRoot' => true,
+
+	/*
+	|--------------------------------------------------------------------------
 	| User Role No CMS Access URI
 	|--------------------------------------------------------------------------
 	|
