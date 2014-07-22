@@ -39,9 +39,9 @@
 			</div>
 			<div class="col-md-4">
 				{{ Form::field('region', 'select', array(
-					'label'       => Fractal::regionLabel(Form::value('country')),
+					'label'       => Fractal::getRegionLabel(Form::value('country')),
 					'options'     => Form::provinceOptions(),
-					'null-option' => Lang::get('fractal::messages.selectItem', array('item' => Format::a(strtolower(Fractal::regionLabel(Form::value('country'))))))
+					'null-option' => Lang::get('fractal::messages.selectItem', array('item' => Format::a(strtolower(Fractal::getRegionLabel(Form::value('country'))))))
 				)) }}
 			</div>
 		</div>

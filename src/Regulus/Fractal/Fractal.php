@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap.
 
 		created by Cody Jassman
-		version 0.4.9a
-		last updated on July 20, 2014
+		version 0.5.0a
+		last updated on July 21, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -780,7 +780,7 @@ class Fractal {
 	 * @param  string   $country
 	 * @return string
 	 */
-	public static function regionLabel($country)
+	public static function getRegionLabel($country)
 	{
 		switch ($country) {
 			case "Canada":        return Lang::get('fractal::labels.province'); break;
@@ -855,17 +855,35 @@ class Fractal {
 	}
 
 	/**
+	 * Export the menus to a PHP array config file.
+	 *
+	 * @param  boolean  $fromCli
+	 * @return void
+	 */
+	public static function exportMenus($fromCli = false)
+	{
+		$menus = Menu::orderBy('cms', 'desc')->orderBy('name')->get();
+		$array = array();
+		foreach ($menus as $menu) {
+			$array[static::toCamelCase($menu->name)] = $menu->createArray(false);
+		}
+
+		$path  = "app/config/packages/regulus/fractal/menus.php";
+
+		if (!$fromCli)
+			$path = "../".$path;
+
+		ArrayFile::save($path, $array);
+	}
+
+	/**
 	 * Get a menu array.
 	 *
 	 * @return array
 	 */
 	public static function getMenuArray($name = 'Main')
 	{
-		$menu = Menu::where('name', '=', $name)->first();
-		if (empty($menu))
-			return array();
-
-		return $menu->createArray();
+		return Menu::getArray($name);
 	}
 
 	/**
@@ -878,11 +896,7 @@ class Fractal {
 	 */
 	public static function getMenuMarkup($name = 'Main', $listItemsOnly = false, $class = '')
 	{
-		$menu = Menu::where('name', '=', $name)->first();
-		if (empty($menu))
-			return "";
-
-		return $menu->createMarkup($listItemsOnly, $class);
+		return Menu::createMarkupForMenu($name, $listItemsOnly, $class);
 	}
 
 	/**

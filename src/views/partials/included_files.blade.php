@@ -12,6 +12,11 @@
 
 @endif
 
+{{-- Select2 --}}
+<link type="text/css" rel="stylesheet" href="{{ Site::css('select2', 'regulus/fractal') }}" />
+<link type="text/css" rel="stylesheet" href="{{ Site::css('select2-bootstrap', 'regulus/fractal') }}" />
+<script type="text/javascript" src="{{ Site::js('select2.min', 'regulus/fractal') }}"></script>
+
 {{-- Moment --}}
 <script type="text/javascript" src="{{ Site::js('moment.min', 'regulus/fractal') }}"></script>
 
@@ -29,6 +34,8 @@
 	<script type="text/javascript" src="{{ Site::js('bootstrap-datetimepicker.min', 'regulus/fractal') }}"></script>
 
 @endif
+
+
 
 {{-- Boxy --}}
 @if (Config::get('fractal::loadBoxy'))

@@ -66,7 +66,13 @@ class SettingsController extends BaseController {
 
 			foreach ($settings as $setting) {
 				if (isset($values[$setting->getFieldName()])) {
-					$setting->value = $values[$setting->getFieldName()];
+					$value = $values[$setting->getFieldName()];
+
+					if ($setting->type == "List" && is_array($value))
+						$value = implode(', ', $value);
+
+					$setting->value = $value;
+
 					$setting->save();
 				}
 			}

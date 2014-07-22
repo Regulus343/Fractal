@@ -86,9 +86,6 @@ class ArrayFile {
 	{
 		$this->data .= "\n";
 
-		if (is_array($data) || is_object($data))
-			$this->data .= "\n";
-
 		$this->addTabsToArray();
 
 		if ($associative && !is_null($item)) {
@@ -127,8 +124,8 @@ class ArrayFile {
 
 				$this->data .= "\n";
 
-				if (is_array(end($data)) || is_object(end($data)))
-					$this->data .= "\n";
+				/*if (is_array(end($data)) || is_object(end($data)))
+					$this->data .= "\n";*/
 
 				$this->arrayLevelsDeep --;
 
@@ -138,7 +135,7 @@ class ArrayFile {
 			if (is_null($item))
 				$this->data .= "\n); //Exported from DB on ".date('m/d/Y \a\t g:ia');
 			else
-				$this->data .= "],\n";
+				$this->data .= "],";
 
 		} else {
 			if (is_bool($data)) {

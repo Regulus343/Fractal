@@ -140,6 +140,12 @@ class InstallCommand extends Command {
 		$this->info('Fractal settings exported');
 		$this->output->writeln('');
 
+		//export default menus
+		$this->comment('Exporting Fractal\'s default menus from database to config file...');
+		Fractal::exportMenus(true);
+		$this->info('Fractal menus exported');
+		$this->output->writeln('');
+
 		//publish assets for Fractal and its required packages
 		$this->info($divider);
 		$this->comment('Publishing assets...');

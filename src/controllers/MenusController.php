@@ -105,6 +105,9 @@ class MenusController extends BaseController {
 
 			$menu = Menu::createNew();
 
+			//re-export menus to config array
+			Fractal::exportMenus();
+
 			Activity::log(array(
 				'contentId'   => $menu->id,
 				'contentType' => 'Menu',
@@ -159,6 +162,9 @@ class MenusController extends BaseController {
 			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Format::a('menu')));
 
 			$menu->saveData();
+
+			//re-export menus to config array
+			Fractal::exportMenus();
 
 			Activity::log(array(
 				'contentId'   => $menu->id,

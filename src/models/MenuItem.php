@@ -147,20 +147,40 @@ class MenuItem extends BaseModel {
 	/**
 	 * Get the class attribute of the menu item.
 	 *
+	 * @param  boolean  $setSelectedClass
 	 * @return string
 	 */
-	public function getClass($selectedClass = 'active')
+	public function getClass($setSelectedClass = true)
 	{
-		$defaultClass = $this->class;
-		$class        = $defaultClass;
-		$checked      = ! (int) $this->parent_id ? "section" : "subSection";
+		$class = $this->class;
 
-		//add selected class to default class if menu item is selected
-		$class .= Site::selectBy($checked, $this->label, true, $selectedClass);
+		if ($setSelectedClass)
+			$class = static::setSelectedClass($this);
+
+		return $class;
+	}
+
+	/**
+	 * Get the class attribute of the menu item.
+	 *
+	 * @param  mixed    $item
+	 * @return string
+	 */
+	public static function setSelectedClass($item)
+	{
+		if (!isset($item->parent_id)) {
+			var_dump($item); exit;
+		}
+		$selectedClass = "active";
+		$defaultClass  = $item->class;
+		$class         = $defaultClass;
+		$checked       = ! (int) $item->parent_id ? "section" : "subSection";
+
+		$class .= Site::selectBy($checked, $item->label, true, $selectedClass);
 
 		//if nothing was found and menu item is for a content page, check it's title
-		if ($class == $defaultClass && $this->type == "Content Page" && $this->page)
-			$class .= Site::selectBy($checked, $this->page->title, true, $selectedClass);
+		if ($class == $defaultClass && $item->type == "Content Page")
+			$class .= Site::selectBy($checked, $item->page, true, $selectedClass);
 
 		return $class;
 	}
@@ -202,23 +222,38 @@ class MenuItem extends BaseModel {
 	/**
 	 * Get a limited array of a menu item's children.
 	 *
+	 * @param  boolean  $setSelectedClass
 	 * @return array
 	 */
-	public function getChildrenArray()
+	public function getChildrenArray($setSelectedClass = true)
 	{
 		$children = array();
 		foreach ($this->children as $child) {
-			if ($child->isVisible()) {
-				$children[] = (object) array(
-					'uri'         => $child->getURI(),
-					'label'       => $child->getLabel(),
-					'class'       => $child->getClass(),
-					'anchorClass' => $child->getAnchorClass(),
-					'children'    => $child->getChildrenArray(),
-				);
-			}
+			if ($child->isVisible())
+				$children[] = $child->createObject($setSelectedClass);
 		}
 		return $children;
+	}
+
+	/**
+	 * Create an object for the menu item containing just the necessary data.
+	 *
+	 * @param  boolean  $setSelectedClass
+	 * @return array
+	 */
+	public function createObject($setSelectedClass = true)
+	{
+		return (object) array(
+			'parent_id'   => (int) $this->parent_id,
+			'type'        => $this->type,
+			'uri'         => $this->getUri(),
+			'page'        => $this->type == "Content Page" ? $this->page->title : false,
+			'label'       => $this->label,
+			'labelIcon'   => $this->getLabel(),
+			'class'       => $this->getClass($setSelectedClass),
+			'anchorClass' => $this->getAnchorClass(),
+			'children'    => $this->getChildrenArray(),
+		);
 	}
 
 	/**

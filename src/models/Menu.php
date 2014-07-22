@@ -95,21 +95,15 @@ class Menu extends BaseModel {
 	/**
 	 * Create a menu array.
 	 *
+	 * @param  boolean  $setSelectedClass
 	 * @return array
 	 */
-	public function createArray()
+	public function createArray($setSelectedClass = true)
 	{
 		$menuArray = array();
 		foreach ($this->items as $menuItem) {
-			if (! (int) $menuItem->parent_id && $menuItem->isVisible()) {
-				$menuArray[] = (object) array(
-					'uri'         => $menuItem->getUri(),
-					'label'       => $menuItem->getLabel(),
-					'class'       => $menuItem->getClass(),
-					'anchorClass' => $menuItem->getAnchorClass(),
-					'children'    => $menuItem->getChildrenArray(),
-				);
-			}
+			if (! (int) $menuItem->parent_id && $menuItem->isVisible())
+				$menuArray[] = $menuItem->createObject($setSelectedClass);
 		}
 		return $menuArray;
 	}
@@ -124,7 +118,48 @@ class Menu extends BaseModel {
 	public function createMarkup($listItemsOnly = false, $class = '')
 	{
 		$menu = $this->createArray();
-		if ($class != "") $class = ' '.$class;
+		if ($class != "")
+			$class = ' '.$class;
+
+		return View::make(Config::get('fractal::viewsLocation').'partials.menu')
+			->with('menu', $menu)
+			->with('listItemsOnly', $listItemsOnly)
+			->with('class', $class)
+			->render();
+	}
+
+	/**
+	 * Get a menu array by name.
+	 *
+	 * @param  string   $name
+	 * @return array
+	 */
+	public static function getArray($name)
+	{
+		$menu = Config::get('fractal::menus.'.Fractal::toCamelCase($name));
+		if (!is_null($menu))
+			return $menu;
+
+		$menu = static::where('name', $name)->first();
+		if ($menu)
+			return $menu->createArray();
+
+		return array();
+	}
+
+	/**
+	 * Create menu markup for Bootstrap.
+	 *
+	 * @param  string   $name
+	 * @param  boolean  $listItemsOnly
+	 * @param  string   $class
+	 * @return string
+	 */
+	public static function createMarkupForMenu($name, $listItemsOnly = false, $class = '')
+	{
+		$menu = (object) static::getArray($name);
+		if ($class != "")
+			$class = ' '.$class;
 
 		return View::make(Config::get('fractal::viewsLocation').'partials.menu')
 			->with('menu', $menu)

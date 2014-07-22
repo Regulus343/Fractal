@@ -69,13 +69,22 @@ class Setting extends Eloquent {
 					$class    = $function[0];
 					$method   = substr($function[1], 0, (strlen($function[1]) - 2));
 					$options  = $class::{$method}();
+				} else {
+					$options = Form::simpleOptions($options);
 				}
 
-				$html = Form::field($name, 'select', array(
+				$attributes = array(
 					'label'   => $this->getLabel(),
-					'options' => Form::simpleOptions($options),
-					'value'   => $this->value,
-				));
+					'options' => $options,
+					'value'   => $this->getValue(),
+				);
+
+				if ($this->type == "List") {
+					$name .= ".";
+					$attributes['multiple'] = "multiple";
+				}
+
+				$html = Form::field($name, 'select', $attributes);
 			} else {
 				$html = Form::field($name, 'text', array('label' => $this->getLabel()));
 			}
