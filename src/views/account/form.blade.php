@@ -7,7 +7,7 @@
 	</script>
 	<script type="text/javascript" src="{{ Site::js('fractal/user-form', 'regulus/fractal') }}"></script>
 
-	{{ Form::openResource() }}
+	{{ Form::open() }}
 		<div class="row">
 			<div class="col-md-6">
 				{{ Form::field('username') }}

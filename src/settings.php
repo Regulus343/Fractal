@@ -1,5 +1,7 @@
 <?php namespace Regulus\Fractal;
 
+use Regulus\Fractal\Facade as Fractal;
+
 /*
 |--------------------------------------------------------------------------
 | Settings

@@ -1,10 +1,12 @@
-<?php namespace Regulus\Fractal;
+<?php namespace Regulus\Fractal\Models;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
+use Fractal;
+
 use Illuminate\Support\Facades\Config;
 
-use Aquanode\Formation\Formation as Form;
+use Aquanode\Formation\Facade as Form;
 
 class Setting extends Eloquent {
 

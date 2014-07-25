@@ -1,6 +1,8 @@
-<?php namespace Regulus\Fractal;
+<?php namespace Regulus\Fractal\Models;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
+
+use Fractal;
 
 use Illuminate\Support\Facades\Config;
 
@@ -42,7 +44,7 @@ class ContentLayoutTemplate extends Eloquent {
 	 *
 	 * @return Collection
 	 */
-	public function contentPages()
+	public function pages()
 	{
 		return $this->hasMany('Regulus\Fractal\ContentPage', 'layout_template_id');
 	}

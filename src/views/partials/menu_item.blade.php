@@ -1,6 +1,6 @@
 <?php if (is_array($menuItem)) $menuItem = (object) $menuItem; ?>
 
-<li class="{{ \Regulus\Fractal\MenuItem::setSelectedClass($menuItem) }}">
+<li class="{{ Fractal::setMenuItemSelectedClass($menuItem) }}">
 	<a href="{{ URL::to($menuItem->uri) }}" class="{{ $menuItem->anchorClass }}"{{ !empty($menuItem->children) ? ' data-toggle="dropdown"' : '' }}>
 		{{ $menuItem->labelIcon }}
 

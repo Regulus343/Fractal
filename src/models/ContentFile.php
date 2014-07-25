@@ -1,4 +1,4 @@
-<?php namespace Regulus\Fractal;
+<?php namespace Regulus\Fractal\Models;
 
 use Aquanode\Formation\BaseModel;
 

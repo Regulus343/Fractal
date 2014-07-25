@@ -1,6 +1,8 @@
-<?php namespace Regulus\Fractal;
+<?php namespace Regulus\Fractal\Models;
 
 use Aquanode\Formation\BaseModel;
+
+use Fractal;
 
 use Illuminate\Support\Facades\Request;
 

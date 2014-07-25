@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 
+use Regulus\Fractal\Models\ContentPage;
+
 $baseUri     = Config::get('fractal::baseUri');
 $controllers = Config::get('fractal::controllers');
 $methods     = Config::get('fractal::controllerMethods');

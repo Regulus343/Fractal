@@ -1,12 +1,14 @@
-<?php namespace Regulus\Fractal;
+<?php namespace Regulus\Fractal\Models;
 
 use Aquanode\Formation\BaseModel;
+
+use Fractal;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
 
-use Aquanode\Formation\Formation as Form;
+use Aquanode\Formation\Facade as Form;
 
 class Menu extends BaseModel {
 
@@ -89,7 +91,7 @@ class Menu extends BaseModel {
 	 */
 	public function items()
 	{
-		return $this->hasMany('Regulus\Fractal\MenuItem')->orderBy('parent_id')->orderBy('display_order');
+		return $this->hasMany('Regulus\Fractal\Models\MenuItem')->orderBy('parent_id')->orderBy('display_order');
 	}
 
 	/**

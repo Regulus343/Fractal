@@ -258,7 +258,7 @@
 			<div class="col-md-4">
 				{{ Form::field('layout_template_id', 'select', array(
 					'label'       => 'Layout Template',
-					'options'     => Form::prepOptions(Regulus\Fractal\ContentLayoutTemplate::orderBy('name')->get(), array('id', 'name')),
+					'options'     => Form::prepOptions(Regulus\Fractal\Models\ContentLayoutTemplate::orderBy('name')->get(), array('id', 'name')),
 					'null-option' => 'Custom Layout'
 				)) }}
 			</div>
@@ -307,7 +307,7 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field(Form::submitResource(Lang::get('fractal::labels.page'), (isset($update) && $update)), 'button') }}
+				{{ Form::field(Form::submitResource(Lang::get('fractal::labels.page')), 'button') }}
 			</div>
 		</div>
 

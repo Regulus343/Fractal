@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap.
 
 		created by Cody Jassman
-		version 0.5.0a
-		last updated on July 21, 2014
+		version 0.5.1a
+		last updated on July 25, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -19,10 +19,15 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 
-use Aquanode\Elemental\Elemental as HTML;
-use Aquanode\Formation\Formation as Form;
+use Regulus\Fractal\Models\Menu;
+use Regulus\Fractal\Models\MenuItem;
+use Regulus\Fractal\Models\Setting;
+
 use Regulus\SolidSite\SolidSite as Site;
 use Regulus\TetraText\TetraText as Format;
+
+use Aquanode\Elemental\Elemental as HTML;
+use Aquanode\Formation\Facade as Form;
 
 use MaxHoffmann\Parsedown\ParsedownFacade as Markdown;
 
@@ -33,28 +38,28 @@ class Fractal {
 	 *
 	 * @var    array
 	 */
-	public static $auth;
+	public $auth;
 
 	/**
 	 * The views location for the current controller.
 	 *
 	 * @var    string
 	 */
-	public static $viewsLocation;
+	public $viewsLocation;
 
 	/**
 	 * The pagination data setup.
 	 *
 	 * @var    array
 	 */
-	public static $pagination;
+	public $pagination;
 
 	/**
 	 * The current content type.
 	 *
 	 * @var    array
 	 */
-	public static $contentType;
+	public $contentType;
 
 	/**
 	 * Create a CMS URL.
@@ -62,9 +67,9 @@ class Fractal {
 	 * @param  string   $uri
 	 * @return string
 	 */
-	public static function url($uri = '')
+	public function url($uri = '')
 	{
-		return URL::to(static::uri($uri));
+		return URL::to($this->uri($uri));
 	}
 
 	/**
@@ -73,10 +78,14 @@ class Fractal {
 	 * @param  string   $uri
 	 * @return string
 	 */
-	public static function uri($uri = '')
+	public function uri($uri = '')
 	{
 		$fullUri = Config::get('fractal::baseUri');
-		if ($fullUri != "") $fullUri .= '/'.$uri;
+		if ($fullUri != "" && $fullUri !== false && !is_null($fullUri))
+			$fullUri .= '/'.$uri;
+		else
+			$fullUri = $uri;
+
 		return $fullUri;
 	}
 
@@ -87,7 +96,7 @@ class Fractal {
 	 * @param  string   $controller
 	 * @return string
 	 */
-	public static function controllerUrl($uri = '', $controller)
+	public function controllerUrl($uri = '', $controller)
 	{
 		$controller   = ucfirst($controller).'Controller';
 		$controllers  = Config::get('fractal::controllers');
@@ -117,7 +126,41 @@ class Fractal {
 			}
 		}
 
-		return static::url($uri);
+		return $this->url($uri);
+	}
+
+	/**
+	 * Create a blog URL.
+	 *
+	 * @param  string   $uri
+	 * @return string
+	 */
+	public function blogUrl($uri = '')
+	{
+		$url = URL::to($this->blogUri($uri));
+
+		$subdomain = Config::get('fractal::blog.subdomain');
+		if ($subdomain != "" && $subdomain !== false && !is_null($subdomain))
+			$url = str_replace('http://', 'http://'.$subdomain.'.', str_replace('https://', 'https://'.$subdomain.'.', $url));
+
+		return $url;
+	}
+
+	/**
+	 * Create a blog URI.
+	 *
+	 * @param  string   $uri
+	 * @return string
+	 */
+	public function blogUri($uri = '')
+	{
+		$fullUri = Config::get('fractal::blog.baseUri');
+		if ($fullUri != "" && $fullUri !== false && !is_null($fullUri))
+			$fullUri .= '/'.$uri;
+		else
+			$fullUri = $uri;
+
+		return $fullUri;
 	}
 
 	/**
@@ -126,12 +169,12 @@ class Fractal {
 	 * @param  mixed    $directory
 	 * @return string
 	 */
-	public static function setViewsLocation($directory = null)
+	public function setViewsLocation($directory = null)
 	{
 		if (is_null($directory))
-			$directory = Str::plural(static::getContentType());
+			$directory = Str::plural($this->getContentType());
 
-		static::$viewsLocation = Config::get('fractal::viewsLocation').$directory.'.';
+		$this->viewsLocation = Config::get('fractal::viewsLocation').$directory.'.';
 	}
 
 	/**
@@ -141,12 +184,12 @@ class Fractal {
 	 * @param  boolean  $root
 	 * @return string
 	 */
-	public static function view($relativeLocation = '', $root = false)
+	public function view($relativeLocation = '', $root = false)
 	{
 		if ($root)
 			return Config::get('fractal::viewsLocation').$relativeLocation;
 		else
-			return static::$viewsLocation.$relativeLocation;
+			return $this->viewsLocation.$relativeLocation;
 	}
 
 	/**
@@ -158,14 +201,14 @@ class Fractal {
 	 * @param  boolean  $returnJson
 	 * @return mixed
 	 */
-	public static function modalView($relativeLocation = '', $data = array(), $root = false, $returnJson = true)
+	public function modalView($relativeLocation = '', $data = array(), $root = false, $returnJson = true)
 	{
 		if (substr($relativeLocation, 0, 7) != "modals.")
 			$relativeLocation = "modals.".$relativeLocation;
 
 		$response = array(
 			'title'   => isset($data['title']) ? $data['title'] : '',
-			'content' => View::make(static::view($relativeLocation, $root))->with($data)->render(),
+			'content' => View::make($this->view($relativeLocation, $root))->with($data)->render(),
 			'buttons' => isset($data['buttons']) && $data['buttons'] ? true : false,
 		);
 
@@ -182,7 +225,7 @@ class Fractal {
 	 * @param  mixed    $default
 	 * @return mixed
 	 */
-	public static function getSetting($name, $default = false)
+	public function getSetting($name, $default = false)
 	{
 		if (!Config::get('fractal::migrated') || App::runningInConsole())
 			return $default;
@@ -197,7 +240,7 @@ class Fractal {
 	 * @param  boolean  $fromCli
 	 * @return void
 	 */
-	public static function exportSettings($settings = null, $fromCli = false)
+	public function exportSettings($settings = null, $fromCli = false)
 	{
 		$array = Setting::createArray($settings);
 		$path  = "app/config/packages/regulus/fractal/settings.php";
@@ -214,12 +257,12 @@ class Fractal {
 	 * @param  string   $contentType
 	 * @param  boolean  $setViewsLocation
 	 */
-	public static function setContentType($contentType, $setViewsLocation = false)
+	public function setContentType($contentType, $setViewsLocation = false)
 	{
-		static::$contentType = $contentType;
+		$this->contentType = $contentType;
 
 		if ($setViewsLocation)
-			static::setViewsLocation();
+			$this->setViewsLocation();
 	}
 
 	/**
@@ -227,9 +270,9 @@ class Fractal {
 	 *
 	 * @return string
 	 */
-	public static function getContentType()
+	public function getContentType()
 	{
-		return static::$contentType;
+		return $this->contentType;
 	}
 
 	/**
@@ -239,9 +282,9 @@ class Fractal {
 	 * @param  mixed    $default
 	 * @return string
 	 */
-	public static function getContentTypeFilter($name = '', $default = false)
+	public function getContentTypeFilter($name = '', $default = false)
 	{
-		return Session::get($name.static::getContentTypeUpperCase(), $default);
+		return Session::get($name.$this->getContentTypeUpperCase(), $default);
 	}
 
 	/**
@@ -250,12 +293,12 @@ class Fractal {
 	 * @param  mixed    $contentType
 	 * @return string
 	 */
-	public static function getContentTypeUpperCase($contentType = null)
+	public function getContentTypeUpperCase($contentType = null)
 	{
 		if (is_null($contentType))
-			$contentType = static::getContentType();
+			$contentType = $this->getContentType();
 
-		return static::toUpperCase($contentType);
+		return $this->toUpperCase($contentType);
 	}
 
 	/**
@@ -264,12 +307,12 @@ class Fractal {
 	 * @param  mixed    $contentType
 	 * @return string
 	 */
-	public static function getContentTypeCamelCase($contentType = null)
+	public function getContentTypeCamelCase($contentType = null)
 	{
 		if (is_null($contentType))
-			$contentType = static::getContentType();
+			$contentType = $this->getContentType();
 
-		return static::toCamelCase($contentType);
+		return $this->toCamelCase($contentType);
 	}
 
 	/**
@@ -278,7 +321,7 @@ class Fractal {
 	 * @param  string   $string
 	 * @return string
 	 */
-	public static function toUpperCase($string)
+	public function toUpperCase($string)
 	{
 		return str_replace(' ', '', ucwords(str_replace('-', ' ', str_replace('_', ' ', strtolower($string)))));
 	}
@@ -289,9 +332,9 @@ class Fractal {
 	 * @param  string   $string
 	 * @return string
 	 */
-	public static function toCamelCase($string)
+	public function toCamelCase($string)
 	{
-		$string = static::toUpperCase($string);
+		$string = $this->toUpperCase($string);
 		return strtolower(substr($string, 0, 1)).substr($string, 1);
 	}
 
@@ -301,16 +344,16 @@ class Fractal {
 	 * @param  array    $defaultSorting
 	 * @return array
 	 */
-	public static function setupPagination($defaultSorting = array())
+	public function setupPagination($defaultSorting = array())
 	{
-		$contentType = static::getContentType();
+		$contentType = $this->getContentType();
 
 		if (empty($defaultSorting))
 			$defaultSorting = Site::get('defaultSorting');
 
 		$terms = trim(Input::get('search'));
-		static::$pagination = array(
-			'itemsPerPage' => static::getSetting('Items Listed Per Page', 20),
+		$this->pagination = array(
+			'itemsPerPage' => $this->getSetting('Items Listed Per Page', 20),
 			'terms'        => $terms,
 			'likeTerms'    => '%'.$terms.'%',
 			'search'       => $_POST ? true : false,
@@ -325,43 +368,43 @@ class Fractal {
 		);
 
 		//set default sorting
-		if (static::$pagination['sortField'] == "" && !empty($defaultSorting)) {
+		if ($this->pagination['sortField'] == "" && !empty($defaultSorting)) {
 			if (isset($defaultSorting['field']))
-				static::$pagination['sortField'] = $defaultSorting['field'];
+				$this->pagination['sortField'] = $defaultSorting['field'];
 
 			if (isset($defaultSorting['order']))
-				static::$pagination['sortOrder'] = (strtolower($defaultSorting['order']) == 'desc' ? 'desc' : 'asc');
+				$this->pagination['sortOrder'] = (strtolower($defaultSorting['order']) == 'desc' ? 'desc' : 'asc');
 		} 
 
 		//attempt to disallow sorting on fields that "sortable" is not set for via "tables" config
 		$sortableFields   = Fractal::getSortableFieldsForTable($contentType);
-		if (!in_array(static::$pagination['sortField'], $sortableFields))
-			static::$pagination['sortField'] = "id";
+		if (!in_array($this->pagination['sortField'], $sortableFields))
+			$this->pagination['sortField'] = "id";
 
-		$contentTypeUpperCase = static::getContentTypeUpperCase();
+		$contentTypeUpperCase = $this->getContentTypeUpperCase();
 
 		if ($contentType) {
-			if (static::$pagination['search']) {
+			if ($this->pagination['search']) {
 				Session::set('searchTerms'.$contentTypeUpperCase, $terms);
-				Session::set('page'.$contentTypeUpperCase, static::$pagination['page']);
+				Session::set('page'.$contentTypeUpperCase, $this->pagination['page']);
 
-				Session::set('sortField'.$contentTypeUpperCase, static::$pagination['sortField']);
-				Session::set('sortOrder'.$contentTypeUpperCase, static::$pagination['sortOrder']);
+				Session::set('sortField'.$contentTypeUpperCase, $this->pagination['sortField']);
+				Session::set('sortOrder'.$contentTypeUpperCase, $this->pagination['sortOrder']);
 			} else {
-				static::$pagination['terms']     = Session::get('searchTerms'.$contentTypeUpperCase, $terms);
-				static::$pagination['page']      = Session::get('page'.$contentTypeUpperCase, static::$pagination['page']);
+				$this->pagination['terms']     = Session::get('searchTerms'.$contentTypeUpperCase, $terms);
+				$this->pagination['page']      = Session::get('page'.$contentTypeUpperCase, $this->pagination['page']);
 
-				static::$pagination['sortField'] = Session::get('sortField'.$contentTypeUpperCase, static::$pagination['sortField']);
-				static::$pagination['sortOrder'] = Session::get('sortOrder'.$contentTypeUpperCase, static::$pagination['sortOrder']);
+				$this->pagination['sortField'] = Session::get('sortField'.$contentTypeUpperCase, $this->pagination['sortField']);
+				$this->pagination['sortOrder'] = Session::get('sortOrder'.$contentTypeUpperCase, $this->pagination['sortOrder']);
 			}
 		}
 
-		DB::getPaginator()->setCurrentPage(static::$pagination['page']);
+		DB::getPaginator()->setCurrentPage($this->pagination['page']);
 
-		static::$pagination['likeTerms']         = '%'.static::$pagination['terms'].'%';
-		static::$pagination['result']['message'] = Lang::get('fractal::messages.searchNoResults', array('terms' => static::$pagination['terms']));
+		$this->pagination['likeTerms']         = '%'.$this->pagination['terms'].'%';
+		$this->pagination['result']['message'] = Lang::get('fractal::messages.searchNoResults', array('terms' => $this->pagination['terms']));
 
-		return static::$pagination;
+		return $this->pagination;
 	}
 
 	/**
@@ -370,9 +413,9 @@ class Fractal {
 	 * @param  mixed    $content
 	 * @return array
 	 */
-	public static function setContentForPagination($content)
+	public function setContentForPagination($content)
 	{
-		static::$pagination['content'] = $content;
+		$this->pagination['content'] = $content;
 	}
 
 	/**
@@ -380,29 +423,29 @@ class Fractal {
 	 *
 	 * @return array
 	 */
-	public static function setPaginationMessage()
+	public function setPaginationMessage()
 	{
-		$contentType = static::getContentTypeCamelCase();
+		$contentType = $this->getContentTypeCamelCase();
 		$item        = Lang::get('fractal::labels.'.Str::singular($contentType));
 
-		static::$pagination['result']['resultType'] = static::$pagination['content']->getTotal() ? "Success" : "Error";
+		$this->pagination['result']['resultType'] = $this->pagination['content']->getTotal() ? "Success" : "Error";
 
-		if (static::$pagination['changingPage'] || static::$pagination['terms'] == "") {
-			static::$pagination['result']['message'] = Lang::get('fractal::messages.displayingItemsOfTotal', array(
-				'start'  => static::$pagination['content']->getFrom(),
-				'end'    => static::$pagination['content']->getTo(),
-				'total'  => static::$pagination['content']->getTotal(),
-				'items'  => Format::pluralize(strtolower($item), static::$pagination['content']->getTotal()),
+		if ($this->pagination['changingPage'] || $this->pagination['terms'] == "") {
+			$this->pagination['result']['message'] = Lang::get('fractal::messages.displayingItemsOfTotal', array(
+				'start'  => $this->pagination['content']->getFrom(),
+				'end'    => $this->pagination['content']->getTo(),
+				'total'  => $this->pagination['content']->getTotal(),
+				'items'  => Format::pluralize(strtolower($item), $this->pagination['content']->getTotal()),
 			));
 		} else {
-			static::$pagination['result']['message'] = Lang::get('fractal::messages.searchResults', array(
-				'terms' => static::$pagination['terms'],
-				'total' => static::$pagination['content']->getTotal(),
-				'items' => Format::pluralize(strtolower($item), static::$pagination['content']->getTotal()),
+			$this->pagination['result']['message'] = Lang::get('fractal::messages.searchResults', array(
+				'terms' => $this->pagination['terms'],
+				'total' => $this->pagination['content']->getTotal(),
+				'items' => Format::pluralize(strtolower($item), $this->pagination['content']->getTotal()),
 			));
 		}
 
-		return static::$pagination;
+		return $this->pagination;
 	}
 
 	/**
@@ -410,13 +453,13 @@ class Fractal {
 	 *
 	 * @return array
 	 */
-	public static function getPaginationMessageArray()
+	public function getPaginationMessageArray()
 	{
-		if (!isset(static::$pagination['result']['message']))
-			static::setPaginationMessage();
+		if (!isset($this->pagination['result']['message']))
+			$this->setPaginationMessage();
 
 		return array(
-			strtolower(static::$pagination['result']['resultType']) => static::$pagination['result']['message']
+			strtolower($this->pagination['result']['resultType']) => $this->pagination['result']['message']
 		);
 	}
 
@@ -425,10 +468,10 @@ class Fractal {
 	 *
 	 * @return array
 	 */
-	public static function setSearchFormDefaults()
+	public function setSearchFormDefaults()
 	{
 		$defaults = array(
-			'search' => static::$pagination['terms']
+			'search' => $this->pagination['terms']
 		);
 		Form::setDefaults($defaults);
 
@@ -440,12 +483,12 @@ class Fractal {
 	 *
 	 * @return integer
 	 */
-	public static function getCurrentPage()
+	public function getCurrentPage()
 	{
-		if (empty(static::$pagination['content']))
+		if (empty($this->pagination['content']))
 			return 1;
 
-		return static::$pagination['content']->getCurrentPage();
+		return $this->pagination['content']->getCurrentPage();
 	}
 
 	/**
@@ -453,12 +496,12 @@ class Fractal {
 	 *
 	 * @return integer
 	 */
-	public static function getLastPage()
+	public function getLastPage()
 	{
-		if (empty(static::$pagination['content']))
+		if (empty($this->pagination['content']))
 			return 1;
 
-		return static::$pagination['content']->getLastPage();
+		return $this->pagination['content']->getLastPage();
 	}
 
 	/**
@@ -467,7 +510,7 @@ class Fractal {
 	 * @param  string   $contentType
 	 * @return array
 	 */
-	public static function getSortableFieldsForTable($name = null)
+	public function getSortableFieldsForTable($name = null)
 	{
 		if (is_null($name))
 			$name = Str::plural(Fractal::getContentType());
@@ -499,9 +542,9 @@ class Fractal {
 	 * @param  boolean  $bodyOnly
 	 * @return string
 	 */
-	public static function createTable($content = array(), $bodyOnly = false)
+	public function createTable($content = array(), $bodyOnly = false)
 	{
-		return HTML::table(Config::get('fractal::tables.'.Str::plural(static::getContentTypeCamelCase())), $content, $bodyOnly);
+		return HTML::table(Config::get('fractal::tables.'.Str::plural($this->getContentTypeCamelCase())), $content, $bodyOnly);
 	}
 
 	/**
@@ -511,11 +554,11 @@ class Fractal {
 	 * @param  string   $contentType
 	 * @return string
 	 */
-	public static function renderContent($content, $contentType = 'HTML')
+	public function renderContent($content, $contentType = 'HTML')
 	{
 		//add file images to content
-		$content = static::renderContentImages($content, '/\!\[file:([0-9]*)\]/'); //Markdown style image replacement
-		$content = static::renderContentImages($content, '/\[image:([0-9]*)\]/'); //custom "image" replacement tag to match others
+		$content = $this->renderContentImages($content, '/\!\[file:([0-9]*)\]/'); //Markdown style image replacement
+		$content = $this->renderContentImages($content, '/\[image:([0-9]*)\]/'); //custom "image" replacement tag to match others
 
 		//add file links to content
 		preg_match_all('/\[file:([0-9]*)\]/', $content, $fileIds);
@@ -630,9 +673,9 @@ class Fractal {
 	 * @param  string   $content
 	 * @return string
 	 */
-	public static function renderMarkdownContent($content)
+	public function renderMarkdownContent($content)
 	{
-		return static::renderContent($content, 'Markdown');
+		return $this->renderContent($content, 'Markdown');
 	}
 
 	/**
@@ -642,7 +685,7 @@ class Fractal {
 	 * @param  string   $expression
 	 * @return string
 	 */
-	public static function renderContentImages($content, $expression)
+	public function renderContentImages($content, $expression)
 	{
 		preg_match_all($expression, $content, $fileIds);
 		if (isset($fileIds[0]) && !empty($fileIds[0])) {
@@ -673,12 +716,12 @@ class Fractal {
 	 *
 	 * @return boolean
 	 */
-	public static function auth()
+	public function auth()
 	{
-		$auth = static::configAuth();
+		$auth = $this->configAuth();
 		if ($auth->methodActiveCheck != false) {
-			$function = static::separateFunction($auth->methodActiveCheck);
-			return static::callFunction($function);
+			$function = $this->separateFunction($auth->methodActiveCheck);
+			return $this->callFunction($function);
 		}
 		return false;
 	}
@@ -688,12 +731,12 @@ class Fractal {
 	 *
 	 * @return boolean
 	 */
-	public static function admin()
+	public function admin()
 	{
-		$auth = static::configAuth();
+		$auth = $this->configAuth();
 		if ($auth->methodAdminCheck) {
-			if (static::auth()) {
-				$user = static::user();
+			if ($this->auth()) {
+				$user = $this->user();
 				if ($user->roles[0]->role == $auth->methodAdminRole) return true;
 			}
 		}
@@ -706,13 +749,13 @@ class Fractal {
 	 * @param  mixed    $roles
 	 * @return boolean
 	 */
-	public static function roles($roles)
+	public function roles($roles)
 	{
-		$auth = static::configAuth();
+		$auth = $this->configAuth();
 
 		$allowed = false;
-		if (static::auth()) {
-			$userRoles = static::user()->roles;
+		if ($this->auth()) {
+			$userRoles = $this->user()->roles;
 			if (is_array($roles)) {
 				foreach ($userRoles as $userRole) {
 					foreach ($roles as $role) {
@@ -736,12 +779,12 @@ class Fractal {
 	 *
 	 * @return boolean
 	 */
-	public static function user()
+	public function user()
 	{
-		$auth = static::configAuth();
+		$auth = $this->configAuth();
 		if ($auth->methodActiveUser != false) {
-			$function = static::separateFunction($auth->methodActiveUser);
-			return static::callFunction($function);
+			$function = $this->separateFunction($auth->methodActiveUser);
+			return $this->callFunction($function);
 		}
 		return false;
 	}
@@ -751,10 +794,10 @@ class Fractal {
 	 *
 	 * @return boolean
 	 */
-	public static function userID()
+	public function userID()
 	{
-		$auth = static::configAuth();
-		$user = static::user();
+		$auth = $this->configAuth();
+		$user = $this->user();
 
 		if (isset($user->{$auth->methodActiveUserID}))
 			return $user->{$auth->methodActiveUserID};
@@ -768,7 +811,7 @@ class Fractal {
 	 * @param  string   $username
 	 * @return User
 	 */
-	public static function userByUsername($username)
+	public function userByUsername($username)
 	{
 		$users = call_user_func_array("\\".Config::get('auth.model')."::where", array('username', '=', str_replace("'", '', $username)));
 		return $users->first();
@@ -780,7 +823,7 @@ class Fractal {
 	 * @param  string   $country
 	 * @return string
 	 */
-	public static function getRegionLabel($country)
+	public function getRegionLabel($country)
 	{
 		switch ($country) {
 			case "Canada":        return Lang::get('fractal::labels.province'); break;
@@ -794,10 +837,10 @@ class Fractal {
 	 *
 	 * @return array
 	 */
-	private static function configAuth()
+	private function configAuth()
 	{
-		if (is_null(static::$auth)) {
-			static::$auth = (object) array(
+		if (is_null($this->auth)) {
+			$this->auth = (object) array(
 				'class'              => Config::get('fractal::authClass'),
 				'methodActiveCheck'  => Config::get('fractal::authMethodActiveCheck'),
 				'methodActiveUser'   => Config::get('fractal::authMethodActiveUser'),
@@ -806,7 +849,7 @@ class Fractal {
 				'methodAdminRole'    => Config::get('fractal::authMethodAdminRole'),
 			);
 		}
-		return static::$auth;
+		return $this->auth;
 	}
 
 	/**
@@ -816,7 +859,7 @@ class Fractal {
 	 * @param  string   $function
 	 * @return object
 	 */
-	public static function separateFunction($function)
+	public function separateFunction($function)
 	{
 		$data = preg_match('/([\w\_\d]+)\(([\w\W]*)\)/', $function, $matches);
 		if (!isset($matches[0])) $matches[0] = $function;
@@ -834,11 +877,11 @@ class Fractal {
 	 * @param  object   $function
 	 * @return boolean
 	 */
-	public static function callFunction($function)
+	public function callFunction($function)
 	{
 		if (!isset($function->method) OR !isset($function->parameters)) return false;
 
-		$auth = static::configAuth();
+		$auth = $this->configAuth();
 		if (substr($function->parameters, 0, 6) == "array(") {
 
 			$function->parameters = explode(',', $function->parameters);
@@ -860,12 +903,12 @@ class Fractal {
 	 * @param  boolean  $fromCli
 	 * @return void
 	 */
-	public static function exportMenus($fromCli = false)
+	public function exportMenus($fromCli = false)
 	{
 		$menus = Menu::orderBy('cms', 'desc')->orderBy('name')->get();
 		$array = array();
 		foreach ($menus as $menu) {
-			$array[static::toCamelCase($menu->name)] = $menu->createArray(false);
+			$array[$this->toCamelCase($menu->name)] = $menu->createArray(false);
 		}
 
 		$path  = "app/config/packages/regulus/fractal/menus.php";
@@ -881,7 +924,7 @@ class Fractal {
 	 *
 	 * @return array
 	 */
-	public static function getMenuArray($name = 'Main')
+	public function getMenuArray($name = 'Main')
 	{
 		return Menu::getArray($name);
 	}
@@ -894,9 +937,20 @@ class Fractal {
 	 * @param  string   $class
 	 * @return string
 	 */
-	public static function getMenuMarkup($name = 'Main', $listItemsOnly = false, $class = '')
+	public function getMenuMarkup($name = 'Main', $listItemsOnly = false, $class = '')
 	{
 		return Menu::createMarkupForMenu($name, $listItemsOnly, $class);
+	}
+
+	/**
+	 * Get menu item selected class.
+	 *
+	 * @param  array    $name
+	 * @return string
+	 */
+	public function setMenuItemSelectedClass($menuItem)
+	{
+		return MenuItem::setSelectedClass($menuItem);
 	}
 
 	/**
@@ -905,7 +959,7 @@ class Fractal {
 	 * @param  string   $layout
 	 * @return array
 	 */
-	public static function getLayoutTagsFromLayout($layout = '')
+	public function getLayoutTagsFromLayout($layout = '')
 	{
 		preg_match_all('/\{\{([a-z0-9\-]*)\}\}/', $layout, $layoutTags);
 		if (isset($layoutTags[1]) && is_array($layoutTags[1]))
@@ -919,7 +973,7 @@ class Fractal {
 	 *
 	 * @return string
 	 */
-	public static function getDateFormat()
+	public function getDateFormat()
 	{
 		return Config::get('fractal::dateFormat');
 	}
@@ -929,7 +983,7 @@ class Fractal {
 	 *
 	 * @return string
 	 */
-	public static function getDateTimeFormat()
+	public function getDateTimeFormat()
 	{
 		return Config::get('fractal::dateTimeFormat');
 	}
@@ -940,7 +994,7 @@ class Fractal {
 	 * @param  string   $date
 	 * @return boolean
 	 */
-	public static function dateSet($date)
+	public function dateSet($date)
 	{
 		return $date != "0000-00-00";
 	}
@@ -951,7 +1005,7 @@ class Fractal {
 	 * @param  string   $dateTime
 	 * @return boolean
 	 */
-	public static function dateTimeSet($dateTime)
+	public function dateTimeSet($dateTime)
 	{
 		return $dateTime != "0000-00-00 00:00:00";
 	}
@@ -964,12 +1018,12 @@ class Fractal {
 	 * @param  boolean  $includeEqual
 	 * @return boolean
 	 */
-	public static function datePast($date, $dateToCompare = null, $includeEqual = false)
+	public function datePast($date, $dateToCompare = null, $includeEqual = false)
 	{
 		if (is_null($dateToCompare) || $dateToCompare === false)
 			$dateToCompare = date('Y-m-d');
 
-		if (!static::dateSet($date))
+		if (!$this->dateSet($date))
 			return false;
 
 		if ($includeEqual)
@@ -986,12 +1040,12 @@ class Fractal {
 	 * @param  boolean  $includeEqual
 	 * @return boolean
 	 */
-	public static function dateTimePast($dateTime, $dateTimeToCompare = null, $includeEqual = false)
+	public function dateTimePast($dateTime, $dateTimeToCompare = null, $includeEqual = false)
 	{
 		if (is_null($dateTimeToCompare) || $dateTimeToCompare === false)
 			$dateTimeToCompare = date('Y-m-d H:i:s');
 
-		if (!static::dateTimeSet($dateTime))
+		if (!$this->dateTimeSet($dateTime))
 			return false;
 
 		if ($includeEqual)

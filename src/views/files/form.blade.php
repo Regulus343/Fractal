@@ -50,7 +50,7 @@
 		});
 	</script>
 
-	{{ Form::openResourceForFiles() }}
+	{{ Form::openResource(array('files' => true)) }}
 		<div class="row">
 			<div class="col-md-4">
 				{{ Form::field('file', 'file', array('class-field' => 'file-upload-button')) }}
@@ -83,7 +83,7 @@
 			</div>
 		</div>
 
-		{{ Form::field(str_replace('Create', 'Upload', Form::submitResource(Lang::get('fractal::labels.file'), (isset($update) && $update))), 'button') }}
+		{{ Form::field(str_replace('Create', 'Upload', Form::submitResource(Lang::get('fractal::labels.file'))), 'button') }}
 	{{ Form::close() }}
 
 @stop

@@ -102,7 +102,7 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field(Form::submitResource(Lang::get('fractal::labels.user'), (isset($update) && $update)), 'button') }}
+				{{ Form::field(Form::submitResource(Lang::get('fractal::labels.user')), 'button') }}
 			</div>
 		</div>
 	{{ Form::close() }}

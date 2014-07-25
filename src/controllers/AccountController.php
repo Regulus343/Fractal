@@ -1,4 +1,4 @@
-<?php namespace Regulus\Fractal;
+<?php namespace Regulus\Fractal\Controllers;
 
 use \BaseController;
 
@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
-use Aquanode\Formation\Formation as Form;
+use Fractal;
+
+use Aquanode\Formation\Facade as Form;
 use Regulus\ActivityLog\Activity;
 use Regulus\SolidSite\SolidSite as Site;
 use Regulus\TetraText\TetraText as Format;

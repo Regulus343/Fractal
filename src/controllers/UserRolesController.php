@@ -1,4 +1,4 @@
-<?php namespace Regulus\Fractal;
+<?php namespace Regulus\Fractal\Controllers;
 
 use \BaseController;
 
@@ -9,12 +9,15 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 
-use Aquanode\Formation\Formation as Form;
+use Fractal;
+
 use Regulus\ActivityLog\Activity;
 use Regulus\SolidSite\SolidSite as Site;
 use Regulus\TetraText\TetraText as Format;
 
 use Regulus\Identify\Role as Role;
+
+use Aquanode\Formation\Facade as Form;
 
 class UserRolesController extends BaseController {
 

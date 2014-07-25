@@ -1,6 +1,8 @@
-<?php namespace Regulus\Fractal;
+<?php namespace Regulus\Fractal\Models;
 
 use Aquanode\Formation\BaseModel;
+
+use Fractal;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
@@ -56,7 +58,7 @@ class MenuItem extends BaseModel {
 	 */
 	public function menu()
 	{
-		return $this->belongsTo('Regulus\Fractal\Menu');
+		return $this->belongsTo('Regulus\Fractal\Models\Menu');
 	}
 
 	/**
@@ -66,7 +68,7 @@ class MenuItem extends BaseModel {
 	 */
 	public function parent()
 	{
-		return $this->belongsTo('Regulus\Fractal\MenuItem', 'parent_id');
+		return $this->belongsTo('Regulus\Fractal\Models\MenuItem', 'parent_id');
 	}
 
 	/**
@@ -76,7 +78,7 @@ class MenuItem extends BaseModel {
 	 */
 	public function children()
 	{
-		return $this->hasMany('Regulus\Fractal\MenuItem', 'parent_id')->orderBy('display_order');
+		return $this->hasMany('Regulus\Fractal\Models\MenuItem', 'parent_id')->orderBy('display_order');
 	}
 
 	/**
@@ -88,7 +90,7 @@ class MenuItem extends BaseModel {
 	{
 		//if (! (int) $this->page_id) return false;
 
-		return $this->belongsTo('Regulus\Fractal\ContentPage');
+		return $this->belongsTo('Regulus\Fractal\Models\ContentPage');
 	}
 
 	/**

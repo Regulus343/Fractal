@@ -7,14 +7,14 @@ use Fractal;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 
-class ContentArea extends BaseModel {
+class BlogContentArea extends BaseModel {
 
 	/**
 	 * The database table used by the model.
 	 *
 	 * @var    string
 	 */
-	protected $table = 'content_areas';
+	protected $table = 'blog_content_areas';
 
 	/**
 	 * The foreign key for the model.
@@ -83,26 +83,26 @@ class ContentArea extends BaseModel {
 	}
 
 	/**
-	 * The content pages that the area belongs to.
+	 * The blog articles that the area belongs to.
 	 *
 	 * @return Collection
 	 */
-	public function contentPages()
+	public function articles()
 	{
-		return $this->belongsToMany('Regulus\Fractal\Models\ContentPage', 'content_page_areas', 'area_id', 'page_id');
+		return $this->belongsToMany('Regulus\Fractal\Models\BlogArticle', 'blog_article_content_areas', 'area_id', 'article_id');
 	}
 
 	/**
-	 * Get the IDs of the content pages.
+	 * Get the IDs of the blog articles.
 	 *
 	 * @return Collection
 	 */
-	public function getContentPageIds()
+	public function getArticleIds()
 	{
 		$ids = array();
 
-		foreach ($this->contentPages as $contentPage) {
-			$ids[] = (int) $contentPage->id;
+		foreach ($this->articles as $article) {
+			$ids[] = (int) $article->id;
 		}
 
 		return $ids;

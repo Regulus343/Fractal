@@ -9,21 +9,21 @@ use Illuminate\Support\Facades\URL;
 
 use Aquanode\Formation\Facade as Form;
 
-class ContentPage extends BaseModel {
+class BlogArticle extends BaseModel {
 
 	/**
 	 * The database table used by the model.
 	 *
 	 * @var    string
 	 */
-	protected $table = 'content_pages';
+	protected $table = 'blog_articles';
 
 	/**
 	 * The foreign key for the model.
 	 *
 	 * @var    string
 	 */
-	protected $foreignKey = 'page_id';
+	protected $foreignKey = 'article_id';
 
 	/**
 	 * The fillable fields for the model.
@@ -63,7 +63,7 @@ class ContentPage extends BaseModel {
 			'activated_at' => date(Form::getDateTimeFormat()),
 		);
 
-		$defaults = array_merge($defaults, static::addPrefixToDefaults(ContentArea::defaults(), 'content_areas.1'));
+		$defaults = array_merge($defaults, static::addPrefixToDefaults(BlogContentArea::defaults(), 'blog_content_areas.1'));
 
 		return $defaults;
 	}
@@ -129,7 +129,7 @@ class ContentPage extends BaseModel {
 	 */
 	public function getUrl()
 	{
-		return URL::to(Config::get('fractal::pageUri').'/'.$this->slug);
+		return Fractal::blogUrl($this->slug);
 	}
 
 	/**
@@ -189,19 +189,9 @@ class ContentPage extends BaseModel {
 	public function contentAreas()
 	{
 		return $this
-			->belongsToMany('Regulus\Fractal\Models\ContentArea', 'content_page_areas', 'page_id', 'area_id')
+			->belongsToMany('Regulus\Fractal\BlogContentArea', 'blog_article_content_areas', 'article_id', 'area_id')
 			->withPivot('layout_tag')
 			->orderBy('title');
-	}
-
-	/**
-	 * The menu item that the page belongs to.
-	 *
-	 * @return Collection
-	 */
-	public function menuItems()
-	{
-		return $this->hasMany('Regulus\Fractal\Models\MenuItem');
 	}
 
 	/**

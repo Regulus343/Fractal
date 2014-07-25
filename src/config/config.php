@@ -26,17 +26,17 @@ return array(
 	*/
 	'controllers' => array(
 		'standard' => array(
-			'home'       => 'Regulus\Fractal\CoreController',
-			'settings'   => 'Regulus\Fractal\SettingsController',
-			'account'    => 'Regulus\Fractal\AccountController',
-			'activity'   => 'Regulus\Fractal\ActivityController',
+			'home'       => 'Regulus\Fractal\Controllers\CoreController',
+			'settings'   => 'Regulus\Fractal\Controllers\SettingsController',
+			'account'    => 'Regulus\Fractal\Controllers\AccountController',
+			'activity'   => 'Regulus\Fractal\Controllers\ActivityController',
 		),
 		'resource' => array(
-			'menus'      => 'Regulus\Fractal\MenusController',
-			'pages'      => 'Regulus\Fractal\PagesController',
-			'files'      => 'Regulus\Fractal\FilesController',
-			'users'      => 'Regulus\Fractal\UsersController',
-			'user-roles' => 'Regulus\Fractal\UserRolesController',
+			'menus'      => 'Regulus\Fractal\Controllers\MenusController',
+			'pages'      => 'Regulus\Fractal\Controllers\PagesController',
+			'files'      => 'Regulus\Fractal\Controllers\FilesController',
+			'users'      => 'Regulus\Fractal\Controllers\UsersController',
+			'user-roles' => 'Regulus\Fractal\Controllers\UserRolesController',
 		),
 	),
 
@@ -52,20 +52,20 @@ return array(
 	*/
 	'controllerMethods' => array(
 		'get'  => array(
-			'pages/add-content-area/{id?}'   => 'Regulus\Fractal\PagesController@addContentArea',
-			'pages/get-content-area/{id}'    => 'Regulus\Fractal\PagesController@getContentArea',
-			'pages/delete-content-area/{id}' => 'Regulus\Fractal\PagesController@deleteContentArea',
-			'users/{id}/ban'                 => 'Regulus\Fractal\UsersController@ban',
-			'users/{id}/unban'               => 'Regulus\Fractal\UsersController@unban',
+			'pages/add-content-area/{id?}'   => 'Regulus\Fractal\Controllers\PagesController@addContentArea',
+			'pages/get-content-area/{id}'    => 'Regulus\Fractal\Controllers\PagesController@getContentArea',
+			'pages/delete-content-area/{id}' => 'Regulus\Fractal\Controllers\PagesController@deleteContentArea',
+			'users/{id}/ban'                 => 'Regulus\Fractal\Controllers\UsersController@ban',
+			'users/{id}/unban'               => 'Regulus\Fractal\Controllers\UsersController@unban',
 		),
 		'post' => array(
-			'menus/search'                   => 'Regulus\Fractal\MenusController@search',
-			'pages/search'                   => 'Regulus\Fractal\PagesController@search',
-			'pages/layout-tags'              => 'Regulus\Fractal\PagesController@layoutTags',
-			'pages/render-markdown-content'  => 'Regulus\Fractal\PagesController@renderMarkdownContent',
-			'files/search'                   => 'Regulus\Fractal\FilesController@search',
-			'users/search'                   => 'Regulus\Fractal\UsersController@search',
-			'user-roles/search'              => 'Regulus\Fractal\UserRolesController@search',
+			'menus/search'                   => 'Regulus\Fractal\Controllers\MenusController@search',
+			'pages/search'                   => 'Regulus\Fractal\Controllers\PagesController@search',
+			'pages/layout-tags'              => 'Regulus\Fractal\Controllers\PagesController@layoutTags',
+			'pages/render-markdown-content'  => 'Regulus\Fractal\Controllers\PagesController@renderMarkdownContent',
+			'files/search'                   => 'Regulus\Fractal\Controllers\FilesController@search',
+			'users/search'                   => 'Regulus\Fractal\Controllers\UsersController@search',
+			'user-roles/search'              => 'Regulus\Fractal\Controllers\UserRolesController@search',
 		),
 	),
 
@@ -118,7 +118,7 @@ return array(
 	| "http://localhost/page/home".
 	|
 	*/
-	'pageMethod' => 'Regulus\Fractal\PagesController@view',
+	'pageMethod' => 'Regulus\Fractal\Controllers\PagesController@view',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -219,7 +219,7 @@ return array(
 	| The name of your authorization controller.
 	|
 	*/
-	'authController' => 'Regulus\Fractal\AuthController',
+	'authController' => 'Regulus\Fractal\Controllers\AuthController',
 
 	/*
 	|--------------------------------------------------------------------------

@@ -39,8 +39,8 @@ class FractalServiceProvider extends ServiceProvider {
 			$pathPrefix = __DIR__.'/../../../../../';
 
 		$configPackages = array(
-			'regulus/activity-log',
 			'regulus/fractal',
+			'regulus/activity-log',
 			'regulus/solid-site',
 			'regulus/tetra-text',
 			'aquanode/formation',
@@ -60,17 +60,23 @@ class FractalServiceProvider extends ServiceProvider {
 
 		//add aliases for dependent classes
 		$loader = \Illuminate\Foundation\AliasLoader::getInstance();
-		$loader->alias('Fractal',   'Regulus\Fractal\Fractal');
+
+		$loader->alias('Fractal',   'Regulus\Fractal\Facade');
 		$loader->alias('Auth',      'Regulus\Identify\Identify');
 		$loader->alias('Site',      'Regulus\SolidSite\SolidSite');
 		$loader->alias('Format',    'Regulus\TetraText\TetraText');
 		$loader->alias('Elemental', 'Aquanode\Elemental\Elemental');
 		$loader->alias('HTML',      'Aquanode\Elemental\Elemental');
-		$loader->alias('Form',      'Aquanode\Formation\Formation');
+		$loader->alias('Form',      'Aquanode\Formation\Facade');
 		$loader->alias('Markdown',  'MaxHoffmann\Parsedown\ParsedownFacade');
 
 		if ($exterminator)
 			$loader->alias('Dbg', 'Regulus\Exterminator\Exterminator');
+
+		//load Formation
+		$this->app['formation'] = $this->app->share(function($app) {
+			return new \Aquanode\Formation\Formation($app['html'], $app['url'], $app['session.store']->getToken());
+		});
 
 		//create "parsedown" singleton for Markdown parsing
 		$this->app->singleton('parsedown', function(){
@@ -85,6 +91,11 @@ class FractalServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
+		$this->app->bind('fractal', function()
+		{
+			return new Fractal();
+		});
+
 		//add the install command
 		$this->app['fractal:install'] = $this->app->share(function($app)
 		{
