@@ -26,7 +26,7 @@ use Regulus\Fractal\Models\Setting;
 use Regulus\SolidSite\SolidSite as Site;
 use Regulus\TetraText\TetraText as Format;
 
-use Aquanode\Elemental\Elemental as HTML;
+use Aquanode\Elemental\Facade as HTML;
 use Aquanode\Formation\Facade as Form;
 
 use MaxHoffmann\Parsedown\ParsedownFacade as Markdown;

@@ -1,0 +1,488 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "08235115a1e6670ee0541cad76d1162f",
+    "packages": [
+        {
+            "name": "aquanode/elemental",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Aquanode/Elemental.git",
+                "reference": "8177dc48be0574eb7d0a7495388250aa9ed772e1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Aquanode/Elemental/zipball/8177dc48be0574eb7d0a7495388250aa9ed772e1",
+                "reference": "8177dc48be0574eb7d0a7495388250aa9ed772e1",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "4.x",
+                "php": ">=5.3.0",
+                "regulus/tetra-text": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/migrations"
+                ],
+                "psr-0": {
+                    "Aquanode\\Elemental": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cody Jassman",
+                    "email": "cody@aquanode.com"
+                }
+            ],
+            "description": "An HTML element building composer package that simplifies creation of active, selected, or hidden elements.",
+            "time": "2014-07-17 19:01:22"
+        },
+        {
+            "name": "aquanode/formation",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Aquanode/Formation.git",
+                "reference": "17e050e1cd9b2b270dc96da1268569ef2fbb3923"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Aquanode/Formation/zipball/17e050e1cd9b2b270dc96da1268569ef2fbb3923",
+                "reference": "17e050e1cd9b2b270dc96da1268569ef2fbb3923",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "4.x",
+                "php": ">=5.3.0",
+                "regulus/tetra-text": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/migrations",
+                    "src/models"
+                ],
+                "psr-0": {
+                    "Aquanode\\Formation": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cody Jassman",
+                    "email": "cody@aquanode.com"
+                }
+            ],
+            "description": "A powerful form creation composer package for Laravel 4.",
+            "time": "2014-07-06 22:37:49"
+        },
+        {
+            "name": "aquanode/upstream",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Aquanode/Upstream.git",
+                "reference": "678af1b90752607fb4ed176a67171b22f7f10780"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Aquanode/Upstream/zipball/678af1b90752607fb4ed176a67171b22f7f10780",
+                "reference": "678af1b90752607fb4ed176a67171b22f7f10780",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "4.x",
+                "julien-c/simple-resize": "dev-master",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/migrations"
+                ],
+                "psr-0": {
+                    "Aquanode\\Upstream": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cody Jassman",
+                    "email": "cody@aquanode.com"
+                }
+            ],
+            "description": "A simple composer package that assists in file uploads and image resizing/cropping. Works great with jCrop and jquery-file-upload.",
+            "time": "2014-01-06 00:21:48"
+        },
+        {
+            "name": "erusev/parsedown",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/erusev/parsedown.git",
+                "reference": "e33ac1c56ea591f21b9cf2fa74356ef708d4e130"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/erusev/parsedown/zipball/e33ac1c56ea591f21b9cf2fa74356ef708d4e130",
+                "reference": "e33ac1c56ea591f21b9cf2fa74356ef708d4e130",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Parsedown": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Emanuil Rusev",
+                    "email": "hello@erusev.com",
+                    "homepage": "http://erusev.com"
+                }
+            ],
+            "description": "Parser for Markdown.",
+            "homepage": "http://parsedown.org",
+            "keywords": [
+                "markdown",
+                "parser"
+            ],
+            "time": "2014-06-18 09:27:25"
+        },
+        {
+            "name": "ezyang/htmlpurifier",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ezyang/htmlpurifier.git",
+                "reference": "80ebd4322e3b98bc25c3ed3effe99a1653bc00fc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/80ebd4322e3b98bc25c3ed3effe99a1653bc00fc",
+                "reference": "80ebd4322e3b98bc25c3ed3effe99a1653bc00fc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "HTMLPurifier": "library/"
+                },
+                "files": [
+                    "library/HTMLPurifier.composer.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Edward Z. Yang",
+                    "email": "admin@htmlpurifier.org",
+                    "homepage": "http://ezyang.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Standards compliant HTML filter written in PHP",
+            "homepage": "http://htmlpurifier.org/",
+            "keywords": [
+                "html"
+            ],
+            "time": "2014-02-04 20:17:24"
+        },
+        {
+            "name": "illuminate/support",
+            "version": "4.2.x-dev",
+            "target-dir": "Illuminate/Support",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/illuminate/support.git",
+                "reference": "1e2d761f5f0360e5a3942bf148fcbd27793cac8f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/1e2d761f5f0360e5a3942bf148fcbd27793cac8f",
+                "reference": "1e2d761f5f0360e5a3942bf148fcbd27793cac8f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "jeremeamia/superclosure": "~1.0",
+                "patchwork/utf8": "1.1.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Illuminate\\Support": ""
+                },
+                "files": [
+                    "Illuminate/Support/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylorotwell@gmail.com"
+                }
+            ],
+            "time": "2014-07-19 21:17:20"
+        },
+        {
+            "name": "julien-c/simple-resize",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/julien-c/SimpleResize.git",
+                "reference": "9823a4dc618a9d3471525c5dafd5f365d70675d4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/julien-c/SimpleResize/zipball/9823a4dc618a9d3471525c5dafd5f365d70675d4",
+                "reference": "9823a4dc618a9d3471525c5dafd5f365d70675d4",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gd": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "SimpleResize": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Julien Chaumond",
+                    "email": "chaumond@gmail.com"
+                }
+            ],
+            "description": "Simple Composer port of Jarrod Oberto's Image Resizing class",
+            "time": "2012-10-27 10:37:09"
+        },
+        {
+            "name": "maxhoffmann/parsedown-laravel",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/maxhoffmann/parsedown-laravel.git",
+                "reference": "0499236974239d2193c12e7925b8178d9af8bc4e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/maxhoffmann/parsedown-laravel/zipball/0499236974239d2193c12e7925b8178d9af8bc4e",
+                "reference": "0499236974239d2193c12e7925b8178d9af8bc4e",
+                "shasum": ""
+            },
+            "require": {
+                "erusev/parsedown": "*",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "MaxHoffmann\\Parsedown": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maximilian Hoffmann",
+                    "email": "max@maximilianhoffmann.com"
+                }
+            ],
+            "description": "A parsedown (markdown) wrapper for Laravel ",
+            "homepage": "https://github.com/maxhoffmann/parsedown-laravel",
+            "keywords": [
+                "Laravel 4",
+                "laravel",
+                "markdown",
+                "parsedown",
+                "php"
+            ],
+            "time": "2013-12-13 23:54:04"
+        },
+        {
+            "name": "regulus/activity-log",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Regulus343/ActivityLog.git",
+                "reference": "c87800b9339ede2e243e83444aba9ad235495c3c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Regulus343/ActivityLog/zipball/c87800b9339ede2e243e83444aba9ad235495c3c",
+                "reference": "c87800b9339ede2e243e83444aba9ad235495c3c",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "4.x",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/migrations",
+                    "src/models"
+                ],
+                "psr-0": {
+                    "Regulus\\ActivityLog": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cody Jassman",
+                    "email": "me@codyjassman.com"
+                }
+            ],
+            "description": "A clean and simple Laravel 4 activity logger for monitoring user activity on a website or web application.",
+            "time": "2014-07-08 07:05:36"
+        },
+        {
+            "name": "regulus/solid-site",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Regulus343/SolidSite.git",
+                "reference": "44611768954d40290507e4f7be3d33eeffcbcb66"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Regulus343/SolidSite/zipball/44611768954d40290507e4f7be3d33eeffcbcb66",
+                "reference": "44611768954d40290507e4f7be3d33eeffcbcb66",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "4.x",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/migrations"
+                ],
+                "psr-0": {
+                    "Regulus\\SolidSite": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cody Jassman",
+                    "email": "me@codyjassman.com"
+                }
+            ],
+            "description": "A composer package that assigns section names & titles to pages and simplifies creation of breadcrumb trails and is useful for other components that require page identifying information such as menus that highlight the current location.",
+            "time": "2014-07-01 16:24:15"
+        },
+        {
+            "name": "regulus/tetra-text",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Regulus343/TetraText.git",
+                "reference": "60d0e232dae40cc6ea2a776b9950d087ca2cb517"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Regulus343/TetraText/zipball/60d0e232dae40cc6ea2a776b9950d087ca2cb517",
+                "reference": "60d0e232dae40cc6ea2a776b9950d087ca2cb517",
+                "shasum": ""
+            },
+            "require": {
+                "ezyang/htmlpurifier": "dev-master",
+                "illuminate/support": "4.x",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/migrations"
+                ],
+                "psr-0": {
+                    "Regulus\\TetraText": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cody Jassman",
+                    "email": "me@codyjassman.com"
+                }
+            ],
+            "description": "A small text/string formatting composer package that formats phone numbers, numeric values, money values and more.",
+            "time": "2014-01-06 00:10:43"
+        }
+    ],
+    "packages-dev": [
+
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "regulus/activity-log": 20,
+        "regulus/solid-site": 20,
+        "regulus/tetra-text": 20,
+        "aquanode/formation": 20,
+        "aquanode/elemental": 20,
+        "aquanode/upstream": 20,
+        "maxhoffmann/parsedown-laravel": 20
+    },
+    "platform": {
+        "php": ">=5.3.0"
+    },
+    "platform-dev": [
+
+    ]
+}

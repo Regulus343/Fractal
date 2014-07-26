@@ -62,20 +62,30 @@ class FractalServiceProvider extends ServiceProvider {
 		$loader = \Illuminate\Foundation\AliasLoader::getInstance();
 
 		$loader->alias('Fractal',   'Regulus\Fractal\Facade');
-		$loader->alias('Auth',      'Regulus\Identify\Identify');
+		$loader->alias('Auth',      'Regulus\Identify\Facade');
 		$loader->alias('Site',      'Regulus\SolidSite\SolidSite');
 		$loader->alias('Format',    'Regulus\TetraText\TetraText');
-		$loader->alias('Elemental', 'Aquanode\Elemental\Elemental');
-		$loader->alias('HTML',      'Aquanode\Elemental\Elemental');
+		$loader->alias('Elemental', 'Aquanode\Elemental\Facade');
+		$loader->alias('HTML',      'Aquanode\Elemental\Facade');
 		$loader->alias('Form',      'Aquanode\Formation\Facade');
 		$loader->alias('Markdown',  'MaxHoffmann\Parsedown\ParsedownFacade');
 
 		if ($exterminator)
 			$loader->alias('Dbg', 'Regulus\Exterminator\Exterminator');
 
+		//load Elemental
+		$this->app['elemental'] = $this->app->share(function($app) {
+			return new \Aquanode\Elemental\Elemental($app['url']);
+		});
+
 		//load Formation
 		$this->app['formation'] = $this->app->share(function($app) {
 			return new \Aquanode\Formation\Formation($app['html'], $app['url'], $app['session.store']->getToken());
+		});
+
+		//load Upstream
+		$this->app['upstream'] = $this->app->share(function($app) {
+			return new \Aquanode\Upstream\Upstream();
 		});
 
 		//create "parsedown" singleton for Markdown parsing

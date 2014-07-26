@@ -2,6 +2,8 @@
 
 use Aquanode\Formation\BaseModel;
 
+use Fractal;
+
 use Illuminate\Support\Facades\Config;
 
 use Regulus\SolidSite\SolidSite as Site;

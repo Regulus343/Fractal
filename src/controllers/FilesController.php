@@ -23,7 +23,7 @@ use Regulus\TetraText\TetraText as Format;
 use Regulus\Identify\User as User;
 
 use Aquanode\Formation\Facade as Form;
-use Aquanode\Upstream\Upstream;
+use Aquanode\Upstream\Facade as Upstream;
 
 class FilesController extends BaseController {
 

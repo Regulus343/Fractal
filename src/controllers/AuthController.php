@@ -12,7 +12,7 @@ use Fractal;
 
 use Aquanode\Formation\Facade as Form;
 use Regulus\ActivityLog\Activity;
-use Regulus\Identify\Identify as Auth;
+use Regulus\Identify\Facade as Auth;
 use Regulus\Identify\User;
 use Regulus\SolidSite\SolidSite as Site;
 

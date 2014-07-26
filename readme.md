@@ -9,7 +9,7 @@ Fractal is a simple yet versative Admin/CMS base for Laravel 4. It is built to w
 
 Fractal attempts not to lock you into a specific way of doing things whenever possible. You may define controllers additional to the core controllers, remove core controllers, or point the URI paths of core controllers to your own custom controllers. You may adjust the views location for all Fractal view files so you can completely customize the views, or you may simple edit `config/tables.php` to adjust the setup of the content display tables.
 
-You may use the menu to handle all Admin/CMS permissions (Fractal's own menu makes use of its "menu" and "menu_items" database tables for full and easy customization), or you may simply set your permissions in `config/config.php`. Fractal attempts to be authentication class agnostic so you may use the authentication class of your choice (although it does come preconfigured to use the "Identify" authentication package).
+You may use the menu to handle all Admin/CMS permissions (Fractal's own menu makes use of its "menu" and "menu_items" database tables for full and easy customization), or you may simply set your permissions in `config/config.php`. Fractal uses the "Identify" authorization package, but the goal is to eventually, as the CMS matures, decouple the authorization package from Fractal and make it authorization class agnostic.
 
 Some of the things you can do with Fractal:
 
@@ -145,10 +145,10 @@ You may add additional controllers in the `controllers` array in `config.php`. U
 
 	echo CMS::getMenuMarkup(); //get "Main" menu markup
 
-	echo CMS::getMenuMarkup('Main'); //get "Footer" menu markup
+	echo CMS::getMenuMarkup('Footer'); //get "Footer" menu markup
 
 **Getting an array of menu items:**
 
 	$menu = CMS::getMenuArray(); //get "Main" menu array
 
-	$menu = CMS::getMenuArray('Main'); //get "Footer" menu array
+	$menu = CMS::getMenuArray('Footer'); //get "Footer" menu array
