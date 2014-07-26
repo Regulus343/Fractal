@@ -6,7 +6,7 @@ use Fractal;
 
 use Illuminate\Support\Facades\Request;
 
-use Regulus\Identify\Identify as Auth;
+use \Auth as Auth;
 
 class ContentView extends BaseModel {
 

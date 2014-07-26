@@ -63,8 +63,8 @@ class FractalServiceProvider extends ServiceProvider {
 
 		$loader->alias('Fractal',   'Regulus\Fractal\Facade');
 		$loader->alias('Auth',      'Regulus\Identify\Facade');
-		$loader->alias('Site',      'Regulus\SolidSite\SolidSite');
-		$loader->alias('Format',    'Regulus\TetraText\TetraText');
+		$loader->alias('Site',      'Regulus\SolidSite\Facade');
+		$loader->alias('Format',    'Regulus\TetraText\Facade');
 		$loader->alias('Elemental', 'Aquanode\Elemental\Facade');
 		$loader->alias('HTML',      'Aquanode\Elemental\Facade');
 		$loader->alias('Form',      'Aquanode\Formation\Facade');
@@ -72,21 +72,6 @@ class FractalServiceProvider extends ServiceProvider {
 
 		if ($exterminator)
 			$loader->alias('Dbg', 'Regulus\Exterminator\Exterminator');
-
-		//load Elemental
-		$this->app['elemental'] = $this->app->share(function($app) {
-			return new \Aquanode\Elemental\Elemental($app['url']);
-		});
-
-		//load Formation
-		$this->app['formation'] = $this->app->share(function($app) {
-			return new \Aquanode\Formation\Formation($app['html'], $app['url'], $app['session.store']->getToken());
-		});
-
-		//load Upstream
-		$this->app['upstream'] = $this->app->share(function($app) {
-			return new \Aquanode\Upstream\Upstream();
-		});
 
 		//create "parsedown" singleton for Markdown parsing
 		$this->app->singleton('parsedown', function(){
@@ -101,6 +86,7 @@ class FractalServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
+		//bind Fractal
 		$this->app->bind('fractal', function()
 		{
 			return new Fractal();
@@ -113,6 +99,13 @@ class FractalServiceProvider extends ServiceProvider {
 		});
 
 		$this->commands('fractal:install');
+
+		//register additional service providers
+		$this->app->register('Regulus\SolidSite\SolidSiteServiceProvider');
+		$this->app->register('Regulus\TetraText\TetraTextServiceProvider');
+		$this->app->register('Aquanode\Elemental\ElementalServiceProvider');
+		$this->app->register('Aquanode\Formation\FormationServiceProvider');
+		$this->app->register('Aquanode\Upstream\UpstreamServiceProvider');
 	}
 
 	/**

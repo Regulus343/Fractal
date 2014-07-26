@@ -6,7 +6,7 @@ use Fractal;
 
 use Illuminate\Support\Facades\Config;
 
-use Aquanode\Formation\Facade as Form;
+use \Form as Form;
 
 class Setting extends Eloquent {
 

@@ -17,13 +17,11 @@ use Fractal;
 use Regulus\Fractal\Models\ContentFile;
 
 use Regulus\ActivityLog\Activity;
-use Regulus\SolidSite\SolidSite as Site;
+use \Site as Site;
 use Regulus\TetraText\TetraText as Format;
-
 use Regulus\Identify\User as User;
-
-use Aquanode\Formation\Facade as Form;
-use Aquanode\Upstream\Facade as Upstream;
+use \Form as Form;
+use \Upstream as Upstream;
 
 class FilesController extends BaseController {
 

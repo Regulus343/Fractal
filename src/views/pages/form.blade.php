@@ -238,10 +238,14 @@
 
 		@if (isset($update) && $update)
 
-			<div class="row">
+			<div class="row button-menu">
 				<div class="col-md-12">
-					<a href="{{ $pageUrl }}" target="_blank" class="btn btn-default pull-right">
+					<a href="{{ $pageUrl }}" target="_blank" class="btn btn-default right-padded pull-right">
 						<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Lang::get('fractal::labels.viewPage') }}
+					</a>
+
+					<a href="{{ Fractal::url('pages') }}" class="btn btn-default pull-right">
+						<span class="glyphicon glyphicon-list"></span>&nbsp; {{ Lang::get('fractal::labels.returnToPagesList') }}
 					</a>
 				</div>
 			</div>

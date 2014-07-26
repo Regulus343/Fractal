@@ -12,13 +12,14 @@ use Illuminate\Support\Facades\View;
 use Fractal;
 
 use Regulus\Fractal\Models\ContentPage;
+use Regulus\Fractal\Models\ContentArea;
+use Regulus\Fractal\Models\ContentLayoutTemplate;
 
 use Regulus\ActivityLog\Activity;
 use Regulus\Identify\Identify as Auth;
-use Regulus\SolidSite\SolidSite as Site;
-use Regulus\TetraText\TetraText as Format;
-
-use Aquanode\Formation\Facade as Form;
+use \Site as Site;
+use \Form as Form;
+use \Format as Format;
 
 class PagesController extends BaseController {
 
@@ -128,7 +129,7 @@ class PagesController extends BaseController {
 				'details'     => 'Title: '.$page->title,
 			));
 
-			return Redirect::to(Fractal::uri('pages'))
+			return Redirect::to(Fractal::uri('pages/'.$page->slug.'/edit'))
 				->with('messages', $messages);
 		} else {
 			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
@@ -190,7 +191,7 @@ class PagesController extends BaseController {
 				'updated'     => true,
 			));
 
-			return Redirect::to(Fractal::uri('pages'))
+			return Redirect::to(Fractal::uri('pages/'.$slug.'/edit'))
 				->with('messages', $messages);
 		} else {
 			$messages['error'] = Lang::get('fractal::messages.errorGeneral');

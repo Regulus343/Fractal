@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use Aquanode\Formation\Facade as Form;
+use \Form as Form;
 use Regulus\ActivityLog\Activity;
-use Regulus\Identify\Facade as Auth;
-use Regulus\Identify\User;
-use Regulus\SolidSite\SolidSite as Site;
+use \Auth as Auth;
+use \User as User;
+use \Site as Site;
 
 class AuthController extends BaseController {
 

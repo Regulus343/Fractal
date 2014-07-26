@@ -14,10 +14,9 @@ use Fractal;
 use Regulus\Fractal\Models\Setting;
 
 use Regulus\ActivityLog\Activity;
-use Regulus\SolidSite\SolidSite as Site;
 use Regulus\TetraText\TetraText as Format;
-
-use Aquanode\Formation\Facade as Form;
+use \Site as Site;
+use \Form as Form;
 
 class SettingsController extends BaseController {
 

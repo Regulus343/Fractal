@@ -7,7 +7,7 @@ use Fractal;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
 
-use Regulus\SolidSite\SolidSite as Site;
+use \Site as Site;
 use Regulus\TetraText\TetraText as Format;
 
 class MenuItem extends BaseModel {
@@ -94,25 +94,13 @@ class MenuItem extends BaseModel {
 	}
 
 	/**
-	 * Get the display status of the menu item.
+	 * Get the visibility status of the menu item.
 	 *
-	 * @return string
+	 * @return boolean
 	 */
 	public function isVisible()
 	{
-		$visible = true;
-
-		if (!$this->active) $visible = false;
-
-		if ($this->auth_status) {
-			if (Fractal::auth() && (int) $this->auth_status == 2)
-				$visible = false;
-
-			if (!Fractal::auth() && (int) $this->auth_status == 1)
-				$visible = false;
-		}
-
-		return $visible;
+		return Fractal::isMenuItemVisible($this);
 	}
 
 	/**
@@ -225,14 +213,15 @@ class MenuItem extends BaseModel {
 	 * Get a limited array of a menu item's children.
 	 *
 	 * @param  boolean  $setSelectedClass
+	 * @param  boolean  $ignoreVisibilityStatus
 	 * @return array
 	 */
-	public function getChildrenArray($setSelectedClass = true)
+	public function getChildrenArray($setSelectedClass = true, $ignoreVisibilityStatus = false)
 	{
 		$children = array();
 		foreach ($this->children as $child) {
-			if ($child->isVisible())
-				$children[] = $child->createObject($setSelectedClass);
+			if ($child->isVisible() || $ignoreVisibilityStatus)
+				$children[] = $child->createObject($setSelectedClass, $ignoreVisibilityStatus);
 		}
 		return $children;
 	}
@@ -241,9 +230,10 @@ class MenuItem extends BaseModel {
 	 * Create an object for the menu item containing just the necessary data.
 	 *
 	 * @param  boolean  $setSelectedClass
+	 * @param  boolean  $ignoreVisibilityStatus
 	 * @return array
 	 */
-	public function createObject($setSelectedClass = true)
+	public function createObject($setSelectedClass = true, $ignoreVisibilityStatus = false)
 	{
 		return (object) array(
 			'parent_id'   => (int) $this->parent_id,
@@ -253,8 +243,10 @@ class MenuItem extends BaseModel {
 			'label'       => $this->label,
 			'labelIcon'   => $this->getLabel(),
 			'class'       => $this->getClass($setSelectedClass),
+			'active'      => $this->active,
+			'auth_status' => $this->auth_status,
 			'anchorClass' => $this->getAnchorClass(),
-			'children'    => $this->getChildrenArray(),
+			'children'    => $this->getChildrenArray($setSelectedClass, $ignoreVisibilityStatus),
 		);
 	}
 

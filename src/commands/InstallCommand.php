@@ -6,7 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 
 use Illuminate\Support\Facades\Config;
 
-use Regulus\Fractal\Fractal;
+use Regulus\Fractal\Facade as Fractal;
 
 class InstallCommand extends Command {
 

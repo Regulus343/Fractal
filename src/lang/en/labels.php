@@ -21,6 +21,7 @@ return array(
 	'editPage'             => 'Edit Page',
 	'viewPage'             => 'View Page',
 	'deletePage'           => 'Delete Page',
+	'returnToPagesList'    => 'Return to Pages List',
 	'addContentArea'       => 'Add Content Area',
 	'createNewContentArea' => 'Create New Content Area',
 	'removeContentArea'    => 'Remove Content Area',

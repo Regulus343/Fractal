@@ -265,3 +265,6 @@ ul#select-content-area li div.info div.actions span.glyphicon-remove:hover { col
 .glyphicon-calendar:before { 
 	content: "\d83d\dcc5";
 }
+
+.button-menu { margin-bottom: 16px; }
+.button-menu a.btn { margin-left: 6px; }

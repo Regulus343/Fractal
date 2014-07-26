@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
 
-use Aquanode\Formation\Facade as Form;
+use \Form as Form;
 
 class Menu extends BaseModel {
 
@@ -98,14 +98,15 @@ class Menu extends BaseModel {
 	 * Create a menu array.
 	 *
 	 * @param  boolean  $setSelectedClass
+	 * @param  boolean  $ignoreVisibilityStatus
 	 * @return array
 	 */
-	public function createArray($setSelectedClass = true)
+	public function createArray($setSelectedClass = true, $ignoreVisibilityStatus = false)
 	{
 		$menuArray = array();
 		foreach ($this->items as $menuItem) {
-			if (! (int) $menuItem->parent_id && $menuItem->isVisible())
-				$menuArray[] = $menuItem->createObject($setSelectedClass);
+			if (! (int) $menuItem->parent_id && ($menuItem->isVisible() || $ignoreVisibilityStatus))
+				$menuArray[] = $menuItem->createObject($setSelectedClass, $ignoreVisibilityStatus);
 		}
 		return $menuArray;
 	}

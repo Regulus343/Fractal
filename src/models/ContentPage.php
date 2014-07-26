@@ -7,7 +7,7 @@ use Fractal;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
 
-use Aquanode\Formation\Facade as Form;
+use \Form as Form;
 
 class ContentPage extends BaseModel {
 

@@ -13,10 +13,10 @@ use Fractal;
 
 use Regulus\Fractal\Models\Menu;
 
-use Aquanode\Formation\Facade as Form;
+use \Form as Form;
 use Regulus\ActivityLog\Activity;
 use Regulus\Identify\Identify as Auth;
-use Regulus\SolidSite\SolidSite as Site;
+use Regulus\SolidSite\Facade as Site;
 use Regulus\TetraText\TetraText as Format;
 
 class MenusController extends BaseController {

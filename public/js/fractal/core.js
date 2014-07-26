@@ -57,6 +57,9 @@ $(document).ready(function(){
 		if (isNaN($(this).val()) || $(this).val() == "") $(this).val('');
 	});
 
+	/* Setup Select Fields */
+	$('select').select2();
+
 	/* Setup Search, Pagination, and Table Sorting */
 	$('#form-search').submit(function(e){
 		e.preventDefault();

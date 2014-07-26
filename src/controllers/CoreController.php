@@ -12,8 +12,8 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use Aquanode\Formation\Facade as Form;
-use Regulus\SolidSite\SolidSite as Site;
+use \Site as Site;
+use \Form as Form;
 use Regulus\TetraText\TetraText as Format;
 
 class CoreController extends BaseController {

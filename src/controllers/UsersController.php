@@ -15,13 +15,12 @@ use Illuminate\Support\Facades\View;
 use Fractal;
 
 use Regulus\ActivityLog\Activity;
-use Regulus\SolidSite\SolidSite as Site;
-use Regulus\TetraText\TetraText as Format;
-
 use Regulus\Identify\User as User;
 use Regulus\Identify\Role as Role;
 
-use Aquanode\Formation\Facade as Form;
+use \Site as Site;
+use \Form as Form;
+use \Format as Format;
 
 class UsersController extends BaseController {
 

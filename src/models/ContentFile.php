@@ -6,7 +6,7 @@ use Fractal;
 
 use Illuminate\Support\Facades\Config;
 
-use Regulus\SolidSite\SolidSite as Site;
+use \Site as Site;
 
 class ContentFile extends BaseModel {
 

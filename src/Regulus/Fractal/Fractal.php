@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap.
 
 		created by Cody Jassman
-		version 0.5.1a
-		last updated on July 25, 2014
+		version 0.5.2a
+		last updated on July 26, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -23,11 +23,10 @@ use Regulus\Fractal\Models\Menu;
 use Regulus\Fractal\Models\MenuItem;
 use Regulus\Fractal\Models\Setting;
 
-use Regulus\SolidSite\SolidSite as Site;
-use Regulus\TetraText\TetraText as Format;
-
-use Aquanode\Elemental\Facade as HTML;
-use Aquanode\Formation\Facade as Form;
+use \Site as Site;
+use \Form as Form;
+use \Format as Format;
+use \HTML as HTML;
 
 use MaxHoffmann\Parsedown\ParsedownFacade as Markdown;
 
@@ -556,6 +555,9 @@ class Fractal {
 	 */
 	public function renderContent($content, $contentType = 'HTML')
 	{
+		//replace HTML special character quotation marks with actual quotation marks
+		$content = str_replace('&quot;', '"', $content);
+
 		//add file images to content
 		$content = $this->renderContentImages($content, '/\!\[file:([0-9]*)\]/'); //Markdown style image replacement
 		$content = $this->renderContentImages($content, '/\[image:([0-9]*)\]/'); //custom "image" replacement tag to match others
@@ -908,7 +910,7 @@ class Fractal {
 		$menus = Menu::orderBy('cms', 'desc')->orderBy('name')->get();
 		$array = array();
 		foreach ($menus as $menu) {
-			$array[$this->toCamelCase($menu->name)] = $menu->createArray(false);
+			$array[$this->toCamelCase($menu->name)] = $menu->createArray(false, true);
 		}
 
 		$path  = "app/config/packages/regulus/fractal/menus.php";
@@ -951,6 +953,30 @@ class Fractal {
 	public function setMenuItemSelectedClass($menuItem)
 	{
 		return MenuItem::setSelectedClass($menuItem);
+	}
+
+	/**
+	 * Get the visibility status of a menu item.
+	 *
+	 * @param  object   $menuItem
+	 * @return boolean
+	 */
+	public function isMenuItemVisible($menuItem)
+	{
+		$visible = true;
+
+		if (! (bool) $menuItem->active)
+			$visible = false;
+
+		if ($menuItem->auth_status) {
+			if (Fractal::auth() && (int) $menuItem->auth_status == 2)
+				$visible = false;
+
+			if (!Fractal::auth() && (int) $menuItem->auth_status == 1)
+				$visible = false;
+		}
+
+		return $visible;
 	}
 
 	/**
