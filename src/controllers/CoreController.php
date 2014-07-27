@@ -14,7 +14,7 @@ use Fractal;
 
 use \Site as Site;
 use \Form as Form;
-use Regulus\TetraText\TetraText as Format;
+use \Format as Format;
 
 class CoreController extends BaseController {
 

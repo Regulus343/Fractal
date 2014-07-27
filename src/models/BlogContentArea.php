@@ -5,6 +5,8 @@ use Aquanode\Formation\BaseModel;
 use Fractal;
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\View;
 
 class BlogContentArea extends BaseModel {
@@ -40,7 +42,7 @@ class BlogContentArea extends BaseModel {
 	 *
 	 * @var    string
 	 */
-	protected static $types = array(
+	protected $types = array(
 		'updated_at' => 'date-time',
 	);
 
@@ -56,20 +58,6 @@ class BlogContentArea extends BaseModel {
 		);
 
 		return static::addPrefixToDefaults($defaults);
-	}
-
-	/**
-	 * Get the validation rules used by the model.
-	 *
-	 * @param  mixed    $id
-	 * @return array
-	 */
-	public static function validationRules($id = null)
-	{
-		return array(
-			'title'   => array('required'),
-			'content' => array('required'),
-		);
 	}
 
 	/**
@@ -93,19 +81,47 @@ class BlogContentArea extends BaseModel {
 	}
 
 	/**
-	 * Get the IDs of the blog articles.
+	 * Get the IDs of the articles.
 	 *
-	 * @return Collection
+	 * @return array
 	 */
 	public function getArticleIds()
 	{
 		$ids = array();
 
-		foreach ($this->articles as $article) {
-			$ids[] = (int) $article->id;
+		foreach ($this->articles as $contentPage) {
+			$ids[] = (int) $articles->id;
 		}
 
 		return $ids;
+	}
+
+	/**
+	 * Get the title of the content area.
+	 *
+	 * @return string
+	 */
+	public function getTitle()
+	{
+		if ($this->title != "")
+			return $this->title;
+
+		if ($this->articles()->count()) {
+			$title = $this->articles[0]->title;
+
+			$pivotItem = DB::table('blog_article_content_areas')
+				->select('layout_tag')
+				->where('area_id', $this->id)
+				->where('article_id', $this->articles[0]->id)
+				->first();
+
+			if (!empty($pivotItem))
+				$title .= ' - '.ucwords(str_replace('-', ' ', $pivotItem->layout_tag));
+
+			return $title;
+		}
+
+		return Lang::get('fractal::labels.untitled');
 	}
 
 	/**

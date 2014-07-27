@@ -64,7 +64,7 @@
 			}
 
 			Formation.ajaxForSelect({
-				url:              baseUrl + '/pages/layout-tags',
+				url:              baseUrl + '/blog/articles/layout-tags',
 				postData:         postData,
 				targetSelect:     '.field-pivot-layout-tag',
 				callbackFunction: autoSelectFirstLayoutTagCallback,
@@ -139,7 +139,7 @@
 
 		var deleteContentArea = function() {
 			$.ajax({
-				url:     baseUrl + '/pages/delete-content-area/' + contentAreaId,
+				url:     baseUrl + '/blog/articles/delete-content-area/' + contentAreaId,
 				success: function(result) {
 					if (result == "Success") {
 						$('#modal-secondary').hide();
@@ -157,7 +157,7 @@
 						Formation.loadNewTemplate('#content-areas', contentAreaTemplateCallback);
 					} else {
 						$.ajax({
-							url:      baseUrl + '/pages/get-content-area/' + $(this).attr('data-content-area-id'),
+							url:      baseUrl + '/blogs/article/get-content-area/' + $(this).attr('data-content-area-id'),
 							dataType: 'json',
 							success:  function(contentArea) {
 								addingContentArea = true;
@@ -220,7 +220,7 @@
 
 			$.ajax({
 				type:     'post',
-				url:      baseUrl + '/pages/render-markdown-content',
+				url:      baseUrl + '/blog/articles/render-markdown-content',
 				data:     {content: markdownContentField.val()},
 				success:  function(content) {
 					$('#markdown-preview-content').html(content);
@@ -247,13 +247,13 @@
 		<div class="row button-menu">
 			<div class="col-md-12">
 				@if (isset($update) && $update)
-					<a href="{{ $pageUrl }}" target="_blank" class="btn btn-default right-padded pull-right">
-						<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Lang::get('fractal::labels.viewPage') }}
+					<a href="{{ $articleUrl }}" target="_blank" class="btn btn-default right-padded pull-right">
+						<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Lang::get('fractal::labels.viewArticle') }}
 					</a>
 				@endif
 
-				<a href="{{ Fractal::url('pages') }}" class="btn btn-default pull-right">
-					<span class="glyphicon glyphicon-list"></span>&nbsp; {{ Lang::get('fractal::labels.returnToPagesList') }}
+				<a href="{{ Fractal::url('blog/articles') }}" class="btn btn-default pull-right">
+					<span class="glyphicon glyphicon-list"></span>&nbsp; {{ Lang::get('fractal::labels.returnToArticlesList') }}
 				</a>
 			</div>
 		</div>
@@ -287,9 +287,9 @@
 		{{-- Content Areas --}}
 		<div id="content-areas" data-template-id="content-area-template"></div>
 
-		@include(Fractal::view('pages.templates.content_area', true))
+		@include(Fractal::view('blogs.articles.templates.content_area', true))
 
-		<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="pages/add-content-area{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="get" data-modal-callback-function="selectContentAreaActions">
+		<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="blog/articles/add-content-area{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="get" data-modal-callback-function="selectContentAreaActions">
 			<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Lang::get('fractal::labels.addContentArea') }}
 		</a>
 
@@ -317,7 +317,7 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field(Form::submitResource(Lang::get('fractal::labels.page')), 'button') }}
+				{{ Form::field(Form::submitResource(Lang::get('fractal::labels.article')), 'button') }}
 			</div>
 		</div>
 

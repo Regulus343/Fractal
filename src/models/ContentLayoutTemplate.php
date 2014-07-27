@@ -55,7 +55,7 @@ class ContentLayoutTemplate extends Eloquent {
 	 * @param  mixed    $dateFormat
 	 * @return string
 	 */
-	public function getLastUpdatedDate($dateFormat = false)
+	public function getLastUpdatedDateTime($dateFormat = false)
 	{
 		if (!$dateFormat) $dateFormat = Config::get('fractal::dateTimeFormat');
 		return $this->updated_at != "0000-00-00" ? date($dateFormat, strtotime($this->updated_at)) : date($dateFormat, strtotime($this->created_at));

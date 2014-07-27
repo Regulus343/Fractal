@@ -5,9 +5,13 @@ use Aquanode\Formation\BaseModel;
 use Fractal;
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
 
 use \Form as Form;
+use \Format as Format;
+
+use Regulus\Fractal\Traits\PublishingTrait;
 
 class BlogArticle extends BaseModel {
 
@@ -31,13 +35,13 @@ class BlogArticle extends BaseModel {
 	 * @var    array
 	 */
 	protected $fillable = array(
+		'blog_id',
 		'slug',
 		'title',
 		'layout_template_id',
 		'layout',
 		'user_id',
-		'active',
-		'activated_at',
+		'published_at',
 	);
 
 	/**
@@ -45,10 +49,27 @@ class BlogArticle extends BaseModel {
 	 *
 	 * @var    array
 	 */
-	protected static $types = array(
+	protected $types = array(
 		'slug'         => 'unique-slug',
-		'active'       => 'checkbox',
-		'activated_at' => 'date-time',
+		'published_at' => 'date-time',
+	);
+
+	/**
+	 * The special formatted fields for the model.
+	 *
+	 * @var    array
+	 */
+	protected $formats = array(
+		'published' => 'trueIfNotNull:published_at',
+	);
+
+	/**
+	 * The special formatted fields for the model for saving to the database.
+	 *
+	 * @var    array
+	 */
+	protected $formatsForDb = array(
+		'published_at' => 'nullIfBlank',
 	);
 
 	/**
@@ -59,11 +80,12 @@ class BlogArticle extends BaseModel {
 	public static function defaults()
 	{
 		$defaults = array(
-			'active'       => true,
-			'activated_at' => date(Form::getDateTimeFormat()),
+			'layout_template_id' => 1,
+			'published'          => true,
+			'published_at'       => date(Form::getDateTimeFormat()),
 		);
 
-		$defaults = array_merge($defaults, static::addPrefixToDefaults(BlogContentArea::defaults(), 'blog_content_areas.1'));
+		$defaults = array_merge($defaults, static::addPrefixToDefaults(ContentArea::defaults(), 'content_areas.1'));
 
 		return $defaults;
 	}
@@ -90,7 +112,6 @@ class BlogArticle extends BaseModel {
 					$contentField = Form::getValueFromObject('content_type', $values) == "HTML" ? "content_html" : "content_markdown";
 
 					$rules = array_merge($rules, array(
-						'content_areas.'.$number.'.title'            => array('required'),
 						'content_areas.'.$number.'.pivot.layout_tag' => array('required'),
 						'content_areas.'.$number.'.content_type'     => array('required'),
 						'content_areas.'.$number.'.'.$contentField   => array('required'),
@@ -103,17 +124,27 @@ class BlogArticle extends BaseModel {
 	}
 
 	/**
-	 * The creator of the page.
+	 * The blog that the article belong to.
+	 *
+	 * @return Menu
+	 */
+	public function blog()
+	{
+		return $this->belongsTo('Regulus\Fractal\Models\Blog');
+	}
+
+	/**
+	 * The author of the article.
 	 *
 	 * @return User
 	 */
-	public function creator()
+	public function author()
 	{
 		return $this->belongsTo(Config::get('auth.model'), 'user_id');
 	}
 
 	/**
-	 * The layout template that the page belongs to.
+	 * The layout template that the article belongs to.
 	 *
 	 * @return Collection
 	 */
@@ -123,17 +154,17 @@ class BlogArticle extends BaseModel {
 	}
 
 	/**
-	 * Get the URL for the page.
+	 * Get the URL for the article.
 	 *
 	 * @return string
 	 */
 	public function getUrl()
 	{
-		return Fractal::blogUrl($this->slug);
+		return Fractal::blogUrl('article/'.$this->slug);
 	}
 
 	/**
-	 * Get the layout for the page.
+	 * Get the layout for the article.
 	 *
 	 * @param  array    $usePostData
 	 * @return string
@@ -154,7 +185,7 @@ class BlogArticle extends BaseModel {
 	}
 
 	/**
-	 * Get the layout tags for the page's layout.
+	 * Get the layout tags for the article's layout.
 	 *
 	 * @return array
 	 */
@@ -166,7 +197,7 @@ class BlogArticle extends BaseModel {
 	}
 
 	/**
-	 * Get the rendered content for the page.
+	 * Get the rendered content for the article.
 	 *
 	 * @return string
 	 */
@@ -182,47 +213,80 @@ class BlogArticle extends BaseModel {
 	}
 
 	/**
-	 * The content areas that the page belongs to.
+	 * The content areas that the article belongs to.
 	 *
 	 * @return Collection
 	 */
 	public function contentAreas()
 	{
 		return $this
-			->belongsToMany('Regulus\Fractal\BlogContentArea', 'blog_article_content_areas', 'article_id', 'area_id')
+			->belongsToMany('Regulus\Fractal\Models\BlogContentArea', 'blog_article_content_areas', 'article_id', 'area_id')
 			->withPivot('layout_tag')
 			->orderBy('title');
 	}
 
 	/**
-	 * Gets the active pages.
+	 * Gets the published pages.
 	 *
 	 * @return Collection
 	 */
-	public static function getActive()
+	public static function getPublished()
 	{
-		return static::where('active', true)->where('activated_at', '>=', date('Y-m-d H:i:s'))->orderBy('id')->get();
+		return static::onlyPublished()->orderBy('id')->get();
 	}
 
 	/**
-	 * Get the active status.
+	 * Gets only the published pages.
+	 *
+	 * @return Collection
+	 */
+	public function scopeOnlyPublished($query)
+	{
+		return $query->whereNotNull('published_at')->where('published_at', '<=', date('Y-m-d H:i:s'));
+	}
+
+	/**
+	 * Get the published status.
 	 *
 	 * @param  mixed    $dateFormat
 	 * @return string
 	 */
-	public function getActiveStatus($dateFormat = false)
+	public function isPublished()
 	{
-		if (!$dateFormat)
-			$dateFormat = Fractal::getDateTimeFormat();
+		return !is_null($this->published_at) && strtotime($this->published_at) <= time();
+	}
 
-		if ($this->active && Fractal::dateTimePast($this->activated_at)) {
-			$status = "Yes";
-		} else {
-			$status = "No";
+	/**
+	 * Check whether article is to be published in the future.
+	 *
+	 * @param  mixed    $dateFormat
+	 * @return string
+	 */
+	public function isPublishedFuture()
+	{
+		return !is_null($this->published_at) && strtotime($this->published_at) > time();
+	}
 
-			if ($this->active && Fractal::dateTimeSet($this->activated_at))
-				$status .= '<div><small><em>To be activated at '.date($dateFormat, strtotime($this->activated_at)).'</em></small></div>';
-		}
+	/**
+	 * Get the published status string.
+	 *
+	 * @param  mixed    $dateFormat
+	 * @return string
+	 */
+	public function getPublishedStatus($dateFormat = false)
+	{
+
+		$yesNo = array(
+			'<span class="boolean-true">Yes</span>',
+			'<span class="boolean-false">No</span>',
+		);
+
+		$status = Format::boolToStr($this->isPublished(), $yesNo);
+
+		if ($this->isPublishedFuture())
+			$status .= '<div><small><em>'.Lang::get('fractal::labels.toBePublished', array(
+				'dateTime' => $this->getPublishedDateTime()
+			)).'</em></small></div>';
 
 		return $status;
 	}
@@ -233,7 +297,21 @@ class BlogArticle extends BaseModel {
 	 * @param  mixed    $dateFormat
 	 * @return string
 	 */
-	public function getLastUpdatedDate($dateFormat = false)
+	public function getPublishedDateTime($dateFormat = false)
+	{
+		if (!$dateFormat)
+			$dateFormat = Fractal::getDateTimeFormat();
+
+		return Fractal::dateTimeSet($this->published_at) ? date($dateFormat, strtotime($this->published_at)) : '';
+	}
+
+	/**
+	 * Get the last updated date/time.
+	 *
+	 * @param  mixed    $dateFormat
+	 * @return string
+	 */
+	public function getLastUpdatedDateTime($dateFormat = false)
 	{
 		if (!$dateFormat)
 			$dateFormat = Fractal::getDateTimeFormat();
@@ -242,7 +320,7 @@ class BlogArticle extends BaseModel {
 	}
 
 	/**
-	 * Log the page view.
+	 * Log the article view.
 	 *
 	 * @return void
 	 */
@@ -252,7 +330,7 @@ class BlogArticle extends BaseModel {
 	}
 
 	/**
-	 * Get the number of page views.
+	 * Get the number of article views.
 	 *
 	 * @return Collection
 	 */
@@ -262,7 +340,7 @@ class BlogArticle extends BaseModel {
 	}
 
 	/**
-	 * Get the number of unique page views.
+	 * Get the number of unique article views.
 	 *
 	 * @return Collection
 	 */

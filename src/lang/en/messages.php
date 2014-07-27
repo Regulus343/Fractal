@@ -51,4 +51,7 @@ return array(
 	'developerModeEnabled'         => '<strong>Developer Mode</strong> enabled.',
 	'developerModeDisabled'        => '<strong>Developer Mode</strong> disabled.',
 
+	'notPublished'                 => 'This :item is not published. This means the page cannot be seen by regular users.',
+	'notPublishedUntil'            => 'This :item is not published. This means the page cannot be seen by regular users. It is currently set to be published on :dateTime',
+
 );

@@ -35,7 +35,7 @@ return array(
 			),
 			array(
 				'label'     => 'Last Updated',
-				'method'    => 'getLastUpdatedDate()',
+				'method'    => 'getLastUpdatedDateTime()',
 			),
 			array(
 				'label'     => 'Actions',
@@ -88,10 +88,9 @@ return array(
 				'sort'      => true,
 			),
 			array(
-				'label'     => 'Active',
-				'method'    => 'getActiveStatus()',
-				'type'      => 'boolean',
-				'sort'      => 'active',
+				'label'     => 'Published',
+				'method'    => 'getPublishedStatus()',
+				'sort'      => 'published_at',
 			),
 			array(
 				'label'     => (Fractal::getSetting('Display Unique Content Views') ? 'Unique ' : '').'Views',
@@ -100,7 +99,7 @@ return array(
 			),
 			array(
 				'label'     => 'Last Updated',
-				'method'    => 'getLastUpdatedDate()',
+				'method'    => 'getLastUpdatedDateTime()',
 				'sort'      => 'updated_at',
 			),
 			array(
@@ -141,7 +140,7 @@ return array(
 			'idPrefix'       => 'page',
 			'classModifiers' => array(
 				'danger' => array(
-					'active' => false,
+					'isPublished()' => false,
 				),
 			),
 		),
@@ -180,7 +179,7 @@ return array(
 			),
 			array(
 				'label'     => 'Last Updated',
-				'method'    => 'getLastUpdatedDate()',
+				'method'    => 'getLastUpdatedDateTime()',
 				'sort'      => 'updated_at',
 			),
 			array(
@@ -211,6 +210,84 @@ return array(
 		),
 		'rows' => array(
 			'idPrefix'       => 'file',
+		),
+	),
+
+	'blogArticles' => array(
+		'table' => array(
+			'class'         => 'table-striped table-bordered table-hover table-sortable',
+			'noDataMessage' => Lang::get('fractal::messages.noItems', array('items' => Str::plural(Lang::get('fractal::labels.article')))),
+		),
+		'columns' => array(
+			array(
+				'attribute' => 'id',
+				'sort'      => true,
+			),
+			array(
+				'attribute' => 'title',
+				'class'     => 'title',
+				'sort'      => true,
+			),
+			array(
+				'attribute' => 'slug',
+				'sort'      => true,
+			),
+			array(
+				'label'     => 'Published',
+				'method'    => 'getPublishedStatus()',
+				'sort'      => 'published_at',
+			),
+			array(
+				'label'     => (Fractal::getSetting('Display Unique Content Views') ? 'Unique ' : '').'Views',
+				'method'    => (Fractal::getSetting('Display Unique Content Views') ? 'getUniqueViews()' : 'getViews()'),
+				'bodyClass' => 'text-align-right',
+			),
+			array(
+				'label'     => 'Last Updated',
+				'method'    => 'getLastUpdatedDateTime()',
+				'sort'      => 'updated_at',
+			),
+			array(
+				'label'     => 'Actions',
+				'class'     => 'actions',
+				'elements'  => array(
+					array(
+						'icon'       => 'edit',
+						'uri'        => Config::get('fractal::baseUri').'/blog/articles/:slug/edit',
+						'attributes' => array(
+							'title'        => Lang::get('fractal::labels.editArticle'),
+						),
+					),
+					array(
+						'icon'       => 'file',
+						'url'        => Fractal::blogUrl(Config::get('fractal::blog.baseUri') == false ? 'article/:slug' : Config::get('fractal::blog.baseUri').'/article/:slug'),
+						'attributes' => array(
+							'title'        => Lang::get('fractal::labels.viewArticle'),
+							'target'       => '_blank',
+						),
+					),
+					array(
+						'icon'       => 'remove',
+						'class'      => 'action-item red',
+						'attributes' => array(
+							'data-item-id'        => ':id',
+							'data-item-name'      => ':title',
+							'data-action'         => 'delete',
+							'data-action-type'    => 'delete',
+							'data-action-message' => 'confirmDelete',
+							'title'               => Lang::get('fractal::labels.deleteArticle'),
+						),
+					),
+				),
+			),
+		),
+		'rows' => array(
+			'idPrefix'       => 'page',
+			'classModifiers' => array(
+				'danger' => array(
+					'isPublished()' => false,
+				),
+			),
 		),
 	),
 

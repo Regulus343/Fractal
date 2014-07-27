@@ -64,6 +64,18 @@ class MenuItemsTableSeeder extends Seeder {
 			),
 			array(
 				'menu_id'       => 1,
+				'parent_id'     => 1,
+				'uri'           => 'blog/articles',
+				'label'         => 'Blog',
+				'icon'          => 'file',
+				'display_order' => 4,
+				'auth_status'   => 1,
+				'active'        => true,
+				'created_at'    => $timestamp,
+				'updated_at'    => $timestamp,
+			),
+			array(
+				'menu_id'       => 1,
 				'uri'           => 'users',
 				'label'         => 'Users',
 				'icon'          => 'user',
@@ -76,7 +88,7 @@ class MenuItemsTableSeeder extends Seeder {
 			),
 			array(
 				'menu_id'       => 1,
-				'parent_id'     => 5,
+				'parent_id'     => 6,
 				'uri'           => 'users',
 				'label'         => 'Users',
 				'icon'          => 'user',
@@ -89,7 +101,7 @@ class MenuItemsTableSeeder extends Seeder {
 			),
 			array(
 				'menu_id'       => 1,
-				'parent_id'     => 5,
+				'parent_id'     => 6,
 				'uri'           => 'user-roles',
 				'label'         => 'User Roles',
 				'icon'          => 'book',
@@ -102,7 +114,7 @@ class MenuItemsTableSeeder extends Seeder {
 			),
 			array(
 				'menu_id'       => 1,
-				'parent_id'     => 5,
+				'parent_id'     => 6,
 				'uri'           => 'activity',
 				'label'         => 'User Activity',
 				'icon'          => 'info-sign',
@@ -175,11 +187,22 @@ class MenuItemsTableSeeder extends Seeder {
 			),
 			array(
 				'menu_id'       => 3,
+				'uri'           => Config::get('fractal::blog.baseUri'),
+				'subdomain'     => Config::get('fractal::blog.subdomain'),
+				'label'         => 'Blog',
+				'icon'          => 'comment',
+				'display_order' => 2,
+				'active'        => true,
+				'created_at'    => $timestamp,
+				'updated_at'    => $timestamp,
+			),
+			array(
+				'menu_id'       => 3,
 				'type'          => 'Content Page',
 				'page_id'       => 2,
 				'label'         => 'About',
 				'icon'          => 'list',
-				'display_order' => 2,
+				'display_order' => 3,
 				'active'        => true,
 				'created_at'    => $timestamp,
 				'updated_at'    => $timestamp,
@@ -190,7 +213,7 @@ class MenuItemsTableSeeder extends Seeder {
 				'page_id'       => 3,
 				'label'         => 'Contact',
 				'icon'          => 'envelope',
-				'display_order' => 3,
+				'display_order' => 4,
 				'active'        => true,
 				'created_at'    => $timestamp,
 				'updated_at'    => $timestamp,
@@ -209,10 +232,20 @@ class MenuItemsTableSeeder extends Seeder {
 			),
 			array(
 				'menu_id'       => 4,
+				'uri'           => Config::get('fractal::blog.baseUri'),
+				'subdomain'     => Config::get('fractal::blog.subdomain'),
+				'label'         => 'Blog',
+				'display_order' => 2,
+				'active'        => true,
+				'created_at'    => $timestamp,
+				'updated_at'    => $timestamp,
+			),
+			array(
+				'menu_id'       => 4,
 				'type'          => 'Content Page',
 				'page_id'       => 2,
 				'label'         => 'About',
-				'display_order' => 2,
+				'display_order' => 3,
 				'active'        => true,
 				'created_at'    => $timestamp,
 				'updated_at'    => $timestamp,
@@ -222,7 +255,7 @@ class MenuItemsTableSeeder extends Seeder {
 				'type'          => 'Content Page',
 				'page_id'       => 3,
 				'label'         => 'Contact',
-				'display_order' => 3,
+				'display_order' => 4,
 				'active'        => true,
 				'created_at'    => $timestamp,
 				'updated_at'    => $timestamp,
@@ -230,6 +263,12 @@ class MenuItemsTableSeeder extends Seeder {
 		);
 
 		foreach ($menuItems as $menuItem) {
+			if (!isset($menuItem['uri']) || $menuItem['uri'] == false)
+				$menuItem['uri'] = "";
+
+			if (!isset($menuItem['subdomain']) || $menuItem['subdomain'] == false)
+				$menuItem['subdomain'] = "";
+
 			DB::table('menu_items')->insert($menuItem);
 		}
 	}

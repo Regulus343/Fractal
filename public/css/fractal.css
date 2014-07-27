@@ -261,10 +261,5 @@ ul#select-content-area li div.info div.actions { float: right; padding-left: 5px
 ul#select-content-area li div.info div.actions span.glyphicon-remove { color: #900; font-size: 15px; }
 ul#select-content-area li div.info div.actions span.glyphicon-remove:hover { color: #c00; }
 
-/* Fix Calendar Glyphicon */
-.glyphicon-calendar:before { 
-	content: "\d83d\dcc5";
-}
-
 .button-menu { margin-bottom: 16px; }
 .button-menu a.btn { margin-left: 6px; }

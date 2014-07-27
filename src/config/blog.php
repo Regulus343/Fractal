@@ -4,6 +4,16 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
+	| Enabled
+	|--------------------------------------------------------------------------
+	|
+	| Whether or not the blogs are enabled.
+	|
+	*/
+	'enabled' => true,
+
+	/*
+	|--------------------------------------------------------------------------
 	| Subdomain
 	|--------------------------------------------------------------------------
 	|
@@ -26,6 +36,19 @@ return array(
 	|
 	*/
 	'baseUri' => false,
+
+	/*
+	|--------------------------------------------------------------------------
+	| Blog View Controller
+	|--------------------------------------------------------------------------
+	|
+	| The URI for content pages on the website. By default, it is left blank to
+	| define the page URI at the root of the website. For example "" would give
+	| you a URL like "http://localhost/home" and "page" would give you
+	| "http://localhost/page/home".
+	|
+	*/
+	'viewController' => 'Regulus\Fractal\Controllers\Blogs\ViewController',
 
 	/*
 	|--------------------------------------------------------------------------

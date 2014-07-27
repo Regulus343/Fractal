@@ -16,7 +16,10 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 
+use \Auth as Auth;
+
 use Regulus\Fractal\Models\ContentPage;
+use Regulus\Fractal\Models\BlogArticle;
 
 $baseUri     = Config::get('fractal::baseUri');
 $controllers = Config::get('fractal::controllers');
@@ -70,7 +73,14 @@ $pageMethod = Config::get('fractal::pageMethod');
 if ($pageUri == "") {
 	//ensure DB tables have been migrated first
 	if (Config::get('fractal::migrated') && !App::runningInConsole()) {
-		$pages = ContentPage::select('slug')->where('active', '=', true)->get();
+		$pages = ContentPage::select(['slug', 'published_at']);
+
+			$pages
+				->whereNotNull('published_at')
+				->where('published_at', '<=', date('Y-m-d H:i:s'));
+
+		$pages = $pages->get();
+
 		foreach ($pages as $page) {
 			Route::get('{'.$page->slug.'}', $pageMethod);
 
@@ -81,4 +91,23 @@ if ($pageUri == "") {
 } else {
 	Route::get($pageUri.'/{slug}', $pageMethod);
 	Route::get('', $pageMethod);
+}
+
+/* Setup Blog Article Routes */
+if (Config::get('fractal::blog.enabled')) {
+	$blogSubdomain  = Config::get('fractal::blog.subdomain');
+	$blogUri        = Config::get('fractal::blog.baseUri');
+	$blogController = Config::get('fractal::blog.viewController');
+
+	$group = [];
+	if ($blogSubdomain != false && is_null($blogSubdomain) && $blogSubdomain != "")
+		$group['domain'] = str_replace('http://', $subdomain.'.', str_replace('https://', $subdomain.'.', Config::get('app.url')));
+
+	if ($blogUri != false && is_null($blogUri) && $blogUri != "")
+		$group['prefix'] = $blogUri;
+
+	Route::group($group, function() use ($blogController)
+	{
+		Route::controller('', $blogController);
+	});
 }

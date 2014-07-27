@@ -2,7 +2,7 @@
 
 @if (Fractal::isMenuItemVisible($menuItem))
 	<li class="{{ Fractal::setMenuItemSelectedClass($menuItem) }}">
-		<a href="{{ URL::to($menuItem->uri) }}" class="{{ $menuItem->anchorClass }}"{{ !empty($menuItem->children) ? ' data-toggle="dropdown"' : '' }}>
+		<a href="{{ URL::to($menuItem->url) }}" class="{{ $menuItem->anchorClass }}"{{ !empty($menuItem->children) ? ' data-toggle="dropdown"' : '' }}>
 			{{ $menuItem->labelIcon }}
 
 			@if (!empty($menuItem->children))

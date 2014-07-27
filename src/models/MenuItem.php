@@ -32,6 +32,7 @@ class MenuItem extends BaseModel {
 		'type',
 		'page_id',
 		'uri',
+		'subdomain',
 		'label',
 		'icon',
 		'class',
@@ -47,12 +48,12 @@ class MenuItem extends BaseModel {
 	 *
 	 * @var    array
 	 */
-	protected static $types = array(
+	protected $types = array(
 		'active' => 'checkbox',
 	);
 
 	/**
-	 * The menu that the menu items belong to.
+	 * The menu that the menu item belong to.
 	 *
 	 * @return Menu
 	 */
@@ -131,7 +132,12 @@ class MenuItem extends BaseModel {
 	 */
 	public function getUrl()
 	{
-		return URL::to($this->getUri());
+		$url = URL::to($this->getUri());
+
+		if ($this->subdomain != false && !is_null($this->subdomain) && $this->subdomain != "")
+			$url = str_replace('http://', 'http://'.$this->subdomain.'.', str_replace('https://', 'https://'.$this->subdomain.'.', $url));
+
+		return $url;
 	}
 
 	/**
@@ -158,13 +164,10 @@ class MenuItem extends BaseModel {
 	 */
 	public static function setSelectedClass($item)
 	{
-		if (!isset($item->parent_id)) {
-			var_dump($item); exit;
-		}
 		$selectedClass = "active";
 		$defaultClass  = $item->class;
 		$class         = $defaultClass;
-		$checked       = ! (int) $item->parent_id ? "section" : "subSection";
+		$checked       = ! (int) $item->parentId ? "section" : "subSection";
 
 		$class .= Site::selectBy($checked, $item->label, true, $selectedClass);
 
@@ -236,17 +239,18 @@ class MenuItem extends BaseModel {
 	public function createObject($setSelectedClass = true, $ignoreVisibilityStatus = false)
 	{
 		return (object) array(
-			'parent_id'   => (int) $this->parent_id,
-			'type'        => $this->type,
-			'uri'         => $this->getUri(),
-			'page'        => $this->type == "Content Page" ? $this->page->title : false,
-			'label'       => $this->label,
-			'labelIcon'   => $this->getLabel(),
-			'class'       => $this->getClass($setSelectedClass),
-			'active'      => $this->active,
-			'auth_status' => $this->auth_status,
-			'anchorClass' => $this->getAnchorClass(),
-			'children'    => $this->getChildrenArray($setSelectedClass, $ignoreVisibilityStatus),
+			'parentId'          => (int) $this->parent_id,
+			'type'              => $this->type,
+			'url'               => $this->getUrl(),
+			'page'              => $this->type == "Content Page" ? $this->page->title : false,
+			'pagePublishedDate' => $this->type == "Content Page" ? $this->page->published_at : null,
+			'label'             => $this->label,
+			'labelIcon'         => $this->getLabel(),
+			'class'             => $this->getClass($setSelectedClass),
+			'active'            => $this->active,
+			'authStatus'        => $this->auth_status,
+			'anchorClass'       => $this->getAnchorClass(),
+			'children'          => $this->getChildrenArray($setSelectedClass, $ignoreVisibilityStatus),
 		);
 	}
 
@@ -256,7 +260,7 @@ class MenuItem extends BaseModel {
 	 * @param  mixed    $dateFormat
 	 * @return string
 	 */
-	public function getLastUpdatedDate($dateFormat = false)
+	public function getLastUpdatedDateTime($dateFormat = false)
 	{
 		if (!$dateFormat) $dateFormat = Config::get('fractal::dateTimeFormat');
 		return $this->updated_at != "0000-00-00" ? date($dateFormat, strtotime($this->updated_at)) : date($dateFormat, strtotime($this->created_at));

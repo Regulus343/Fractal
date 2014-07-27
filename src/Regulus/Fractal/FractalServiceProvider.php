@@ -23,12 +23,6 @@ class FractalServiceProvider extends ServiceProvider {
 	{
 		$this->package('regulus/fractal');
 
-		//load routes, filters, view composers, and settings files
-		include __DIR__.'/../../routes.php';
-		include __DIR__.'/../../filters.php';
-		include __DIR__.'/../../view_composers.php';
-		include __DIR__.'/../../settings.php';
-
 		$workbench    = Config::get('fractal::workbench');
 		$exterminator = Config::get('fractal::exterminator');
 
@@ -41,6 +35,7 @@ class FractalServiceProvider extends ServiceProvider {
 		$configPackages = array(
 			'regulus/fractal',
 			'regulus/activity-log',
+			'regulus/identify',
 			'regulus/solid-site',
 			'regulus/tetra-text',
 			'aquanode/formation',
@@ -77,6 +72,12 @@ class FractalServiceProvider extends ServiceProvider {
 		$this->app->singleton('parsedown', function(){
 			return new \Parsedown;
 		});
+
+		//load routes, filters, view composers, and settings files
+		include __DIR__.'/../../routes.php';
+		include __DIR__.'/../../filters.php';
+		include __DIR__.'/../../view_composers.php';
+		include __DIR__.'/../../settings.php';
 	}
 
 	/**

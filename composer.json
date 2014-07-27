@@ -26,7 +26,8 @@
 			"src/libraries",
 			"src/migrations",
 			"src/models",
-			"src/seeds"
+			"src/seeds",
+			"src/traits"
 		],
 		"psr-0": {
 			"Regulus\\Fractal": "src/"

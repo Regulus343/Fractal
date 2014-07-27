@@ -21,8 +21,8 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 
-use Regulus\Identify\Facade as Auth;
-use Regulus\SolidSite\SolidSite as Site;
+use \Auth as Auth;
+use \Site as Site;
 
 $baseUri = Config::get('fractal::baseUri');
 

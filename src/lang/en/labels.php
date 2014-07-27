@@ -2,7 +2,7 @@
 
 return array(
 
-	'version'              => '0.5.2a',
+	'version'              => '0.5.3a',
 
 	'create'               => 'Create',
 	'edit'                 => 'Edit',
@@ -32,6 +32,12 @@ return array(
 	'openFile'             => 'Open File',
 	'deleteFile'           => 'Delete File',
 
+	'createArticle'        => 'Create Article',
+	'editArticle'          => 'Edit Article',
+	'viewArticle'          => 'View Article',
+	'deleteArticle'        => 'Delete Article',
+	'returnToArticlesList' => 'Return to Articles List',
+
 	'createUser'           => 'Create User',
 	'editUser'             => 'Edit User',
 	'banUser'              => 'Ban User',
@@ -49,6 +55,9 @@ return array(
 	'file'                 => 'File',
 	'filename'             => 'Filename',
 	'image'                => 'Image',
+	'blog'                 => 'Blog',
+	'blogArticle'          => 'Blog Article',
+	'article'              => 'Article',
 	'user'                 => 'User',
 	'userRole'             => 'User Role',
 	'activity'             => 'Activity',
@@ -56,6 +65,9 @@ return array(
 	'general'              => 'General',
 	'pages'                => 'Pages',
 	'files'                => 'Files',
+	'blogs'                => 'Blogs',
+	'blogArticles'         => 'Blog Articles',
+	'articles'             => 'Articles',
 	'users'                => 'Users',
 	'userRoles'            => 'User Roles',
 
@@ -84,6 +96,9 @@ return array(
 	'returnToTop'          => 'Return to Top',
 
 	'timestamp'            => 'Timestamp',
+	'toBePublished'        => 'To Be Published on :dateTime',
+
+	'untitled'             => 'Untitled',
 
 	'size'                 => 'Size',
 	'width'                => 'Width',

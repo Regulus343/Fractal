@@ -13,7 +13,7 @@ use Regulus\Fractal\Facade as Fractal;
 
 use Illuminate\Support\Facades\Config;
 
-use Regulus\SolidSite\Facade as Site;
+use \Site as Site;
 
 //ensure DB tables have been migrated first
 if (Config::get('fractal::migrated')) {

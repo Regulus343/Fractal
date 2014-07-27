@@ -5,9 +5,13 @@ use Aquanode\Formation\BaseModel;
 use Fractal;
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
 
 use \Form as Form;
+use \Format as Format;
+
+use Regulus\Fractal\Traits\PublishingTrait;
 
 class ContentPage extends BaseModel {
 
@@ -36,8 +40,7 @@ class ContentPage extends BaseModel {
 		'layout_template_id',
 		'layout',
 		'user_id',
-		'active',
-		'activated_at',
+		'published_at',
 	);
 
 	/**
@@ -45,10 +48,27 @@ class ContentPage extends BaseModel {
 	 *
 	 * @var    array
 	 */
-	protected static $types = array(
+	protected $types = array(
 		'slug'         => 'unique-slug',
-		'active'       => 'checkbox',
-		'activated_at' => 'date-time',
+		'published_at' => 'date-time',
+	);
+
+	/**
+	 * The special formatted fields for the model.
+	 *
+	 * @var    array
+	 */
+	protected $formats = array(
+		'published' => 'trueIfNotNull:published_at',
+	);
+
+	/**
+	 * The special formatted fields for the model for saving to the database.
+	 *
+	 * @var    array
+	 */
+	protected $formatsForDb = array(
+		'published_at' => 'nullIfBlank',
 	);
 
 	/**
@@ -59,8 +79,9 @@ class ContentPage extends BaseModel {
 	public static function defaults()
 	{
 		$defaults = array(
-			'active'       => true,
-			'activated_at' => date(Form::getDateTimeFormat()),
+			'layout_template_id' => 1,
+			'published'          => true,
+			'published_at'       => date(Form::getDateTimeFormat()),
 		);
 
 		$defaults = array_merge($defaults, static::addPrefixToDefaults(ContentArea::defaults(), 'content_areas.1'));
@@ -90,7 +111,6 @@ class ContentPage extends BaseModel {
 					$contentField = Form::getValueFromObject('content_type', $values) == "HTML" ? "content_html" : "content_markdown";
 
 					$rules = array_merge($rules, array(
-						'content_areas.'.$number.'.title'            => array('required'),
 						'content_areas.'.$number.'.pivot.layout_tag' => array('required'),
 						'content_areas.'.$number.'.content_type'     => array('required'),
 						'content_areas.'.$number.'.'.$contentField   => array('required'),
@@ -205,34 +225,67 @@ class ContentPage extends BaseModel {
 	}
 
 	/**
-	 * Gets the active pages.
+	 * Gets the published pages.
 	 *
 	 * @return Collection
 	 */
-	public static function getActive()
+	public static function getPublished()
 	{
-		return static::where('active', true)->where('activated_at', '>=', date('Y-m-d H:i:s'))->orderBy('id')->get();
+		return static::onlyPublished()->orderBy('id')->get();
 	}
 
 	/**
-	 * Get the active status.
+	 * Gets only the published pages.
+	 *
+	 * @return Collection
+	 */
+	public function scopeOnlyPublished($query)
+	{
+		return $query->whereNotNull('published_at')->where('published_at', '<=', date('Y-m-d H:i:s'));
+	}
+
+	/**
+	 * Get the published status.
 	 *
 	 * @param  mixed    $dateFormat
 	 * @return string
 	 */
-	public function getActiveStatus($dateFormat = false)
+	public function isPublished()
 	{
-		if (!$dateFormat)
-			$dateFormat = Fractal::getDateTimeFormat();
+		return !is_null($this->published_at) && strtotime($this->published_at) <= time();
+	}
 
-		if ($this->active && Fractal::dateTimePast($this->activated_at)) {
-			$status = "Yes";
-		} else {
-			$status = "No";
+	/**
+	 * Check whether page is to be published in the future.
+	 *
+	 * @param  mixed    $dateFormat
+	 * @return string
+	 */
+	public function isPublishedFuture()
+	{
+		return !is_null($this->published_at) && strtotime($this->published_at) > time();
+	}
 
-			if ($this->active && Fractal::dateTimeSet($this->activated_at))
-				$status .= '<div><small><em>To be activated at '.date($dateFormat, strtotime($this->activated_at)).'</em></small></div>';
-		}
+	/**
+	 * Get the published status string.
+	 *
+	 * @param  mixed    $dateFormat
+	 * @return string
+	 */
+	public function getPublishedStatus($dateFormat = false)
+	{
+
+		$yesNo = array(
+			'<span class="boolean-true">Yes</span>',
+			'<span class="boolean-false">No</span>',
+		);
+
+		$status = Format::boolToStr($this->isPublished(), $yesNo);
+
+		if ($this->isPublishedFuture())
+			$status .= '<div><small><em>'.Lang::get('fractal::labels.toBePublished', array(
+				'dateTime' => $this->getPublishedDateTime()
+			)).'</em></small></div>';
 
 		return $status;
 	}
@@ -243,7 +296,21 @@ class ContentPage extends BaseModel {
 	 * @param  mixed    $dateFormat
 	 * @return string
 	 */
-	public function getLastUpdatedDate($dateFormat = false)
+	public function getPublishedDateTime($dateFormat = false)
+	{
+		if (!$dateFormat)
+			$dateFormat = Fractal::getDateTimeFormat();
+
+		return Fractal::dateTimeSet($this->published_at) ? date($dateFormat, strtotime($this->published_at)) : '';
+	}
+
+	/**
+	 * Get the last updated date/time.
+	 *
+	 * @param  mixed    $dateFormat
+	 * @return string
+	 */
+	public function getLastUpdatedDateTime($dateFormat = false)
 	{
 		if (!$dateFormat)
 			$dateFormat = Fractal::getDateTimeFormat();

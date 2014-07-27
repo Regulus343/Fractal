@@ -5,7 +5,7 @@
 		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap.
 
 		created by Cody Jassman
-		version 0.5.2a
+		version 0.5.4a
 		last updated on July 26, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
@@ -139,8 +139,10 @@ class Fractal {
 		$url = URL::to($this->blogUri($uri));
 
 		$subdomain = Config::get('fractal::blog.subdomain');
-		if ($subdomain != "" && $subdomain !== false && !is_null($subdomain))
+		if ($subdomain != "" && $subdomain !== false && !is_null($subdomain)) {
+			$url = str_replace($subdomain.'.', '', $url);
 			$url = str_replace('http://', 'http://'.$subdomain.'.', str_replace('https://', 'https://'.$subdomain.'.', $url));
+		}
 
 		return $url;
 	}
@@ -968,11 +970,14 @@ class Fractal {
 		if (! (bool) $menuItem->active)
 			$visible = false;
 
-		if ($menuItem->auth_status) {
-			if (Fractal::auth() && (int) $menuItem->auth_status == 2)
+		if ($menuItem->type == "Content Page" && (is_null($menuItem->pagePublishedDate) || strtotime($menuItem->pagePublishedDate) > time()))
+			$visible = false;
+
+		if ($menuItem->authStatus) {
+			if (Fractal::auth() && (int) $menuItem->authStatus == 2)
 				$visible = false;
 
-			if (!Fractal::auth() && (int) $menuItem->auth_status == 1)
+			if (!Fractal::auth() && (int) $menuItem->authStatus == 1)
 				$visible = false;
 		}
 

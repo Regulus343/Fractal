@@ -1,4 +1,4 @@
-<?php namespace Regulus\Fractal\Controllers;
+<?php namespace Regulus\Fractal\Controllers\Blogs;
 
 use \BaseController;
 
@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use Regulus\Fractal\Models\ContentPage;
-use Regulus\Fractal\Models\ContentArea;
+use Regulus\Fractal\Models\BlogArticle;
+use Regulus\Fractal\Models\BlogContentArea;
 use Regulus\Fractal\Models\ContentLayoutTemplate;
 
 use Regulus\ActivityLog\Activity;
@@ -21,40 +21,43 @@ use \Site as Site;
 use \Form as Form;
 use \Format as Format;
 
-class PagesController extends BaseController {
+class ArticlesController extends BaseController {
 
 	public function __construct()
 	{
 		Site::set('section', 'Content');
-		$subSection = "Pages";
-		Site::setMulti(array('subSection', 'title'), $subSection);
+		$subSection = "Blog";
+		Site::set('subSection', $subSection);
+		Site::set('title', 'Blog Articles');
 
 		//set content type and views location
-		Fractal::setContentType('page', true);
+		Fractal::setContentType('blog-article', true);
+
+		Fractal::setViewsLocation('blogs.articles');
 	}
 
 	public function index()
 	{
 		$data = Fractal::setupPagination();
 
-		$pages = ContentPage::orderBy($data['sortField'], $data['sortOrder']);
-		if ($data['sortField'] != "id") $pages->orderBy('id', 'asc');
+		$articles = BlogArticle::orderBy($data['sortField'], $data['sortOrder']);
+		if ($data['sortField'] != "id") $articles->orderBy('id', 'asc');
 		if ($data['terms'] != "") {
-			$pages->where(function($query) use ($data) {
+			$articles->where(function($query) use ($data) {
 				$query
 					->where('title', 'like', $data['likeTerms'])
 					->orWhere('slug', 'like', $data['likeTerms']);
 			});
 		}
-		$pages = $pages->paginate($data['itemsPerPage']);
+		$articles = $articles->paginate($data['itemsPerPage']);
 
-		Fractal::setContentForPagination($pages);
+		Fractal::setContentForPagination($articles);
 
 		$data     = Fractal::setPaginationMessage();
 		$messages = Fractal::getPaginationMessageArray();
 
-		if (!count($pages))
-			$pages = ContentPage::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
+		if (!count($articles))
+			$articles = BlogArticle::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		$defaults = array(
 			'search' => $data['terms']
@@ -62,7 +65,7 @@ class PagesController extends BaseController {
 		Form::setDefaults($defaults);
 
 		return View::make(Fractal::view('list'))
-			->with('content', $pages)
+			->with('content', $articles)
 			->with('messages', $messages);
 	}
 
@@ -70,23 +73,23 @@ class PagesController extends BaseController {
 	{
 		$data = Fractal::setupPagination();
 
-		$pages = ContentPage::orderBy($data['sortField'], $data['sortOrder']);
-		if ($data['sortField'] != "id") $pages->orderBy('id', 'asc');
+		$articles = BlogArticle::orderBy($data['sortField'], $data['sortOrder']);
+		if ($data['sortField'] != "id") $articles->orderBy('id', 'asc');
 		if ($data['terms'] != "") {
-			$pages->where(function($query) use ($data) {
+			$articles->where(function($query) use ($data) {
 				$query
 					->where('title', 'like', $data['likeTerms'])
 					->orWhere('slug', 'like', $data['likeTerms']);
 			});
 		}
-		$pages = $pages->paginate($data['itemsPerPage']);
+		$articles = $articles->paginate($data['itemsPerPage']);
 
-		Fractal::setContentForPagination($pages);
+		Fractal::setContentForPagination($articles);
 
-		if (count($pages)) {
+		if (count($articles)) {
 			$data = Fractal::setPaginationMessage();
 		} else {
-			$data['content'] = ContentPage::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
+			$data['content'] = BlogArticle::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 			if ($data['terms'] == "") $data['result']['message'] = Lang::get('fractal::messages.searchNoTerms');
 		}
 
@@ -98,10 +101,10 @@ class PagesController extends BaseController {
 
 	public function create()
 	{
-		Site::set('title', 'Create Page');
+		Site::set('title', 'Create Article');
 		Site::set('wysiwyg', true);
 
-		ContentPage::setDefaultsForNew();
+		BlogArticle::setDefaultsForNew();
 		Form::setErrors();
 
 		$layoutTagOptions = $this->getLayoutTagOptions();
@@ -112,38 +115,38 @@ class PagesController extends BaseController {
 
 	public function store()
 	{
-		Site::set('title', 'Create Page');
+		Site::set('title', 'Create Article');
 		Site::set('wysiwyg', true);
 
-		Form::setValidationRules(ContentPage::validationRules());
+		Form::setValidationRules(BlogArticle::validationRules());
 
 		$messages = array();
 		if (Form::validated()) {
-			$messages['success'] = Lang::get('fractal::messages.successCreated', array('item' => Format::a('page')));
+			$messages['success'] = Lang::get('fractal::messages.successCreated', array('item' => Format::a('article')));
 
 			$input = Input::all();
 			$input['user_id'] = Auth::user()->id;
 
-			$page = ContentPage::createNew($input);
+			$article = BlogArticle::createNew($input);
 
-			//re-export menus to config array in case published status for page has changed
+			//re-export menus to config array in case published status for article has changed
 			Fractal::exportMenus();
 
 			Activity::log(array(
-				'contentId'   => $page->id,
-				'contentType' => 'ContentPage',
+				'contentId'   => $article->id,
+				'contentType' => 'BlogArticle',
 				'action'      => 'Create',
-				'description' => 'Created a Page',
-				'details'     => 'Title: '.$page->title,
+				'description' => 'Created an Article',
+				'details'     => 'Title: '.$article->title,
 			));
 
-			return Redirect::to(Fractal::uri('pages/'.$page->slug.'/edit'))
+			return Redirect::to(Fractal::uri('blog/articles/'.$article->slug.'/edit'))
 				->with('messages', $messages);
 		} else {
 			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
 		}
 
-		return Redirect::to(Fractal::uri('pages/create'))
+		return Redirect::to(Fractal::uri('blog/articles/create'))
 			->with('messages', $messages)
 			->with('errors', Form::getErrors())
 			->withInput();
@@ -151,54 +154,51 @@ class PagesController extends BaseController {
 
 	public function edit($slug)
 	{
-		$page = ContentPage::findBySlug($slug);
-		if (empty($page))
+		$article = BlogArticle::findBySlug($slug);
+		if (empty($article))
 			return Redirect::to(Fractal::uri('pages'))
-				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'page'))));
+				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'article'))));
 
-		Site::set('title', $page->title.' (Page)');
-		Site::set('titleHeading', 'Update Page: <strong>'.Format::entities($page->title).'</strong>');
+		Site::set('title', $article->title.' (Article)');
+		Site::set('titleHeading', 'Update Article: <strong>'.Format::entities($article->title).'</strong>');
 		Site::set('wysiwyg', true);
 
-		$page->setDefaults(array('contentAreas'));
+		$article->setDefaults(array('contentAreas'));
 		Form::setErrors();
 
-		$layoutTagOptions = $this->getLayoutTagOptions($page->getLayoutTags());
+		$layoutTagOptions = $this->getLayoutTagOptions($article->getLayoutTags());
 
 		return View::make(Fractal::view('form'))
 			->with('update', true)
-			->with('id', $page->id)
-			->with('pageUrl', $page->getUrl())
+			->with('id', $article->id)
+			->with('articleUrl', $article->getUrl())
 			->with('layoutTagOptions', $layoutTagOptions);
 	}
 
 	public function update($slug)
 	{
-		$page = ContentPage::findBySlug($slug);
-		if (empty($page))
+		$article = BlogArticle::findBySlug($slug);
+		if (empty($article))
 			return Redirect::to(Fractal::uri('pages'))
-				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'page'))));
+				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'article'))));
 
-		Site::set('title', $page->title.' (Page)');
-		Site::set('titleHeading', 'Update Page: <strong>'.Format::entities($page->title).'</strong>');
+		Site::set('title', $article->title.' (Article)');
+		Site::set('titleHeading', 'Update Article: <strong>'.Format::entities($article->title).'</strong>');
 		Site::set('wysiwyg', true);
 
-		$page->setValidationRules();
+		$article->setValidationRules();
 
 		$messages = array();
 		if (Form::validated()) {
-			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Format::a('page')));
+			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Format::a('article')));
 
-			$page->saveData();
-
-			//re-export menus to config array in case published status for page has changed
-			Fractal::exportMenus();
+			$article->saveData();
 
 			Activity::log(array(
 				'contentId'   => $page->id,
-				'contentType' => 'ContentPage',
+				'contentType' => 'BlogArticle',
 				'action'      => 'Update',
-				'description' => 'Updated a Page',
+				'description' => 'Updated an Article',
 				'details'     => 'Title: '.$page->title,
 				'updated'     => true,
 			));
@@ -222,58 +222,25 @@ class PagesController extends BaseController {
 			'message'    => Lang::get('fractal::messages.errorGeneral'),
 		);
 
-		$page = ContentPage::find($id);
-		if (empty($page))
+		$article = BlogArticle::find($id);
+		if (empty($article))
 			return $result;
 
 		Activity::log(array(
-			'contentId'   => $page->id,
-			'contentType' => 'ContentPage',
+			'contentId'   => $article->id,
+			'contentType' => 'BlogArticle',
 			'action'      => 'Delete',
-			'description' => 'Deleted a Page',
-			'details'     => 'Title: '.$page->title,
+			'description' => 'Deleted an Article',
+			'details'     => 'Title: '.$article->title,
 		));
 
 		$result['resultType'] = "Success";
-		$result['message']    = Lang::get('fractal::messages.successDeleted', array('item' => '<strong>'.$page->title.'</strong>'));
+		$result['message']    = Lang::get('fractal::messages.successDeleted', array('item' => '<strong>'.$article->title.'</strong>'));
 
-		$page->contentAreas()->sync(array());
-		$page->delete();
+		$article->contentAreas()->sync(array());
+		$article->delete();
 
 		return $result;
-	}
-
-	public function view($slug = 'home')
-	{
-		$page = ContentPage::where('slug', $slug);
-
-		if (Auth::isNot('admin'))
-			$page->onlyPublished();
-
-		$page = $page->first();
-
-		if (empty($page))
-			return Redirect::to('');
-
-		Site::setMulti(array('section', 'subSection', 'title'), $page->title);
-		Site::set('menus', 'Front');
-
-		$page->logView();
-
-		$messages = array();
-		if (!$page->isPublished()) {
-			if ($page->isPublishedFuture())
-				$messages['info'] = Lang::get('fractal::messages.notPublishedUntil', array(
-					'item'     => strtolower(Lang::get('fractal::labels.page')),
-					'dateTime' => $page->getPublishedDateTime(),
-				));
-			else
-				$messages['info'] = Lang::get('fractal::messages.notPublished', array('item' => Lang::get('fractal::labels.page')));
-		}
-
-		return View::make(Config::get('fractal::pageView'))
-			->with('page', $page)
-			->with('messages', $messages);
 	}
 
 	public function layoutTags()
@@ -318,7 +285,7 @@ class PagesController extends BaseController {
 		$data = array(
 			'title'        => Lang::get('fractal::labels.addContentArea'),
 			'pageId'       => $id,
-			'contentAreas' => ContentArea::orderBy('title')->get(),
+			'contentAreas' => BlogContentArea::orderBy('title')->get(),
 		);
 
 		return Fractal::modalView('add_content_area', $data);
@@ -326,12 +293,12 @@ class PagesController extends BaseController {
 
 	public function getContentArea($id = false)
 	{
-		return ContentArea::find($id)->toJson();
+		return BlogContentArea::find($id)->toJson();
 	}
 
 	public function deleteContentArea($id)
 	{
-		$contentArea = ContentArea::find($id);
+		$contentArea = BlogContentArea::find($id);
 		if ($contentArea) {
 			if (!$contentArea->contentPages()->count()) {
 				$contentArea->delete();
