@@ -72,8 +72,14 @@ class Menu extends BaseModel {
 
 					$type = Form::getValueFromObject('type', $values);
 					if ($type != "") {
-						$contentField = $type == "URI" ? "uri" : "page_id";
-						$itemRules['items.'.$number.'.'.$contentField] = array('required');
+						if ($contentField = $type == "URI") {
+							if (Form::getValueFromObject('subdomain', $values) == "")
+								$itemRules['items.'.$number.'.uri'] = array('required');
+							else
+								$itemRules['items.'.$number.'.subdomain'] = array('required');
+						} else {
+							$itemRules['items.'.$number.'.page_id'] = array('required');
+						}
 					}
 
 					$rules = array_merge($rules, $itemRules);

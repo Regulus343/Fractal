@@ -24,6 +24,7 @@
 			<div class="col-md-4">
 				<div class="uri-area hidden">
 					<?=Form::field('items.{{number}}.uri', 'text', array('label' => 'URI'))?>
+					<?=Form::field('items.{{number}}.subdomain', 'text', array('label' => 'Subdomain'))?>
 				</div>
 
 				<div class="page-area hidden">

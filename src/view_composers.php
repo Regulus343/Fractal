@@ -13,8 +13,10 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
-use Regulus\SolidSite\SolidSite as Site;
-use Aquanode\Formation\Formation as Form;
+use \Site as Site;
+use \Form as Form;
+
+use Regulus\Fractal\Models\ContentPage;
 
 use Regulus\Identify\User;
 use Regulus\Identify\Role;
