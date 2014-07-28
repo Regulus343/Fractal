@@ -263,3 +263,14 @@ ul#select-content-area li div.info div.actions span.glyphicon-remove:hover { col
 
 .button-menu { margin-bottom: 16px; }
 .button-menu a.btn { margin-left: 6px; }
+
+div.article-preview {
+	margin: 0 0 20px 0;
+	padding: 0 0 16px 0;
+	border-bottom: 1px solid #888;
+}
+
+div.article-preview:last-child { border: none; }
+
+div.article-heading { margin-bottom: 12px; border-bottom: 1px solid #ccc; }
+div.article-heading time { color: #555; font-style: italic; }

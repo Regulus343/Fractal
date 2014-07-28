@@ -6,7 +6,7 @@
 
 		created by Cody Jassman
 		version 0.5.4a
-		last updated on July 26, 2014
+		last updated on July 27, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -179,18 +179,29 @@ class Fractal {
 	}
 
 	/**
-	 * Get the views location for a controller.
+	 * Get the views location for a controller or include.
 	 *
 	 * @param  string   $relativeLocation
 	 * @param  boolean  $root
 	 * @return string
 	 */
-	public function view($relativeLocation = '', $root = false)
+	public function view($relativeLocation, $root = false)
 	{
 		if ($root)
 			return Config::get('fractal::viewsLocation').$relativeLocation;
 		else
 			return $this->viewsLocation.$relativeLocation;
+	}
+
+	/**
+	 * Get the blog views location for an include.
+	 *
+	 * @param  string   $relativeLocation
+	 * @return string
+	 */
+	public function blogView($relativeLocation)
+	{
+		return $this->view('blogs.view.'.$relativeLocation, true);
 	}
 
 	/**
@@ -553,9 +564,10 @@ class Fractal {
 	 *
 	 * @param  string   $content
 	 * @param  string   $contentType
+	 * @param  boolean  $previewOnly
 	 * @return string
 	 */
-	public function renderContent($content, $contentType = 'HTML')
+	public function renderContent($content, $contentType = 'HTML', $previewOnly = false)
 	{
 		//replace HTML special character quotation marks with actual quotation marks
 		$content = str_replace('&quot;', '"', $content);
@@ -667,6 +679,16 @@ class Fractal {
 		//render to Markdown
 		if (strtolower($contentType) == "markdown")
 			$content = Markdown::parse($content);
+
+		//cut off content after the preview divider for blog articles if preview only option is set
+		$previewDivider = Config::get('fractal::blog.previewDivider');
+		if ($previewOnly) {
+			$dividerPosition = strpos($content, $previewDivider);
+			if ($dividerPosition)
+				$content = substr($content, 0, $dividerPosition);
+		} else {
+			$content = str_replace($previewDivider, '', str_replace("\n".$previewDivider."\n", '', $content));
+		}
 
 		return $content;
 	}

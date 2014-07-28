@@ -160,7 +160,7 @@ class BlogArticle extends BaseModel {
 	 */
 	public function getUrl()
 	{
-		return Fractal::blogUrl('article/'.$this->slug);
+		return Fractal::blogUrl('a/'.$this->slug);
 	}
 
 	/**
@@ -199,14 +199,34 @@ class BlogArticle extends BaseModel {
 	/**
 	 * Get the rendered content for the article.
 	 *
+	 * @param  boolean  $previewOnly
 	 * @return string
 	 */
-	public function getRenderedContent()
+	public function getRenderedContent($previewOnly = false)
 	{
 		$content = $this->getLayout();
 
-		foreach ($this->contentAreas as $contentArea) {
-			$content = $contentArea->renderContentToLayout($content);
+		//if preview only is set, select only the main or primary content area for display
+		$contentAreas = $this->contentAreas;
+		if ($previewOnly && $this->contentAreas()->count() > 1 && Config::get('fractal::blog.useStandardLayoutForArticleList')) {
+			$mainExists = false;
+			$mainTags   = ['main', 'primary'];
+
+			foreach ($this->contentAreas as $contentArea) {
+				if (in_array($contentArea->pivot->layout_tag, $mainTags)) {
+					$contentArea->pivot->layout_tag = "main";
+
+					$contentAreas = [$contentArea];
+				}
+			}
+
+			$layoutTemplate = ContentLayoutTemplate::find(1);
+			if (!empty($layoutTemplate))
+				$content = $layoutTemplate->layout;
+		}
+
+		foreach ($contentAreas as $contentArea) {
+			$content = $contentArea->renderContentToLayout($content, $previewOnly);
 		}
 
 		return $content;

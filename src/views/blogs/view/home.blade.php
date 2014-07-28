@@ -2,12 +2,12 @@
 
 @section(Config::get('fractal::section'))
 
-	<ul>
-		@foreach ($articles as $article)
+	@foreach ($articles as $article)
+		<div class="article-preview">
 
-			<li><a href="{{ $article->getUrl() }}">{{ $article->title }}</a></li>
+			@include(Fractal::blogView('partials.article', true))
 
-		@endforeach
-	</ul>
+		</div>
+	@endforeach
 
 @stop

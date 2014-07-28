@@ -14,7 +14,7 @@
 
 		@include(Fractal::view('partials.nav', true))
 
-		@if (!isset($hideTitle) || !$hideTitle)
+		@if (!Site::get('hideTitle'))
 			<h1 id="main-heading">{{ Site::titleHeading() }}</h1>
 		@endif
 

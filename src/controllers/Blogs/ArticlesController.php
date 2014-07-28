@@ -195,20 +195,20 @@ class ArticlesController extends BaseController {
 			$article->saveData();
 
 			Activity::log(array(
-				'contentId'   => $page->id,
+				'contentId'   => $article->id,
 				'contentType' => 'BlogArticle',
 				'action'      => 'Update',
 				'description' => 'Updated an Article',
-				'details'     => 'Title: '.$page->title,
+				'details'     => 'Title: '.$article->title,
 				'updated'     => true,
 			));
 
-			return Redirect::to(Fractal::uri('pages/'.$slug.'/edit'))
+			return Redirect::to(Fractal::uri('blog/articles/'.$slug.'/edit'))
 				->with('messages', $messages);
 		} else {
 			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
 
-			return Redirect::to(Fractal::uri('pages/'.$slug.'/edit'))
+			return Redirect::to(Fractal::uri('blog/articles/'.$slug.'/edit'))
 				->with('messages', $messages)
 				->with('errors', Form::getErrors())
 				->withInput();
@@ -284,7 +284,7 @@ class ArticlesController extends BaseController {
 	{
 		$data = array(
 			'title'        => Lang::get('fractal::labels.addContentArea'),
-			'pageId'       => $id,
+			'articleId'    => $id,
 			'contentAreas' => BlogContentArea::orderBy('title')->get(),
 		);
 

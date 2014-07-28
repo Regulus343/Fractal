@@ -89,8 +89,8 @@ class BlogContentArea extends BaseModel {
 	{
 		$ids = array();
 
-		foreach ($this->articles as $contentPage) {
-			$ids[] = (int) $articles->id;
+		foreach ($this->articles as $article) {
+			$ids[] = (int) $article->id;
 		}
 
 		return $ids;
@@ -127,21 +127,23 @@ class BlogContentArea extends BaseModel {
 	/**
 	 * Get the rendered content.
 	 *
+	 * @param  boolean  $previewOnly
 	 * @return string
 	 */
-	public function getRenderedContent()
+	public function getRenderedContent($previewOnly = false)
 	{
-		return Fractal::renderContent($this->content, $this->content_type);
+		return Fractal::renderContent($this->content, $this->content_type, $previewOnly);
 	}
 
 	/**
 	 * Apply rendered content to layout.
 	 *
+	 * @param  boolean  $previewOnly
 	 * @return string
 	 */
-	public function renderContentToLayout($content)
+	public function renderContentToLayout($content, $previewOnly = false)
 	{
-		return str_replace('{{'.$this->pivot->layout_tag.'}}', $this->getRenderedContent(), $content);
+		return str_replace('{{'.$this->pivot->layout_tag.'}}', $this->getRenderedContent($previewOnly), $content);
 	}
 
 	/**

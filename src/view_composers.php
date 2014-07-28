@@ -27,11 +27,6 @@ View::composer(Config::get('fractal::viewsLocation').'partials.messages', functi
 	$view->with('sessionMessages', $sessionMessages);
 });
 
-View::composer(Config::get('fractal::viewsLocation').'core.home', function($view)
-{
-	$view->with('hideTitle', true);
-});
-
 View::composer(Config::get('fractal::viewsLocation').'menus.form', function($view)
 {
 	$typeOptions = Form::simpleOptions(array('URI', 'Content Page'));

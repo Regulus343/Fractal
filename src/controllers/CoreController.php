@@ -28,6 +28,7 @@ class CoreController extends BaseController {
 
 	public function getIndex()
 	{
+		Site::set('hideTitle', true);
 		return View::make(Fractal::view('home'));
 	}
 

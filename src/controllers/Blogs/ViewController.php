@@ -36,6 +36,9 @@ class ViewController extends BaseController {
 
 	public function getIndex()
 	{
+		Site::set('hideTitle', true);
+		Site::set('articleList', true);
+
 		$articles = BlogArticle::orderBy('published_at', 'desc');
 
 		if (Auth::isNot('admin'))
@@ -49,6 +52,8 @@ class ViewController extends BaseController {
 
 	public function getArticle($slug)
 	{
+		Site::set('hideTitle', true);
+
 		$article = BlogArticle::where('slug', $slug);
 
 		if (Auth::isNot('admin'))
@@ -63,6 +68,13 @@ class ViewController extends BaseController {
 
 		$article->logView();
 
+		$articles = BlogArticle::orderBy('published_at', 'desc');
+
+		if (Auth::isNot('admin'))
+			$articles->onlyPublished();
+
+		$articles = $articles->get();
+
 		$messages = array();
 		if (!$article->isPublished()) {
 			if ($article->isPublishedFuture())
@@ -76,6 +88,7 @@ class ViewController extends BaseController {
 
 		return View::make(Fractal::view('article'))
 			->with('article', $article)
+			->with('articles', $articles)
 			->with('messages', $messages);
 	}
 

@@ -119,4 +119,6 @@ return array(
 	'forgotYourPassword'   => 'Forgot your password?',
 	'returnToLogIn'        => 'Return to log in',
 	'resetPassword'        => 'Reset Password',
+
+	'blogReturnToHome'     => 'Return to Blog Home Page',
 );

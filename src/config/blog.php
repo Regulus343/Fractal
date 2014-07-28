@@ -61,4 +61,30 @@ return array(
 	*/
 	'multiple' => false,
 
+	/*
+	|--------------------------------------------------------------------------
+	| Preview Divider
+	|--------------------------------------------------------------------------
+	|
+	| This is the preview divider for dividing an article into content that is
+	| visible on the blog's main page and content that is only visible on the
+	| article page by clicking the article's title or a "Read More" link.
+	|
+	*/
+	'previewDivider' => '[preview-divider]',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Use Standard Layout For Article List
+	|--------------------------------------------------------------------------
+	|
+	| If true, the standard single content area layout will be used for an
+	| article's display in the article list and the content area will be chosen
+	| that has a layout tag of "main" or "primary" if one exists. The alternate
+	| layout will still be used for a specific article's page. If this is set
+	| to false, the selected layout will be used for the article list as well.
+	|
+	*/
+	'useStandardLayoutForArticleList' => true,
+
 );
