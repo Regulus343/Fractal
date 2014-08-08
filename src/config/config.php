@@ -394,7 +394,7 @@ return array(
 	| Set this to true if the package is being run from Laravel's Workbench.
 	|
 	*/
-	'workbench' => true,
+	'workbench' => false,
 
 	/*
 	|--------------------------------------------------------------------------
