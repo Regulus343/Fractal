@@ -90,7 +90,9 @@ if ($pageUri == "") {
 	}
 } else {
 	Route::get($pageUri.'/{slug}', $pageMethod);
-	Route::get('', $pageMethod);
+
+	if (Config::get('fractal::useHomePageForRoot'))
+		Route::get('', $pageMethod);
 }
 
 /* Setup Blog Article Routes */
@@ -100,8 +102,8 @@ if (Config::get('fractal::blog.enabled')) {
 	$blogController = Config::get('fractal::blog.viewController');
 
 	$group = [];
-	if ($blogSubdomain != false && is_null($blogSubdomain) && $blogSubdomain != "")
-		$group['domain'] = str_replace('http://', $subdomain.'.', str_replace('https://', $subdomain.'.', Config::get('app.url')));
+	if ($blogSubdomain != false && !is_null($blogSubdomain) && $blogSubdomain != "")
+		$group['domain'] = str_replace('http://', $blogSubdomain.'.', str_replace('https://', $blogSubdomain.'.', Config::get('app.url')));
 
 	if ($blogUri != false && is_null($blogUri) && $blogUri != "")
 		$group['prefix'] = $blogUri;
