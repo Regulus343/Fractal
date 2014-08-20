@@ -317,6 +317,21 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
+	| Preload Routes & Filters Files
+	|--------------------------------------------------------------------------
+	|
+	| Set these to true to preload existing files at "app/routes.php" and
+	| "app/filters.php" respectively. This can help prevent the default page
+	| routes fro overriding routes that you have already defined in your app.
+	|
+	*/
+	'preload' => array(
+		'routes'  => true,
+		'filters' => true,
+	),
+
+	/*
+	|--------------------------------------------------------------------------
 	| Load jQuery
 	|--------------------------------------------------------------------------
 	|

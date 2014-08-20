@@ -74,6 +74,12 @@ class FractalServiceProvider extends ServiceProvider {
 		});
 
 		//load routes, filters, view composers, and settings files
+		if (Config::get('fractal::preload.routes'))
+			include __DIR__.'/../../../../../../app/routes.php';
+
+		if (Config::get('fractal::preload.filters'))
+			include __DIR__.'/../../../../../../app/filters.php';
+
 		include __DIR__.'/../../routes.php';
 		include __DIR__.'/../../filters.php';
 		include __DIR__.'/../../view_composers.php';
