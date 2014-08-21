@@ -6,7 +6,7 @@
 
 		created by Cody Jassman
 		version 0.5.4a
-		last updated on August 19, 2014
+		last updated on August 20, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 
 use Regulus\Fractal\Models\ContentPage;
+use Regulus\Fractal\Models\ContentFile;
 use Regulus\Fractal\Models\Menu;
 use Regulus\Fractal\Models\MenuItem;
 use Regulus\Fractal\Models\Setting;
