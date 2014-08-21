@@ -18,10 +18,10 @@ use Regulus\Fractal\Models\ContentFile;
 
 use Regulus\ActivityLog\Activity;
 use \Site as Site;
-use Regulus\TetraText\TetraText as Format;
+use Regulus\TetraText\Facade as Format;
 use Regulus\Identify\User as User;
 use \Form as Form;
-use \Upstream as Upstream;
+use Aquanode\Upstream\Facade as Upstream;
 
 class FilesController extends BaseController {
 
