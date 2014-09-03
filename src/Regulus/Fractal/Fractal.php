@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap.
 
 		created by Cody Jassman
-		version 0.5.4a
-		last updated on August 20, 2014
+		version 0.5.5a
+		last updated on September 1, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -575,8 +575,8 @@ class Fractal {
 		$content = str_replace('&quot;', '"', $content);
 
 		//add file images to content
-		$content = $this->renderContentImages($content, '/\!\[file:([0-9]*)\]/'); //Markdown style image replacement
-		$content = $this->renderContentImages($content, '/\[image:([0-9]*)\]/'); //custom "image" replacement tag to match others
+		$content = $this->renderContentImages($content, '/\!\[file:([0-9]*)([\;A-Za-z0-9\-\.\#\ ]*)\]/'); //Markdown style image replacement
+		$content = $this->renderContentImages($content, '/\[image:([0-9]*)([\;A-Za-z0-9\-\.\#\ ]*)\]/'); //custom "image" replacement tag to match others
 
 		//add file links to content
 		preg_match_all('/\[file:([0-9]*)\]/', $content, $fileIds);
@@ -692,6 +692,9 @@ class Fractal {
 			$content = str_replace($previewDivider, '', str_replace("\n".$previewDivider."\n", '', $content));
 		}
 
+		//convert lone ampersands to HTML special characters
+		$content = str_replace(' & ', ' &amp; ', $content);
+
 		return $content;
 	}
 
@@ -729,8 +732,31 @@ class Fractal {
 					}
 				}
 
+				$id      = "";
+				$classes = [];
+				if (isset($fileIds[2][$f]) && !empty($fileIds[2][$f])) {
+					$idClasses = str_replace(';', '', explode(' ', $fileIds[2][$f]));
+
+					foreach ($idClasses as $idClass) {
+						if (substr($idClass, 0, 1) == "#") {
+							$id = str_replace('#', '', $idClass);
+						} else if (substr($idClass, 0, 1) == ".") {
+							$classes[] = str_replace('.', '', $idClass);
+						}
+					}
+				}
+
 				if ($url != "") {
-					$image   = '<img src="'.$url.'" alt="'.$name.'" title="'.$name.'" />';
+					$image = '<img src="'.$url.'" alt="'.$name.'" title="'.$name.'" ';
+
+					if ($id != "")
+						$image .= 'id="'.$id.'" ';
+
+					if (!empty($classes))
+						$image .= 'class="'.implode(' ', $classes).'" ';
+
+					$image .= '/>';
+
 					$content = str_replace($fileIds[0][$f], $image, $content);
 				}
 			}
