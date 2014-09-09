@@ -95,7 +95,7 @@ if ($pageUri == "") {
 		Route::get('', $pageMethod);
 }
 
-/* Setup Blog Article Routes */
+/* Setup Blog Routes */
 if (Config::get('fractal::blog.enabled')) {
 	$blogSubdomain  = Config::get('fractal::blog.subdomain');
 	$blogUri        = Config::get('fractal::blog.baseUri');
@@ -111,5 +111,24 @@ if (Config::get('fractal::blog.enabled')) {
 	Route::group($group, function() use ($blogController)
 	{
 		Route::controller('', $blogController);
+	});
+}
+
+/* Setup Media Routes */
+if (Config::get('fractal::media.enabled')) {
+	$mediaSubdomain  = Config::get('fractal::media.subdomain');
+	$mediaUri        = Config::get('fractal::media.baseUri');
+	$mediaController = Config::get('fractal::media.viewController');
+
+	$group = [];
+	if ($mediaSubdomain != false && !is_null($mediaSubdomain) && $mediaSubdomain != "")
+		$group['domain'] = str_replace('http://', $mediaSubdomain.'.', str_replace('https://', $mediaSubdomain.'.', Config::get('app.url')));
+
+	if ($mediaUri != false && is_null($mediaUri) && $mediaUri != "")
+		$group['prefix'] = $mediaUri;
+
+	Route::group($group, function() use ($mediaController)
+	{
+		Route::controller('', $mediaController);
 	});
 }

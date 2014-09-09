@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBlogArticleContentAreas extends Migration {
+class CreateBlogContentAreasTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,15 +12,18 @@ class CreateBlogArticleContentAreas extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('blog_article_content_areas', function(Blueprint $table)
+		Schema::create('blog_content_areas', function(Blueprint $table)
 		{
 			$table->increments('id');
 
-			$table->integer('article_id');
-			$table->integer('area_id');
-			$table->string('layout_tag', 64);
+			$table->string('title');
+			$table->string('content_type', 8);
+			$table->text('content');
+
+			$table->integer('user_id');
 
 			$table->timestamps();
+			$table->softDeletes();
 		});
 	}
 
@@ -31,7 +34,7 @@ class CreateBlogArticleContentAreas extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('blog_article_content_areas');
+		Schema::drop('blog_content_areas');
 	}
 
 }

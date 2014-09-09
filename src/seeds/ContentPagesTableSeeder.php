@@ -19,31 +19,29 @@ class ContentPagesTableSeeder extends Seeder {
 				'title'              => 'Home',
 				'layout_template_id' => 1,
 				'layout'             => '',
-				'created_at'         => $timestamp,
-				'updated_at'         => $timestamp,
-				'published_at'       => $timestamp,
 			),
+
 			array(
 				'slug'               => 'about',
 				'title'              => 'About Us',
 				'layout_template_id' => 2,
 				'layout'             => '',
-				'created_at'         => $timestamp,
-				'updated_at'         => $timestamp,
-				'published_at'       => $timestamp,
 			),
+
 			array(
 				'slug'               => 'contact',
 				'title'              => 'Contact Us',
 				'layout_template_id' => 1,
 				'layout'             => '',
-				'created_at'         => $timestamp,
-				'updated_at'         => $timestamp,
-				'published_at'       => $timestamp,
 			),
 		);
 
 		foreach ($pages as $page) {
+			$page['user_id']      = 1;
+			$page['created_at']   = $timestamp;
+			$page['updated_at']   = $timestamp;
+			$page['published_at'] = $timestamp;
+
 			DB::table('content_pages')->insert($page);
 		}
 	}

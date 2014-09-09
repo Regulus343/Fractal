@@ -98,8 +98,8 @@ class ContentPage extends BaseModel {
 	public static function validationRules($id = null)
 	{
 		$rules = array(
-			'title' => array('required'),
 			'slug'  => array('required'),
+			'title' => array('required'),
 		);
 
 		if (Form::post()) {
@@ -331,7 +331,7 @@ class ContentPage extends BaseModel {
 	/**
 	 * Get the number of page views.
 	 *
-	 * @return Collection
+	 * @return integer
 	 */
 	public function getViews()
 	{
@@ -341,11 +341,34 @@ class ContentPage extends BaseModel {
 	/**
 	 * Get the number of unique page views.
 	 *
-	 * @return Collection
+	 * @return integer
 	 */
 	public function getUniqueViews()
 	{
 		return ContentView::getUniqueViewsForItem($this);
+	}
+
+	/**
+	 * Get page search results.
+	 *
+	 * @param  array    $searchData
+	 * @return Collection
+	 */
+	public static function getSearchResults($searchData)
+	{
+		$pages = static::orderBy($searchData['sortField'], $searchData['sortOrder']);
+
+		if ($searchData['sortField'] != "id")
+			$pages->orderBy('id', 'asc');
+
+		if ($searchData['terms'] != "")
+			$pages->where(function($query) use ($searchData) {
+				$query
+					->where('title', 'like', $searchData['likeTerms'])
+					->orWhere('slug', 'like', $searchData['likeTerms']);
+			});
+
+		return $pages->paginate($searchData['itemsPerPage']);
 	}
 
 }

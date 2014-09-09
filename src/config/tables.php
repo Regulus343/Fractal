@@ -169,8 +169,8 @@ return array(
 			),
 			array(
 				'label'     => Lang::get('fractal::labels.type'),
-				'attribute' => 'type',
-				'sort'      => true,
+				'method'    => 'getType()',
+				'sort'      => 'type_id',
 			),
 			array(
 				'label'     => Lang::get('fractal::labels.dimensions'),
@@ -210,6 +210,97 @@ return array(
 		),
 		'rows' => array(
 			'idPrefix'       => 'file',
+		),
+	),
+
+	'mediaItems' => array(
+		'table' => array(
+			'class'         => 'table-striped table-bordered table-hover table-sortable',
+			'noDataMessage' => Lang::get('fractal::messages.noItems', array('items' => Str::plural(Lang::get('fractal::labels.mediaItem')))),
+		),
+		'columns' => array(
+			array(
+				'attribute' => 'id',
+				'sort'      => true,
+			),
+			array(
+				'label'     => Lang::get('fractal::labels.image'),
+				'method'    => 'getThumbnailImage()',
+				'class'     => 'image',
+				'sort'      => 'filename',
+			),
+			array(
+				'label'     => Lang::get('fractal::labels.mediaType'),
+				'method'    => 'getType()',
+				'sort'      => 'media_type_id',
+			),
+			array(
+				'attribute' => 'title',
+				'class'     => 'title',
+				'sort'      => true,
+			),
+			array(
+				'label'     => 'Published',
+				'method'    => 'getPublishedStatus()',
+				'sort'      => 'published_at',
+			),
+			array(
+				'label'     => (Fractal::getSetting('Display Unique Content Views') ? 'Unique ' : '').'Views',
+				'method'    => (Fractal::getSetting('Display Unique Content Views') ? 'getUniqueViews()' : 'getViews()'),
+				'bodyClass' => 'text-align-right',
+			),
+			array(
+				'label'     => (Fractal::getSetting('Display Unique Content Downloads') ? 'Unique ' : '').'Downloads',
+				'method'    => (Fractal::getSetting('Display Unique Content Downloads') ? 'getUniqueViews()' : 'getDownloads()'),
+				'bodyClass' => 'text-align-right',
+			),
+			array(
+				'label'     => 'Last Updated',
+				'method'    => 'getLastUpdatedDateTime()',
+				'sort'      => 'updated_at',
+			),
+			array(
+				'label'     => 'Actions',
+				'class'     => 'actions',
+				'elements'  => array(
+					array(
+						'icon'       => 'edit',
+						'uri'        => Config::get('fractal::baseUri').'/media/items/:slug/edit',
+						'attributes' => array(
+							'title'        => Lang::get('fractal::labels.editItem'),
+						),
+					),
+					array(
+						'icon'       => 'file',
+						'url'        => Fractal::mediaUrl(Config::get('fractal::blog.baseUri') == false ? 'item/:slug' : Config::get('fractal::blog.baseUri').'/article/:slug'),
+						'attributes' => array(
+							'title'        => Lang::get('fractal::labels.viewItem'),
+							'target'       => '_blank',
+						),
+					),
+					array(
+						'icon'       => 'remove',
+						'class'      => 'action-item red',
+						'attributes' => array(
+							'data-item-id'        => ':id',
+							'data-item-name'      => ':title',
+							'data-action'         => 'delete',
+							'data-action-type'    => 'delete',
+							'data-action-url'     => 'items/:id',
+							'data-action-message' => 'confirmDelete',
+							'title'               => Lang::get('fractal::labels.deleteItem'),
+						),
+					),
+				),
+			),
+		),
+		'rows' => array(
+			'idPrefix'       => 'media-item',
+			'classModifiers' => array(
+				'danger' => array(
+					'isPublished()' => false,
+				),
+			),
 		),
 	),
 
@@ -274,6 +365,7 @@ return array(
 							'data-item-name'      => ':title',
 							'data-action'         => 'delete',
 							'data-action-type'    => 'delete',
+							'data-action-url'     => 'articles/:id',
 							'data-action-message' => 'confirmDelete',
 							'title'               => Lang::get('fractal::labels.deleteArticle'),
 						),
@@ -282,7 +374,7 @@ return array(
 			),
 		),
 		'rows' => array(
-			'idPrefix'       => 'page',
+			'idPrefix'       => 'blog-article',
 			'classModifiers' => array(
 				'danger' => array(
 					'isPublished()' => false,

@@ -35,27 +35,16 @@ class MenusController extends BaseController {
 
 	public function index()
 	{
-		$data = Fractal::setupPagination();
-
-		$menus = Menu::orderBy($data['sortField'], $data['sortOrder']);
-		if ($data['sortField'] != "id") $menus->orderBy('id', 'asc');
-		if ($data['terms'] != "")
-			$menus->where('name', 'like', $data['likeTerms']);
-
-		$menus = $menus->paginate($data['itemsPerPage']);
+		$data  = Fractal::setupPagination();
+		$menus = Menu::getSearchResults($data);
 
 		Fractal::setContentForPagination($menus);
 
-		$data     = Fractal::setPaginationMessage();
+		$data     = Fractal::setPaginationMessage(true);
 		$messages = Fractal::getPaginationMessageArray();
 
 		if (!count($menus))
 			$menus = Menu::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
-
-		$defaults = array(
-			'search' => $data['terms']
-		);
-		Form::setDefaults($defaults);
 
 		return View::make(Fractal::view('list'))
 			->with('content', $menus)
@@ -64,25 +53,17 @@ class MenusController extends BaseController {
 
 	public function search()
 	{
-		$data = Fractal::setupPagination();
-
-		$menus = Menu::orderBy($data['sortField'], $data['sortOrder']);
-		if ($data['sortField'] != "id") $menus->orderBy('id', 'asc');
-		if ($data['terms'] != "")
-			$menus->where('name', 'like', $data['likeTerms']);
-
-		$menus = $menus->paginate($data['itemsPerPage']);
+		$data  = Fractal::setupPagination();
+		$menus = Menu::getSearchResults($data);
 
 		Fractal::setContentForPagination($menus);
 
-		if (count($menus)) {
-			$data = Fractal::setPaginationMessage();
-		} else {
-			$data['content'] = Menu::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
-			if ($data['terms'] == "") $data['result']['message'] = Lang::get('fractal::messages.searchNoTerms');
-		}
+		$data = Fractal::setPaginationMessage();
 
-		$data['result']['menus']     = Fractal::getLastPage();
+		if (!count($menus))
+			$data['content'] = Menu::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
+
+		$data['result']['pages']     = Fractal::getLastPage();
 		$data['result']['tableBody'] = Fractal::createTable($data['content'], true);
 
 		return $data['result'];
@@ -99,8 +80,6 @@ class MenusController extends BaseController {
 
 	public function store()
 	{
-		Site::set('title', 'Create Menu');
-
 		Form::setValidationRules(Menu::validationRules());
 
 		$messages = array();
@@ -155,9 +134,6 @@ class MenusController extends BaseController {
 		if (empty($menu))
 			return Redirect::to(Fractal::uri('menus'))
 				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'menu'))));
-
-		Site::set('title', $menu->name.' (Menu)');
-		Site::set('titleHeading', 'Update Menu: <strong>'.Format::entities($menu->name).'</strong>');
 
 		Form::setValidationRules(Menu::validationRules($id));
 

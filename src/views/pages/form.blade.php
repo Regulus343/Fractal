@@ -2,16 +2,8 @@
 
 @section(Config::get('fractal::section'))
 
-	<script type="text/javascript" src="{{ Site::js('markdown.converter', 'regulus/fractal') }}"></script>
-	<script type="text/javascript" src="{{ Site::js('markdown.sanitizer', 'regulus/fractal') }}"></script>
 	<script type="text/javascript">
-		var converter = Markdown.getSanitizingConverter();
-
-		var markdownContentField;
-		var markdownContentUpdateTimer;
-
 		var contentAreaId;
-
 		var addingContentArea = false;
 
 		$(document).ready(function(){
@@ -33,9 +25,6 @@
 			$('#layout-template-id, #layout').change(function(){
 				getLayoutTags();
 			});
-
-			if ($('#active').prop('checked') && $('#activated-at').val() == "")
-				$('#activated-at').val(moment().format('MM/DD/YYYY hh:mm A'));
 
 			Formation.loadTemplates('#content-areas', $.parseJSON('{{ Form::getJsonValues('content_areas') }}'), contentAreaTemplateCallback);
 
@@ -101,30 +90,7 @@
 
 			//set up Markdown content field action preview window
 			var markdownField = item.find('.field-content-markdown');
-			if (markdownField) {
-				markdownField.on('focus', function(){
-					renderMarkdown($(this));
-					$('#markdown-preview').fadeIn();
-				}).on('keydown', function(e){
-					if (e.keyCode == 9) {
-						var myValue   = "\t";
-						var startPos  = this.selectionStart;
-						var endPos    = this.selectionEnd;
-						var scrollTop = this.scrollTop;
-						this.value    = this.value.substring(0, startPos) + myValue + this.value.substring(endPos,this.value.length);
-						this.focus();
-						this.selectionStart = startPos + myValue.length;
-						this.selectionEnd   = startPos + myValue.length;
-						this.scrollTop      = scrollTop;
-
-						e.preventDefault();
-					}
-				}).on('keyup', function(){
-					renderMarkdown($(this));
-				}).on('blur', function(){
-					$('#markdown-preview').fadeOut();
-				});
-			}
+			setupMarkdownField(markdownField);
 
 			if (addingContentArea) {
 				$('html, body').animate({
@@ -206,29 +172,6 @@
 			});
 		}
 
-		function renderMarkdown(field) {
-			$('#markdown-preview-content').html(converter.makeHtml(field.val()));
-			$('#markdown-preview-content').animate({scrollTop: $('#markdown-preview-content').height()}, 500);
-
-			markdownContentField       = field;
-			markdownContentUpdateTimer = setTimeout(incrementMarkdownContentUpdateTimer, 3000);
-			console.log('rendered!' + Math.random(1, 100000));
-		}
-
-		function incrementMarkdownContentUpdateTimer() {
-			clearTimeout(markdownContentUpdateTimer);
-
-			$.ajax({
-				type:     'post',
-				url:      baseUrl + '/pages/render-markdown-content',
-				data:     {content: markdownContentField.val()},
-				success:  function(content) {
-					$('#markdown-preview-content').html(content);
-					$('#markdown-preview-content').animate({scrollTop: $('#markdown-preview-content').height()}, 500);
-				}
-			});
-		}
-
 		function publishedCheckedCallback(checked) {
 			if (checked)
 				$('#published-at').val(moment().format('MM/DD/YYYY hh:mm A'));
@@ -237,10 +180,7 @@
 		}
 	</script>
 
-	<div id="markdown-preview">
-		<div id="markdown-preview-bg"></div>
-		<div id="markdown-preview-content"></div>
-	</div>
+	@include(Fractal::view('partials.markdown_preview', true))
 
 	{{ Form::openResource() }}
 

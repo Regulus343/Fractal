@@ -42,10 +42,8 @@ return array(
 	| Blog View Controller
 	|--------------------------------------------------------------------------
 	|
-	| The URI for content pages on the website. By default, it is left blank to
-	| define the page URI at the root of the website. For example "" would give
-	| you a URL like "http://localhost/home" and "page" would give you
-	| "http://localhost/page/home".
+	| The controller for viewing the blog. If you have your own custom
+	| controller, point this setting to it instead of the default.
 	|
 	*/
 	'viewController' => 'Regulus\Fractal\Controllers\Blogs\ViewController',

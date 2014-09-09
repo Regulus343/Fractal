@@ -35,31 +35,16 @@ class PagesController extends BaseController {
 
 	public function index()
 	{
-		$data = Fractal::setupPagination();
-
-		$pages = ContentPage::orderBy($data['sortField'], $data['sortOrder']);
-		if ($data['sortField'] != "id") $pages->orderBy('id', 'asc');
-		if ($data['terms'] != "") {
-			$pages->where(function($query) use ($data) {
-				$query
-					->where('title', 'like', $data['likeTerms'])
-					->orWhere('slug', 'like', $data['likeTerms']);
-			});
-		}
-		$pages = $pages->paginate($data['itemsPerPage']);
+		$data  = Fractal::setupPagination();
+		$pages = ContentPage::getSearchResults($data);
 
 		Fractal::setContentForPagination($pages);
 
-		$data     = Fractal::setPaginationMessage();
+		$data     = Fractal::setPaginationMessage(true);
 		$messages = Fractal::getPaginationMessageArray();
 
 		if (!count($pages))
 			$pages = ContentPage::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
-
-		$defaults = array(
-			'search' => $data['terms']
-		);
-		Form::setDefaults($defaults);
 
 		return View::make(Fractal::view('list'))
 			->with('content', $pages)
@@ -68,27 +53,15 @@ class PagesController extends BaseController {
 
 	public function search()
 	{
-		$data = Fractal::setupPagination();
-
-		$pages = ContentPage::orderBy($data['sortField'], $data['sortOrder']);
-		if ($data['sortField'] != "id") $pages->orderBy('id', 'asc');
-		if ($data['terms'] != "") {
-			$pages->where(function($query) use ($data) {
-				$query
-					->where('title', 'like', $data['likeTerms'])
-					->orWhere('slug', 'like', $data['likeTerms']);
-			});
-		}
-		$pages = $pages->paginate($data['itemsPerPage']);
+		$data  = Fractal::setupPagination();
+		$pages = ContentPage::getSearchResults($data);
 
 		Fractal::setContentForPagination($pages);
 
-		if (count($pages)) {
-			$data = Fractal::setPaginationMessage();
-		} else {
+		$data = Fractal::setPaginationMessage();
+
+		if (!count($pages))
 			$data['content'] = ContentPage::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
-			if ($data['terms'] == "") $data['result']['message'] = Lang::get('fractal::messages.searchNoTerms');
-		}
 
 		$data['result']['pages']     = Fractal::getLastPage();
 		$data['result']['tableBody'] = Fractal::createTable($data['content'], true);
@@ -112,9 +85,6 @@ class PagesController extends BaseController {
 
 	public function store()
 	{
-		Site::set('title', 'Create Page');
-		Site::set('wysiwyg', true);
-
 		Form::setValidationRules(ContentPage::validationRules());
 
 		$messages = array();
@@ -178,10 +148,6 @@ class PagesController extends BaseController {
 		if (empty($page))
 			return Redirect::to(Fractal::uri('pages'))
 				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'page'))));
-
-		Site::set('title', $page->title.' (Page)');
-		Site::set('titleHeading', 'Update Page: <strong>'.Format::entities($page->title).'</strong>');
-		Site::set('wysiwyg', true);
 
 		$page->setValidationRules();
 

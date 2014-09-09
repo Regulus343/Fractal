@@ -5,8 +5,13 @@ use Aquanode\Formation\BaseModel;
 use Fractal;
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Input;
 
+use \Form as Form;
+use \Format as Format;
 use \Site as Site;
+use \Upstream as Upstream;
 
 class ContentFile extends BaseModel {
 
@@ -36,7 +41,17 @@ class ContentFile extends BaseModel {
 	}
 
 	/**
-	 * The creator of the page.
+	 * The file type of the file.
+	 *
+	 * @return User
+	 */
+	public function type()
+	{
+		return $this->belongsTo('Regulus\Fractal\Models\FileType', 'type_id');
+	}
+
+	/**
+	 * The creator of the file.
 	 *
 	 * @return User
 	 */
@@ -46,14 +61,16 @@ class ContentFile extends BaseModel {
 	}
 
 	/**
-	 * Get files for a specific extension.
+	 * The file type of the file.
 	 *
-	 * @param  string   $extension
-	 * @return Page
+	 * @return string
 	 */
-	public static function getForExtension($extension)
+	public function getType()
 	{
-		return static::where('extension', $extension)->orderBy('name')->get();
+		if ($this->type)
+			return $this->type->name;
+
+		return "Unknown (.".$this->extension.")";
 	}
 
 	/**
@@ -64,10 +81,12 @@ class ContentFile extends BaseModel {
 	 */
 	public function getPath($thumbnail = false)
 	{
-		$path = ($thumbnail && $this->thumbnail ? 'thumbnails/' : '').$this->filename;
+		$path = 'files/';
 
 		if ($this->path != "")
-			$path = $this->path.'/'.$path;
+			$path = $path.$this->path.'/';
+
+		$path .= ($thumbnail && $this->thumbnail ? 'thumbnails/' : '').$this->filename;
 
 		return $path;
 	}
@@ -91,7 +110,7 @@ class ContentFile extends BaseModel {
 	 */
 	public function getImageUrl($thumbnail = false)
 	{
-		if ($this->type == "Image")
+		if ($this->type->name == "Image")
 			return $this->getUrl($thumbnail);
 		else
 			return Site::img('image-not-available', 'regulus/fractal');
@@ -146,6 +165,98 @@ class ContentFile extends BaseModel {
 	{
 		if (!$dateFormat) $dateFormat = Config::get('fractal::dateTimeFormat');
 		return $this->updated_at != "0000-00-00" ? date($dateFormat, strtotime($this->updated_at)) : date($dateFormat, strtotime($this->created_at));
+	}
+
+	/**
+	 * Get files for a specific extension.
+	 *
+	 * @param  string   $extension
+	 * @return ContentFile
+	 */
+	public static function getForExtension($extension)
+	{
+		return static::where('extension', $extension)->orderBy('name')->get();
+	}
+
+	/**
+	 * Get file search results.
+	 *
+	 * @param  array    $searchData
+	 * @return Collection
+	 */
+	public static function getSearchResults($searchData)
+	{
+		$files = static::orderBy($searchData['sortField'], $searchData['sortOrder']);
+
+		if ($searchData['sortField'] != "id")
+			$files->orderBy('id', 'asc');
+
+		if ($searchData['terms'] != "")
+			$files->where(function($query) use ($searchData) {
+				$query
+					->where('name', 'like', $searchData['likeTerms'])
+					->orWhere('filename', 'like', $searchData['likeTerms'])
+					->orWhere('type', 'like', $searchData['likeTerms']);
+			});
+
+		return $files->paginate($searchData['itemsPerPage']);
+	}
+
+	/**
+	 * Upload a file.
+	 *
+	 * @return array
+	 */
+	public static function uploadFile() {
+		//get original uploaded filename
+		$originalFilename  = isset($_FILES['file']['name']) ? $_FILES['file']['name'] : '';
+		$originalExtension = strtolower(File::extension($originalFilename));
+
+		//make sure filename is unique and then again remove extension to set basename
+		$uniqueFilename = Format::unique(Format::slug(Input::get('name')).'.'.$originalExtension, 'content_files', 'filename');
+		$basename       = str_replace('.'.$originalExtension, '', $uniqueFilename);
+
+		$path = "uploads/files";
+
+		$fileType = FileType::find(Input::get('type_id_hidden'));
+		if (!empty($fileType))
+			$path .= '/'.$fileType->slug;
+
+		$config = array(
+			'path'            => $path,
+			'fields'          => 'file',
+			'filename'        => $basename,
+			'createDirectory' => true,
+			'overwrite'       => true,
+			'maxFileSize'     => '5MB',
+		);
+
+		//set image resize settings
+		if (!empty($fileType) && $fileType->name == "Image") {
+			$width           = Input::get('width');
+			$height          = Input::get('height');
+			$thumbnailWidth  = 0;
+			$thumbnailHeight = 0;
+
+			$defaultThumbnailSize = Fractal::getSetting('Default Image Thumbnail Size', 200);
+			if ($width != "" && $height != "" && $width > 0 && $height > 0) {
+				$config['imgResize']        = true;
+				$config['imgResizeQuality'] = Fractal::getSetting('Image Resize Quality', 60);
+				$config['imgCrop']          = Form::value('crop', 'checkbox');
+			}
+
+			$config['imgThumb']      = Form::value('create_thumbnail', 'checkbox');
+			$config['imgDimensions'] = array(
+				'w'  => (int) $width,
+				'h'  => (int) $height,
+				'tw' => (int) Input::get('thumbnail_width') > 0  ? (int) Input::get('thumbnail_width')  : $defaultThumbnailSize,
+				'th' => (int) Input::get('thumbnail_height') > 0 ? (int) Input::get('thumbnail_height') : $defaultThumbnailSize,
+			);
+		}
+
+		$upstream = Upstream::make($config);
+
+		return $upstream->upload();
 	}
 
 }

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\View;
 use Fractal;
 
 use Regulus\Fractal\Models\ContentFile;
+use Regulus\Fractal\Models\FileType;
 
 use Regulus\ActivityLog\Activity;
 use \Site as Site;
@@ -37,32 +38,16 @@ class FilesController extends BaseController {
 
 	public function index()
 	{
-		$data = Fractal::setupPagination('Files');
-
-		$files = ContentFile::orderBy($data['sortField'], $data['sortOrder']);
-		if ($data['sortField'] != "id") $files->orderBy('id', 'asc');
-		if ($data['terms'] != "") {
-			$files->where(function($query) use ($data) {
-				$query
-					->where('name', 'like', $data['likeTerms'])
-					->orWhere('filename', 'like', $data['likeTerms'])
-					->orWhere('type', 'like', $data['likeTerms']);
-			});
-		}
-		$files = $files->paginate($data['itemsPerPage']);
+		$data  = Fractal::setupPagination('Files');
+		$files = ContentFile::getSearchResults($data);
 
 		Fractal::setContentForPagination($files);
 
-		$data     = Fractal::setPaginationMessage();
+		$data     = Fractal::setPaginationMessage(true);
 		$messages = Fractal::getPaginationMessageArray();
 
 		if (!count($files))
 			$files = ContentFile::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
-
-		$defaults = array(
-			'search' => $data['terms']
-		);
-		Form::setDefaults($defaults);
 
 		return View::make(Fractal::view('list'))
 			->with('content', $files)
@@ -71,27 +56,15 @@ class FilesController extends BaseController {
 
 	public function search()
 	{
-		$data = Fractal::setupPagination('Files');
-
-		$files = ContentFile::orderBy($data['sortField'], $data['sortOrder']);
-		if ($data['sortField'] != "id") $files->orderBy('id', 'asc');
-		if ($data['terms'] != "") {
-			$files->where(function($query) use ($data) {
-				$query
-					->where('name', 'like', $data['likeTerms'])
-					->orWhere('filename', 'like', $data['likeTerms'])
-					->orWhere('type', 'like', $data['likeTerms']);
-			});
-		}
-		$files = $files->paginate($data['itemsPerPage']);
+		$data  = Fractal::setupPagination('Files');
+		$files = ContentFile::getSearchResults($data);
 
 		Fractal::setContentForPagination($files);
 
-		if (count($files)) {
-			$data = Fractal::setPaginationMessage();
-		} else {
+		$data = Fractal::setPaginationMessage();
+
+		if (!count($files))
 			$data['content'] = ContentFile::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
-		}
 
 		$data['result']['pages']     = Fractal::getLastPage();
 		$data['result']['tableBody'] = Fractal::createTable($data['content'], true);
@@ -116,88 +89,36 @@ class FilesController extends BaseController {
 
 	public function store()
 	{
-		Site::set('title', 'Create File');
-
 		Form::setValidationRules(ContentFile::validationRules());
 
 		$messages = array();
 		if (Form::validated()) {
-			//get original uploaded filename
-			$originalFilename  = isset($_FILES['file']['name']) ? $_FILES['file']['name'] : '';
-			$originalExtension = strtolower(File::extension($originalFilename));
-
-			//make sure filename is unique and then again remove extension to set basename
-			$basename = str_replace('.'.$originalExtension, '', Format::unique(Format::slug(Input::get('name')).'.'.$originalExtension, 'content_files', 'filename'));
-
-			$config = array(
-				'path'            => 'uploads',
-				'fields'          => 'file',
-				'filename'        => $basename,
-				'createDirectory' => true,
-				'overwrite'       => true,
-				'maxFileSize'     => '5MB',
-			);
-
-			//set path
-			$path = Input::get('path') ? Input::get('path') : '';
-			if ($path != "")
-				$config['path'] .= '/'.$path;
-
-			//set image resize settings
-			$width           = 0;
-			$height          = 0;
-			$thumbnailWidth  = 0;
-			$thumbnailHeight = 0;
-			if (Input::get('type') == "Image") {
-				$width  = Input::get('width');
-				$height = Input::get('height');
-
-				$defaultThumbnailSize = Fractal::getSetting('Default Image Thumbnail Size', 120);
-				if ($width != "" && $height != "" && $width > 0 && $height > 0) {
-					$config['imgResize']        = true;
-					$config['imgResizeQuality'] = Fractal::getSetting('Image Resize Quality', 60);
-					$config['imgCrop']          = Form::value('crop', 'checkbox');
-				}
-
-				$config['imgThumb']      = Form::value('create_thumbnail', 'checkbox');
-				$config['imgDimensions'] = array(
-					'w'  => (int) $width,
-					'h'  => (int) $height,
-					'tw' => (int) Input::get('thumbnail_width') > 0  ? (int) Input::get('thumbnail_width')  : $defaultThumbnailSize,
-					'th' => (int) Input::get('thumbnail_height') > 0 ? (int) Input::get('thumbnail_height') : $defaultThumbnailSize,
-				);
-			}
-
-			$upstream = Upstream::make($config);
-			$result   = $upstream->upload();
+			$result = ContentFile::uploadFile();
 
 			if (!$result['error']) {
 				$messages['success'] = Lang::get('fractal::messages.successCreated', array('item' => Format::a('file')));
 
-				if (Input::get('type') == "Image") {
-					$size   = getimagesize($config['path'].'/'.$result['filename']);
-					$width  = $size[0];
-					$height = $size[1];
+				$path = str_replace('uploads/files', '', $result['path']);
 
-					if (Form::value('create_thumbnail', 'checkbox') && File::exists($config['path'].'/thumbnails/'.$result['filename'])) {
-						$thumbnailSize   = getimagesize($config['path'].'/thumbnails/'.$result['filename']);
-						$thumbnailWidth  = $thumbnailSize[0];
-						$thumbnailHeight = $thumbnailSize[1];
-					}
-				}
+				if (substr($path, 0, 1) == "/")
+					$path = substr($path, 1);
+
+				if (substr($path, -1) == "/")
+					$path = substr($path, 0, (strlen($path) - 1));
 
 				$file = new ContentFile;
+
+				$file->type_id          = Input::get('type_id_hidden');
 				$file->name             = ucfirst(trim(Input::get('name')));
 				$file->filename         = $result['filename'];
-				$file->basename         = $basename;
-				$file->extension        = File::extension($result['filename']);
+				$file->basename         = $result['basename'];
+				$file->extension        = $result['extension'];
 				$file->path             = $path;
-				$file->type             = Input::get('type');
-				$file->width            = $width;
-				$file->height           = $height;
+				$file->width            = $result['imgDimensions']['w'];
+				$file->height           = $result['imgDimensions']['h'];
 				$file->thumbnail        = Form::value('create_thumbnail', 'checkbox');
-				$file->thumbnail_width  = $thumbnailWidth;
-				$file->thumbnail_height = $thumbnailHeight;
+				$file->thumbnail_width  = $result['imgDimensions']['tw'];
+				$file->thumbnail_height = $result['imgDimensions']['th'];
 				$file->save();
 
 				Activity::log(array(
@@ -227,7 +148,7 @@ class FilesController extends BaseController {
 	{
 		$file = ContentFile::find($id);
 		if (empty($file))
-			return Redirect::to(Fractal::uri('pages'))
+			return Redirect::to(Fractal::uri('files'))
 				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'file'))));
 
 		Site::set('title', $file->name.' (File)');
@@ -243,11 +164,8 @@ class FilesController extends BaseController {
 	{
 		$file = ContentFile::find($id);
 		if (empty($file))
-			return Redirect::to(Fractal::uri('pages'))
+			return Redirect::to(Fractal::uri('files'))
 				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'file'))));
-
-		Site::set('title', $file->name.' (File)');
-		Site::set('titleHeading', 'Update File: <strong>'.Format::entities($file->name).'</strong>');
 
 		Form::setValidationRules(ContentFile::validationRules($id));
 
@@ -255,61 +173,26 @@ class FilesController extends BaseController {
 		if (Form::validated()) {
 			$uploaded = false;
 			$result   = array('error' => false);
-			$path     = Input::get('path') ? Input::get('path') : '';
 
-			if (isset($_FILES['file']['name']) && $_FILES['file']['name'] != "") {
-				//get original uploaded filename
-				$originalFilename  = isset($_FILES['file']['name']) ? $_FILES['file']['name'] : '';
-				$originalExtension = strtolower(File::extension($originalFilename));
+			//get original uploaded filename
+			$originalFilename  = isset($_FILES['file']['name']) ? $_FILES['file']['name'] : '';
+			$originalExtension = strtolower(File::extension($originalFilename));
 
-				//make sure filename is unique and then again remove extension to set basename
-				$basename = str_replace('.'.$originalExtension, '', Format::unique(Format::slug(Input::get('name')).'.'.$originalExtension, 'content_files', 'filename', $id));
-				$filename = $basename.'.'.$originalExtension;
+			//make sure filename is unique and then again remove extension to set basename
+			$filename  = Format::unique(Format::slug(Input::get('name')).'.'.File::extension($file->filename), 'content_files', 'filename', $id);
+			$basename  = str_replace('.'.$originalExtension, '', $filename);
+			$extension = $originalExtension;
 
-				$tempBasename = md5(rand(1000, 9999999));
-				$tempFilename = $tempBasename.'.'.$originalExtension;
-
-				$config = array(
-					'path'            => 'uploads',
-					'fields'          => 'file',
-					'filename'        => $tempBasename,
-					'createDirectory' => true,
-					'overwrite'       => true,
-					'maxFileSize'     => '5MB',
-				);
-
-				//set path
-				if ($path != "")
-					$config['path'] .= '/'.$path;
-
-				//set image resize settings
-				$width  = 0;
-				$height = 0;
-				if (Input::get('type') == "Image") {
-					$width  = Input::get('width');
-					$height = Input::get('height');
-
-					$defaultThumbnailSize = Fractal::getSetting('Default Image Thumbnail Size', 120);
-					if ($width != "" && $height != "" && $width > 0 && $height > 0) {
-						$config['imgResize']        = true;
-						$config['imgResizeQuality'] = Fractal::getSetting('Image Resize Quality', 60);
-						$config['imgCrop']          = Form::value('crop', 'checkbox');
-					}
-
-					$config['imgThumb']      = Form::value('create_thumbnail', 'checkbox');
-					$config['imgDimensions'] = array(
-						'w'  => (int) $width,
-						'h'  => (int) $height,
-						'tw' => (int) Input::get('thumbnail_width') > 0  ? (int) Input::get('thumbnail_width')  : $defaultThumbnailSize,
-						'th' => (int) Input::get('thumbnail_height') > 0 ? (int) Input::get('thumbnail_height') : $defaultThumbnailSize,
-					);
-				}
-
-				$upstream = Upstream::make($config);
-				$result   = $upstream->upload();
+			if (isset($_FILES['file']['name']) && $_FILES['file']['name'] != "")
+			{
+				$result = ContentFile::uploadFile();
 
 				if (!$result['error']) {
 					$uploaded = true;
+
+					$filename  = $result['filename'];
+					$basename  = $result['basename'];
+					$extension = $result['extension'];
 
 					//delete current file
 					if (File::exists('uploads/'.$file->getPath()))
@@ -318,30 +201,18 @@ class FilesController extends BaseController {
 					//delete current thumbnail image if it exists
 					if (File::exists('uploads/'.$file->getPath(true)) && $file->thumbnail)
 						File::delete('uploads/'.$file->getPath(true));
-
-					//rename file
-					if (File::exists($config['path'].'/'.$tempFilename))
-						File::move($config['path'].'/'.$tempFilename, $config['path'].'/'.$filename);
-
-					//rename thumbnail image if it exists
-					if (File::exists($config['path'].'/thumbnails/'.$tempFilename) && Form::value('create_thumbnail', 'checkbox'))
-						File::move($config['path'].'/thumbnails/'.$tempFilename, $config['path'].'/thumbnails/'.$filename);
 				}
-			} else {
-				//make sure filename is unique and then again remove extension to set basename
-				$basename = str_replace('.'.File::extension($file->filename), '', Format::unique(Format::slug(Input::get('name')).'.'.File::extension($file->filename), 'content_files', 'filename', $id));
-				$filename = $basename.'.'.File::extension($file->filename);
 			}
 
 			//if file was not uploaded but path or name was changed, move/rename file
-			if (!$uploaded && ($file->path != $path || $file->filename != $filename)) {
+			if (!$uploaded && $file->filename != $filename) {
 				//move/rename file
-				if (File::exists('uploads/'.$file->path.'/'.$file->filename))
-					File::move('uploads/'.$file->path.'/'.$file->filename, 'uploads/'.$path.'/'.$filename);
+				if (File::exists('uploads/'.$file->getPath()))
+					File::move('uploads/'.$file->getPath(), 'uploads/files/'.$file->path.'/'.$filename);
 
 				//move/rename thumbnail image if it exists
-				if (File::exists('uploads/'.$file->path.'/thumbnails/'.$file->filename) && $file->thumbnail)
-					File::move('uploads/'.$file->path.'/thumbnails/'.$file->filename, 'uploads/'.$path.'/thumbnails/'.$filename);
+				if (File::exists('uploads/'.$file->getPath(true)) && $file->thumbnail)
+					File::move('uploads/'.$file->getPath(true), 'uploads/files/'.$file->path.'/thumbnails/'.$filename);
 			}
 
 			if (!$result['error']) {
@@ -351,27 +222,23 @@ class FilesController extends BaseController {
 				$file->filename  = $filename;
 				$file->basename  = $basename;
 				$file->extension = File::extension($filename);
-				$file->path      = $path;
 
 				if ($uploaded) {
-					$size   = getimagesize($config['path'].'/'.$filename);
-					$width  = $size[0];
-					$height = $size[1];
+					$path = str_replace('uploads/files', '', $result['path']);
 
-					$thumbnailWidth  = 0;
-					$thumbnailHeight = 0;
-					if (Form::value('create_thumbnail', 'checkbox') && File::exists($config['path'].'/thumbnails/'.$filename)) {
-						$thumbnailSize   = getimagesize($config['path'].'/thumbnails/'.$filename);
-						$thumbnailWidth  = $thumbnailSize[0];
-						$thumbnailHeight = $thumbnailSize[1];
-					}
+					if (substr($path, 0, 1) == "/")
+						$path = substr($path, 1);
 
-					$file->type             = Input::get('type');
-					$file->width            = $width;
-					$file->height           = $height;
+					if (substr($path, -1) == "/")
+						$path = substr($path, 0, (strlen($path) - 1));
+
+					$file->type_id          = Input::get('type_id_hidden');
+					$file->path             = $path;
+					$file->width            = $result['imgDimensions']['w'];
+					$file->height           = $result['imgDimensions']['h'];
 					$file->thumbnail        = Form::value('create_thumbnail', 'checkbox');
-					$file->thumbnail_width  = $thumbnailWidth;
-					$file->thumbnail_height = $thumbnailHeight;
+					$file->thumbnail_width  = $result['imgDimensions']['tw'];
+					$file->thumbnail_height = $result['imgDimensions']['th'];
 				}
 
 				$file->save();

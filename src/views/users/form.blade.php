@@ -5,7 +5,7 @@
 	<script type="text/javascript">
 		var minimumPasswordLength = {{ Fractal::getSetting('Minimum Password Length') }};
 	</script>
-	<script type="text/javascript" src="{{ Site::js('fractal/user-form', 'regulus/fractal') }}"></script>
+	<script type="text/javascript" src="{{ Site::js('fractal/forms/user', 'regulus/fractal') }}"></script>
 
 	{{ Form::openResource() }}
 		<div class="row">

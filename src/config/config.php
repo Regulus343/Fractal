@@ -37,6 +37,7 @@ return array(
 			'files'         => 'Regulus\Fractal\Controllers\FilesController',
 			'users'         => 'Regulus\Fractal\Controllers\UsersController',
 			'user-roles'    => 'Regulus\Fractal\Controllers\UserRolesController',
+			'media/items'   => 'Regulus\Fractal\Controllers\Media\ItemsController',
 			'blog/articles' => 'Regulus\Fractal\Controllers\Blogs\ArticlesController',
 		),
 	),
@@ -70,6 +71,7 @@ return array(
 			'files/search'                          => 'Regulus\Fractal\Controllers\FilesController@search',
 			'users/search'                          => 'Regulus\Fractal\Controllers\UsersController@search',
 			'user-roles/search'                     => 'Regulus\Fractal\Controllers\UserRolesController@search',
+			'media/items/search'                    => 'Regulus\Fractal\Controllers\Media\ItemsController@search',
 			'blog/articles/search'                  => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@search',
 			'blog/articles/layout-tags'             => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@layoutTags',
 			'blog/articles/render-markdown-content' => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@renderMarkdownContent',
@@ -119,10 +121,8 @@ return array(
 	| Website Content Page Method
 	|--------------------------------------------------------------------------
 	|
-	| The URI for content pages on the website. By default, it is left blank to
-	| define the page URI at the root of the website. For example "" would give
-	| you a URL like "http://localhost/home" and "page" would give you
-	| "http://localhost/page/home".
+	| The method for viewing content pages. If you have your own custom method,
+	| point this setting to it instead of the default.
 	|
 	*/
 	'pageMethod' => 'Regulus\Fractal\Controllers\PagesController@view',

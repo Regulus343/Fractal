@@ -77,7 +77,9 @@ $(document).ready(function(){
 				width: '200px'
 			});
 		}
-	}).change(function(){
+	});
+
+	$('#form-search input, #form-search select').change(function(){
 		$('#changing-page').val(0);
 		searchContent();
 	});
@@ -241,6 +243,9 @@ $(document).ready(function(){
 		}, 500);
 	});
 
+	//set up Markdown content field action preview window
+	setupMarkdownFields();
+
 });
 
 var messageTimer;
@@ -311,10 +316,11 @@ function searchContent() {
 			data: postData,
 			dataType: 'json',
 			success: function(result){
-				if (result.resultType == "Success") {
-					setMainMessage(result.message, 'success');
-				} else {
-					setMainMessage(result.message, 'error');
+				if (result.message !== undefined) {
+					if (result.resultType == "Success")
+						setMainMessage(result.message, 'success');
+					else
+						setMainMessage(result.message, 'error');
 				}
 
 				createPaginationMenu(result.pages);
@@ -660,6 +666,67 @@ var actionDeleteUserRole = function(){
 		},
 		error: function(){
 			setMainMessage(fractalMessages.errorGeneral, 'error');
+		}
+	});
+}
+
+/* Markdown Functions */
+var converter = Markdown.getSanitizingConverter();
+
+var markdownContentField;
+var markdownContentUpdateTimer;
+
+function setupMarkdownField(field) {
+	if (field) {
+		field.on('focus', function(){
+			renderMarkdownPreview($(this));
+			$('#markdown-preview').fadeIn();
+		}).on('keydown', function(e){
+			if (e.keyCode == 9) {
+				var myValue   = "\t";
+				var startPos  = this.selectionStart;
+				var endPos    = this.selectionEnd;
+				var scrollTop = this.scrollTop;
+				this.value    = this.value.substring(0, startPos) + myValue + this.value.substring(endPos,this.value.length);
+				this.focus();
+				this.selectionStart = startPos + myValue.length;
+				this.selectionEnd   = startPos + myValue.length;
+				this.scrollTop      = scrollTop;
+
+				e.preventDefault();
+			}
+		}).on('keyup', function(){
+			renderMarkdownPreview($(this));
+		}).on('blur', function(){
+			$('#markdown-preview').fadeOut();
+		});
+	}
+}
+
+function setupMarkdownFields() {
+	$('textarea.markdown').each(function(){
+		setupMarkdownField($(this));
+	});
+}
+
+function renderMarkdownPreview(field) {
+	$('#markdown-preview-content').html(converter.makeHtml(field.val()));
+	$('#markdown-preview-content').animate({scrollTop: $('#markdown-preview-content').height()}, 500);
+
+	markdownContentField       = field;
+	markdownContentUpdateTimer = setTimeout(incrementMarkdownContentUpdateTimer, 3000);
+}
+
+function incrementMarkdownContentUpdateTimer() {
+	clearTimeout(markdownContentUpdateTimer);
+
+	$.ajax({
+		type:     'post',
+		url:      baseUrl + '/pages/render-markdown-content',
+		data:     {content: markdownContentField.val()},
+		success:  function(content) {
+			$('#markdown-preview-content').html(content);
+			$('#markdown-preview-content').animate({scrollTop: $('#markdown-preview-content').height()}, 500);
 		}
 	});
 }

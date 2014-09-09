@@ -2,11 +2,11 @@
 
 /*----------------------------------------------------------------------------------------------------------
 	Fractal
-		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap.
+		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap 3.
 
 		created by Cody Jassman
-		version 0.5.5a
-		last updated on September 1, 2014
+		version 0.5.7a
+		last updated on September 8, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -167,6 +167,42 @@ class Fractal {
 	}
 
 	/**
+	 * Create a media URL.
+	 *
+	 * @param  string   $uri
+	 * @return string
+	 */
+	public function mediaUrl($uri = '')
+	{
+		$url = URL::to($this->blogUri($uri));
+
+		$subdomain = Config::get('fractal::media.subdomain');
+		if ($subdomain != "" && $subdomain !== false && !is_null($subdomain)) {
+			$url = str_replace($subdomain.'.', '', $url);
+			$url = str_replace('http://', 'http://'.$subdomain.'.', str_replace('https://', 'https://'.$subdomain.'.', $url));
+		}
+
+		return $url;
+	}
+
+	/**
+	 * Create a media URI.
+	 *
+	 * @param  string   $uri
+	 * @return string
+	 */
+	public function mediaUri($uri = '')
+	{
+		$fullUri = Config::get('fractal::media.baseUri');
+		if ($fullUri != "" && $fullUri !== false && !is_null($fullUri))
+			$fullUri .= '/'.$uri;
+		else
+			$fullUri = $uri;
+
+		return $fullUri;
+	}
+
+	/**
 	 * Set the views location for a controller.
 	 *
 	 * @param  mixed    $directory
@@ -204,6 +240,17 @@ class Fractal {
 	public function blogView($relativeLocation)
 	{
 		return $this->view('blogs.view.'.$relativeLocation, true);
+	}
+
+	/**
+	 * Get the media views location for an include.
+	 *
+	 * @param  string   $relativeLocation
+	 * @return string
+	 */
+	public function mediaView($relativeLocation)
+	{
+		return $this->view('media.view.'.$relativeLocation, true);
 	}
 
 	/**
@@ -370,6 +417,7 @@ class Fractal {
 			'itemsPerPage' => $this->getSetting('Items Listed Per Page', 20),
 			'terms'        => $terms,
 			'likeTerms'    => '%'.$terms.'%',
+			'filters'      => Input::get('filters'),
 			'search'       => $_POST ? true : false,
 			'page'         => !is_null(Input::get('page')) ? Input::get('page') : 1,
 			'changingPage' => (bool) Input::get('changing_page'),
@@ -378,6 +426,7 @@ class Fractal {
 			'contentType'  => $contentType,
 			'result'       => array(
 				'resultType' => 'Error',
+				'messageSet' => false,
 			),
 		);
 
@@ -400,12 +449,14 @@ class Fractal {
 		if ($contentType) {
 			if ($this->pagination['search']) {
 				Session::set('searchTerms'.$contentTypeUpperCase, $terms);
+				Session::set('searchFilters'.$contentTypeUpperCase, $this->pagination['filters']);
 				Session::set('page'.$contentTypeUpperCase, $this->pagination['page']);
 
 				Session::set('sortField'.$contentTypeUpperCase, $this->pagination['sortField']);
 				Session::set('sortOrder'.$contentTypeUpperCase, $this->pagination['sortOrder']);
 			} else {
 				$this->pagination['terms']     = Session::get('searchTerms'.$contentTypeUpperCase, $terms);
+				$this->pagination['filters']   = Session::get('searchFilters'.$contentTypeUpperCase);
 				$this->pagination['page']      = Session::get('page'.$contentTypeUpperCase, $this->pagination['page']);
 
 				$this->pagination['sortField'] = Session::get('sortField'.$contentTypeUpperCase, $this->pagination['sortField']);
@@ -413,11 +464,11 @@ class Fractal {
 			}
 		}
 
+		static::setSearchFormDefaults();
+
 		DB::getPaginator()->setCurrentPage($this->pagination['page']);
 
-		$this->pagination['likeTerms']         = '%'.$this->pagination['terms'].'%';
-		$this->pagination['result']['message'] = Lang::get('fractal::messages.searchNoResults', array('terms' => $this->pagination['terms']));
-
+		$this->pagination['likeTerms'] = '%'.$this->pagination['terms'].'%';
 		return $this->pagination;
 	}
 
@@ -435,29 +486,51 @@ class Fractal {
 	/**
 	 * Set the pagination message and return the pagination data.
 	 *
+	 * @param  boolean  $initialView
 	 * @return array
 	 */
-	public function setPaginationMessage()
+	public function setPaginationMessage($initialView = false)
 	{
 		$contentType = $this->getContentTypeCamelCase();
 		$item        = Lang::get('fractal::labels.'.Str::singular($contentType));
 
 		$this->pagination['result']['resultType'] = $this->pagination['content']->getTotal() ? "Success" : "Error";
 
-		if ($this->pagination['changingPage'] || $this->pagination['terms'] == "") {
-			$this->pagination['result']['message'] = Lang::get('fractal::messages.displayingItemsOfTotal', array(
-				'start'  => $this->pagination['content']->getFrom(),
-				'end'    => $this->pagination['content']->getTo(),
-				'total'  => $this->pagination['content']->getTotal(),
-				'items'  => Format::pluralize(strtolower($item), $this->pagination['content']->getTotal()),
-			));
+		if (count($this->pagination['content'])) {
+			if ($this->pagination['changingPage'] || $this->pagination['terms'] == "") {
+				$this->pagination['result']['message'] = Lang::get('fractal::messages.displayingItemsOfTotal', array(
+					'start' => $this->pagination['content']->getFrom(),
+					'end'   => $this->pagination['content']->getTo(),
+					'total' => $this->pagination['content']->getTotal(),
+					'items' => Format::pluralize(strtolower($item), $this->pagination['content']->getTotal()),
+				));
+			} else {
+				if ($this->pagination['terms'] == "")
+					$this->pagination['result']['message'] = Lang::get('fractal::messages.searchResultsNoTerms', array(
+						'total' => $this->pagination['content']->getTotal(),
+						'items' => Format::pluralize(strtolower($item), $this->pagination['content']->getTotal()),
+					));
+				else
+					$this->pagination['result']['message'] = Lang::get('fractal::messages.searchResults', array(
+						'terms' => $this->pagination['terms'],
+						'total' => $this->pagination['content']->getTotal(),
+						'items' => Format::pluralize(strtolower($item), $this->pagination['content']->getTotal()),
+					));
+			}
 		} else {
-			$this->pagination['result']['message'] = Lang::get('fractal::messages.searchResults', array(
-				'terms' => $this->pagination['terms'],
-				'total' => $this->pagination['content']->getTotal(),
-				'items' => Format::pluralize(strtolower($item), $this->pagination['content']->getTotal()),
-			));
+			if (!$initialView) {
+				if ($this->pagination['terms'] == "") {
+					if (empty($this->pagination['filters']))
+						$this->pagination['result']['message'] = Lang::get('fractal::messages.searchNoTerms');
+					else
+						$this->pagination['result']['message'] = Lang::get('fractal::messages.searchNoResultsNoTerms');
+				} else {
+					$this->pagination['result']['message'] = Lang::get('fractal::messages.searchNoResults');
+				}
+			}
 		}
+
+		$this->pagination['result']['messageSet'] = true;
 
 		return $this->pagination;
 	}
@@ -465,12 +538,16 @@ class Fractal {
 	/**
 	 * Get the pagination message array.
 	 *
+	 * @param  boolean  $initialView
 	 * @return array
 	 */
-	public function getPaginationMessageArray()
+	public function getPaginationMessageArray($initialView = false)
 	{
+		if (!isset($this->pagination['result']['message']) && !$this->pagination['result']['messageSet'])
+			$this->setPaginationMessage($initialView);
+
 		if (!isset($this->pagination['result']['message']))
-			$this->setPaginationMessage();
+			return array();
 
 		return array(
 			strtolower($this->pagination['result']['resultType']) => $this->pagination['result']['message']
@@ -485,8 +562,15 @@ class Fractal {
 	public function setSearchFormDefaults()
 	{
 		$defaults = array(
-			'search' => $this->pagination['terms']
+			'search' => $this->pagination['terms'],
 		);
+
+		if (!empty($this->pagination['filters'])) {
+			foreach ($this->pagination['filters'] as $field => $value) {
+				$defaults['filters.'.$field] = $value;
+			}
+		}
+
 		Form::setDefaults($defaults);
 
 		return $defaults;

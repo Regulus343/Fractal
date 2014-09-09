@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use Regulus\ActivityLog\Activity;
+use Regulus\Fractal\Models\Activity;
+
 use \Site as Site;
 use \Form as Form;
 use Regulus\TetraText\TetraText as Format;
@@ -34,28 +35,13 @@ class ActivityController extends BaseController {
 
 	public function getIndex()
 	{
-		$data = Fractal::setupPagination();
-
-		$activities = Activity::orderBy($data['sortField'], $data['sortOrder']);
-		if ($data['sortField'] != "id") $activities->orderBy('id', 'asc');
-		if ($data['terms'] != "") {
-			$activities->where(function($query) use ($data) {
-				$query
-					->where('description', 'like', $data['likeTerms'])
-					->orWhere('details', 'like', $data['likeTerms']);
-			});
-		}
-		$activities = $activities->paginate($data['itemsPerPage']);
+		$data       = Fractal::setupPagination();
+		$activities = Activity::getSearchResults($data);
 
 		Fractal::setContentForPagination($activities);
 
-		$data = Fractal::setPaginationMessage();
-		$messages['success'] = $data['result']['message'];
-
-		$defaults = array(
-			'search' => $data['terms']
-		);
-		Form::setDefaults($defaults);
+		$data     = Fractal::setPaginationMessage(true);
+		$messages = Fractal::getPaginationMessageArray();
 
 		return View::make(Fractal::view('list'))
 			->with('content', $activities)
@@ -64,18 +50,8 @@ class ActivityController extends BaseController {
 
 	public function postSearch()
 	{
-		$data = Fractal::setupPagination();
-
-		$activities = Activity::orderBy($data['sortField'], $data['sortOrder']);
-		if ($data['sortField'] != "id") $activities->orderBy('id', 'asc');
-		if ($data['terms'] != "") {
-			$activities->where(function($query) use ($data) {
-				$query
-					->where('description', 'like', $data['likeTerms'])
-					->orWhere('details', 'like', $data['likeTerms']);
-			});
-		}
-		$activities = $activities->paginate($data['itemsPerPage']);
+		$data       = Fractal::setupPagination();
+		$activities = Activity::getSearchResults($data);
 
 		Fractal::setContentForPagination($activities);
 

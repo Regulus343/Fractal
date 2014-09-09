@@ -17,7 +17,7 @@ class CreateMenuItemsTable extends Migration {
 			$table->increments('id');
 
 			$table->integer('menu_id');
-			$table->integer('parent_id');
+			$table->integer('parent_id')->nullable();
 			$table->string('type', 32)->default('URI');
 			$table->integer('page_id');
 			$table->string('uri', 120);

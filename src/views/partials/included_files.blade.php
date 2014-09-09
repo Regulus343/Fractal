@@ -35,8 +35,6 @@
 
 @endif
 
-
-
 {{-- Boxy --}}
 @if (Config::get('fractal::loadBoxy'))
 
@@ -64,6 +62,10 @@
 
 {{-- Formation JS --}}
 @include('formation::load_js')
+
+{{-- Markdown --}}
+<script type="text/javascript" src="{{ Site::js('markdown.converter', 'regulus/fractal') }}"></script>
+<script type="text/javascript" src="{{ Site::js('markdown.sanitizer', 'regulus/fractal') }}"></script>
 
 {{-- Fractal CSS --}}
 <link type="text/css" rel="stylesheet" href="{{ Site::css('fractal', 'regulus/fractal') }}" />

@@ -38,31 +38,16 @@ class ArticlesController extends BaseController {
 
 	public function index()
 	{
-		$data = Fractal::setupPagination();
-
-		$articles = BlogArticle::orderBy($data['sortField'], $data['sortOrder']);
-		if ($data['sortField'] != "id") $articles->orderBy('id', 'asc');
-		if ($data['terms'] != "") {
-			$articles->where(function($query) use ($data) {
-				$query
-					->where('title', 'like', $data['likeTerms'])
-					->orWhere('slug', 'like', $data['likeTerms']);
-			});
-		}
-		$articles = $articles->paginate($data['itemsPerPage']);
+		$data     = Fractal::setupPagination();
+		$articles = BlogArticle::getSearchResults($data);
 
 		Fractal::setContentForPagination($articles);
 
-		$data     = Fractal::setPaginationMessage();
+		$data     = Fractal::setPaginationMessage(true);
 		$messages = Fractal::getPaginationMessageArray();
 
 		if (!count($articles))
 			$articles = BlogArticle::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
-
-		$defaults = array(
-			'search' => $data['terms']
-		);
-		Form::setDefaults($defaults);
 
 		return View::make(Fractal::view('list'))
 			->with('content', $articles)
@@ -71,27 +56,15 @@ class ArticlesController extends BaseController {
 
 	public function search()
 	{
-		$data = Fractal::setupPagination();
-
-		$articles = BlogArticle::orderBy($data['sortField'], $data['sortOrder']);
-		if ($data['sortField'] != "id") $articles->orderBy('id', 'asc');
-		if ($data['terms'] != "") {
-			$articles->where(function($query) use ($data) {
-				$query
-					->where('title', 'like', $data['likeTerms'])
-					->orWhere('slug', 'like', $data['likeTerms']);
-			});
-		}
-		$articles = $articles->paginate($data['itemsPerPage']);
+		$data     = Fractal::setupPagination();
+		$articles = BlogArticle::getSearchResults($data);
 
 		Fractal::setContentForPagination($articles);
 
-		if (count($articles)) {
-			$data = Fractal::setPaginationMessage();
-		} else {
+		$data = Fractal::setPaginationMessage();
+
+		if (!count($articles))
 			$data['content'] = BlogArticle::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
-			if ($data['terms'] == "") $data['result']['message'] = Lang::get('fractal::messages.searchNoTerms');
-		}
 
 		$data['result']['pages']     = Fractal::getLastPage();
 		$data['result']['tableBody'] = Fractal::createTable($data['content'], true);
@@ -115,9 +88,6 @@ class ArticlesController extends BaseController {
 
 	public function store()
 	{
-		Site::set('title', 'Create Article');
-		Site::set('wysiwyg', true);
-
 		Form::setValidationRules(BlogArticle::validationRules());
 
 		$messages = array();
@@ -181,10 +151,6 @@ class ArticlesController extends BaseController {
 		if (empty($article))
 			return Redirect::to(Fractal::uri('pages'))
 				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'article'))));
-
-		Site::set('title', $article->title.' (Article)');
-		Site::set('titleHeading', 'Update Article: <strong>'.Format::entities($article->title).'</strong>');
-		Site::set('wysiwyg', true);
 
 		$article->setValidationRules();
 

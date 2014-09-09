@@ -11,9 +11,10 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
+use Regulus\Fractal\Models\Role;
+
 use Regulus\ActivityLog\Activity;
 use Regulus\TetraText\TetraText as Format;
-use Regulus\Identify\Role as Role;
 use \Site as Site;
 use \Form as Form;
 
@@ -36,25 +37,13 @@ class UserRolesController extends BaseController {
 
 	public function index()
 	{
-		$data = Fractal::setupPagination();
-
-		$roles = Role::orderBy($data['sortField'], $data['sortOrder']);
-		if ($data['sortField'] != "id") $roles->orderBy('id', 'asc');
-		if ($data['terms'] != "") {
-			$roles->where(function($query) use ($data) {
-				$query
-					->where('role', 'like', $data['likeTerms'])
-					->orWhere('name', 'like', $data['likeTerms']);
-			});
-		}
-		$roles = $roles->paginate($data['itemsPerPage']);
+		$data  = Fractal::setupPagination();
+		$roles = Role::getSearchResults($data);
 
 		Fractal::setContentForPagination($roles);
 
-		$data     = Fractal::setPaginationMessage();
+		$data     = Fractal::setPaginationMessage(true);
 		$messages = Fractal::getPaginationMessageArray();
-
-		Fractal::setSearchFormDefaults();
 
 		if (!count($roles))
 			$roles = Role::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
@@ -66,27 +55,15 @@ class UserRolesController extends BaseController {
 
 	public function search()
 	{
-		$data = Fractal::setupPagination();
-
-		$roles = Role::orderBy($data['sortField'], $data['sortOrder']);
-		if ($data['sortField'] != "id") $roles->orderBy('id', 'asc');
-		if ($data['terms'] != "") {
-			$roles->where(function($query) use ($data) {
-				$query
-					->where('role', 'like', $data['likeTerms'])
-					->orWhere('name', 'like', $data['likeTerms']);
-			});
-		}
-		$roles = $roles->paginate($data['itemsPerPage']);
+		$data  = Fractal::setupPagination();
+		$roles = Role::getSearchResults($data);
 
 		Fractal::setContentForPagination($roles);
 
-		if (count($roles)) {
-			$data = Fractal::setPaginationMessage();
-		} else {
+		$data = Fractal::setPaginationMessage();
+
+		if (!count($roles))
 			$data['content'] = User::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
-			if ($data['terms'] == "") $data['result']['message'] = Lang::get('fractal::messages.searchNoTerms');
-		}
 
 		$data['result']['pages']     = Fractal::getLastPage();
 		$data['result']['tableBody'] = Fractal::createTable($data['content'], true);

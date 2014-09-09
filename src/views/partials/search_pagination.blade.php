@@ -1,7 +1,14 @@
-<div class="row search-pagination-area">
-	{{-- Search --}}
-	@include(Fractal::view('partials.search', true))
+{{ Form::open(array('url' => Request::url().'/search', 'id' => 'form-search')) }}
 
-	{{-- Pagination --}}
-	@include(Fractal::view('partials.pagination', true))
-</div>
+	<div class="row search-pagination-area">
+		{{-- Search --}}
+		@include(Fractal::view('partials.search', true))
+
+		{{-- Pagination --}}
+		@include(Fractal::view('partials.pagination', true))
+	</div>
+
+	{{-- Additional Search Filters --}}
+	@yield('search-filters')
+
+{{ Form::close() }}

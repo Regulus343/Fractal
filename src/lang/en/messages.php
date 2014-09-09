@@ -45,7 +45,9 @@ return array(
 	'selectItem'                   => 'Select :item',
 
 	'searchNoResults'              => 'Your search for &ldquo;<strong>:terms</strong>&rdquo; yielded no results.',
+	'searchNoResultsNoTerms'       => 'Your search yielded no results.',
 	'searchResults'                => 'Your search for &ldquo;<strong>:terms</strong>&rdquo; yielded <strong>:total</strong> :items.',
+	'searchResultsNoTerms'         => 'Your search yielded <strong>:total</strong> :items.',
 	'searchNoTerms'                => 'You did not enter any search terms.',
 
 	'developerModeEnabled'         => '<strong>Developer Mode</strong> enabled.',

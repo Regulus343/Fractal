@@ -99,8 +99,8 @@ class BlogArticle extends BaseModel {
 	public static function validationRules($id = null)
 	{
 		$rules = array(
-			'title' => array('required'),
 			'slug'  => array('required'),
+			'title' => array('required'),
 		);
 
 		if (Form::post()) {
@@ -124,9 +124,9 @@ class BlogArticle extends BaseModel {
 	}
 
 	/**
-	 * The blog that the article belong to.
+	 * The blog that the article belongs to.
 	 *
-	 * @return Menu
+	 * @return Blog
 	 */
 	public function blog()
 	{
@@ -146,7 +146,7 @@ class BlogArticle extends BaseModel {
 	/**
 	 * The layout template that the article belongs to.
 	 *
-	 * @return Collection
+	 * @return ContentLayoutTemplate
 	 */
 	public function layoutTemplate()
 	{
@@ -367,6 +367,29 @@ class BlogArticle extends BaseModel {
 	public function getUniqueViews()
 	{
 		return ContentView::getUniqueViewsForItem($this);
+	}
+
+	/**
+	 * Get article search results.
+	 *
+	 * @param  array    $searchData
+	 * @return Collection
+	 */
+	public static function getSearchResults($searchData)
+	{
+		$articles = static::orderBy($searchData['sortField'], $searchData['sortOrder']);
+
+		if ($searchData['sortField'] != "id")
+			$articles->orderBy('id', 'asc');
+
+		if ($searchData['terms'] != "")
+			$articles->where(function($query) use ($searchData) {
+				$query
+					->where('title', 'like', $searchData['likeTerms'])
+					->orWhere('slug', 'like', $searchData['likeTerms']);
+			});
+
+		return $articles->paginate($searchData['itemsPerPage']);
 	}
 
 }

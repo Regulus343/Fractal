@@ -17,6 +17,7 @@ use Regulus\Fractal\Models\BlogContentArea;
 use Regulus\Fractal\Models\ContentLayoutTemplate;
 
 use Regulus\ActivityLog\Activity;
+
 use \Auth as Auth;
 use \Site as Site;
 use \Form as Form;
@@ -83,7 +84,7 @@ class ViewController extends BaseController {
 					'dateTime' => $article->getPublishedDateTime(),
 				));
 			else
-				$messages['info'] = Lang::get('fractal::messages.notPublished', array('item' => Lang::get('fractal::labels.page')));
+				$messages['info'] = Lang::get('fractal::messages.notPublished', array('item' => Lang::get('fractal::labels.article')));
 		}
 
 		return View::make(Fractal::view('article'))

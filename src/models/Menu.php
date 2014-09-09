@@ -215,4 +215,23 @@ class Menu extends BaseModel {
 		return $this->updated_at != "0000-00-00" ? date($dateFormat, strtotime($this->updated_at)) : date($dateFormat, strtotime($this->created_at));
 	}
 
+	/**
+	 * Get menu search results.
+	 *
+	 * @param  array    $searchData
+	 * @return Collection
+	 */
+	public static function getSearchResults($searchData)
+	{
+		$menus = static::orderBy($searchData['sortField'], $searchData['sortOrder']);
+
+		if ($searchData['sortField'] != "id")
+			$menus->orderBy('id', 'asc');
+
+		if ($searchData['terms'] != "")
+			$menus->where('name', 'like', $searchData['likeTerms']);
+
+		return $menus->paginate($searchData['itemsPerPage']);
+	}
+
 }

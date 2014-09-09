@@ -17,69 +17,56 @@ class ContentAreasTableSeeder extends Seeder {
 		$areas = array(
 			array(
 				'title'        => 'Home',
-				'content_type' => 'HTML',
-				'content'      => '<p>Home content coming soon.</p>',
-				'created_at'   => $timestamp,
-				'updated_at'   => $timestamp,
+				'content_type' => 'Markdown',
+				'content'      => 'Welcome to the home page of a new website!',
 
 				'page_areas'   => array(
 					array(
 						'page_id'    => 1,
 						'area_id'    => 1,
 						'layout_tag' => 'main',
-						'created_at' => $timestamp,
-						'updated_at' => $timestamp,
 					),
 				),
 			),
+
 			array(
-				'title'        => 'About Us - Main',
-				'content_type' => 'HTML',
-				'content'      => '<p>About Us content coming soon.</p>',
-				'created_at'   => $timestamp,
-				'updated_at'   => $timestamp,
+				'title'        => 'About Us: Main',
+				'content_type' => 'Markdown',
+				'content'      => 'About Us content coming soon.',
 
 				'page_areas'   => array(
 					array(
 						'page_id'    => 2,
 						'area_id'    => 2,
 						'layout_tag' => 'main',
-						'created_at' => $timestamp,
-						'updated_at' => $timestamp,
 					),
 				),
 			),
+
 			array(
-				'title'        => 'About Us - Side',
-				'content_type' => 'HTML',
-				'content'      => '<p>About Us side content coming soon.</p>',
-				'created_at'   => $timestamp,
-				'updated_at'   => $timestamp,
+				'title'        => 'About Us: Side',
+				'content_type' => 'Markdown',
+				'content'      => 'About Us side content coming soon.',
 
 				'page_areas'   => array(
 					array(
 						'page_id'    => 2,
 						'area_id'    => 3,
 						'layout_tag' => 'side',
-						'created_at' => $timestamp,
-						'updated_at' => $timestamp,
 					),
 				),
 			),
+
 			array(
 				'title'        => 'Contact Us',
-				'content_type' => 'HTML',
-				'content'      => '<p>You may contact us at <strong>(403) 555-5555</strong> or by filling out the following form:</p><div>[view:"fractal::pages.inserts.form_contact"]</div>',
-				'created_at'   => $timestamp,
-				'updated_at'   => $timestamp,
+				'content_type' => 'Markdown',
+				'content'      => 'You may contact us at **(403) 555-5555** or by filling out the following form:'."\n\n".'[view:"fractal::pages.inserts.form_contact"]',
 
 				'page_areas'   => array(
 					array(
 						'page_id'    => 3,
 						'area_id'    => 4,
 						'layout_tag' => 'main',
-						'created_at' => $timestamp,
-						'updated_at' => $timestamp,
 					),
 				),
 			),
@@ -89,9 +76,16 @@ class ContentAreasTableSeeder extends Seeder {
 			$pageAreas = $area['page_areas'];
 			unset($area['page_areas']);
 
+			$area['user_id']    = 1;
+			$area['created_at'] = $timestamp;
+			$area['updated_at'] = $timestamp;
+
 			DB::table('content_areas')->insert($area);
 
 			foreach ($pageAreas as $pageArea) {
+				$pageArea['created_at'] = $timestamp;
+				$pageArea['updated_at'] = $timestamp;
+
 				DB::table('content_page_areas')->insert($pageArea);
 			}
 		}

@@ -88,10 +88,10 @@ class InstallCommand extends Command {
 		$seedTables = array(
 			'Settings',
 			'Menus',
-			'MenuItems',
 			'ContentLayoutTemplates',
 			'ContentPages',
 			'ContentAreas',
+			'FileMediaTypes',
 		);
 		foreach ($seedTables as $seedTable) {
 			$this->output->writeln('<info>Seeding DB table:</info> '.$seedTable);
@@ -168,6 +168,8 @@ class InstallCommand extends Command {
 		$this->output->writeln('');
 		$this->info($divider);
 		$this->comment('Fractal installed!');
+		$this->output->writeln('');
+		$this->info('Log in with "admin" / "password": '.Fractal::url());
 		$this->info($divider);
 		$this->output->writeln('');
 	}

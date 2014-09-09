@@ -2,7 +2,7 @@
 
 return array(
 
-	'version'              => '0.5.4a',
+	'version'              => '0.5.7a',
 
 	'create'               => 'Create',
 	'edit'                 => 'Edit',
@@ -38,6 +38,12 @@ return array(
 	'deleteArticle'        => 'Delete Article',
 	'returnToArticlesList' => 'Return to Articles List',
 
+	'createItem'           => 'Create Item',
+	'editItem'             => 'Edit Item',
+	'viewItem'             => 'View Item',
+	'deleteItem'           => 'Delete Item',
+	'returnToItemsList'    => 'Return to Items List',
+
 	'createUser'           => 'Create User',
 	'editUser'             => 'Edit User',
 	'banUser'              => 'Ban User',
@@ -54,7 +60,10 @@ return array(
 	'contentArea'          => 'Content Area',
 	'file'                 => 'File',
 	'filename'             => 'Filename',
+	'fileType'             => 'File Type',
 	'image'                => 'Image',
+	'mediaItem'            => 'Media Item',
+	'mediaType'            => 'Media Type',
 	'blog'                 => 'Blog',
 	'blogArticle'          => 'Blog Article',
 	'article'              => 'Article',
@@ -65,6 +74,8 @@ return array(
 	'general'              => 'General',
 	'pages'                => 'Pages',
 	'files'                => 'Files',
+	'media'                => 'Media',
+	'mediaItems'           => 'Media Items',
 	'blogs'                => 'Blogs',
 	'blogArticles'         => 'Blog Articles',
 	'articles'             => 'Articles',
@@ -121,4 +132,5 @@ return array(
 	'resetPassword'        => 'Reset Password',
 
 	'blogReturnToHome'     => 'Return to Blog Home Page',
+	'mediaReturnToHome'    => 'Return to Media Home Page',
 );

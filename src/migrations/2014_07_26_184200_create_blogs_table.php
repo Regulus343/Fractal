@@ -16,8 +16,10 @@ class CreateBlogsTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('user_id');
+
 			$table->string('slug', 120);
 			$table->string('title');
+
 			$table->timestamps();
 			$table->softDeletes();
 		});

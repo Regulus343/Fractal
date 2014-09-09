@@ -14,13 +14,14 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use Regulus\ActivityLog\Activity;
-use Regulus\Identify\User as User;
-use Regulus\Identify\Role as Role;
+use Regulus\Fractal\Models\User;
+use Regulus\Fractal\Models\Role;
 
-use \Site as Site;
+use Regulus\ActivityLog\Activity;
+
 use \Form as Form;
 use \Format as Format;
+use \Site as Site;
 
 class UsersController extends BaseController {
 
@@ -36,35 +37,16 @@ class UsersController extends BaseController {
 
 	public function index()
 	{
-		$data = Fractal::setupPagination('Users');
-
-		$users = User::orderBy($data['sortField'], $data['sortOrder']);
-		if ($data['sortField'] == "last_name") $users->orderBy('first_name', $data['sortOrder']);
-		if ($data['sortField'] != "id")        $users->orderBy('id', 'asc');
-		if ($data['terms'] != "") {
-			$users->where(function($query) use ($data) {
-				$query
-					->where('username', 'like', $data['likeTerms'])
-					->orWhere('first_name', 'like', $data['likeTerms'])
-					->orWhere('last_name', 'like', $data['likeTerms'])
-					->orWhere(DB::raw('concat_ws(\' \', first_name, last_name)'), 'like', $data['likeTerms'])
-					->orWhere('email', 'like', $data['likeTerms']);
-			});
-		}
-		$users = $users->paginate($data['itemsPerPage']);
+		$data  = Fractal::setupPagination();
+		$users = User::getSearchResults($data);
 
 		Fractal::setContentForPagination($users);
 
-		$data     = Fractal::setPaginationMessage();
+		$data     = Fractal::setPaginationMessage(true);
 		$messages = Fractal::getPaginationMessageArray();
 
 		if (!count($users))
 			$users = User::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
-
-		$defaults = array(
-			'search' => $data['terms']
-		);
-		Form::setDefaults($defaults);
 
 		return View::make(Fractal::view('list'))
 			->with('content', $users)
@@ -73,31 +55,15 @@ class UsersController extends BaseController {
 
 	public function search()
 	{
-		$data = Fractal::setupPagination('Users');
-
-		$users = User::orderBy($data['sortField'], $data['sortOrder']);
-		if ($data['sortField'] == "last_name") $users->orderBy('first_name', $data['sortOrder']);
-		if ($data['sortField'] != "id")        $users->orderBy('id', 'asc');
-		if ($data['terms'] != "") {
-			$users->where(function($query) use ($data) {
-				$query
-					->where('username', 'like', $data['likeTerms'])
-					->orWhere('first_name', 'like', $data['likeTerms'])
-					->orWhere('last_name', 'like', $data['likeTerms'])
-					->orWhere(DB::raw('concat_ws(\' \', first_name, last_name)'), 'like', $data['likeTerms'])
-					->orWhere('email', 'like', $data['likeTerms']);
-			});
-		}
-		$users = $users->paginate($data['itemsPerPage']);
+		$data  = Fractal::setupPagination('Users');
+		$users = User::getSearchResults($data);
 
 		Fractal::setContentForPagination($users);
 
-		if (count($users)) {
-			$data = Fractal::setPaginationMessage();
-		} else {
+		$data = Fractal::setPaginationMessage();
+
+		if (!count($users))
 			$data['content'] = User::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
-			if ($data['terms'] == "") $data['result']['message'] = Lang::get('fractal::messages.searchNoTerms');
-		}
 
 		$data['result']['pages']     = Fractal::getLastPage();
 		$data['result']['tableBody'] = Fractal::createTable($data['content'], true);

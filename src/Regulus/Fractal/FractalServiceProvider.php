@@ -63,6 +63,7 @@ class FractalServiceProvider extends ServiceProvider {
 		$loader->alias('Elemental', 'Aquanode\Elemental\Facade');
 		$loader->alias('HTML',      'Aquanode\Elemental\Facade');
 		$loader->alias('Form',      'Aquanode\Formation\Facade');
+		$loader->alias('Upstream',  'Aquanode\Upstream\Facade');
 		$loader->alias('Markdown',  'MaxHoffmann\Parsedown\ParsedownFacade');
 
 		if ($exterminator)

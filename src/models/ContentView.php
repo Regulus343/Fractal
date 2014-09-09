@@ -28,6 +28,7 @@ class ContentView extends BaseModel {
 		'content_type',
 		'ip_address',
 		'user_agent',
+		'views',
 	);
 
 	/**
@@ -110,9 +111,8 @@ class ContentView extends BaseModel {
 			return $views->count();
 		} else {
 			$views = $views->first();
+			return (int) $views->total;
 		}
-
-		return (int) $views->total;
 	}
 
 	/**
