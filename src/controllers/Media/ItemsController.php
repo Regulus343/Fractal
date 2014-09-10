@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\View;
 use Fractal;
 
 use Regulus\Fractal\Models\MediaItem;
+use Regulus\Fractal\Models\MediaType;
 use Regulus\Fractal\Models\FileType;
 
 use Regulus\ActivityLog\Activity;
@@ -77,6 +78,11 @@ class ItemsController extends BaseController {
 	{
 		Site::set('title', 'Create Media Item');
 		Site::set('wysiwyg', true);
+
+		$defaults = array(
+			'description_type' => Fractal::getSetting('Default Content Area Type'),
+		);
+		Form::setDefaults($defaults);
 
 		Form::setErrors();
 
@@ -321,6 +327,16 @@ class ItemsController extends BaseController {
 		$item->delete();
 
 		return $result;
+	}
+
+	public function getTypesForFileType($fileTypeId = null)
+	{
+		$mediaTypes = MediaType::select('id', 'name')->orderBy('name');
+
+		if ($fileTypeId)
+			$mediaTypes->where('file_type_id', $fileTypeId);
+
+		return json_encode($mediaTypes->get());
 	}
 
 }

@@ -13,22 +13,22 @@ $(document).ready(function(){
 		$('#name').val(name);
 		$('#title').val(name);
 
-		var typeSet = false;
-		for (var fileTypeId in fileTypeExtensions) {
-			extensions = fileTypeExtensions[fileTypeId];
+		var fileTypeId = false;
+		for (var fileTypeIdListed in fileTypeExtensions) {
+			extensions = fileTypeExtensions[fileTypeIdListed];
 
 			if ($.inArray(extension, extensions) >= 0) {
-				$('#type-id').val(fileTypeId);
-				$('#file-type-id').val(fileTypeId);
+				$('#type-id').val(fileTypeIdListed);
+				$('#file-type-id').val(fileTypeIdListed);
 
-				$('#type-id-hidden').val(fileTypeId);
-				$('#file-type-id-hidden').val(fileTypeId);
+				$('#type-id-hidden').val(fileTypeIdListed);
+				$('#file-type-id-hidden').val(fileTypeIdListed);
 
-				typeSet = true;
+				fileTypeId = fileTypeIdListed;
 			}
 		}
 
-		if (!typeSet) {
+		if (!fileTypeId) {
 			$('#type-id').val('');
 			$('#file-type-id').val('');
 		}
@@ -36,13 +36,27 @@ $(document).ready(function(){
 		$('#type-id').select2();
 		$('#file-type-id').select2();
 
+		Formation.ajaxForSelect({
+			type:                 'get',
+			url:                  baseUrl + '/media/items/get-types-for-file-type/' + (fileTypeId ? fileTypeId : 0),
+			optionValue:          'id',
+			optionLabel:          'name',
+			targetSelect:         '#media-type-id',
+			nullOption:           'Select a media type',
+			callbackFunction:     'refreshMediaTypeSelect'
+		});
+
 		if ($.inArray(extension, ['jpg', 'png', 'gif']) >= 0) {
 			$('#width').val('');
 			$('#height').val('');
 
 			$('#image-settings-area').removeClass('hidden');
+			$('#thumbnail-image-area input').val('').attr('disabled', 'disabled');
+			$('#thumbnail-image-area button').attr('disabled', 'disabled');
 		} else {
 			$('#image-settings-area').addClass('hidden');
+			$('#thumbnail-image-area input').attr('disabled', false);
+			$('#thumbnail-image-area button').attr('disabled', false);
 		}
 
 		$('#title').val($('#title').val().replace(/  /g, ' '));
@@ -60,3 +74,7 @@ $(document).ready(function(){
 	});
 
 });
+
+function refreshMediaTypeSelect() {
+	$('#media-type-id').select2();
+}

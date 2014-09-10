@@ -37,6 +37,7 @@ class CreateMediaItemsTable extends Migration {
 			$table->integer('height')->nullable();
 
 			$table->boolean('thumbnail')->default(0);
+			$table->string('thumbnail_extension', 12)->nullable();
 			$table->integer('thumbnail_width')->nullable();
 			$table->integer('thumbnail_height')->nullable();
 

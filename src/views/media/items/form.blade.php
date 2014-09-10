@@ -71,19 +71,38 @@
 			</div>
 		</div>
 
-		<div class="row clear">
-			<div class="col-md-4 padding-vertical-10px">
-				{{ Form::field('hosted_externally', 'checkbox', array(
-					'label'                  => 'Media Hosted Externally',
-					'data-checked-show'      => '.media-hosted-area',
-					'data-checked-hide'      => '.media-uploaded-area',
-					'data-show-hide-type'    => 'display',
-					'data-callback-function' => 'publishedCheckedCallback'
+		<div class="row">
+			<div class="col-md-4">
+				{{ Form::field('file', 'file', array('class-field' => 'file-upload-button')) }}
+			</div>
+			<div class="col-md-4" id="thumbnail-image-area">
+				{{ Form::field('file2', 'file', array(
+					'class-field' => 'file-upload-button',
+					'label'       => 'Thumbnail Image',
+					'data-file-type-field' => 'Image')) }}
+			</div>
+			<div class="col-md-4">
+				{{ Form::field('file_type_id', 'select', array(
+					'label'          => 'File Type',
+					'options'        => Form::prepOptions(Regulus\Fractal\Models\FileType::orderBy('name')->get(), array('id', 'name')),
+					'null-option'    => 'None',
+					'disabled-field' => 'disabled',
 				)) }}
+
+				{{ Form::hidden('file_type_id_hidden') }}
 			</div>
 		</div>
 
 		<div class="row">
+			<div class="col-md-4 padding-vertical-10px">
+				{{ Form::field('hosted_externally', 'checkbox', array(
+					'label'                  => 'Media Hosted Externally',
+					'data-checked-show'      => '.media-hosted-area',
+					'data-show-hide-type'    => 'display',
+					'data-callback-function' => 'publishedCheckedCallback'
+				)) }}
+			</div>
+
 			<div class="media-hosted-area{{ (!Form::value('hosted_externally', 'checkbox') ? ' hidden' : '') }}">
 				<div class="col-md-4">
 					{{ Form::field('hosted_type', 'select', array(
@@ -94,40 +113,23 @@
 					{{ Form::field('hosted_uri', 'text', array('label' => 'Hosted URI')) }}
 				</div>
 			</div>
+		</div>
 
-			<div class="media-uploaded-area{{ (Form::value('hosted_externally', 'checkbox') ? ' hidden' : '') }}">
-				<div class="col-md-4">
-					{{ Form::field('file', 'file', array('class-field' => 'file-upload-button')) }}
-				</div>
-				<div class="col-md-4">
-					{{ Form::field('file_type_id', 'select', array(
-						'label'          => 'File Type',
-						'options'        => Form::prepOptions(Regulus\Fractal\Models\FileType::orderBy('name')->get(), array('id', 'name')),
-						'null-option'    => 'None',
-						'disabled-field' => 'disabled',
-					)) }}
-
-					{{ Form::hidden('file_type_id_hidden') }}
-				</div>
+		<div class="row">
+			<div class="col-md-3">
+				{{ Form::field('title') }}
 			</div>
-
-			<div class="col-md-4">
+			<div class="col-md-3">
+				{{ Form::field('slug') }}
+			</div>
+			<div class="col-md-3">
 				{{ Form::field('media_type_id', 'select', array(
 					'label'          => 'Media Type',
 					'options'        => $mediaTypeOptions,
 					'null-option'    => 'None',
 				)) }}
 			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-md-4">
-				{{ Form::field('title') }}
-			</div>
-			<div class="col-md-4">
-				{{ Form::field('slug') }}
-			</div>
-			<div class="col-md-4">
+			<div class="col-md-3">
 				{{ Form::field('description_type', 'select', array(
 					'options' => Form::simpleOptions(array('HTML', 'Markdown')),
 				)) }}
