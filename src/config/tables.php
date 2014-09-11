@@ -251,7 +251,7 @@ return array(
 			),
 			array(
 				'label'     => (Fractal::getSetting('Display Unique Content Downloads') ? 'Unique ' : '').'Downloads',
-				'method'    => (Fractal::getSetting('Display Unique Content Downloads') ? 'getUniqueViews()' : 'getDownloads()'),
+				'method'    => (Fractal::getSetting('Display Unique Content Downloads') ? 'getUniqueDownloads()' : 'getDownloads()'),
 				'bodyClass' => 'text-align-right',
 			),
 			array(
