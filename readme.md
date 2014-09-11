@@ -19,7 +19,16 @@ Some of the things you can do with Fractal:
 - Manage website settings
 - Manage all menus via database, for both front-end website and admin/CMS area
 - Manage content pages for website
+	- Create as many separate content areas as you like
+	- Use the layout template system to re-use standardized and custom layouts across pages
+	- Re-use content areas across multiple pages
 - Manage files
+	- Upload files
+	- Resize images
+	- Create thumbnail images
+- Manage blog articles
+	- Make use of the same versatile content area system as content pages uses
+- Manage media items (images, video, audio, and more...)
 - Extra website settings management for developers
 - Build Twitter Bootstrap-enabled menu markup for views
 - Build an array of a menu which you can build custom markup for
@@ -58,9 +67,7 @@ Now, all you have to do is register the service provider, set up Fractal's alias
 
 And add this to the `aliases` array:
 
-	'CMS' => 'Regulus\Fractal\Fractal',
-
-You may use 'Fractal', or another alias, but 'CMS' is recommended for the sake of simplicity.
+	'Fractal' => 'Regulus\Fractal\Fractal',
 
 **Run the install command:**
 
@@ -143,12 +150,12 @@ You may add additional controllers in the `controllers` array in `config.php`. U
 
 **Get Bootstrap-ready menu markup for a view:**
 
-	echo CMS::getMenuMarkup(); //get "Main" menu markup
+	echo Fractal::getMenuMarkup(); //get "Main" menu markup
 
-	echo CMS::getMenuMarkup('Footer'); //get "Footer" menu markup
+	echo Fractal::getMenuMarkup('Footer'); //get "Footer" menu markup
 
 **Getting an array of menu items:**
 
-	$menu = CMS::getMenuArray(); //get "Main" menu array
+	$menu = Fractal::getMenuArray(); //get "Main" menu array
 
-	$menu = CMS::getMenuArray('Footer'); //get "Footer" menu array
+	$menu = Fractal::getMenuArray('Footer'); //get "Footer" menu array
