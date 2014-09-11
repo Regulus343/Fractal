@@ -49,8 +49,6 @@ class ItemsController extends BaseController {
 		if (!count($media))
 			$media = MediaItem::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
-		//var_dump(Form::getDefaultsObject()); exit;
-
 		return View::make(Fractal::view('list'))
 			->with('content', $media)
 			->with('messages', $messages);
@@ -79,10 +77,9 @@ class ItemsController extends BaseController {
 		Site::set('title', 'Create Media Item');
 		Site::set('wysiwyg', true);
 
-		$defaults = array(
-			'description_type' => Fractal::getSetting('Default Content Area Type'),
-		);
-		Form::setDefaults($defaults);
+		MediaItem::setDefaultsForNew();
+
+		$this->setDefaultImageSizes();
 
 		Form::setErrors();
 
@@ -172,6 +169,10 @@ class ItemsController extends BaseController {
 		Site::set('wysiwyg', true);
 
 		$item->setDefaults();
+
+		$this->setDefaultImageSizes();
+
+		Form::setErrors();
 
 		return View::make(Fractal::view('form'))
 			->with('update', true)
@@ -337,6 +338,27 @@ class ItemsController extends BaseController {
 			$mediaTypes->where('file_type_id', $fileTypeId);
 
 		return json_encode($mediaTypes->get());
+	}
+
+	private function setDefaultImageSizes()
+	{
+		$imageWidth         = (int) Fractal::getSetting('Default Media Image Width', 0);
+		$imageHeight        = (int) Fractal::getSetting('Default Media Image Height', 0);
+		$thumbnailImageSize = (int) Fractal::getSetting('Default Image Thumbnail Size', 200);
+
+		if (!$imageWidth)
+			$imageWidth = "";
+
+		if (!$imageHeight)
+			$imageHeight = "";
+
+		$defaults = array(
+			'width'            => $imageWidth,
+			'height'           => $imageHeight,
+			'thumbnail_width'  => $thumbnailImageSize,
+			'thumbnail_height' => $thumbnailImageSize,
+		);
+		Form::setDefaults($defaults);
 	}
 
 }

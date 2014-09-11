@@ -100,8 +100,6 @@ class MediaItem extends BaseModel {
 			'published_at'     => date(Form::getDateTimeFormat()),
 		);
 
-		$defaults = array_merge($defaults, static::addPrefixToDefaults(ContentArea::defaults(), 'content_areas.1'));
-
 		return $defaults;
 	}
 
@@ -118,8 +116,6 @@ class MediaItem extends BaseModel {
 			'title' => array('required'),
 		);
 
-		if (!$id)
-			$rules['file'] = array('required');
 
 		return $rules;
 	}
@@ -569,7 +565,7 @@ class MediaItem extends BaseModel {
 			'filename'        => $basename,
 			'createDirectory' => true,
 			'overwrite'       => true,
-			'maxFileSize'     => '5MB',
+			'maxFileSize'     => '8MB',
 		);
 
 		//set image resize settings

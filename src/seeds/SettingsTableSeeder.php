@@ -102,8 +102,26 @@ class SettingsTableSeeder extends Seeder {
 			),
 
 			array(
+				'name'          => 'Default Media Image Width',
+				'value'         => 1024,
+				'type'          => 'Integer',
+				'category'      => 'Files',
+				'rules'         => '',
+				'developer'     => true,
+			),
+
+			array(
+				'name'          => 'Default Media Image Height',
+				'value'         => 768,
+				'type'          => 'Integer',
+				'category'      => 'Files',
+				'rules'         => '',
+				'developer'     => true,
+			),
+
+			array(
 				'name'          => 'Image Resize Quality',
-				'value'         => 60,
+				'value'         => 65,
 				'type'          => 'Integer',
 				'category'      => 'Files',
 				'options'       => '1:100',

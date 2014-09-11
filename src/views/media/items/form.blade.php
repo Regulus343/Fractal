@@ -77,8 +77,8 @@
 			</div>
 			<div class="col-md-4" id="thumbnail-image-area">
 				{{ Form::field('file2', 'file', array(
-					'class-field' => 'file-upload-button',
-					'label'       => 'Thumbnail Image',
+					'class-field'          => 'file-upload-button',
+					'label'                => 'Thumbnail Image',
 					'data-file-type-field' => 'Image')) }}
 			</div>
 			<div class="col-md-4">
@@ -153,6 +153,9 @@
 				{{ Form::hidden('description') }}
 			</div>
 		</div>
+
+		{{-- Image Settings --}}
+		@include(Fractal::view('partials.image_settings', true))
 
 		<div class="row clear">
 			<div class="col-md-2">

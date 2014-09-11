@@ -47,9 +47,6 @@ $(document).ready(function(){
 		});
 
 		if ($.inArray(extension, ['jpg', 'png', 'gif']) >= 0) {
-			$('#width').val('');
-			$('#height').val('');
-
 			$('#image-settings-area').removeClass('hidden');
 			$('#thumbnail-image-area input').val('').attr('disabled', 'disabled');
 			$('#thumbnail-image-area button').attr('disabled', 'disabled');

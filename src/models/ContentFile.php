@@ -228,7 +228,7 @@ class ContentFile extends BaseModel {
 			'filename'        => $basename,
 			'createDirectory' => true,
 			'overwrite'       => true,
-			'maxFileSize'     => '5MB',
+			'maxFileSize'     => '8MB',
 		);
 
 		//set image resize settings

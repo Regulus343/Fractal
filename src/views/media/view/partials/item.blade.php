@@ -9,5 +9,9 @@
 </div>
 
 <div class="article-body">
+	@if ($mediaItem->getFileType() == "Image")
+		<img src="{{ $mediaItem->getFileUrl() }}" alt="{{ $mediaItem->title }}" title="{{ $mediaItem->title }}" class="media-image" />	
+	@endif
+
 	{{ $mediaItem->getRenderedDescription() }}
 </div>

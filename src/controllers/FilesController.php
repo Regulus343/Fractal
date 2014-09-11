@@ -76,12 +76,8 @@ class FilesController extends BaseController {
 	{
 		Site::set('title', 'Upload File');
 
-		$thumbnailSize = Fractal::getSetting('Default Image Thumbnail Size', 120);
-		$defaults = array(
-			'thumbnail_width'  => $thumbnailSize,
-			'thumbnail_height' => $thumbnailSize,
-		);
-		Form::setDefaults($defaults);
+		$this->setDefaultImageSize();
+
 		Form::setErrors();
 
 		return View::make(Fractal::view('form'))->with('update', false);
@@ -155,6 +151,9 @@ class FilesController extends BaseController {
 		Site::set('titleHeading', 'Update File: <strong>'.Format::entities($file->name).'</strong>');
 
 		Form::setDefaults($file);
+
+		$this->setDefaultImageSize();
+
 		Form::setErrors();
 
 		return View::make(Fractal::view('form'))->with('update', true);
@@ -299,6 +298,17 @@ class FilesController extends BaseController {
 		$file->delete();
 
 		return $result;
+	}
+
+	private function setDefaultImageSize()
+	{
+		$thumbnailSize = (int) Fractal::getSetting('Default Image Thumbnail Size', 200);
+
+		$defaults = array(
+			'thumbnail_width'  => $thumbnailSize,
+			'thumbnail_height' => $thumbnailSize,
+		);
+		Form::setDefaults($defaults);
 	}
 
 }
