@@ -21,10 +21,8 @@
 					'label'          => 'Type',
 					'options'        => Form::prepOptions(Regulus\Fractal\Models\FileType::orderBy('name')->get(), array('id', 'name')),
 					'null-option'    => 'None',
-					'disabled-field' => 'disabled',
+					'readonly-field' => 'readonly',
 				)) }}
-
-				{{ Form::hidden('type_id_hidden') }}
 			</div>
 		</div>
 

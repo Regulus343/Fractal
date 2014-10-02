@@ -76,7 +76,7 @@
 				{{ Form::field('file', 'file', array('class-field' => 'file-upload-button')) }}
 			</div>
 			<div class="col-md-4" id="thumbnail-image-area">
-				{{ Form::field('file2', 'file', array(
+				{{ Form::field('thumbnail_image', 'file', array(
 					'class-field'          => 'file-upload-button',
 					'label'                => 'Thumbnail Image',
 					'data-file-type-field' => 'Image')) }}
@@ -86,10 +86,8 @@
 					'label'          => 'File Type',
 					'options'        => Form::prepOptions(Regulus\Fractal\Models\FileType::orderBy('name')->get(), array('id', 'name')),
 					'null-option'    => 'None',
-					'disabled-field' => 'disabled',
+					'readonly-field' => 'readonly',
 				)) }}
-
-				{{ Form::hidden('file_type_id_hidden') }}
 			</div>
 		</div>
 

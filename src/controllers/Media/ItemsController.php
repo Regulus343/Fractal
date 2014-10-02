@@ -99,10 +99,17 @@ class ItemsController extends BaseController {
 			else
 				$result = MediaItem::uploadFile();
 
-			if (!$result['error']) {
+			if (!$result['error'] && !$result['files']['file']['error']) {
 				$messages['success'] = Lang::get('fractal::messages.successCreated', array('item' => Format::a('file')));
 
-				$path = str_replace('uploads/media', '', $result['path']);
+				$fileResult = $result['files']['file'];
+
+				if (!$result['files']['thumbnail_image']['error']) {
+					$uploadedThumbnail = true;
+					$thumbnailResult   = $result['files']['thumbnail_image'];
+				}
+
+				$path = str_replace('uploads/media', '', $fileResult['path']);
 
 				if (substr($path, 0, 1) == "/")
 					$path = substr($path, 1);
@@ -112,7 +119,6 @@ class ItemsController extends BaseController {
 
 				$item = new MediaItem(Input::all());
 
-				$item->file_type_id      = Input::get('file_type_id_hidden');
 				$item->title             = ucfirst(trim(Input::get('title')));
 				$item->hosted_externally = $hostedExternally;
 
@@ -121,15 +127,36 @@ class ItemsController extends BaseController {
 				} else {
 					$item->hosted_content_type = null;
 					$item->hosted_content_uri  = null;
-					$item->filename            = $result['filename'];
-					$item->basename            = $result['basename'];
-					$item->extension           = $result['extension'];
+					$item->filename            = $fileResult['filename'];
+					$item->basename            = $fileResult['basename'];
+					$item->extension           = $fileResult['extension'];
 					$item->path                = $path;
-					$item->width               = $result['imgDimensions']['w'];
-					$item->height              = $result['imgDimensions']['h'];
-					$item->thumbnail           = Form::value('create_thumbnail', 'checkbox');
-					$item->thumbnail_width     = $result['imgDimensions']['tw'];
-					$item->thumbnail_height    = $result['imgDimensions']['th'];
+
+					if ($fileResult['isImage']) {
+						$item->width  = $fileResult['imageDimensions']['w'];
+						$item->height = $fileResult['imageDimensions']['h'];
+
+						if (!$uploadedThumbnail) {
+							$item->thumbnail           = Form::value('create_thumbnail', 'checkbox');
+							$item->thumbnail_extension = null;
+							$item->thumbnail_width     = $fileResult['imageDimensions']['tw'];
+							$item->thumbnail_height    = $fileResult['imageDimensions']['th'];
+						}
+					} else {
+						$item->width               = null;
+						$item->height              = null;
+						$item->thumbnail           = false;
+						$item->thumbnail_extension = null;
+						$item->thumbnail_width     = null;
+						$item->thumbnail_height    = null;
+					}
+				}
+
+				if ($uploadedThumbnail) {
+					$item->thumbnail           = true;
+					$item->thumbnail_extension = $thumbnailResult['extension'];
+					$item->thumbnail_width     = $thumbnailResult['imageDimensions']['tw'];
+					$item->thumbnail_height    = $thumbnailResult['imageDimensions']['th'];
 				}
 
 				$item->save();
@@ -191,9 +218,10 @@ class ItemsController extends BaseController {
 
 		$messages = array();
 		if (Form::validated()) {
-			$uploaded         = false;
-			$hostedExternally = (bool) Input::get('hosted_externally');
-			$result           = array('error' => false);
+			$uploaded          = false;
+			$uploadedThumbnail = false;
+			$hostedExternally  = (bool) Input::get('hosted_externally');
+			$result            = array('error' => false);
 
 			//get original uploaded filename
 			$originalFilename  = isset($_FILES['file']['name']) ? $_FILES['file']['name'] : '';
@@ -204,16 +232,17 @@ class ItemsController extends BaseController {
 			$basename  = str_replace('.'.$originalExtension, '', $filename);
 			$extension = $originalExtension;
 
-			if (isset($_FILES['file']['name']) && $_FILES['file']['name'] != "")
+			if ((isset($_FILES['file']['name']) && $_FILES['file']['name'] != "") || (isset($_FILES['thumbnail_image']['name']) && $_FILES['thumbnail_image']['name']))
 			{
 				$result = MediaItem::uploadFile();
 
-				if (!$result['error']) {
+				if (!$result['files']['file']['error']) {
 					$uploaded = true;
 
-					$filename  = $result['filename'];
-					$basename  = $result['basename'];
-					$extension = $result['extension'];
+					$fileResult = $result['files']['file'];
+					$filename   = $fileResult['filename'];
+					$basename   = $fileResult['basename'];
+					$extension  = $fileResult['extension'];
 
 					//delete current file
 					if (File::exists('uploads/'.$item->getFilePath()))
@@ -222,6 +251,11 @@ class ItemsController extends BaseController {
 					//delete current thumbnail image if it exists
 					if (File::exists('uploads/'.$item->getFilePath(true)) && $item->thumbnail)
 						File::delete('uploads/'.$item->getFilePath(true));
+				}
+
+				if (!$result['files']['thumbnail_image']['error']) {
+					$uploadedThumbnail = true;
+					$thumbnailResult   = $result['files']['thumbnail_image'];
 				}
 			}
 
@@ -255,7 +289,7 @@ class ItemsController extends BaseController {
 					$item->hosted_content_uri  = null;
 
 					if ($uploaded) {
-						$path = str_replace('uploads/media', '', $result['path']);
+						$path = str_replace('uploads/media', '', $fileResult['path']);
 
 						if (substr($path, 0, 1) == "/")
 							$path = substr($path, 1);
@@ -263,16 +297,36 @@ class ItemsController extends BaseController {
 						if (substr($path, -1) == "/")
 							$path = substr($path, 0, (strlen($path) - 1));
 
-						$item->file_type_id     = Input::get('file_type_id_hidden');
-						$item->filename         = $result['filename'];
-						$item->basename         = $result['basename'];
-						$item->extension        = $result['extension'];
-						$item->path             = $path;
-						$item->width            = $result['imgDimensions']['w'];
-						$item->height           = $result['imgDimensions']['h'];
-						$item->thumbnail        = Form::value('create_thumbnail', 'checkbox');
-						$item->thumbnail_width  = $result['imgDimensions']['tw'];
-						$item->thumbnail_height = $result['imgDimensions']['th'];
+						$item->filename  = $fileResult['filename'];
+						$item->basename  = $fileResult['basename'];
+						$item->extension = $fileResult['extension'];
+						$item->path      = $path;
+
+						if ($fileResult['isImage']) {
+							$item->width  = $fileResult['imageDimensions']['w'];
+							$item->height = $fileResult['imageDimensions']['h'];
+
+							if (!$uploadedThumbnail) {
+								$item->thumbnail           = Form::value('create_thumbnail', 'checkbox');
+								$item->thumbnail_extension = null;
+								$item->thumbnail_width     = $fileResult['imageDimensions']['tw'];
+								$item->thumbnail_height    = $fileResult['imageDimensions']['th'];
+							}
+						} else {
+							$item->width               = null;
+							$item->height              = null;
+							$item->thumbnail           = false;
+							$item->thumbnail_extension = null;
+							$item->thumbnail_width     = null;
+							$item->thumbnail_height    = null;
+						}
+					}
+
+					if ($uploadedThumbnail) {
+						$item->thumbnail           = true;
+						$item->thumbnail_extension = $thumbnailResult['extension'];
+						$item->thumbnail_width     = $thumbnailResult['imageDimensions']['tw'];
+						$item->thumbnail_height    = $thumbnailResult['imageDimensions']['th'];
 					}
 				}
 
@@ -286,10 +340,19 @@ class ItemsController extends BaseController {
 					'details'     => 'Title: '.$item->title,
 				));
 
-				return Redirect::to(Fractal::uri('media/items'))
-					->with('messages', $messages);
+				/*return Redirect::to(Fractal::uri('media/items'))
+					->with('messages', $messages);*/
 			} else {
-				$messages['error'] = $result['error'];
+				$error = true;
+				foreach ($result['files'] as $file) {
+					if ($file['error'])
+						$messages['error'] = $file['error'];
+					else
+						$error = false;
+				}
+
+				if (!$error)
+					unset($messages['error']);
 			}
 		} else {
 			$messages['error'] = Lang::get('fractal::messages.errorGeneral');

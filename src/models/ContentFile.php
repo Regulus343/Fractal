@@ -240,13 +240,13 @@ class ContentFile extends BaseModel {
 
 			$defaultThumbnailSize = Fractal::getSetting('Default Image Thumbnail Size', 200);
 			if ($width != "" && $height != "" && $width > 0 && $height > 0) {
-				$config['imgResize']        = true;
-				$config['imgResizeQuality'] = Fractal::getSetting('Image Resize Quality', 60);
-				$config['imgCrop']          = Form::value('crop', 'checkbox');
+				$config['imageResize']        = true;
+				$config['imageResizeQuality'] = Fractal::getSetting('Image Resize Quality', 60);
+				$config['imageCrop']          = Form::value('crop', 'checkbox');
 			}
 
-			$config['imgThumb']      = Form::value('create_thumbnail', 'checkbox');
-			$config['imgDimensions'] = array(
+			$config['imageThumb']      = Form::value('create_thumbnail', 'checkbox');
+			$config['imageDimensions'] = array(
 				'w'  => (int) $width,
 				'h'  => (int) $height,
 				'tw' => (int) Input::get('thumbnail_width') > 0  ? (int) Input::get('thumbnail_width')  : $defaultThumbnailSize,

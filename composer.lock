@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "08235115a1e6670ee0541cad76d1162f",
+    "hash": "4a2cecd75ed92ccda2c00da7c3fc8b9c",
     "packages": [
         {
             "name": "aquanode/elemental",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Aquanode/Elemental.git",
-                "reference": "8177dc48be0574eb7d0a7495388250aa9ed772e1"
+                "reference": "bf4b4582862db8e672ddde1e6f0fb6809c6d63d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Aquanode/Elemental/zipball/8177dc48be0574eb7d0a7495388250aa9ed772e1",
-                "reference": "8177dc48be0574eb7d0a7495388250aa9ed772e1",
+                "url": "https://api.github.com/repos/Aquanode/Elemental/zipball/bf4b4582862db8e672ddde1e6f0fb6809c6d63d7",
+                "reference": "bf4b4582862db8e672ddde1e6f0fb6809c6d63d7",
                 "shasum": ""
             },
             "require": {
@@ -45,7 +45,7 @@
                 }
             ],
             "description": "An HTML element building composer package that simplifies creation of active, selected, or hidden elements.",
-            "time": "2014-07-17 19:01:22"
+            "time": "2014-07-26 19:19:15"
         },
         {
             "name": "aquanode/formation",
@@ -53,12 +53,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Aquanode/Formation.git",
-                "reference": "17e050e1cd9b2b270dc96da1268569ef2fbb3923"
+                "reference": "343674dbb77ed0487f18e7fa273a973ce2a0a87e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Aquanode/Formation/zipball/17e050e1cd9b2b270dc96da1268569ef2fbb3923",
-                "reference": "17e050e1cd9b2b270dc96da1268569ef2fbb3923",
+                "url": "https://api.github.com/repos/Aquanode/Formation/zipball/343674dbb77ed0487f18e7fa273a973ce2a0a87e",
+                "reference": "343674dbb77ed0487f18e7fa273a973ce2a0a87e",
                 "shasum": ""
             },
             "require": {
@@ -87,48 +87,7 @@
                 }
             ],
             "description": "A powerful form creation composer package for Laravel 4.",
-            "time": "2014-07-06 22:37:49"
-        },
-        {
-            "name": "aquanode/upstream",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Aquanode/Upstream.git",
-                "reference": "678af1b90752607fb4ed176a67171b22f7f10780"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Aquanode/Upstream/zipball/678af1b90752607fb4ed176a67171b22f7f10780",
-                "reference": "678af1b90752607fb4ed176a67171b22f7f10780",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "4.x",
-                "julien-c/simple-resize": "dev-master",
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src/migrations"
-                ],
-                "psr-0": {
-                    "Aquanode\\Upstream": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Cody Jassman",
-                    "email": "cody@aquanode.com"
-                }
-            ],
-            "description": "A simple composer package that assists in file uploads and image resizing/cropping. Works great with jCrop and jquery-file-upload.",
-            "time": "2014-01-06 00:21:48"
+            "time": "2014-09-10 06:09:52"
         },
         {
             "name": "erusev/parsedown",
@@ -175,12 +134,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "80ebd4322e3b98bc25c3ed3effe99a1653bc00fc"
+                "reference": "cd60294ada5245c5835baebf0dbb3f44ee851317"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/80ebd4322e3b98bc25c3ed3effe99a1653bc00fc",
-                "reference": "80ebd4322e3b98bc25c3ed3effe99a1653bc00fc",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/cd60294ada5245c5835baebf0dbb3f44ee851317",
+                "reference": "cd60294ada5245c5835baebf0dbb3f44ee851317",
                 "shasum": ""
             },
             "require": {
@@ -203,8 +162,7 @@
                 {
                     "name": "Edward Z. Yang",
                     "email": "admin@htmlpurifier.org",
-                    "homepage": "http://ezyang.com",
-                    "role": "Developer"
+                    "homepage": "http://ezyang.com"
                 }
             ],
             "description": "Standards compliant HTML filter written in PHP",
@@ -212,7 +170,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2014-02-04 20:17:24"
+            "time": "2014-08-31 11:12:38"
         },
         {
             "name": "illuminate/support",
@@ -221,19 +179,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "1e2d761f5f0360e5a3942bf148fcbd27793cac8f"
+                "reference": "4831699d6bcddd766e3cebbd8279976854d37027"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/1e2d761f5f0360e5a3942bf148fcbd27793cac8f",
-                "reference": "1e2d761f5f0360e5a3942bf148fcbd27793cac8f",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/4831699d6bcddd766e3cebbd8279976854d37027",
+                "reference": "4831699d6bcddd766e3cebbd8279976854d37027",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.4.0"
             },
             "require-dev": {
-                "jeremeamia/superclosure": "~1.0",
+                "jeremeamia/superclosure": "~1.0.1",
                 "patchwork/utf8": "1.1.*"
             },
             "type": "library",
@@ -260,40 +218,7 @@
                     "email": "taylorotwell@gmail.com"
                 }
             ],
-            "time": "2014-07-19 21:17:20"
-        },
-        {
-            "name": "julien-c/simple-resize",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/julien-c/SimpleResize.git",
-                "reference": "9823a4dc618a9d3471525c5dafd5f365d70675d4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/julien-c/SimpleResize/zipball/9823a4dc618a9d3471525c5dafd5f365d70675d4",
-                "reference": "9823a4dc618a9d3471525c5dafd5f365d70675d4",
-                "shasum": ""
-            },
-            "require": {
-                "ext-gd": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "SimpleResize": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "Julien Chaumond",
-                    "email": "chaumond@gmail.com"
-                }
-            ],
-            "description": "Simple Composer port of Jarrod Oberto's Image Resizing class",
-            "time": "2012-10-27 10:37:09"
+            "time": "2014-09-27 01:17:10"
         },
         {
             "name": "maxhoffmann/parsedown-laravel",
@@ -346,12 +271,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Regulus343/ActivityLog.git",
-                "reference": "c87800b9339ede2e243e83444aba9ad235495c3c"
+                "reference": "381f900e9b4dec47c4fe7f9801402b090375a29c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Regulus343/ActivityLog/zipball/c87800b9339ede2e243e83444aba9ad235495c3c",
-                "reference": "c87800b9339ede2e243e83444aba9ad235495c3c",
+                "url": "https://api.github.com/repos/Regulus343/ActivityLog/zipball/381f900e9b4dec47c4fe7f9801402b090375a29c",
+                "reference": "381f900e9b4dec47c4fe7f9801402b090375a29c",
                 "shasum": ""
             },
             "require": {
@@ -379,7 +304,7 @@
                 }
             ],
             "description": "A clean and simple Laravel 4 activity logger for monitoring user activity on a website or web application.",
-            "time": "2014-07-08 07:05:36"
+            "time": "2014-07-26 07:10:47"
         },
         {
             "name": "regulus/solid-site",
@@ -387,12 +312,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Regulus343/SolidSite.git",
-                "reference": "44611768954d40290507e4f7be3d33eeffcbcb66"
+                "reference": "48e8c086d8feaf11685a0ffb9bd7d459ed2528c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Regulus343/SolidSite/zipball/44611768954d40290507e4f7be3d33eeffcbcb66",
-                "reference": "44611768954d40290507e4f7be3d33eeffcbcb66",
+                "url": "https://api.github.com/repos/Regulus343/SolidSite/zipball/48e8c086d8feaf11685a0ffb9bd7d459ed2528c1",
+                "reference": "48e8c086d8feaf11685a0ffb9bd7d459ed2528c1",
                 "shasum": ""
             },
             "require": {
@@ -419,7 +344,7 @@
                 }
             ],
             "description": "A composer package that assigns section names & titles to pages and simplifies creation of breadcrumb trails and is useful for other components that require page identifying information such as menus that highlight the current location.",
-            "time": "2014-07-01 16:24:15"
+            "time": "2014-08-20 04:04:18"
         },
         {
             "name": "regulus/tetra-text",
@@ -427,12 +352,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Regulus343/TetraText.git",
-                "reference": "60d0e232dae40cc6ea2a776b9950d087ca2cb517"
+                "reference": "bf7f99296d71351e798fb47604e2459fc1cecb07"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Regulus343/TetraText/zipball/60d0e232dae40cc6ea2a776b9950d087ca2cb517",
-                "reference": "60d0e232dae40cc6ea2a776b9950d087ca2cb517",
+                "url": "https://api.github.com/repos/Regulus343/TetraText/zipball/bf7f99296d71351e798fb47604e2459fc1cecb07",
+                "reference": "bf7f99296d71351e798fb47604e2459fc1cecb07",
                 "shasum": ""
             },
             "require": {
@@ -460,29 +385,64 @@
                 }
             ],
             "description": "A small text/string formatting composer package that formats phone numbers, numeric values, money values and more.",
-            "time": "2014-01-06 00:10:43"
+            "time": "2014-10-02 04:08:02"
+        },
+        {
+            "name": "regulus/upstream",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Regulus343/Upstream.git",
+                "reference": "255819a402b3760e86f0a44ee62b47df42885dcc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Regulus343/Upstream/zipball/255819a402b3760e86f0a44ee62b47df42885dcc",
+                "reference": "255819a402b3760e86f0a44ee62b47df42885dcc",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "4.2.*",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/migrations"
+                ],
+                "psr-0": {
+                    "Regulus\\Upstream\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cody Jassman",
+                    "email": "me@codyjassman.com"
+                }
+            ],
+            "description": "A simple composer package that assists in file uploads and image resizing/cropping.",
+            "time": "2014-10-02 04:11:13"
         }
     ],
-    "packages-dev": [
-
-    ],
-    "aliases": [
-
-    ],
+    "packages-dev": [],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "regulus/activity-log": 20,
         "regulus/solid-site": 20,
         "regulus/tetra-text": 20,
+        "regulus/upstream": 20,
         "aquanode/formation": 20,
         "aquanode/elemental": 20,
-        "aquanode/upstream": 20,
         "maxhoffmann/parsedown-laravel": 20
     },
+    "prefer-stable": false,
     "platform": {
         "php": ">=5.3.0"
     },
-    "platform-dev": [
-
-    ]
+    "platform-dev": []
 }

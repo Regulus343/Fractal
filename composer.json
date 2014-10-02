@@ -14,9 +14,9 @@
 		"regulus/activity-log": "dev-master",
 		"regulus/solid-site": "dev-master",
 		"regulus/tetra-text": "dev-master",
+		"regulus/upstream": "dev-master",
 		"aquanode/formation": "dev-master",
 		"aquanode/elemental": "dev-master",
-		"aquanode/upstream": "dev-master",
 		"maxhoffmann/parsedown-laravel": "dev-master"
 	},
 	"autoload": {

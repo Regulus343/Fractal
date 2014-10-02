@@ -21,9 +21,6 @@ $(document).ready(function(){
 				$('#type-id').val(fileTypeIdListed);
 				$('#file-type-id').val(fileTypeIdListed);
 
-				$('#type-id-hidden').val(fileTypeIdListed);
-				$('#file-type-id-hidden').val(fileTypeIdListed);
-
 				fileTypeId = fileTypeIdListed;
 			}
 		}

@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap 3.
 
 		created by Cody Jassman
-		version 0.5.7a
-		last updated on September 8, 2014
+		version 0.5.8a
+		last updated on October 1, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;

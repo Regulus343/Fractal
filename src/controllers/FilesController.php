@@ -104,17 +104,17 @@ class FilesController extends BaseController {
 
 				$file = new ContentFile;
 
-				$file->type_id          = Input::get('type_id_hidden');
+				$file->type_id          = Input::get('type_id');
 				$file->name             = ucfirst(trim(Input::get('name')));
 				$file->filename         = $result['filename'];
 				$file->basename         = $result['basename'];
 				$file->extension        = $result['extension'];
 				$file->path             = $path;
-				$file->width            = $result['imgDimensions']['w'];
-				$file->height           = $result['imgDimensions']['h'];
+				$file->width            = $result['imageDimensions']['w'];
+				$file->height           = $result['imageDimensions']['h'];
 				$file->thumbnail        = Form::value('create_thumbnail', 'checkbox');
-				$file->thumbnail_width  = $result['imgDimensions']['tw'];
-				$file->thumbnail_height = $result['imgDimensions']['th'];
+				$file->thumbnail_width  = $result['imageDimensions']['tw'];
+				$file->thumbnail_height = $result['imageDimensions']['th'];
 				$file->save();
 
 				Activity::log(array(
@@ -231,13 +231,13 @@ class FilesController extends BaseController {
 					if (substr($path, -1) == "/")
 						$path = substr($path, 0, (strlen($path) - 1));
 
-					$file->type_id          = Input::get('type_id_hidden');
+					$file->type_id          = Input::get('type_id');
 					$file->path             = $path;
-					$file->width            = $result['imgDimensions']['w'];
-					$file->height           = $result['imgDimensions']['h'];
+					$file->width            = $result['imageDimensions']['w'];
+					$file->height           = $result['imageDimensions']['h'];
 					$file->thumbnail        = Form::value('create_thumbnail', 'checkbox');
-					$file->thumbnail_width  = $result['imgDimensions']['tw'];
-					$file->thumbnail_height = $result['imgDimensions']['th'];
+					$file->thumbnail_width  = $result['imageDimensions']['tw'];
+					$file->thumbnail_height = $result['imageDimensions']['th'];
 				}
 
 				$file->save();

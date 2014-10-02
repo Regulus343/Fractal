@@ -53,6 +53,7 @@ class MediaItem extends BaseModel {
 		'width',
 		'height',
 		'thumbnail',
+		'thumbnail_extension',
 		'thumbnail_width',
 		'thumbnail_height',
 		'date_created',
@@ -212,7 +213,13 @@ class MediaItem extends BaseModel {
 		if ($this->path != "")
 			$path = $path.$this->path.'/';
 
-		$path .= ($thumbnail && $this->thumbnail ? 'thumbnails/' : '').$this->filename;
+		if ($thumbnail && $this->thumbnail)
+			$path .= "thumbnails/";
+
+		if ($thumbnail && !is_null($this->thumbnail_extension))
+			$path .= str_replace($this->extension, $this->thumbnail_extension, $this->filename);
+		else
+			$path .= $this->filename;
 
 		return $path;
 	}
@@ -236,7 +243,7 @@ class MediaItem extends BaseModel {
 	 */
 	public function getImageUrl($thumbnail = false)
 	{
-		if ($this->fileType->name == "Image")
+		if ($this->fileType->name == "Image" || ($thumbnail && $this->thumbnail))
 			return $this->getFileUrl($thumbnail);
 		else
 			return Site::img('image-not-available', 'regulus/fractal');
@@ -555,21 +562,23 @@ class MediaItem extends BaseModel {
 
 		$path = "uploads/media";
 
-		$fileType = FileType::find(Input::get('file_type_id_hidden'));
+		$fileType = FileType::find(Input::get('file_type_id'));
 		if (!empty($fileType))
 			$path .= '/'.$fileType->slug;
 
 		$config = array(
 			'path'            => $path,
-			'fields'          => 'file',
+			'fields'          => ['file', 'thumbnail_image'],
+			'fieldThumb'      => 'thumbnail_image',
 			'filename'        => $basename,
 			'createDirectory' => true,
 			'overwrite'       => true,
 			'maxFileSize'     => '8MB',
+			'imageThumb'      => true,
 		);
 
 		//set image resize settings
-		if (!empty($fileType) && $fileType->name == "Image") {
+		if (!empty($fileType)) {
 			$width           = Input::get('width');
 			$height          = Input::get('height');
 			$thumbnailWidth  = 0;
@@ -577,13 +586,13 @@ class MediaItem extends BaseModel {
 
 			$defaultThumbnailSize = Fractal::getSetting('Default Image Thumbnail Size', 200);
 			if ($width != "" && $height != "" && $width > 0 && $height > 0) {
-				$config['imgResize']        = true;
-				$config['imgResizeQuality'] = Fractal::getSetting('Image Resize Quality', 60);
-				$config['imgCrop']          = Form::value('crop', 'checkbox');
+				$config['imageResize']        = true;
+				$config['imageResizeQuality'] = Fractal::getSetting('Image Resize Quality', 60);
+				$config['imageCrop']          = Form::value('crop', 'checkbox');
 			}
 
-			$config['imgThumb']      = true; //always create thumbnail for media items
-			$config['imgDimensions'] = array(
+			$config['imageThumb']      = true; //always create thumbnail for media items
+			$config['imageDimensions'] = array(
 				'w'  => (int) $width,
 				'h'  => (int) $height,
 				'tw' => (int) Input::get('thumbnail_width') > 0  ? (int) Input::get('thumbnail_width')  : $defaultThumbnailSize,
