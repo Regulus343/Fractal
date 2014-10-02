@@ -243,7 +243,7 @@ class MediaItem extends BaseModel {
 	 */
 	public function getImageUrl($thumbnail = false)
 	{
-		if ($this->fileType->name == "Image" || ($thumbnail && $this->thumbnail))
+		if ($this->getFileType() == "Image" || ($thumbnail && $this->thumbnail))
 			return $this->getFileUrl($thumbnail);
 		else
 			return Site::img('image-not-available', 'regulus/fractal');

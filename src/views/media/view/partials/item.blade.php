@@ -10,7 +10,13 @@
 
 <div class="article-body">
 	@if ($mediaItem->getFileType() == "Image")
-		<img src="{{ $mediaItem->getFileUrl() }}" alt="{{ $mediaItem->title }}" title="{{ $mediaItem->title }}" class="media-image" />	
+		<img src="{{ $mediaItem->getImageUrl() }}" alt="{{ $mediaItem->title }}" title="{{ $mediaItem->title }}" class="media-image" />	
+	@else
+		@if ($mediaItem->thumbnail)
+			<img src="{{ $mediaItem->getImageUrl(true) }}" alt="{{ $mediaItem->title }}" title="{{ $mediaItem->title }}" class="media-image" />	
+		@endif
+
+		<a href="{{ $mediaItem->getFileUrl() }}" class="btn btn-primary" target="_blank">Download {{ $mediaItem->title }}</a>
 	@endif
 
 	{{ $mediaItem->getRenderedDescription() }}
