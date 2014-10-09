@@ -18,11 +18,9 @@ use Regulus\Fractal\Models\ContentFile;
 use Regulus\Fractal\Models\FileType;
 
 use Regulus\ActivityLog\Activity;
-use \Site as Site;
-use Regulus\TetraText\Facade as Format;
-use Regulus\Identify\User as User;
-use \Form as Form;
-use Aquanode\Upstream\Facade as Upstream;
+use \Form;
+use \Format;
+use \Site;
 
 class FilesController extends BaseController {
 
@@ -94,7 +92,9 @@ class FilesController extends BaseController {
 			if (!$result['error']) {
 				$messages['success'] = Lang::get('fractal::messages.successCreated', array('item' => Format::a('file')));
 
-				$path = str_replace('uploads/files', '', $result['path']);
+				$fileResult = $result['files']['file'];
+
+				$path = str_replace('uploads/files', '', $fileResult['path']);
 
 				if (substr($path, 0, 1) == "/")
 					$path = substr($path, 1);
@@ -106,15 +106,15 @@ class FilesController extends BaseController {
 
 				$file->type_id          = Input::get('type_id');
 				$file->name             = ucfirst(trim(Input::get('name')));
-				$file->filename         = $result['filename'];
-				$file->basename         = $result['basename'];
-				$file->extension        = $result['extension'];
+				$file->filename         = $fileResult['filename'];
+				$file->basename         = $fileResult['basename'];
+				$file->extension        = $fileResult['extension'];
 				$file->path             = $path;
-				$file->width            = $result['imageDimensions']['w'];
-				$file->height           = $result['imageDimensions']['h'];
+				$file->width            = $fileResult['imageDimensions']['w'];
+				$file->height           = $fileResult['imageDimensions']['h'];
 				$file->thumbnail        = Form::value('create_thumbnail', 'checkbox');
-				$file->thumbnail_width  = $result['imageDimensions']['tw'];
-				$file->thumbnail_height = $result['imageDimensions']['th'];
+				$file->thumbnail_width  = $fileResult['imageDimensions']['tw'];
+				$file->thumbnail_height = $fileResult['imageDimensions']['th'];
 				$file->save();
 
 				Activity::log(array(
@@ -187,11 +187,11 @@ class FilesController extends BaseController {
 				$result = ContentFile::uploadFile();
 
 				if (!$result['error']) {
-					$uploaded = true;
-
-					$filename  = $result['filename'];
-					$basename  = $result['basename'];
-					$extension = $result['extension'];
+					$uploaded   = true;
+					$fileResult = $result['files']['file'];
+					$filename   = $fileResult['filename'];
+					$basename   = $fileResult['basename'];
+					$extension  = $fileResult['extension'];
 
 					//delete current file
 					if (File::exists('uploads/'.$file->getPath()))
@@ -223,7 +223,7 @@ class FilesController extends BaseController {
 				$file->extension = File::extension($filename);
 
 				if ($uploaded) {
-					$path = str_replace('uploads/files', '', $result['path']);
+					$path = str_replace('uploads/files', '', $fileResult['path']);
 
 					if (substr($path, 0, 1) == "/")
 						$path = substr($path, 1);
@@ -233,11 +233,11 @@ class FilesController extends BaseController {
 
 					$file->type_id          = Input::get('type_id');
 					$file->path             = $path;
-					$file->width            = $result['imageDimensions']['w'];
-					$file->height           = $result['imageDimensions']['h'];
+					$file->width            = $fileResult['imageDimensions']['w'];
+					$file->height           = $fileResult['imageDimensions']['h'];
 					$file->thumbnail        = Form::value('create_thumbnail', 'checkbox');
-					$file->thumbnail_width  = $result['imageDimensions']['tw'];
-					$file->thumbnail_height = $result['imageDimensions']['th'];
+					$file->thumbnail_width  = $fileResult['imageDimensions']['tw'];
+					$file->thumbnail_height = $fileResult['imageDimensions']['th'];
 				}
 
 				$file->save();

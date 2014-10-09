@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use \Form as Form;
 use Regulus\ActivityLog\Activity;
-use \Auth as Auth;
-use \User as User;
-use \Site as Site;
+use \Auth;
+use \Form;
+use \Site;
+use \User;
 
 class AuthController extends BaseController {
 

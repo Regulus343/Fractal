@@ -36,11 +36,11 @@ class FractalServiceProvider extends ServiceProvider {
 			'regulus/fractal',
 			'regulus/activity-log',
 			'regulus/identify',
+			'regulus/elemental',
+			'regulus/formation',
 			'regulus/solid-site',
 			'regulus/tetra-text',
 			'regulus/upstream',
-			'aquanode/formation',
-			'aquanode/elemental',
 		);
 
 		if ($exterminator)
@@ -51,19 +51,19 @@ class FractalServiceProvider extends ServiceProvider {
 		}
 
 		//add view namespace for Elemental
-		View::addNamespace('elemental', $pathPrefix.'aquanode/elemental/src/views');
+		View::addNamespace('elemental', $pathPrefix.'regulus/elemental/src/views');
 
 		//add aliases for dependent classes
 		$loader = \Illuminate\Foundation\AliasLoader::getInstance();
 
 		$loader->alias('Fractal',   'Regulus\Fractal\Facade');
 		$loader->alias('Auth',      'Regulus\Identify\Facade');
+		$loader->alias('Elemental', 'Regulus\Elemental\Facade');
+		$loader->alias('HTML',      'Regulus\Elemental\Facade');
+		$loader->alias('Form',      'Regulus\Formation\Facade');
 		$loader->alias('Site',      'Regulus\SolidSite\Facade');
 		$loader->alias('Format',    'Regulus\TetraText\Facade');
 		$loader->alias('Upstream',  'Regulus\Upstream\Facade');
-		$loader->alias('Elemental', 'Aquanode\Elemental\Facade');
-		$loader->alias('HTML',      'Aquanode\Elemental\Facade');
-		$loader->alias('Form',      'Aquanode\Formation\Facade');
 		$loader->alias('Markdown',  'MaxHoffmann\Parsedown\ParsedownFacade');
 
 		if ($exterminator)
@@ -109,11 +109,11 @@ class FractalServiceProvider extends ServiceProvider {
 		$this->commands('fractal:install');
 
 		//register additional service providers
+		$this->app->register('Regulus\Elemental\ElementalServiceProvider');
+		$this->app->register('Regulus\Formation\FormationServiceProvider');
 		$this->app->register('Regulus\SolidSite\SolidSiteServiceProvider');
 		$this->app->register('Regulus\TetraText\TetraTextServiceProvider');
 		$this->app->register('Regulus\Upstream\UpstreamServiceProvider');
-		$this->app->register('Aquanode\Elemental\ElementalServiceProvider');
-		$this->app->register('Aquanode\Formation\FormationServiceProvider');
 	}
 
 	/**

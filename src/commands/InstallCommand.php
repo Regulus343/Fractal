@@ -105,11 +105,11 @@ class InstallCommand extends Command {
 		$this->info($divider);
 
 		$configPackages = array(
+			'regulus/elemental',
+			'regulus/formation',
 			'regulus/solid-site',
 			'regulus/tetra-text',
-			'aquanode/formation',
-			'aquanode/elemental',
-			'aquanode/upstream',
+			'regulus/upstream',
 		);
 
 		if (!$workbench)
@@ -158,10 +158,10 @@ class InstallCommand extends Command {
 
 		$this->call('asset:publish', $arguments);
 
-		$arguments['package'] = "aquanode/formation";
+		$arguments['package'] = "regulus/formation";
 
 		if ($workbench)
-			$arguments['--bench'] = "regulus/fractal/vendor/aquanode/formation";
+			$arguments['--bench'] = "regulus/fractal/vendor/regulus/formation";
 
 		$this->call('asset:publish', $arguments);
 

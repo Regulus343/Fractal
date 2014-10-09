@@ -1,6 +1,6 @@
 <?php namespace Regulus\Fractal\Models;
 
-use Aquanode\Formation\BaseModel;
+use Regulus\Formation\BaseModel;
 
 use Fractal;
 
@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
 
-use \Form as Form;
-use \Format as Format;
-use \Site as Site;
-use \Upstream as Upstream;
+use \Form;
+use \Format;
+use \Site;
+use \Upstream;
 
 class ContentFile extends BaseModel {
 
@@ -110,7 +110,7 @@ class ContentFile extends BaseModel {
 	 */
 	public function getImageUrl($thumbnail = false)
 	{
-		if ($this->type->name == "Image")
+		if ($this->getType() == "Image")
 			return $this->getUrl($thumbnail);
 		else
 			return Site::img('image-not-available', 'regulus/fractal');
@@ -145,7 +145,7 @@ class ContentFile extends BaseModel {
 	 */
 	public function getImageDimensions($thumbnail = false)
 	{
-		if ($this->type != "Image")
+		if ($this->getType() != "Image")
 			return "&ndash;";
 
 		$dimensions = '<div>'.$this->width.' x '.$this->height.'</div>';
@@ -218,7 +218,7 @@ class ContentFile extends BaseModel {
 
 		$path = "uploads/files";
 
-		$fileType = FileType::find(Input::get('type_id_hidden'));
+		$fileType = FileType::find(Input::get('type_id'));
 		if (!empty($fileType))
 			$path .= '/'.$fileType->slug;
 

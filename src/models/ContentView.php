@@ -1,12 +1,12 @@
 <?php namespace Regulus\Fractal\Models;
 
-use Aquanode\Formation\BaseModel;
+use Regulus\Formation\BaseModel;
 
 use Fractal;
 
 use Illuminate\Support\Facades\Request;
 
-use \Auth as Auth;
+use \Auth;
 
 class ContentView extends BaseModel {
 

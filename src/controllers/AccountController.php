@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\View;
 use Fractal;
 
 use Regulus\ActivityLog\Activity;
-use \Site as Site;
-use \Form as Form;
-use Regulus\TetraText\TetraText as Format;
+use \Form;
+use \Format;
+use \Site;
 
 class AccountController extends BaseController {
 

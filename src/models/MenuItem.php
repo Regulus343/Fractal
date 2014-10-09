@@ -1,14 +1,14 @@
 <?php namespace Regulus\Fractal\Models;
 
-use Aquanode\Formation\BaseModel;
+use Regulus\Formation\BaseModel;
 
 use Fractal;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
 
-use \Site as Site;
-use Regulus\TetraText\TetraText as Format;
+use \Format;
+use \Site;
 
 class MenuItem extends BaseModel {
 

@@ -14,9 +14,9 @@ use Fractal;
 use Regulus\Fractal\Models\Role;
 
 use Regulus\ActivityLog\Activity;
-use Regulus\TetraText\TetraText as Format;
-use \Site as Site;
-use \Form as Form;
+use \Form;
+use \Format;
+use \Site;
 
 class UserRolesController extends BaseController {
 

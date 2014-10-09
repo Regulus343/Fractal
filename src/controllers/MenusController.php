@@ -14,10 +14,10 @@ use Fractal;
 use Regulus\Fractal\Models\Menu;
 
 use Regulus\ActivityLog\Activity;
-use \Auth as Auth;
-use \Site as Site;
-use \Form as Form;
-use \Format as Format;
+use \Auth;
+use \Form;
+use \Format;
+use \Site;
 
 class MenusController extends BaseController {
 

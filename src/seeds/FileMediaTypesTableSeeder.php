@@ -81,6 +81,12 @@ class FileMediaTypesTableSeeder extends Seeder {
 				'name'        => 'Spreadsheet',
 				'extensions'  => 'csv, ods, xls, xlsx',
 			),
+
+			array(
+				'slug'        => 'code',
+				'name'        => 'Code',
+				'extensions'  => 'php, js, as, ts, py, c',
+			),
 		);
 
 		foreach ($fileTypes as $fileType) {

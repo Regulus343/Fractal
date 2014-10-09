@@ -17,11 +17,10 @@ use Regulus\Fractal\Models\MediaType;
 use Regulus\Fractal\Models\MediaSet;
 
 use Regulus\ActivityLog\Activity;
-
-use \Auth as Auth;
-use \Site as Site;
-use \Form as Form;
-use \Format as Format;
+use \Auth;
+use \Form;
+use \Format;
+use \Site;
 
 class ViewController extends BaseController {
 

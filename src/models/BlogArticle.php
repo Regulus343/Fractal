@@ -1,6 +1,6 @@
 <?php namespace Regulus\Fractal\Models;
 
-use Aquanode\Formation\BaseModel;
+use Regulus\Formation\BaseModel;
 
 use Fractal;
 
@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
 
-use \Form as Form;
-use \Format as Format;
+use \Form;
+use \Format;
 
 use Regulus\Fractal\Traits\PublishingTrait;
 

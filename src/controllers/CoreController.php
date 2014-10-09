@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use \Site as Site;
-use \Form as Form;
-use \Format as Format;
+use \Form;
+use \Format;
+use \Site;
 
 class CoreController extends BaseController {
 

@@ -4,91 +4,8 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4a2cecd75ed92ccda2c00da7c3fc8b9c",
+    "hash": "f37e47cbd32431de0c04b7130ba1d232",
     "packages": [
-        {
-            "name": "aquanode/elemental",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Aquanode/Elemental.git",
-                "reference": "bf4b4582862db8e672ddde1e6f0fb6809c6d63d7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Aquanode/Elemental/zipball/bf4b4582862db8e672ddde1e6f0fb6809c6d63d7",
-                "reference": "bf4b4582862db8e672ddde1e6f0fb6809c6d63d7",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "4.x",
-                "php": ">=5.3.0",
-                "regulus/tetra-text": "dev-master"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src/migrations"
-                ],
-                "psr-0": {
-                    "Aquanode\\Elemental": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Cody Jassman",
-                    "email": "cody@aquanode.com"
-                }
-            ],
-            "description": "An HTML element building composer package that simplifies creation of active, selected, or hidden elements.",
-            "time": "2014-07-26 19:19:15"
-        },
-        {
-            "name": "aquanode/formation",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Aquanode/Formation.git",
-                "reference": "343674dbb77ed0487f18e7fa273a973ce2a0a87e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Aquanode/Formation/zipball/343674dbb77ed0487f18e7fa273a973ce2a0a87e",
-                "reference": "343674dbb77ed0487f18e7fa273a973ce2a0a87e",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "4.x",
-                "php": ">=5.3.0",
-                "regulus/tetra-text": "dev-master"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src/migrations",
-                    "src/models"
-                ],
-                "psr-0": {
-                    "Aquanode\\Formation": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Cody Jassman",
-                    "email": "cody@aquanode.com"
-                }
-            ],
-            "description": "A powerful form creation composer package for Laravel 4.",
-            "time": "2014-09-10 06:09:52"
-        },
         {
             "name": "erusev/parsedown",
             "version": "dev-master",
@@ -221,6 +138,39 @@
             "time": "2014-09-27 01:17:10"
         },
         {
+            "name": "julien-c/simple-resize",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/julien-c/SimpleResize.git",
+                "reference": "9823a4dc618a9d3471525c5dafd5f365d70675d4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/julien-c/SimpleResize/zipball/9823a4dc618a9d3471525c5dafd5f365d70675d4",
+                "reference": "9823a4dc618a9d3471525c5dafd5f365d70675d4",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gd": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "SimpleResize": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Julien Chaumond",
+                    "email": "chaumond@gmail.com"
+                }
+            ],
+            "description": "Simple Composer port of Jarrod Oberto's Image Resizing class",
+            "time": "2012-10-27 10:37:09"
+        },
+        {
             "name": "maxhoffmann/parsedown-laravel",
             "version": "dev-master",
             "source": {
@@ -305,6 +255,89 @@
             ],
             "description": "A clean and simple Laravel 4 activity logger for monitoring user activity on a website or web application.",
             "time": "2014-07-26 07:10:47"
+        },
+        {
+            "name": "regulus/elemental",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Regulus343/Elemental.git",
+                "reference": "70a1b123a06cb10b76c998adadc08517f8e301ee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Regulus343/Elemental/zipball/70a1b123a06cb10b76c998adadc08517f8e301ee",
+                "reference": "70a1b123a06cb10b76c998adadc08517f8e301ee",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "4.x",
+                "php": ">=5.3.0",
+                "regulus/tetra-text": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/migrations"
+                ],
+                "psr-0": {
+                    "Regulus\\Elemental": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cody Jassman",
+                    "email": "me@codyjassman.com"
+                }
+            ],
+            "description": "An HTML element building composer package that simplifies creation of active, selected, or hidden elements.",
+            "time": "2014-10-09 01:23:48"
+        },
+        {
+            "name": "regulus/formation",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Regulus343/Formation.git",
+                "reference": "25595d52a6e973753bcc4abf6c2f7e5fd19bb17c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Regulus343/Formation/zipball/25595d52a6e973753bcc4abf6c2f7e5fd19bb17c",
+                "reference": "25595d52a6e973753bcc4abf6c2f7e5fd19bb17c",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "4.x",
+                "php": ">=5.3.0",
+                "regulus/tetra-text": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/migrations",
+                    "src/models"
+                ],
+                "psr-0": {
+                    "Regulus\\Formation": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cody Jassman",
+                    "email": "me@codyjassman.com"
+                }
+            ],
+            "description": "A powerful form creation composer package for Laravel 4.",
+            "time": "2014-10-09 01:18:48"
         },
         {
             "name": "regulus/solid-site",
@@ -393,16 +426,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Regulus343/Upstream.git",
-                "reference": "255819a402b3760e86f0a44ee62b47df42885dcc"
+                "reference": "b1bbb143e7942ad65777041b4bb9689e9ccd1f46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Regulus343/Upstream/zipball/255819a402b3760e86f0a44ee62b47df42885dcc",
-                "reference": "255819a402b3760e86f0a44ee62b47df42885dcc",
+                "url": "https://api.github.com/repos/Regulus343/Upstream/zipball/b1bbb143e7942ad65777041b4bb9689e9ccd1f46",
+                "reference": "b1bbb143e7942ad65777041b4bb9689e9ccd1f46",
                 "shasum": ""
             },
             "require": {
                 "illuminate/support": "4.2.*",
+                "julien-c/simple-resize": "dev-master",
                 "php": ">=5.4.0"
             },
             "type": "library",
@@ -425,7 +459,7 @@
                 }
             ],
             "description": "A simple composer package that assists in file uploads and image resizing/cropping.",
-            "time": "2014-10-02 04:11:13"
+            "time": "2014-10-09 00:59:38"
         }
     ],
     "packages-dev": [],
@@ -433,11 +467,11 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "regulus/activity-log": 20,
+        "regulus/elemental": 20,
+        "regulus/formation": 20,
         "regulus/solid-site": 20,
         "regulus/tetra-text": 20,
         "regulus/upstream": 20,
-        "aquanode/formation": 20,
-        "aquanode/elemental": 20,
         "maxhoffmann/parsedown-laravel": 20
     },
     "prefer-stable": false,

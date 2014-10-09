@@ -18,10 +18,9 @@ use Regulus\Fractal\Models\User;
 use Regulus\Fractal\Models\Role;
 
 use Regulus\ActivityLog\Activity;
-
-use \Form as Form;
-use \Format as Format;
-use \Site as Site;
+use \Form;
+use \Format;
+use \Site;
 
 class UsersController extends BaseController {
 
