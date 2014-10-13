@@ -1,3 +1,5 @@
+			</div><!-- /.container-pad -->
+		</div><!-- /#container-content -->
 	</div><!-- /#container -->
 
 	<div id="footer">

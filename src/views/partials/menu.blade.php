@@ -1,5 +1,5 @@
 @if (!$listItemsOnly)
-	<ul class="nav navbar-nav{{ $class }}">
+	<ul class="{{ $class }}">
 @endif
 
 @foreach ($menu as $menuItem)

@@ -194,22 +194,17 @@ class MenuItem extends BaseModel {
 	}
 
 	/**
-	 * Get the label of a menu item (including an icon if one exists and the icon attribute is set).
+	 * Get the icon for a menu item (including an icon if one exists and the icon attribute is set).
 	 *
 	 * @param  boolean  $icon
 	 * @return string
 	 */
-	public function getLabel($icon = true)
+	public function getIcon()
 	{
-		$label = $this->label;
+		if ($this->icon != "")
+			return '<span class="glyphicon glyphicon-'.$this->icon.'"></span>&nbsp; ';
 
-		if ($label != strip_tags($label))
-			$label = Format::entities($label);
-
-		if ($icon && $this->icon != "")
-			$label = '<span class="glyphicon glyphicon-'.$this->icon.'"></span>&nbsp; '.$label;
-
-		return $label;
+		return "";
 	}
 
 	/**
@@ -221,7 +216,7 @@ class MenuItem extends BaseModel {
 	 */
 	public function getChildrenArray($setSelectedClass = true, $ignoreVisibilityStatus = false)
 	{
-		$children = array();
+		$children = [];
 		foreach ($this->children as $child) {
 			if ($child->isVisible() || $ignoreVisibilityStatus)
 				$children[] = $child->createObject($setSelectedClass, $ignoreVisibilityStatus);
@@ -238,20 +233,20 @@ class MenuItem extends BaseModel {
 	 */
 	public function createObject($setSelectedClass = true, $ignoreVisibilityStatus = false)
 	{
-		return (object) array(
+		return (object) [
 			'parentId'          => (int) $this->parent_id,
 			'type'              => $this->type,
 			'url'               => $this->getUrl(),
 			'page'              => $this->type == "Content Page" ? $this->page->title : false,
 			'pagePublishedDate' => $this->type == "Content Page" ? $this->page->published_at : null,
 			'label'             => $this->label,
-			'labelIcon'         => $this->getLabel(),
+			'icon'              => $this->getIcon(),
 			'class'             => $this->getClass($setSelectedClass),
 			'active'            => $this->active,
 			'authStatus'        => $this->auth_status,
 			'anchorClass'       => $this->getAnchorClass(),
 			'children'          => $this->getChildrenArray($setSelectedClass, $ignoreVisibilityStatus),
-		);
+		];
 	}
 
 	/**

@@ -213,11 +213,9 @@ return array(
 	| The name of your authorization class including the namespace and aF
 	| leading backslash. This variable along with the "authMethod" variables
 	| allow Fractal's built-in views to remain authorization class agnostic.
-	| The default is "\Illuminate\Support\Facades\Auth" which is Laravel 4's
-	| native authorization class.
 	|
 	*/
-	'authClass' => '\Illuminate\Support\Facades\Auth',
+	'authClass' => '\Regulus\Identify\Facade',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -260,7 +258,7 @@ return array(
 	| with the user method above. By default, they get "user()->id" together.
 	|
 	*/
-	'authMethodActiveUserID' => 'id',
+	'authMethodActiveUserId' => 'id',
 
 	/*
 	|--------------------------------------------------------------------------

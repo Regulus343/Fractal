@@ -46,6 +46,17 @@ class Menu extends BaseModel {
 	);
 
 	/**
+	 * The default menu markup options.
+	 *
+	 * @var    array
+	 */
+	public static $markupOptions = array(
+		'class'                 => 'nav navbar-nav',
+		'listItemsOnly'         => false,
+		'actionSubMenuDropDown' => true,
+	);
+
+	/**
 	 * Get the validation rules used by the model.
 	 *
 	 * @param  boolean  $id
@@ -120,20 +131,20 @@ class Menu extends BaseModel {
 	/**
 	 * Create menu markup for Bootstrap.
 	 *
-	 * @param  boolean  $listItemsOnly
-	 * @param  string   $class
+	 * @param  array    $options
 	 * @return string
 	 */
-	public function createMarkup($listItemsOnly = false, $class = '')
+	public function createMarkup($options = array())
 	{
+		$options = array_merge(static::$markupOptions, $options);
+
 		$menu = $this->createArray();
-		if ($class != "")
-			$class = ' '.$class;
 
 		return View::make(Config::get('fractal::viewsLocation').'partials.menu')
 			->with('menu', $menu)
-			->with('listItemsOnly', $listItemsOnly)
-			->with('class', $class)
+			->with('listItemsOnly', $options['listItemsOnly'])
+			->with('class', $options['class'])
+			->with('actionSubMenuDropDown', $options['actionSubMenuDropDown'])
 			->render();
 	}
 
@@ -160,20 +171,19 @@ class Menu extends BaseModel {
 	 * Create menu markup for Bootstrap.
 	 *
 	 * @param  string   $name
-	 * @param  boolean  $listItemsOnly
-	 * @param  string   $class
+	 * @param  array    $options
 	 * @return string
 	 */
-	public static function createMarkupForMenu($name, $listItemsOnly = false, $class = '')
+	public static function createMarkupForMenu($name, $options = array())
 	{
-		$menu = (object) static::getArray($name);
-		if ($class != "")
-			$class = ' '.$class;
+		$menu    = (object) static::getArray($name);
+		$options = array_merge(static::$markupOptions, $options);
 
 		return View::make(Config::get('fractal::viewsLocation').'partials.menu')
 			->with('menu', $menu)
-			->with('listItemsOnly', $listItemsOnly)
-			->with('class', $class)
+			->with('listItemsOnly', $options['listItemsOnly'])
+			->with('class', $options['class'])
+			->with('actionSubMenuDropDown', $options['actionSubMenuDropDown'])
 			->render();
 	}
 
@@ -187,6 +197,7 @@ class Menu extends BaseModel {
 		$menuItems = '';
 		$added     = 0;
 		$complete  = false;
+
 		foreach ($this->items as $menuItem) {
 			if (!$complete) {
 				if (! (int) $menuItem->parent_id && $menuItem->active) {

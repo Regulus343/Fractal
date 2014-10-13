@@ -154,6 +154,8 @@ You may add additional controllers in the `controllers` array in `config.php`. U
 
 	echo Fractal::getMenuMarkup('Footer'); //get "Footer" menu markup
 
+	echo Fractal::getMenuMarkup('Footer', ['class' => 'nav nav-pills']); //set class attribute for menu
+
 **Getting an array of menu items:**
 
 	$menu = Fractal::getMenuArray(); //get "Main" menu array

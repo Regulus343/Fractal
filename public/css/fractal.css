@@ -1,9 +1,66 @@
-html, body { margin: 0; padding: 0; height: 100%; }
+html, body { margin: 0; padding: 0; height: 100%; overflow-x: hidden; white-space: nowrap; }
 
-#container { border-left: 1px solid #ddd; border-right: 1px solid #ddd; }
+.navbar { margin-bottom: 0; }
+.navbar-inverse { border: none; }
 
 a#logo { padding-top: 10px; padding-bottom: 0; }
 a#logo img { height: 30px; border: none; }
+
+#nav-side {
+	position: fixed;
+	left: 0;
+	padding-top: 46px;
+	width: 16%; height: 100%; min-height: 100%;
+	background-color: #111;
+	border-right: 3px solid #444;
+}
+
+#nav-side ul { margin: 8px 4px; }
+#nav-side ul li { margin-bottom: 4px; }
+#nav-side ul li:last-child { margin-bottom: 0; }
+#nav-side ul li a {
+	padding: 10px;
+	color: #ddd;
+	line-height: 1em;
+}
+#nav-side ul li a:hover { background-color: #181818; }
+#nav-side ul li.active>a { background-color: #222; }
+#nav-side ul li a b.caret { position: absolute; top: 16px; right : 5px; color: #555; }
+#nav-side ul li ul {
+	display: none;
+	margin: 0 0 12px 0;
+	padding: 4px 0 4px 12px;
+	border-top: 1px solid #1c1c1c;
+	border-bottom: 1px solid #1c1c1c;
+	list-style: none;
+	font-size: smaller;
+}
+#nav-side ul li ul li a { display: block; padding: 6px 0 6px 10px; }
+#nav-side ul li ul li a:hover { text-decoration: none; }
+
+#nav-side ul li.active ul, #nav-side ul li.open ul { display: block; }
+
+#container-content.sidebar-offset { margin-left: 16%; }
+#container-content .container-pad { padding: 64px 28px 28px 20px; }
+
+@media (min-width: 768px) {
+	#nav-side { width: 22%; }
+	#container-content.sidebar-offset { margin-left: 22%; }
+}
+
+@media (min-width: 992px) {
+	#nav-side { width: 16%; }
+	#container-content.sidebar-offset { margin-left: 16%; }
+}
+
+@media (min-width: 1200px) {
+	#nav-side { width: 12%; }
+	#container-content.sidebar-offset { margin-left: 12%; }
+}
+
+@media (max-width: 768px) {
+	#nav-side ul li span.menu-item-label { display: none; }
+}
 
 h1, h2, h3, h4, h5, h6 { margin-top: 0; }
 
@@ -55,15 +112,17 @@ table tr td span.boolean-false { color: #500; }
 .table tr.danger td { background-color: #f2dede !important; }
 
 .alert-top {
-	z-index: 1000;
-	position: absolute;
-	top: 60px;
-	right: 22px;
+	z-index: 3000;
+	position: fixed;
+	top: 0;
+	left: 18%;
+	padding-top: 8px;
+	padding-bottom: 8px;
 	min-width: 600px;
-	border-color: #aaa;
-	box-shadow: #ccc 1px 2px 5px;
+	border: none;
+	border-radius: 0 0 5px 5px; -webkit-border-radius: 0 0 5px 5px; -moz-border-radius: 0 0 5px 5px;
 }
-.alert-top.alert-success { z-index: 1001; }
+.alert-top.alert-success { z-index: 3001; }
 
 .alert-transparent { opacity: 0.95; filter: alpha(opacity=95); }
 

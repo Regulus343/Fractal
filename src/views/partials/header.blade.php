@@ -10,12 +10,16 @@
 
 	@include(Fractal::view('partials.modal', true))
 
-	<div class="container" id="container">
+	<div class="container-full" id="container">
 
-		@include(Fractal::view('partials.nav', true))
+		@include(Fractal::view('partials.nav_top', true))
 
-		@if (!Site::get('hideTitle'))
-			<h1 id="main-heading">{{ Site::titleHeading() }}</h1>
-		@endif
+		@include(Fractal::view('partials.nav_side', true))
 
-		@include(Fractal::view('partials.messages', true))
+		<div class="container-full sidebar-offset" id="container-content">
+			<div class="container-pad">
+				@if (!Site::get('hideTitle'))
+					<h1 id="main-heading">{{ Site::titleHeading() }}</h1>
+				@endif
+
+				@include(Fractal::view('partials.messages', true))

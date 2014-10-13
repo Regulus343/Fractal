@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap 3.
 
 		created by Cody Jassman
-		version 0.5.9a
-		last updated on October 8, 2014
+		version 0.6.0a
+		last updated on October 13, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -469,6 +469,7 @@ class Fractal {
 		DB::getPaginator()->setCurrentPage($this->pagination['page']);
 
 		$this->pagination['likeTerms'] = '%'.$this->pagination['terms'].'%';
+
 		return $this->pagination;
 	}
 
@@ -861,6 +862,7 @@ class Fractal {
 			$function = $this->separateFunction($auth->methodActiveCheck);
 			return $this->callFunction($function);
 		}
+
 		return false;
 	}
 
@@ -878,6 +880,7 @@ class Fractal {
 				if ($user->roles[0]->role == $auth->methodAdminRole) return true;
 			}
 		}
+
 		return false;
 	}
 
@@ -909,6 +912,7 @@ class Fractal {
 				}
 			}
 		}
+
 		return $allowed;
 	}
 
@@ -924,6 +928,7 @@ class Fractal {
 			$function = $this->separateFunction($auth->methodActiveUser);
 			return $this->callFunction($function);
 		}
+
 		return false;
 	}
 
@@ -932,13 +937,13 @@ class Fractal {
 	 *
 	 * @return boolean
 	 */
-	public function userID()
+	public function userId()
 	{
 		$auth = $this->configAuth();
 		$user = $this->user();
 
-		if (isset($user->{$auth->methodActiveUserID}))
-			return $user->{$auth->methodActiveUserID};
+		if (isset($user->{$auth->methodActiveUserId}))
+			return $user->{$auth->methodActiveUserId};
 
 		return false;
 	}
@@ -952,6 +957,7 @@ class Fractal {
 	public function userByUsername($username)
 	{
 		$users = call_user_func_array("\\".Config::get('auth.model')."::where", array('username', '=', str_replace("'", '', $username)));
+
 		return $users->first();
 	}
 
@@ -967,7 +973,8 @@ class Fractal {
 			case "Canada":        return Lang::get('fractal::labels.province'); break;
 			case "United States": return Lang::get('fractal::labels.state');    break;
 		}
-		return Lang::get('fractal::labels.region'); break;
+
+		return Lang::get('fractal::labels.region');
 	}
 
 	/**
@@ -982,11 +989,12 @@ class Fractal {
 				'class'              => Config::get('fractal::authClass'),
 				'methodActiveCheck'  => Config::get('fractal::authMethodActiveCheck'),
 				'methodActiveUser'   => Config::get('fractal::authMethodActiveUser'),
-				'methodActiveUserID' => Config::get('fractal::authMethodActiveUserID'),
+				'methodActiveUserId' => Config::get('fractal::authMethodActiveUserId'),
 				'methodAdminCheck'   => Config::get('fractal::authMethodAdminCheck'),
 				'methodAdminRole'    => Config::get('fractal::authMethodAdminRole'),
 			);
 		}
+
 		return $this->auth;
 	}
 
@@ -1017,11 +1025,12 @@ class Fractal {
 	 */
 	public function callFunction($function)
 	{
-		if (!isset($function->method) OR !isset($function->parameters)) return false;
+		if (!isset($function->method) || !isset($function->parameters))
+			return false;
 
 		$auth = $this->configAuth();
-		if (substr($function->parameters, 0, 6) == "array(") {
-
+		if (substr($function->parameters, 0, 6) == "array(")
+		{
 			$function->parameters = explode(',', $function->parameters);
 			for ($p = 0; $p < count($function->parameters); $p++) {
 				$function->parameters[$p] = str_replace("'", '', $function->parameters[$p]);
@@ -1071,13 +1080,12 @@ class Fractal {
 	 * Get menu markup for Bootstrap.
 	 *
 	 * @param  string   $name
-	 * @param  boolean  $listItemsOnly
-	 * @param  string   $class
+	 * @param  array    $options
 	 * @return string
 	 */
-	public function getMenuMarkup($name = 'Main', $listItemsOnly = false, $class = '')
+	public function getMenuMarkup($name = 'Main', $options = array())
 	{
-		return Menu::createMarkupForMenu($name, $listItemsOnly, $class);
+		return Menu::createMarkupForMenu($name, $options);
 	}
 
 	/**
