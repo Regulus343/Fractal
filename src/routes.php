@@ -25,7 +25,7 @@ $baseUri     = Config::get('fractal::baseUri');
 $controllers = Config::get('fractal::controllers');
 $methods     = Config::get('fractal::controllerMethods');
 
-/* Setup Routes for Defined Standard Controllers */
+/* Set up Routes for Defined Standard Controllers */
 if (isset($controllers['standard'])) {
 	foreach ($controllers['standard'] as $controllerURI => $controller) {
 		Route::controller($baseUri.'/'.$controllerURI, $controller);
@@ -34,7 +34,7 @@ if (isset($controllers['standard'])) {
 if (isset($controllers['standard']['home']))
 	Route::get($baseUri, $controllers['standard']['home'].'@getIndex');
 
-/* Setup Routes for Defined Resource Controllers */
+/* Set up Routes for Defined Resource Controllers */
 if (isset($controllers['resource'])) {
 	foreach ($controllers['resource'] as $controllerURI => $controller) {
 		Route::resource($baseUri.'/'.$controllerURI, $controller);
@@ -43,7 +43,7 @@ if (isset($controllers['resource'])) {
 if (isset($controllers['resource']['home']))
 	Route::get($baseUri, $controllers['resource']['home'].'@getIndex');
 
-/* Setup Additional Routes for Defined Controller Methods */
+/* Set up Additional Routes for Defined Controller Methods */
 foreach (array('get', 'post') as $type) {
 	if (isset($methods[$type])) {
 		foreach ($methods[$type] as $route => $method) {
@@ -56,10 +56,13 @@ foreach (array('get', 'post') as $type) {
 	}
 }
 
-/* Setup Developer Route (executing route enables "developer mode" via "developer" session variable) */
+/* Set up Developer Route (executing route enables "developer mode" via "developer" session variable) */
 Route::get($baseUri.'/developer/{off?}', 'Regulus\Fractal\Controllers\CoreController@getDeveloper');
 
-/* Setup Authorization Routes */
+/* Set up API Routes */
+Route::controller($baseUri.'/api', 'Regulus\Fractal\Controllers\ApiController');
+
+/* Set up Authorization Routes */
 Route::any($baseUri.'/login', Config::get('fractal::authController').'@login');
 Route::get($baseUri.'/logout', Config::get('fractal::authController').'@logout');
 Route::any($baseUri.'/forgot-password', Config::get('fractal::authController').'@forgotPassword');
@@ -67,7 +70,7 @@ Route::any($baseUri.'/reset-password/{id?}/{code?}', Config::get('fractal::authC
 
 Route::controller($baseUri.'/auth', Config::get('fractal::authController'));
 
-/* Setup Website Content Pages Routes */
+/* Set up Website Content Pages Routes */
 $pageUri    = Config::get('fractal::pageUri');
 $pageMethod = Config::get('fractal::pageMethod');
 if ($pageUri == "") {
@@ -95,7 +98,7 @@ if ($pageUri == "") {
 		Route::get('', $pageMethod);
 }
 
-/* Setup Blog Routes */
+/* Set up Blog Routes */
 if (Config::get('fractal::blog.enabled')) {
 	$blogSubdomain  = Config::get('fractal::blog.subdomain');
 	$blogUri        = Config::get('fractal::blog.baseUri');
@@ -114,7 +117,7 @@ if (Config::get('fractal::blog.enabled')) {
 	});
 }
 
-/* Setup Media Routes */
+/* Set up Media Routes */
 if (Config::get('fractal::media.enabled')) {
 	$mediaSubdomain  = Config::get('fractal::media.subdomain');
 	$mediaUri        = Config::get('fractal::media.baseUri');

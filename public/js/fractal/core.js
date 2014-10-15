@@ -21,7 +21,9 @@ $(document).ready(function(){
 	});
 
 	/* Setup Auto-Hide Alert Messages */
-	setTimeout("$('.alert-auto-hide').fadeOut();", messageShowTime);
+	setTimeout(function(){
+		$('.alert-auto-hide').slideUp('fast');
+	}, messageShowTime);
 
 	/* Setup File Fields */
 	$('input[type="file"].file-upload-button').each(function(){
@@ -69,13 +71,13 @@ $(document).ready(function(){
 
 	$('#search').focus(function(){
 		$(this).animate({
-			width: '360px'
-		});
+			width: '280px'
+		}, 200);
 	}).blur(function(){
 		if ($(this).val().length < 16) {
 			$(this).animate({
-				width: '200px'
-			});
+				width: '164px'
+			}, 200);
 		}
 	});
 
@@ -253,8 +255,11 @@ function setMainMessage(message, type) {
 	clearTimeout(messageTimer);
 
 	$('#message-'+type+' div').html(message);
-	$('#message-'+type).hide().removeClass('hidden').fadeIn('fast');
-	messageTimer = setTimeout("$('.alert-dismissable-hide').fadeOut();", messageShowTime);
+	$('#message-'+type).hide().removeClass('hidden').slideDown('medium');
+
+	messageTimer = setTimeout(function(){
+		$('.alert-dismissable-hide').slideUp('fast');
+	}, messageShowTime);
 }
 
 function modalConfirm(title, message, action, modalId) {
@@ -299,6 +304,34 @@ function modalAjax(url, type, callbackFunction, modalId) {
 function capitalizeFirstLetter(string)
 {
 	return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function setUserState(name, state) {
+	$.ajax({
+		url: baseUrl+'/api/set-user-state',
+		type: 'post',
+		data: {name: name, state: state},
+		success: function(result){
+			console.log('User State Saved: '+name+' = '+state);
+		},
+		error: function(){
+			console.log('User State Change Failed: '+name+' = '+state);
+		}
+	});
+}
+
+function removeUserState(name, state) {
+	$.ajax({
+		url: baseUrl+'/api/remove-user-state',
+		type: 'post',
+		data: {name: name, state: state},
+		success: function(result){
+			console.log('User State Removed: '+name+' = '+state);
+		},
+		error: function(){
+			console.log('User State Removal Failed: '+name+' = '+state);
+		}
+	});
 }
 
 /* Setup Search and Pagination Functions */

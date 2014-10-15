@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap 3.
 
 		created by Cody Jassman
-		version 0.6.0a
-		last updated on October 13, 2014
+		version 0.6.1a
+		last updated on October 14, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -25,10 +25,10 @@ use Regulus\Fractal\Models\Menu;
 use Regulus\Fractal\Models\MenuItem;
 use Regulus\Fractal\Models\Setting;
 
-use \Site as Site;
-use \Form as Form;
-use \Format as Format;
+use \Form;
+use \Format;
 use \HTML as HTML;
+use \Site;
 
 use MaxHoffmann\Parsedown\ParsedownFacade as Markdown;
 
@@ -1096,7 +1096,13 @@ class Fractal {
 	 */
 	public function setMenuItemSelectedClass($menuItem)
 	{
-		return MenuItem::setSelectedClass($menuItem);
+		$class = MenuItem::setSelectedClass($menuItem);
+
+		$menuItem->class = $class;
+
+		$class = MenuItem::setOpenClass($menuItem);
+
+		return $class;
 	}
 
 	/**

@@ -22,6 +22,7 @@ class AuthController extends BaseController {
 	{
 		$section = "Log In";
 		Site::setMulti(array('section', 'title'), $section);
+		Site::set('hideSidebar', true);
 
 		Fractal::setViewsLocation('auth');
 	}

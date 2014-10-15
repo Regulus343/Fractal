@@ -12,11 +12,11 @@
 
 	<div class="container-full" id="container">
 
-		@include(Fractal::view('partials.nav_top', true))
+		@include(Fractal::view('partials.nav.top', true))
 
-		@include(Fractal::view('partials.nav_side', true))
+		@include(Fractal::view('partials.nav.side', true))
 
-		<div class="container-full sidebar-offset" id="container-content">
+		<div class="container-full{{ (!Site::get('hideSidebar') && Auth::checkState('sidebarOpen', true, true) ? ' sidebar-offset' : '') }}" id="container-content">
 			<div class="container-pad">
 				@if (!Site::get('hideTitle'))
 					<h1 id="main-heading">{{ Site::titleHeading() }}</h1>

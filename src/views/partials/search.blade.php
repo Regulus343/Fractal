@@ -1,9 +1,15 @@
-<div class="col-md-4 padding-0">
-	{{ Form::text('search', null, array('placeholder' => Lang::get('fractal::labels.searchBox'))) }}
+@section('search')
 
-	{{ Form::hidden('page', (isset($page) ? $page : 1)) }}
-	{{ Form::hidden('changing_page', 0) }}
+	{{ Form::open(array('url' => Request::url().'/search', 'id' => 'form-search')) }}
 
-	{{ Form::hidden('sort_field') }}
-	{{ Form::hidden('sort_order') }}
-</div>
+		{{ Form::text('search', null, array('placeholder' => Lang::get('fractal::labels.searchBox'))) }}
+
+		{{ Form::hidden('page', (isset($page) ? $page : 1)) }}
+		{{ Form::hidden('changing_page', 0) }}
+
+		{{ Form::hidden('sort_field') }}
+		{{ Form::hidden('sort_order') }}
+
+	{{ Form::close() }}
+
+@endsection

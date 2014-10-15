@@ -1,7 +1,7 @@
 <?php if (is_array($menuItem)) $menuItem = (object) $menuItem; ?>
 
 @if (Fractal::isMenuItemVisible($menuItem))
-	<li class="{{ Fractal::setMenuItemSelectedClass($menuItem) }}">
+	<li class="{{ Fractal::setMenuItemSelectedClass($menuItem) }}" data-menu-item-id="{{ $menuItem->id }}">
 		<a href="{{ URL::to($menuItem->url) }}" class="{{ $menuItem->anchorClass }}"
 		{{ (!empty($menuItem->children) && $actionSubMenuDropDown ? ' data-toggle="dropdown"' : '') }}>
 			{{ $menuItem->icon }}

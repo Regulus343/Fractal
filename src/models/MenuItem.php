@@ -7,6 +7,7 @@ use Fractal;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
 
+use \Auth;
 use \Format;
 use \Site;
 
@@ -157,7 +158,7 @@ class MenuItem extends BaseModel {
 	}
 
 	/**
-	 * Get the class attribute of the menu item.
+	 * Set the "selected" class for the menu item if necessary.
 	 *
 	 * @param  mixed    $item
 	 * @return string
@@ -175,7 +176,30 @@ class MenuItem extends BaseModel {
 		if ($class == $defaultClass && $item->type == "Content Page")
 			$class .= Site::selectBy($checked, $item->page, true, $selectedClass);
 
-		return $class;
+		return trim($class);
+	}
+
+	/**
+	 * Set the "open" class for the menu item if necessary.
+	 *
+	 * @param  mixed    $item
+	 * @return string
+	 */
+	public static function setOpenClass($item)
+	{
+		$openClass    = "open";
+		$defaultClass = $item->class;
+		$class        = $defaultClass;
+		$checked      = Auth::checkState('menuOpen', $item->id);
+
+		if ($checked) {
+			if ($class != "")
+				$class .= " ";
+
+			$class .= $openClass;
+		}
+
+		return trim($class);
 	}
 
 	/**
@@ -185,11 +209,15 @@ class MenuItem extends BaseModel {
 	 */
 	public function getAnchorClass()
 	{
-		$class = '';
-		if (count($this->children)) {
-			if ($class != "") $class .= ' ';
-			$class = 'dropdown-toggle';
+		$class = "";
+		if (count($this->children))
+		{
+			if ($class != "")
+				$class .= " ";
+
+			$class = "dropdown-toggle";
 		}
+
 		return $class;
 	}
 
@@ -234,6 +262,7 @@ class MenuItem extends BaseModel {
 	public function createObject($setSelectedClass = true, $ignoreVisibilityStatus = false)
 	{
 		return (object) [
+			'id'                => (int) $this->id,
 			'parentId'          => (int) $this->parent_id,
 			'type'              => $this->type,
 			'url'               => $this->getUrl(),

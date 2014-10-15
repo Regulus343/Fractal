@@ -22,6 +22,8 @@
 			@else
 				{{ Fractal::getMenuMarkup('CMS Account', ['class' => 'nav navbar-nav navbar-right']) }}
 			@endif
+
+			@yield('search')
 		</div><!-- /.nav-collapse -->
 	</div><!-- /.container-fluid -->
 </nav>

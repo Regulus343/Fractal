@@ -58,10 +58,11 @@ class InstallCommand extends Command {
 		$this->comment('Migrating DB tables...');
 		$this->info($divider);
 
-		$migrationPackages = array(
+		$migrationPackages = [
 			'regulus/fractal',
 			'regulus/activity-log',
-		);
+		];
+
 		foreach ($migrationPackages as $key => $migrationPackage) {
 			if ($key)
 				$this->output->writeln('');
@@ -72,11 +73,11 @@ class InstallCommand extends Command {
 				$prefix = 'vendor';
 
 			$this->output->writeln('<info>Migrating DB tables:</info> '.$migrationPackage);
-			$this->call('migrate', array(
+			$this->call('migrate', [
 				'--env'     => $this->option('env'),
 				'--package' => $migrationPackage,
 				'--path'    => $prefix.'/'.$migrationPackage.'/src/migrations'
-			));
+			]);
 		}
 
 		$this->output->writeln('');
@@ -85,17 +86,18 @@ class InstallCommand extends Command {
 		$this->comment('Seeding DB tables...');
 		$this->info($divider);
 
-		$seedTables = array(
+		$seedTables = [
 			'Settings',
 			'Menus',
 			'ContentLayoutTemplates',
 			'ContentPages',
 			'ContentAreas',
 			'FileMediaTypes',
-		);
+		];
+
 		foreach ($seedTables as $seedTable) {
 			$this->output->writeln('<info>Seeding DB table:</info> '.$seedTable);
-			$this->call('db:seed', array('--class' => $seedTable.'TableSeeder'));
+			$this->call('db:seed', ['--class' => $seedTable.'TableSeeder']);
 		}
 
 		$this->output->writeln('');
@@ -104,16 +106,16 @@ class InstallCommand extends Command {
 		$this->comment('Publishing configuration...');
 		$this->info($divider);
 
-		$configPackages = array(
+		$configPackages = [
 			'regulus/elemental',
 			'regulus/formation',
 			'regulus/solid-site',
 			'regulus/tetra-text',
 			'regulus/upstream',
-		);
+		];
 
 		if (!$workbench)
-			$configPackages = array_merge(array('regulus/fractal'), $configPackages); 
+			$configPackages = array_merge(['regulus/fractal'], $configPackages); 
 
 		foreach ($configPackages as $key => $configPackage) {
 			if ($key)
@@ -125,11 +127,11 @@ class InstallCommand extends Command {
 				$configPath = "regulus/fractal/vendor/".$configPath;
 
 			$this->output->writeln('<info>Publishing configuration:</info> '.$configPackage);
-			$this->call('config:publish', array(
+			$this->call('config:publish', [
 				'package' => $configPackage,
 				'--env'   => $this->option('env'),
-				'--path'  => $prefix.'/'.$configPath.'/src/config'
-			));
+				'--path'  => $prefix.'/'.$configPath.'/src/config',
+			]);
 		}
 
 		$this->output->writeln('');
@@ -152,9 +154,9 @@ class InstallCommand extends Command {
 		$this->info($divider);
 
 		if ($workbench)
-			$arguments = array('--bench' => 'regulus/fractal');
+			$arguments = ['--bench' => 'regulus/fractal'];
 		else
-			$arguments = array('package' => 'regulus/fractal');
+			$arguments = ['package' => 'regulus/fractal'];
 
 		$this->call('asset:publish', $arguments);
 
