@@ -16,10 +16,12 @@
 
 		@include(Fractal::view('partials.nav.side', true))
 
+		@include(Fractal::view('partials.messages', true))
+
 		<div class="container-full{{ (!Site::get('hideSidebar') && Auth::checkState('sidebarOpen', true, true) ? ' sidebar-offset' : '') }}" id="container-content">
 			<div class="container-pad">
 				@if (!Site::get('hideTitle'))
 					<h1 id="main-heading">{{ Site::titleHeading() }}</h1>
-				@endif
 
-				@include(Fractal::view('partials.messages', true))
+					{{ Site::getBreadcrumbTrailMarkup() }}
+				@endif

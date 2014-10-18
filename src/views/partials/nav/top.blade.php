@@ -16,6 +16,10 @@
 			@endif
 		</div>
 
+		<div id="top-buttons">
+			{{ Site::getButtonListMarkup() }}
+		</div>
+
 		<div class="navbar-collapse collapse">
 			@if (Site::get('menus') == "Front")
 				{{ Fractal::getMenuMarkup('Main') }}

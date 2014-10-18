@@ -1,7 +1,5 @@
 <?php namespace Regulus\Fractal\Controllers;
 
-use \BaseController;
-
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 

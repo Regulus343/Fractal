@@ -1,6 +1,4 @@
-<?php namespace Regulus\Fractal\Controllers;
-
-use \BaseController;
+<?php namespace Regulus\Fractal\Controllers\Users;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
@@ -12,6 +10,7 @@ use Illuminate\Support\Facades\View;
 use Fractal;
 
 use Regulus\Fractal\Models\Activity;
+
 use \Form;
 use \Format;
 use \Site;
@@ -20,6 +19,8 @@ class ActivityController extends BaseController {
 
 	public function __construct()
 	{
+		parent::__construct();
+
 		Site::set('section', 'Users');
 
 		$subSection = "User Activity";
@@ -30,6 +31,8 @@ class ActivityController extends BaseController {
 		Site::set('defaultSorting', array('order' => 'desc'));
 
 		Fractal::setViewsLocation('users.activity');
+
+		Fractal::addTrailItem('Activity', 'users/activity');
 	}
 
 	public function getIndex()

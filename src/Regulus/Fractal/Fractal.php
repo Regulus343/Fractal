@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap 3.
 
 		created by Cody Jassman
-		version 0.6.1a
-		last updated on October 14, 2014
+		version 0.6.2a
+		last updated on October 17, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -1145,6 +1145,66 @@ class Fractal {
 			return $layoutTags[1];
 
 		return array();
+	}
+
+	/**
+	 * Add an item to the breadcrumb trail.
+	 *
+	 * @param  string   $title
+	 * @param  string   $uri
+	 * @return void
+	 */
+	public function addTrailItem($title = '', $uri = null)
+	{
+		if (!is_null($uri))
+			$uri = static::uri($uri);
+
+		Site::addTrailItem($title, $uri);
+	}
+
+	/**
+	 * Add items to the breadcrumb trail.
+	 *
+	 * @param  array    $items
+	 * @return void
+	 */
+	public function addTrailItems($items)
+	{
+		foreach ($items as $item) {
+			static::addTrailItem($item);
+		}
+	}
+
+	/**
+	 * Add a button to the button list.
+	 *
+	 * @param  mixed    $label
+	 * @param  string   $uri
+	 * @return void
+	 */
+	public function addButton($label = '', $uri = null)
+	{
+		if (is_array($label) && isset($label['uri']) && !is_null($label['uri'])) {
+			$label['uri'] = static::uri($label['uri']);
+		} else {
+			if (!is_null($uri))
+				$uri = static::uri($uri);
+		}
+
+		Site::addButton($label, $uri);
+	}
+
+	/**
+	 * Add buttons to the button list.
+	 *
+	 * @param  array    $buttons
+	 * @return void
+	 */
+	public function addButtons($buttons)
+	{
+		foreach ($buttons as $button) {
+			static::addButton($button);
+		}
 	}
 
 	/**

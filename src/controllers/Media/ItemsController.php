@@ -1,7 +1,5 @@
 <?php namespace Regulus\Fractal\Controllers\Media;
 
-use \BaseController;
-
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
@@ -26,6 +24,8 @@ class ItemsController extends BaseController {
 
 	public function __construct()
 	{
+		parent::__construct();
+
 		Site::set('section', 'Content');
 		$subSection = "Media";
 		Site::setMulti(array('subSection', 'title'), $subSection);
@@ -34,6 +34,8 @@ class ItemsController extends BaseController {
 		Fractal::setContentType('media-item', true);
 
 		Fractal::setViewsLocation('media.items');
+
+		Fractal::addTrailItem('Items', 'media/items');
 	}
 
 	public function index()
@@ -48,6 +50,12 @@ class ItemsController extends BaseController {
 
 		if (!count($media))
 			$media = MediaItem::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
+
+		Fractal::addButton([
+			'label' => Lang::get('fractal::labels.createItem'),
+			'icon'  => 'glyphicon glyphicon-file',
+			'uri'   => 'media/items/create',
+		]);
 
 		return View::make(Fractal::view('list'))
 			->with('content', $media)
@@ -82,6 +90,12 @@ class ItemsController extends BaseController {
 		$this->setDefaultImageSizes();
 
 		Form::setErrors();
+
+		Fractal::addButton([
+			'label' => Lang::get('fractal::labels.returnToItemsList'),
+			'icon'  => 'glyphicon glyphicon-list',
+			'uri'   => 'media/items',
+		]);
 
 		return View::make(Fractal::view('form'));
 	}
@@ -200,6 +214,18 @@ class ItemsController extends BaseController {
 		$this->setDefaultImageSizes();
 
 		Form::setErrors();
+
+		Fractal::addButtons([
+			[
+				'label' => Lang::get('fractal::labels.returnToItemsList'),
+				'icon'  => 'glyphicon glyphicon-list',
+				'uri'   => 'media/items',
+			],[
+				'label' => Lang::get('fractal::labels.viewItem'),
+				'icon'  => 'glyphicon glyphicon-file',
+				'url'   => $item->getUrl(),
+			]
+		]);
 
 		return View::make(Fractal::view('form'))
 			->with('update', true)

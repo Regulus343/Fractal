@@ -1,7 +1,5 @@
 <?php namespace Regulus\Fractal\Controllers;
 
-use \BaseController;
-
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
@@ -25,12 +23,16 @@ class PagesController extends BaseController {
 
 	public function __construct()
 	{
+		parent::__construct();
+
 		Site::set('section', 'Content');
 		$subSection = "Pages";
 		Site::setMulti(array('subSection', 'title'), $subSection);
 
 		//set content type and views location
 		Fractal::setContentType('page', true);
+
+		Fractal::addTrailItem('Pages', 'pages');
 	}
 
 	public function index()
@@ -45,6 +47,12 @@ class PagesController extends BaseController {
 
 		if (!count($pages))
 			$pages = ContentPage::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
+
+		Fractal::addButton([
+			'label' => Lang::get('fractal::labels.createPage'),
+			'icon'  => 'glyphicon glyphicon-file',
+			'uri'   => 'pages/create',
+		]);
 
 		return View::make(Fractal::view('list'))
 			->with('content', $pages)
@@ -78,6 +86,12 @@ class PagesController extends BaseController {
 		Form::setErrors();
 
 		$layoutTagOptions = $this->getLayoutTagOptions();
+
+		Fractal::addButton([
+			'label' => Lang::get('fractal::labels.returnToPagesList'),
+			'icon'  => 'glyphicon glyphicon-list',
+			'uri'   => 'pages',
+		]);
 
 		return View::make(Fractal::view('form'))
 			->with('layoutTagOptions', $layoutTagOptions);
@@ -134,6 +148,18 @@ class PagesController extends BaseController {
 		Form::setErrors();
 
 		$layoutTagOptions = $this->getLayoutTagOptions($page->getLayoutTags());
+
+		Fractal::addButtons([
+			[
+				'label' => Lang::get('fractal::labels.returnToPagesList'),
+				'icon'  => 'glyphicon glyphicon-list',
+				'uri'   => 'pages',
+			],[
+				'label' => Lang::get('fractal::labels.viewPage'),
+				'icon'  => 'glyphicon glyphicon-file',
+				'url'   => $page->getUrl(),
+			]
+		]);
 
 		return View::make(Fractal::view('form'))
 			->with('update', true)

@@ -1,7 +1,5 @@
 <?php namespace Regulus\Fractal\Controllers;
 
-use \BaseController;
-
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -26,12 +24,16 @@ class FilesController extends BaseController {
 
 	public function __construct()
 	{
+		parent::__construct();
+
 		Site::set('section', 'Content');
 		$subSection = "Files";
 		Site::setMulti(array('subSection', 'title'), $subSection);
 
 		//set content type and views location
 		Fractal::setContentType('file', true);
+
+		Fractal::addTrailItem('Files', 'files');
 	}
 
 	public function index()
@@ -46,6 +48,12 @@ class FilesController extends BaseController {
 
 		if (!count($files))
 			$files = ContentFile::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
+
+		Fractal::addButton([
+			'label' => Lang::get('fractal::labels.uploadFile'),
+			'icon'  => 'glyphicon glyphicon-file',
+			'uri'   => 'files/create',
+		]);
 
 		return View::make(Fractal::view('list'))
 			->with('content', $files)
@@ -77,6 +85,12 @@ class FilesController extends BaseController {
 		$this->setDefaultImageSize();
 
 		Form::setErrors();
+
+		Fractal::addButton([
+			'label' => Lang::get('fractal::labels.returnToFilesList'),
+			'icon'  => 'glyphicon glyphicon-list',
+			'uri'   => 'files',
+		]);
 
 		return View::make(Fractal::view('form'))->with('update', false);
 	}
@@ -155,6 +169,12 @@ class FilesController extends BaseController {
 		$this->setDefaultImageSize();
 
 		Form::setErrors();
+
+		Fractal::addButton([
+			'label' => Lang::get('fractal::labels.returnToFilesList'),
+			'icon'  => 'glyphicon glyphicon-list',
+			'uri'   => 'files',
+		]);
 
 		return View::make(Fractal::view('form'))->with('update', true);
 	}

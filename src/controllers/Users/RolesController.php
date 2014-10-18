@@ -1,6 +1,4 @@
-<?php namespace Regulus\Fractal\Controllers;
-
-use \BaseController;
+<?php namespace Regulus\Fractal\Controllers\Users;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
@@ -18,10 +16,12 @@ use \Form;
 use \Format;
 use \Site;
 
-class UserRolesController extends BaseController {
+class RolesController extends BaseController {
 
 	public function __construct()
 	{
+		parent::__construct();
+
 		Site::set('section', 'Content');
 
 		$subSection = "User Roles";
@@ -33,6 +33,8 @@ class UserRolesController extends BaseController {
 		Site::set('defaultSorting', array('field' => 'display_order', 'order' => 'asc'));
 
 		Fractal::setViewsLocation('users.roles');
+
+		Fractal::addTrailItem('Roles', 'users/roles');
 	}
 
 	public function index()
@@ -47,6 +49,12 @@ class UserRolesController extends BaseController {
 
 		if (!count($roles))
 			$roles = Role::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
+
+		Fractal::addButton([
+			'label' => Lang::get('fractal::labels.createRole'),
+			'icon'  => 'glyphicon glyphicon-star',
+			'uri'   => 'users/roles/create',
+		]);
 
 		return View::make(Fractal::view('list'))
 			->with('content', $roles)
@@ -77,6 +85,12 @@ class UserRolesController extends BaseController {
 		Site::set('wysiwyg', true);
 
 		Form::setErrors();
+
+		Fractal::addButton([
+			'label' => Lang::get('fractal::labels.returnToRolesList'),
+			'icon'  => 'glyphicon glyphicon-list',
+			'uri'   => 'users/roles',
+		]);
 
 		return View::make(Fractal::view('form'));
 	}
@@ -135,6 +149,12 @@ class UserRolesController extends BaseController {
 
 		Form::setDefaults($role);
 		Form::setErrors();
+
+		Fractal::addButton([
+			'label' => Lang::get('fractal::labels.returnToRolesList'),
+			'icon'  => 'glyphicon glyphicon-list',
+			'uri'   => 'users/roles',
+		]);
 
 		return View::make(Fractal::view('form'))->with('update', true);
 	}

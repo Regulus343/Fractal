@@ -1,7 +1,5 @@
 <?php namespace Regulus\Fractal\Controllers\Blogs;
 
-use \BaseController;
-
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
@@ -25,8 +23,10 @@ class ArticlesController extends BaseController {
 
 	public function __construct()
 	{
+		parent::__construct();
+
 		Site::set('section', 'Content');
-		$subSection = "Blog";
+		$subSection = "Blogs";
 		Site::set('subSection', $subSection);
 		Site::set('title', 'Blog Articles');
 
@@ -34,6 +34,8 @@ class ArticlesController extends BaseController {
 		Fractal::setContentType('blog-article', true);
 
 		Fractal::setViewsLocation('blogs.articles');
+
+		Fractal::addTrailItem('Articles', 'blogs/articles');
 	}
 
 	public function index()
@@ -48,6 +50,12 @@ class ArticlesController extends BaseController {
 
 		if (!count($articles))
 			$articles = BlogArticle::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
+
+		Fractal::addButton([
+			'label' => Lang::get('fractal::labels.createArticle'),
+			'icon'  => 'glyphicon glyphicon-file',
+			'uri'   => 'blogs/articles/create',
+		]);
 
 		return View::make(Fractal::view('list'))
 			->with('content', $articles)
@@ -81,6 +89,12 @@ class ArticlesController extends BaseController {
 		Form::setErrors();
 
 		$layoutTagOptions = $this->getLayoutTagOptions();
+
+		Fractal::addButton([
+			'label' => Lang::get('fractal::labels.returnToArticlesList'),
+			'icon'  => 'glyphicon glyphicon-list',
+			'uri'   => 'blogs/articles',
+		]);
 
 		return View::make(Fractal::view('form'))
 			->with('layoutTagOptions', $layoutTagOptions);
@@ -137,6 +151,18 @@ class ArticlesController extends BaseController {
 		Form::setErrors();
 
 		$layoutTagOptions = $this->getLayoutTagOptions($article->getLayoutTags());
+
+		Fractal::addButtons([
+			[
+				'label' => Lang::get('fractal::labels.returnToArticlesList'),
+				'icon'  => 'glyphicon glyphicon-list',
+				'uri'   => 'blogs/articles',
+			],[
+				'label' => Lang::get('fractal::labels.viewArticle'),
+				'icon'  => 'glyphicon glyphicon-file',
+				'url'   => $article->getUrl(),
+			]
+		]);
 
 		return View::make(Fractal::view('form'))
 			->with('update', true)

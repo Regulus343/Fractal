@@ -2,7 +2,7 @@
 
 return array(
 
-	'version'              => '0.6.1a',
+	'version'              => '0.6.2a',
 
 	'create'               => 'Create',
 	'edit'                 => 'Edit',
@@ -16,6 +16,7 @@ return array(
 	'editMenu'             => 'Edit Menu',
 	'deleteMenu'           => 'Delete Menu',
 	'removeMenuItem'       => 'Remove Menu Item',
+	'returnToMenusList'    => 'Return to Menus List',
 
 	'createPage'           => 'Create Page',
 	'editPage'             => 'Edit Page',
@@ -31,6 +32,7 @@ return array(
 	'editFile'             => 'Edit File',
 	'openFile'             => 'Open File',
 	'deleteFile'           => 'Delete File',
+	'returnToFilesList'    => 'Return to Files List',
 
 	'createArticle'        => 'Create Article',
 	'editArticle'          => 'Edit Article',
@@ -49,10 +51,12 @@ return array(
 	'banUser'              => 'Ban User',
 	'unbanUser'            => 'Unban User',
 	'deleteUser'           => 'Delete User',
+	'returnToUsersList'    => 'Return to Users List',
 
 	'createRole'           => 'Create Role',
 	'editRole'             => 'Edit Role',
 	'deleteRole'           => 'Delete Role',
+	'returnToRolesList'    => 'Return to Roles List',
 
 	'menu'                 => 'Menu',
 	'menuItem'             => 'Menu Item',

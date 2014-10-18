@@ -1,7 +1,5 @@
 <?php namespace Regulus\Fractal\Controllers;
 
-use \BaseController;
-
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
@@ -22,11 +20,15 @@ class SettingsController extends BaseController {
 
 	public function __construct()
 	{
+		parent::__construct();
+
 		$section = "Settings";
 		Site::setMulti(array('section', 'titleHeading'), $section);
 		Site::set('title', $section);
 
 		Fractal::setViewsLocation('settings');
+
+		Fractal::addTrailItem('Settings', 'settings');
 	}
 
 	public function getIndex()

@@ -63,7 +63,7 @@ class MenusTableSeeder extends Seeder {
 							),
 
 							array(
-								'uri'           => 'blog/articles',
+								'uri'           => 'blogs/articles',
 								'label'         => 'Blog',
 								'icon'          => 'file',
 								'display_order' => 5,
@@ -91,7 +91,7 @@ class MenusTableSeeder extends Seeder {
 							),
 
 							array(
-								'uri'           => 'user-roles',
+								'uri'           => 'users/roles',
 								'label'         => 'User Roles',
 								'icon'          => 'book',
 								'display_order' => 2,
@@ -100,7 +100,7 @@ class MenusTableSeeder extends Seeder {
 							),
 
 							array(
-								'uri'           => 'activity',
+								'uri'           => 'users/activity',
 								'label'         => 'User Activity',
 								'icon'          => 'info-sign',
 								'display_order' => 3,

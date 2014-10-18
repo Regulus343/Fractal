@@ -26,19 +26,21 @@ return array(
 	*/
 	'controllers' => array(
 		'standard' => array(
-			'home'     => 'Regulus\Fractal\Controllers\CoreController',
-			'settings' => 'Regulus\Fractal\Controllers\SettingsController',
-			'account'  => 'Regulus\Fractal\Controllers\AccountController',
-			'activity' => 'Regulus\Fractal\Controllers\ActivityController',
+			'home'           => 'Regulus\Fractal\Controllers\CoreController',
+			'settings'       => 'Regulus\Fractal\Controllers\SettingsController',
+			'account'        => 'Regulus\Fractal\Controllers\AccountController',
+			'users/activity' => 'Regulus\Fractal\Controllers\Users\ActivityController',
 		),
 		'resource' => array(
-			'menus'         => 'Regulus\Fractal\Controllers\MenusController',
-			'pages'         => 'Regulus\Fractal\Controllers\PagesController',
-			'files'         => 'Regulus\Fractal\Controllers\FilesController',
-			'users'         => 'Regulus\Fractal\Controllers\UsersController',
-			'user-roles'    => 'Regulus\Fractal\Controllers\UserRolesController',
-			'media/items'   => 'Regulus\Fractal\Controllers\Media\ItemsController',
-			'blog/articles' => 'Regulus\Fractal\Controllers\Blogs\ArticlesController',
+			'menus'          => 'Regulus\Fractal\Controllers\MenusController',
+			'pages'          => 'Regulus\Fractal\Controllers\PagesController',
+			'files'          => 'Regulus\Fractal\Controllers\FilesController',
+			'users/roles'    => 'Regulus\Fractal\Controllers\Users\RolesController',
+			'users'          => 'Regulus\Fractal\Controllers\Users\UsersController',
+			'media/items'    => 'Regulus\Fractal\Controllers\Media\ItemsController',
+			'media'          => 'Regulus\Fractal\Controllers\Media\MediaController',
+			'blogs/articles' => 'Regulus\Fractal\Controllers\Blogs\ArticlesController',
+			'blogs'          => 'Regulus\Fractal\Controllers\Blogs\BlogsController',
 		),
 	),
 

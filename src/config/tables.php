@@ -344,7 +344,7 @@ return array(
 				'elements'  => array(
 					array(
 						'icon'       => 'edit',
-						'uri'        => Config::get('fractal::baseUri').'/blog/articles/:slug/edit',
+						'uri'        => Config::get('fractal::baseUri').'/blogs/articles/:slug/edit',
 						'attributes' => array(
 							'title'        => Lang::get('fractal::labels.editArticle'),
 						),
@@ -552,7 +552,7 @@ return array(
 				'elements'  => array(
 					array(
 						'icon'       => 'edit',
-						'uri'        => Config::get('fractal::baseUri').'/user-roles/:id/edit',
+						'uri'        => Config::get('fractal::baseUri').'/users/roles/:id/edit',
 						'attributes' => array(
 							'title'        => Lang::get('fractal::labels.editRole'),
 						),

@@ -3,8 +3,12 @@ html, body { margin: 0; padding: 0; height: 100%; overflow-x: hidden; white-spac
 .navbar { margin-bottom: 0; }
 .navbar-inverse { border: none; }
 
-a#logo { padding-top: 10px; padding-bottom: 0; }
+a#logo { padding-top: 10px; padding-bottom: 0; width: 200px; }
 a#logo img { height: 30px; border: none; }
+
+#top-buttons { float: left; padding-top: 6px; }
+#top-buttons .btn { background: none; color: #fff; border-color: #444; text-shadow: none; }
+#top-buttons .btn:hover { border-color: #777; }
 
 #nav-side {
 	z-index: 20;
@@ -43,6 +47,7 @@ a#logo img { height: 30px; border: none; }
 	color: #ddd;
 	line-height: 1em;
 }
+
 #nav-side ul li a:hover { background-color: #181818; }
 #nav-side ul li.open>a { background-color: #181818; }
 #nav-side ul li.active>a { background-color: #222; }

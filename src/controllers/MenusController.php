@@ -1,7 +1,5 @@
 <?php namespace Regulus\Fractal\Controllers;
 
-use \BaseController;
-
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
@@ -23,6 +21,8 @@ class MenusController extends BaseController {
 
 	public function __construct()
 	{
+		parent::__construct();
+
 		Site::set('section', 'Content');
 		$subSection = "Menus";
 		Site::setMulti(array('subSection', 'title'), $subSection);
@@ -31,6 +31,8 @@ class MenusController extends BaseController {
 		Fractal::setContentType('menu', true);
 
 		Site::set('defaultSorting', array('field' => 'cms'));
+
+		Fractal::addTrailItem('Menus', 'menus');
 	}
 
 	public function index()
@@ -45,6 +47,12 @@ class MenusController extends BaseController {
 
 		if (!count($menus))
 			$menus = Menu::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
+
+		Fractal::addButton([
+			'label' => Lang::get('fractal::labels.createMenu'),
+			'icon'  => 'glyphicon glyphicon-list',
+			'uri'   => 'menus/create',
+		]);
 
 		return View::make(Fractal::view('list'))
 			->with('content', $menus)
@@ -74,6 +82,12 @@ class MenusController extends BaseController {
 		Site::set('title', 'Create Menu');
 
 		Form::setErrors();
+
+		Fractal::addButton([
+			'label' => Lang::get('fractal::labels.returnToMenusList'),
+			'icon'  => 'glyphicon glyphicon-list',
+			'uri'   => 'menus',
+		]);
 
 		return View::make(Fractal::view('form'));
 	}
@@ -123,6 +137,12 @@ class MenusController extends BaseController {
 
 		$menu->setDefaults(array('items'));
 		Form::setErrors();
+
+		Fractal::addButton([
+			'label' => Lang::get('fractal::labels.returnToMenusList'),
+			'icon'  => 'glyphicon glyphicon-list',
+			'uri'   => 'menus',
+		]);
 
 		return View::make(Fractal::view('form'))
 			->with('update', true)

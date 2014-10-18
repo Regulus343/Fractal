@@ -240,7 +240,7 @@ $(document).ready(function(){
 	$('a.return-to-top').click(function(e){
 		e.preventDefault();
 
-		$('html,body').animate({
+		$('html, body').animate({
 			scrollTop: 0
 		}, 500);
 	});

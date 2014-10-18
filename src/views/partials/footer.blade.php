@@ -22,7 +22,7 @@
 
 			@if (Site::get('menus') == "Front")
 				<ul class="menu">
-					{{ Fractal::getMenuMarkup('Footer', true) }}
+					{{ Fractal::getMenuMarkup('Footer', ['listItemsOnly' => true]) }}
 				</ul>
 			@endif
 		</div><!-- /.pad -->

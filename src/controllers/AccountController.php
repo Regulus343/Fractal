@@ -1,7 +1,5 @@
 <?php namespace Regulus\Fractal\Controllers;
 
-use \BaseController;
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Hash;
@@ -21,6 +19,8 @@ class AccountController extends BaseController {
 
 	public function __construct()
 	{
+		parent::__construct();
+
 		$section = "Account";
 		Site::setMulti(array('section', 'title'), $section);
 

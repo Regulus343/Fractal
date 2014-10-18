@@ -1,7 +1,5 @@
 <?php namespace Regulus\Fractal\Controllers;
 
-use \BaseController;
-
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
@@ -20,8 +18,9 @@ class CoreController extends BaseController {
 
 	public function __construct()
 	{
-		$section = "Home";
-		Site::setMulti(array('section', 'title'), $section);
+		parent::__construct();
+
+		Site::setMulti(array('section', 'title'), 'Home');
 
 		Fractal::setViewsLocation('core');
 	}

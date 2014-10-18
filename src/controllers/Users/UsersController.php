@@ -1,6 +1,4 @@
-<?php namespace Regulus\Fractal\Controllers;
-
-use \BaseController;
+<?php namespace Regulus\Fractal\Controllers\Users;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -26,6 +24,8 @@ class UsersController extends BaseController {
 
 	public function __construct()
 	{
+		parent::__construct();
+
 		Site::set('section', 'Content');
 		$section = "Users";
 		Site::setMulti(array('section', 'subSection', 'title'), $section);
@@ -46,6 +46,12 @@ class UsersController extends BaseController {
 
 		if (!count($users))
 			$users = User::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
+
+		Fractal::addButton([
+			'label' => Lang::get('fractal::labels.createUser'),
+			'icon'  => 'glyphicon glyphicon-user',
+			'uri'   => 'users/create',
+		]);
 
 		return View::make(Fractal::view('list'))
 			->with('content', $users)
@@ -83,6 +89,12 @@ class UsersController extends BaseController {
 
 		Form::setDefaults($defaults);
 		Form::setErrors();
+
+		Fractal::addButton([
+			'label' => Lang::get('fractal::labels.returnToUsersList'),
+			'icon'  => 'glyphicon glyphicon-list',
+			'uri'   => 'users',
+		]);
 
 		return View::make(Fractal::view('form'));
 	}
@@ -154,6 +166,12 @@ class UsersController extends BaseController {
 
 		Form::setDefaults($user, array('roles' => 'id'));
 		Form::setErrors();
+
+		Fractal::addButton([
+			'label' => Lang::get('fractal::labels.returnToUsersList'),
+			'icon'  => 'glyphicon glyphicon-list',
+			'uri'   => 'users',
+		]);
 
 		return View::make(Fractal::view('form'))->with('update', true);
 	}
