@@ -379,7 +379,7 @@ return [
 	| set this to true to use it within Fractal.
 	|
 	*/
-	'exterminator' => true,
+	'exterminator' => false,
 
 	/*
 	|--------------------------------------------------------------------------
