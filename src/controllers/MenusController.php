@@ -24,13 +24,13 @@ class MenusController extends BaseController {
 		parent::__construct();
 
 		Site::set('section', 'Content');
-		$subSection = "Menus";
-		Site::setMulti(array('subSection', 'title'), $subSection);
+		Site::set('subSection', 'Menus');
+		Site::set('title', Fractal::lang('labels.menus'));
 
 		//set content type and views location
 		Fractal::setContentType('menu', true);
 
-		Site::set('defaultSorting', array('field' => 'cms'));
+		Site::set('defaultSorting', ['field' => 'cms']);
 
 		Fractal::addTrailItem('Menus', 'menus');
 	}
@@ -49,7 +49,7 @@ class MenusController extends BaseController {
 			$menus = Menu::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
-			'label' => Lang::get('fractal::labels.createMenu'),
+			'label' => Fractal::lang('labels.createMenu'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => 'menus/create',
 		]);
@@ -84,7 +84,7 @@ class MenusController extends BaseController {
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Lang::get('fractal::labels.returnToMenusList'),
+			'label' => Fractal::lang('labels.returnToMenusList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => 'menus',
 		]);
@@ -96,27 +96,27 @@ class MenusController extends BaseController {
 	{
 		Form::setValidationRules(Menu::validationRules());
 
-		$messages = array();
+		$messages = [];
 		if (Form::validated()) {
-			$messages['success'] = Lang::get('fractal::messages.successCreated', array('item' => Format::a('menu')));
+			$messages['success'] = Fractal::lang('messages.successCreated', ['item' => Fractal::langLowerA('labels.menu')]);
 
 			$menu = Menu::createNew();
 
 			//re-export menus to config array
 			Fractal::exportMenus();
 
-			Activity::log(array(
+			Activity::log([
 				'contentId'   => $menu->id,
 				'contentType' => 'Menu',
 				'action'      => 'Create',
 				'description' => 'Created a Menu',
 				'details'     => 'Name: '.$menu->name,
-			));
+			]);
 
 			return Redirect::to(Fractal::uri('menus'))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
+			$messages['error'] = Fractal::lang('messages.errorGeneral');
 		}
 
 		return Redirect::to(Fractal::uri('menus/create'))
@@ -129,17 +129,18 @@ class MenusController extends BaseController {
 	{
 		$menu = Menu::find($id);
 		if (empty($menu))
-			return Redirect::to(Fractal::uri('menus'))
-				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'menu'))));
+			return Redirect::to(Fractal::uri('menus'))->with('messages', [
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.menu')])
+			]);
 
 		Site::set('title', $menu->name.' (Menu)');
 		Site::set('titleHeading', 'Update Menu: <strong>'.Format::entities($menu->name).'</strong>');
 
-		$menu->setDefaults(array('items'));
+		$menu->setDefaults(['items']);
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Lang::get('fractal::labels.returnToMenusList'),
+			'label' => Fractal::lang('labels.returnToMenusList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => 'menus',
 		]);
@@ -153,33 +154,34 @@ class MenusController extends BaseController {
 	{
 		$menu = Menu::find($id);
 		if (empty($menu))
-			return Redirect::to(Fractal::uri('menus'))
-				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'menu'))));
+			return Redirect::to(Fractal::uri('menus'))->with('messages', [
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.menu')])
+			]);
 
 		Form::setValidationRules(Menu::validationRules($id));
 
-		$messages = array();
+		$messages = [];
 		if (Form::validated()) {
-			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Format::a('menu')));
+			$messages['success'] = Fractal::lang('messages.successUpdated', ['item' => Fractal::langLowerA('labels.menu')]);
 
 			$menu->saveData();
 
 			//re-export menus to config array
 			Fractal::exportMenus();
 
-			Activity::log(array(
+			Activity::log([
 				'contentId'   => $menu->id,
 				'contentType' => 'Menu',
 				'action'      => 'Update',
 				'description' => 'Updated a Menu',
 				'details'     => 'Name: '.$menu->name,
 				'updated'     => true,
-			));
+			]);
 
 			return Redirect::to(Fractal::uri('menus'))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
+			$messages['error'] = Fractal::lang('messages.errorGeneral');
 
 			return Redirect::to(Fractal::uri('menus/'.$id.'/edit'))
 				->with('messages', $messages)
@@ -190,25 +192,25 @@ class MenusController extends BaseController {
 
 	public function destroy($id)
 	{
-		$result = array(
+		$result = [
 			'resultType' => 'Error',
-			'message'    => Lang::get('fractal::messages.errorGeneral'),
-		);
+			'message'    => Fractal::lang('messages.errorGeneral'),
+		];
 
 		$menu = Menu::find($id);
 		if (empty($menu))
 			return $result;
 
-		Activity::log(array(
+		Activity::log([
 			'contentId'   => $menu->id,
 			'contentType' => 'Menu',
 			'action'      => 'Delete',
 			'description' => 'Deleted a Menu',
 			'details'     => 'Name: '.$menu->name,
-		));
+		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Lang::get('fractal::messages.successDeleted', array('item' => '<strong>'.$menu->name.'</strong>'));
+		$result['message']    = Fractal::lang('messages.successDeleted', ['item' => '<strong>'.$menu->name.'</strong>']);
 
 		$menu->items()->delete();
 		$menu->delete();

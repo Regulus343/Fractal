@@ -20,7 +20,8 @@ class CoreController extends BaseController {
 	{
 		parent::__construct();
 
-		Site::setMulti(array('section', 'title'), 'Home');
+		Site::setMulti(['section', 'subSection'], 'Home');
+		Site::set('title', Fractal::lang('labels.home'));
 
 		Fractal::setViewsLocation('core');
 	}
@@ -35,10 +36,10 @@ class CoreController extends BaseController {
 	{
 		if ($off == "off") {
 			Session::forget('developer');
-			return Redirect::to(Fractal::url())->with('messages', array('info' => Lang::get('fractal::messages.developerModeDisabled')));
+			return Redirect::to(Fractal::url())->with('messages', array('info' => Fractal::lang('messages.developerModeDisabled')));
 		} else {
 			Site::setDeveloper();
-			return Redirect::to(Fractal::url())->with('messages', array('info' => Lang::get('fractal::messages.developerModeEnabled')));
+			return Redirect::to(Fractal::url())->with('messages', array('info' => Fractal::lang('messages.developerModeEnabled')));
 		}
 	}
 

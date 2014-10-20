@@ -21,8 +21,8 @@ class AccountController extends BaseController {
 	{
 		parent::__construct();
 
-		$section = "Account";
-		Site::setMulti(array('section', 'title'), $section);
+		Site::setMulti(['section', 'subSection'], 'Account');
+		Site::set('title', Fractal::lang('labels.account'));
 
 		Fractal::setViewsLocation('account');
 	}
@@ -40,16 +40,16 @@ class AccountController extends BaseController {
 		$user = Auth::user();
 		Form::setDefaults($user);
 
-		$rules = array(
-			'username' => array('required', 'alpha_dash', 'min:3', 'unique:auth_users,username,'.$user->id),
-			'email'    => array('required', 'email'),
-		);
+		$rules = [
+			'username' => ['required', 'alpha_dash', 'min:3', 'unique:auth_users,username,'.$user->id],
+			'email'    => ['required', 'email'],
+		];
 
 		if (Fractal::getSetting('Require Unique Email Addresses'))
 			$rules['email'][] = 'unique:auth_users,email,'.$user->id;
 
 		if (Input::get('password') != "") {
-			$rules['password'] = array('required', 'confirmed');
+			$rules['password'] = ['required', 'confirmed'];
 
 			$minPasswordLength = Fractal::getSetting('Minimum Password Length');
 			if ($minPasswordLength)
@@ -58,9 +58,9 @@ class AccountController extends BaseController {
 
 		Form::setValidationRules($rules);
 
-		$messages = array();
+		$messages = [];
 		if (Form::validated()) {
-			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Lang::get('fractal::labels.yourAccount')));
+			$messages['success'] = Fractal::lang('messages.successUpdated', ['item' => Fractal::lang('labels.yourAccount')]);
 
 			$user->fill(Input::except('csrf_token', 'password', 'password_confirmation'));
 			$user->first_name = Format::name($user->first_name);
@@ -71,7 +71,7 @@ class AccountController extends BaseController {
 
 			$user->save();
 		} else {
-			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
+			$messages['error'] = Fractal::lang('messages.errorGeneral');
 		}
 
 		return Redirect::to(Fractal::uri('account'))

@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
 	/*
 	|--------------------------------------------------------------------------
@@ -85,4 +85,4 @@ return array(
 	*/
 	'useStandardLayoutForArticleList' => true,
 
-);
+];

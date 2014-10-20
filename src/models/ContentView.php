@@ -22,14 +22,14 @@ class ContentView extends BaseModel {
 	 *
 	 * @var    array
 	 */
-	protected $fillable = array(
+	protected $fillable = [
 		'user_id',
 		'content_id',
 		'content_type',
 		'ip_address',
 		'user_agent',
 		'views',
-	);
+	];
 
 	/**
 	 * Log a content view.

@@ -23,12 +23,14 @@ class CreateMenuItemsTable extends Migration {
 			$table->string('uri', 120);
 			$table->string('subdomain', 64)->nullable();
 			$table->string('label');
+			$table->string('label_language_key')->nullable();
 			$table->string('icon', 72);
 			$table->string('class');
 			$table->string('additional_info');
 			$table->integer('display_order');
 			$table->integer('auth_status');
 			$table->string('auth_roles');
+			$table->string('auth_permissions');
 			$table->boolean('active');
 
 			$table->timestamps();

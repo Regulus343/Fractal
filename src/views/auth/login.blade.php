@@ -13,7 +13,7 @@
 
 	<link type="text/css" rel="stylesheet" href="{{ Site::css('login', 'regulus/fractal') }}" />
 
-	{{ Form::open(array('class' => 'form-login')) }}
+	{{ Form::open(['class' => 'form-login']) }}
 		<h2>{{ Site::titleHeading() }}</h2>
 
 		{{ Form::field('username') }}
@@ -22,7 +22,7 @@
 
 		<a href="{{ Fractal::url('forgot-password') }}" class="pull-right">{{ Lang::get('fractal::labels.forgotYourPassword') }}</a>
 
-		{{ Form::field('[ICON: share-alt]'.Lang::get('fractal::labels.logIn'), 'button') }}
+		{{ Form::field('[ICON: share-alt]'.Fractal::lang('labels.logIn'), 'button') }}
 	{{ Form::close() }}
 
 @stop

@@ -1,6 +1,6 @@
 @section('search')
 
-	{{ Form::open(array('url' => Request::url().'/search', 'id' => 'form-search')) }}
+	{{ Form::open(['url' => Request::url().'/search', 'id' => 'form-search']) }}
 
 		{{ Form::text('search', null, array('placeholder' => Lang::get('fractal::labels.searchBox'))) }}
 

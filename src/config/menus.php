@@ -1,7 +1,7 @@
 <?php
 
-return array(
+return [
 
 	//to be exported from database
 
-);
+];

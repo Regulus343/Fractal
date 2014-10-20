@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
 	'errorGeneral'                 => 'Something went wrong. Please correct any errors and try again.',
 	'errorNotFound'                => 'The :item you selected was not found.',
@@ -56,4 +56,4 @@ return array(
 	'notPublished'                 => 'This :item is not published. This means the page cannot be seen by regular users.',
 	'notPublishedUntil'            => 'This :item is not published. This means the page cannot be seen by regular users. It is currently set to be published on :dateTime',
 
-);
+];

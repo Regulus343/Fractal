@@ -11,12 +11,12 @@
 				<div class="info">
 					@if (!$contentArea->articles()->count())
 						<div class="actions">
-							<span class="glyphicon glyphicon-remove red delete" title="{{ Lang::get('fractal::labels.deleteContentArea') }}"></span>
+							<span class="glyphicon glyphicon-remove red delete" title="{{ Fractal::lang('labels.deleteContentArea') }}"></span>
 						</div>
 					@endif
 
 					{{ $contentArea->articles()->count() }}
-					{{ Format::pluralize(Lang::get('fractal::labels.page'), $contentArea->articles()->count()) }}
+					{{ Format::pluralize(Fractal::lang('labels.page'), $contentArea->articles()->count()) }}
 				</div>
 
 				<h3>{{ $contentArea->getTitle() }}</h3>

@@ -31,30 +31,30 @@ class Menu extends BaseModel {
 	 *
 	 * @var    array
 	 */
-	protected $fillable = array(
+	protected $fillable = [
 		'name',
 		'cms',
-	);
+	];
 
 	/**
 	 * The special typed fields for the model.
 	 *
 	 * @var    array
 	 */
-	protected $types = array(
+	protected $types = [
 		'cms' => 'checkbox',
-	);
+	];
 
 	/**
 	 * The default menu markup options.
 	 *
 	 * @var    array
 	 */
-	public static $markupOptions = array(
+	public static $markupOptions = [
 		'class'                 => 'nav navbar-nav',
 		'listItemsOnly'         => false,
 		'actionSubMenuDropDown' => true,
-	);
+	];
 
 	/**
 	 * Get the validation rules used by the model.
@@ -64,9 +64,9 @@ class Menu extends BaseModel {
 	 */
 	public static function validationRules($id = false)
 	{
-		$rules = array(
-			'name' => array('required', 'unique:menus,name'),
-		);
+		$rules = [
+			'name' => ['required', 'unique:menus,name'],
+		];
 
 		if ($id)
 			$rules['name'][1] .= ",".$id;
@@ -76,20 +76,20 @@ class Menu extends BaseModel {
 			{
 				if (Form::getValueFromObject('label', $values) != "")
 				{
-					$itemRules = array(
-						'items.'.$number.'.label' => array('required'),
-						'items.'.$number.'.type'  => array('required'),
-					);
+					$itemRules = [
+						'items.'.$number.'.label' => ['required'],
+						'items.'.$number.'.type'  => ['required'],
+					];
 
 					$type = Form::getValueFromObject('type', $values);
 					if ($type != "") {
 						if ($contentField = $type == "URI") {
 							if (Form::getValueFromObject('subdomain', $values) == "")
-								$itemRules['items.'.$number.'.uri'] = array('required');
+								$itemRules['items.'.$number.'.uri'] = ['required'];
 							else
-								$itemRules['items.'.$number.'.subdomain'] = array('required');
+								$itemRules['items.'.$number.'.subdomain'] = ['required'];
 						} else {
-							$itemRules['items.'.$number.'.page_id'] = array('required');
+							$itemRules['items.'.$number.'.page_id'] = ['required'];
 						}
 					}
 
@@ -120,7 +120,7 @@ class Menu extends BaseModel {
 	 */
 	public function createArray($setSelectedClass = true, $ignoreVisibilityStatus = false)
 	{
-		$menuArray = array();
+		$menuArray = [];
 		foreach ($this->items as $menuItem) {
 			if (! (int) $menuItem->parent_id && ($menuItem->isVisible() || $ignoreVisibilityStatus))
 				$menuArray[] = $menuItem->createObject($setSelectedClass, $ignoreVisibilityStatus);
@@ -134,7 +134,7 @@ class Menu extends BaseModel {
 	 * @param  array    $options
 	 * @return string
 	 */
-	public function createMarkup($options = array())
+	public function createMarkup($options = [])
 	{
 		$options = array_merge(static::$markupOptions, $options);
 
@@ -164,7 +164,7 @@ class Menu extends BaseModel {
 		if ($menu)
 			return $menu->createArray();
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -174,7 +174,7 @@ class Menu extends BaseModel {
 	 * @param  array    $options
 	 * @return string
 	 */
-	public static function createMarkupForMenu($name, $options = array())
+	public static function createMarkupForMenu($name, $options = [])
 	{
 		$menu    = (object) static::getArray($name);
 		$options = array_merge(static::$markupOptions, $options);
@@ -202,15 +202,20 @@ class Menu extends BaseModel {
 			if (!$complete) {
 				if (! (int) $menuItem->parent_id && $menuItem->active) {
 					if ($added < 3) {
-						if ($menuItems != "") $menuItems .= ', ';
+						if ($menuItems != "")
+							$menuItems .= ', ';
+
 						$menuItems .= '<a href="'.$menuItem->getUrl().'" target="_blank">'.$menuItem->label.'</a>';
-						$added ++;
-					} else {
-						$menuItems .= '...';
 					}
+
+					$added ++;
 				}
 			}
 		}
+
+		if ($added > 3)
+			$menuItems .= '...';
+
 		return $menuItems;
 	}
 

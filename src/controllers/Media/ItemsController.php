@@ -26,9 +26,9 @@ class ItemsController extends BaseController {
 	{
 		parent::__construct();
 
-		Site::set('section', 'Content');
-		$subSection = "Media";
-		Site::setMulti(array('subSection', 'title'), $subSection);
+		Site::set('section', 'Media');
+		Site::set('subSection', 'Items');
+		Site::set('title', Fractal::lang('labels.mediaItems'));
 
 		//set content type and views location
 		Fractal::setContentType('media-item', true);
@@ -52,7 +52,7 @@ class ItemsController extends BaseController {
 			$media = MediaItem::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
-			'label' => Lang::get('fractal::labels.createItem'),
+			'label' => Fractal::lang('labels.createItem'),
 			'icon'  => 'glyphicon glyphicon-file',
 			'uri'   => 'media/items/create',
 		]);
@@ -92,7 +92,7 @@ class ItemsController extends BaseController {
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Lang::get('fractal::labels.returnToItemsList'),
+			'label' => Fractal::lang('labels.returnToItemsList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => 'media/items',
 		]);
@@ -104,17 +104,17 @@ class ItemsController extends BaseController {
 	{
 		Form::setValidationRules(MediaItem::validationRules());
 
-		$messages = array();
+		$messages = [];
 		if (Form::validated()) {
 			$hostedExternally = (bool) Input::get('hosted_externally');
 
 			if ($hostedExternally)
-				$result = array('error' => false);
+				$result = ['error' => false];
 			else
 				$result = MediaItem::uploadFile();
 
 			if (!$result['error'] && !$result['files']['file']['error']) {
-				$messages['success'] = Lang::get('fractal::messages.successCreated', array('item' => Format::a('file')));
+				$messages['success'] = Fractal::lang('messages.successCreated', ['item' => Fractal::langLowerA('labels.mediaItem')]);
 
 				$fileResult = $result['files']['file'];
 
@@ -175,13 +175,13 @@ class ItemsController extends BaseController {
 
 				$item->save();
 
-				Activity::log(array(
+				Activity::log([
 					'contentId'   => $item->id,
 					'contentType' => 'MediaItem',
 					'action'      => 'Create',
 					'description' => 'Created a Media Item',
 					'details'     => 'Title: '.$item->title,
-				));
+				]);
 
 				return Redirect::to(Fractal::uri('media/items'))
 					->with('messages', $messages);
@@ -189,7 +189,7 @@ class ItemsController extends BaseController {
 				$messages['error'] = $result['error'];
 			}
 		} else {
-			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
+			$messages['error'] = Fractal::lang('messages.errorGeneral');
 		}
 
 		return Redirect::to(Fractal::uri('media/items/create'))
@@ -202,8 +202,9 @@ class ItemsController extends BaseController {
 	{
 		$item = MediaItem::findBySlug($slug);
 		if (empty($item))
-			return Redirect::to(Fractal::uri('media/items'))
-				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'item'))));
+			return Redirect::to(Fractal::uri('media/items'))->with('messages', [
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.mediaItem')])
+			]);
 
 		Site::set('title', $item->title.' (Media Item)');
 		Site::set('titleHeading', 'Update Media Item: <strong>'.Format::entities($item->title).'</strong>');
@@ -217,11 +218,11 @@ class ItemsController extends BaseController {
 
 		Fractal::addButtons([
 			[
-				'label' => Lang::get('fractal::labels.returnToItemsList'),
+				'label' => Fractal::lang('labels.returnToItemsList'),
 				'icon'  => 'glyphicon glyphicon-list',
 				'uri'   => 'media/items',
 			],[
-				'label' => Lang::get('fractal::labels.viewItem'),
+				'label' => Fractal::lang('labels.viewItem'),
 				'icon'  => 'glyphicon glyphicon-file',
 				'url'   => $item->getUrl(),
 			]
@@ -237,17 +238,18 @@ class ItemsController extends BaseController {
 	{
 		$item = MediaItem::findBySlug($slug);
 		if (empty($item))
-			return Redirect::to(Fractal::uri('media/items'))
-				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'item'))));
+			return Redirect::to(Fractal::uri('media/items'))->with('messages', [
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.mediaItem')]),
+			]);
 
 		Form::setValidationRules(MediaItem::validationRules($item->id));
 
-		$messages = array();
+		$messages = [];
 		if (Form::validated()) {
 			$uploaded          = false;
 			$uploadedThumbnail = false;
 			$hostedExternally  = (bool) Input::get('hosted_externally');
-			$result            = array('error' => false);
+			$result            = ['error' => false];
 
 			//get original uploaded filename
 			$originalFilename  = isset($_FILES['file']['name']) ? $_FILES['file']['name'] : '';
@@ -297,7 +299,7 @@ class ItemsController extends BaseController {
 			}
 
 			if (!$result['error']) {
-				$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Format::a('file')));
+				$messages['success'] = Fractal::lang('messages.successUpdated', ['item' => Fractal::langLowerA('labels.mediaItem')]);
 
 				//delete files for item
 				if ($hostedExternally && $item->isHostedLocally())
@@ -358,13 +360,13 @@ class ItemsController extends BaseController {
 
 				$item->save();
 
-				Activity::log(array(
+				Activity::log([
 					'contentId'   => $item->id,
 					'contentType' => 'MediaItem',
 					'action'      => 'Update',
 					'description' => 'Updated a Media Item',
 					'details'     => 'Title: '.$item->title,
-				));
+				]);
 
 				/*return Redirect::to(Fractal::uri('media/items'))
 					->with('messages', $messages);*/
@@ -381,7 +383,7 @@ class ItemsController extends BaseController {
 					unset($messages['error']);
 			}
 		} else {
-			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
+			$messages['error'] = Fractal::lang('messages.errorGeneral');
 		}
 
 		return Redirect::to(Fractal::uri('media/items/'.$item->slug.'/edit'))
@@ -392,25 +394,25 @@ class ItemsController extends BaseController {
 
 	public function destroy($id)
 	{
-		$result = array(
+		$result = [
 			'resultType' => 'Error',
-			'message'    => Lang::get('fractal::messages.errorGeneral'),
-		);
+			'message'    => Fractal::lang('messages.errorGeneral'),
+		];
 
 		$item = MediaItem::find($id);
 		if (empty($item))
 			return $result;
 
-		Activity::log(array(
+		Activity::log([
 			'contentId'   => $item->id,
 			'contentType' => 'MediaItem',
 			'action'      => 'Delete',
 			'description' => 'Deleted a Media Item',
 			'details'     => 'Title: '.$item->title,
-		));
+		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Lang::get('fractal::messages.successDeleted', array('item' => '<strong>'.$item->title.'</strong>'));
+		$result['message']    = Fractal::lang('messages.successDeleted', ['item' => '<strong>'.$item->title.'</strong>']);
 
 		$item->deleteFiles();
 
@@ -441,12 +443,12 @@ class ItemsController extends BaseController {
 		if (!$imageHeight)
 			$imageHeight = "";
 
-		$defaults = array(
+		$defaults = [
 			'width'            => $imageWidth,
 			'height'           => $imageHeight,
 			'thumbnail_width'  => $thumbnailImageSize,
 			'thumbnail_height' => $thumbnailImageSize,
-		);
+		];
 		Form::setDefaults($defaults);
 	}
 

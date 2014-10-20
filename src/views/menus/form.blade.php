@@ -168,7 +168,7 @@
 		@if (Site::developer())
 			<div class="row">
 				<div class="col-md-12">
-					{{ Form::field('cms', 'checkbox', array('label' => 'CMS')) }}
+					{{ Form::field('cms', 'checkbox', ['label' => 'CMS']) }}
 				</div>
 			</div>
 		@endif

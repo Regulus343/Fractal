@@ -25,15 +25,8 @@ class BlogsController extends BaseController {
 	{
 		parent::__construct();
 
-		Site::set('section', 'Content');
-		$subSection = "Blogs";
-		Site::set('subSection', $subSection);
-		Site::set('title', 'Blogs');
-
-		//set content type and views location
-		Fractal::setContentType('blog-article', true);
-
-		Fractal::setViewsLocation('blogs');
+		Site::setMulti(['section', 'subSection'], 'Blogs');
+		Site::set('title', Fractal::lang('labels.blogs'));
 	}
 
 	public function index()

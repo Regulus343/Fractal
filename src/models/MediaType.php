@@ -33,22 +33,22 @@ class MediaType extends BaseModel {
 	 *
 	 * @var    array
 	 */
-	protected $fillable = array(
+	protected $fillable = [
 		'type_id',
 		'parent_id',
 		'slug',
 		'name',
 		'extensions',
-	);
+	];
 
 	/**
 	 * The special typed fields for the model.
 	 *
 	 * @var    array
 	 */
-	protected $types = array(
+	protected $types = [
 		'slug' => 'unique-slug',
-	);
+	];
 
 	/**
 	 * Get the validation rules used by the model.
@@ -58,10 +58,10 @@ class MediaType extends BaseModel {
 	 */
 	public static function validationRules($id = null)
 	{
-		return array(
-			'slug' => array('required'),
-			'name' => array('required'),
-		);
+		return [
+			'slug' => ['required'],
+			'name' => ['required'],
+		];
 	}
 
 	/**

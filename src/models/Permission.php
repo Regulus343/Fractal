@@ -1,6 +1,6 @@
 <?php namespace Regulus\Fractal\Models;
 
-class Role extends \Regulus\Identify\Role {
+class Permission extends \Regulus\Identify\Permission {
 
 	/**
 	 * Get user role search results.
@@ -18,8 +18,7 @@ class Role extends \Regulus\Identify\Role {
 		if ($searchData['terms'] != "")
 			$roles->where(function($query) use ($searchData) {
 				$query
-					->where('role', 'like', $searchData['likeTerms'])
-					->orWhere('name', 'like', $searchData['likeTerms'])
+					->where('name', 'like', $searchData['likeTerms'])
 					->orWhere('description', 'like', $searchData['likeTerms']);
 			});
 

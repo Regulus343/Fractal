@@ -22,13 +22,12 @@ class ActivityController extends BaseController {
 		parent::__construct();
 
 		Site::set('section', 'Users');
-
-		$subSection = "User Activity";
-		Site::setMulti(array('subSection', 'title'), $subSection);
+		Site::set('subSection', 'Activity');
+		Site::set('title', Fractal::lang('labels.userActivity'));
 
 		Fractal::setContentType('activities');
 
-		Site::set('defaultSorting', array('order' => 'desc'));
+		Site::set('defaultSorting', ['order' => 'desc']);
 
 		Fractal::setViewsLocation('users.activity');
 
@@ -61,7 +60,7 @@ class ActivityController extends BaseController {
 			$data = Fractal::setPaginationMessage();
 		} else {
 			$data['content'] = Activity::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
-			if ($data['terms'] == "") $result['message'] = Lang::get('fractal::messages.searchNoTerms');
+			if ($data['terms'] == "") $result['message'] = Fractal::lang('messages.searchNoTerms');
 		}
 
 		$data['result']['pages']     = Fractal::getLastPage();

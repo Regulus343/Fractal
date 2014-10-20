@@ -22,9 +22,8 @@ class SettingsController extends BaseController {
 	{
 		parent::__construct();
 
-		$section = "Settings";
-		Site::setMulti(array('section', 'titleHeading'), $section);
-		Site::set('title', $section);
+		Site::setMulti(['section', 'subSection'], 'Settings');
+		Site::set('title', Fractal::lang('labels.settings'));
 
 		Fractal::setViewsLocation('settings');
 
@@ -38,7 +37,7 @@ class SettingsController extends BaseController {
 			$settings->where('developer', false);
 
 		$settings = $settings->get();
-		$defaults = array();
+		$defaults = [];
 		foreach ($settings as $setting) {
 			$defaults[$setting->getFieldName()] = $setting->value;
 		}
@@ -53,8 +52,8 @@ class SettingsController extends BaseController {
 		$values = Input::all();
 
 		$settings = Setting::orderBy('category')->orderBy('display_order')->orderBy('name')->get();
-		$labels   = array();
-		$rules    = array();
+		$labels   = [];
+		$rules    = [];
 		foreach ($settings as $setting) {
 			if (Site::developer() || ! (bool) $setting->developer) {
 				$labels[$setting->getFieldName()] = $setting->getLabel();
@@ -66,9 +65,9 @@ class SettingsController extends BaseController {
 		Form::setLabels($labels);
 		Form::setValidationRules($rules);
 
-		$messages = array();
+		$messages = [];
 		if (Form::validated()) {
-			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Lang::get('fractal::labels.settings')));
+			$messages['success'] = Fractal::lang('messages.successUpdated', ['item' => Fractal::langLower('labels.settings')]);
 
 			foreach ($settings as $setting) {
 				if (isset($values[$setting->getFieldName()])) {
@@ -85,13 +84,13 @@ class SettingsController extends BaseController {
 
 			Fractal::exportSettings($settings);
 
-			Activity::log(array(
+			Activity::log([
 				'contentType' => 'Setting',
 				'action'      => 'Update',
 				'description' => 'Updated Settings',
-			));
+			]);
 		} else {
-			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
+			$messages['error'] = Fractal::lang('messages.errorGeneral');
 		}
 
 		return Redirect::to(Fractal::uri('settings'))

@@ -27,7 +27,7 @@ class ViewController extends BaseController {
 	public function __construct()
 	{
 		$section = "Blog";
-		Site::setMulti(array('section', 'title'), $section);
+		Site::setMulti(['section', 'title'], $section);
 
 		Site::set('menus', 'Front');
 
@@ -64,7 +64,7 @@ class ViewController extends BaseController {
 		if (empty($article))
 			return Redirect::to('');
 
-		Site::setMulti(array('section', 'subSection', 'title', 'articleTitle'), $article->title);
+		Site::setMulti(['section', 'subSection', 'title', 'articleTitle'], $article->title);
 
 		$article->logView();
 
@@ -75,15 +75,15 @@ class ViewController extends BaseController {
 
 		$articles = $articles->get();
 
-		$messages = array();
+		$messages = [];
 		if (!$article->isPublished()) {
 			if ($article->isPublishedFuture())
-				$messages['info'] = Lang::get('fractal::messages.notPublishedUntil', array(
+				$messages['info'] = Lang::get('fractal::messages.notPublishedUntil', [
 					'item'     => strtolower(Lang::get('fractal::labels.page')),
 					'dateTime' => $article->getPublishedDateTime(),
-				));
+				]);
 			else
-				$messages['info'] = Lang::get('fractal::messages.notPublished', array('item' => Lang::get('fractal::labels.article')));
+				$messages['info'] = Lang::get('fractal::messages.notPublished', ['item' => Lang::get('fractal::labels.article')]);
 		}
 
 		return View::make(Fractal::view('article'))

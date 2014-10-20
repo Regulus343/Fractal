@@ -25,7 +25,7 @@ class MenuItem extends BaseModel {
 	 *
 	 * @var    array
 	 */
-	protected $fillable = array(
+	protected $fillable = [
 		'name',
 		'cms',
 		'menu_id',
@@ -35,6 +35,7 @@ class MenuItem extends BaseModel {
 		'uri',
 		'subdomain',
 		'label',
+		'label_language_key',
 		'icon',
 		'class',
 		'additional_info',
@@ -42,16 +43,16 @@ class MenuItem extends BaseModel {
 		'auth_status',
 		'auth_roles',
 		'active',
-	);
+	];
 
 	/**
 	 * The special typed fields for the model.
 	 *
 	 * @var    array
 	 */
-	protected $types = array(
+	protected $types = [
 		'active' => 'checkbox',
-	);
+	];
 
 	/**
 	 * The menu that the menu item belong to.
@@ -90,8 +91,6 @@ class MenuItem extends BaseModel {
 	 */
 	public function page()
 	{
-		//if (! (int) $this->page_id) return false;
-
 		return $this->belongsTo('Regulus\Fractal\Models\ContentPage');
 	}
 
@@ -103,6 +102,20 @@ class MenuItem extends BaseModel {
 	public function isVisible()
 	{
 		return Fractal::isMenuItemVisible($this);
+	}
+
+	/**
+	 * Get the label for a menu item.
+	 *
+	 * @param  boolean  $icon
+	 * @return string
+	 */
+	public function getLabel()
+	{
+		if (!is_null($this->label_language_key) && $this->label_language_key != "")
+			return Fractal::lang('labels.'.$this->label_language_key);
+		else
+			return $this->label;
 	}
 
 	/**
@@ -268,7 +281,7 @@ class MenuItem extends BaseModel {
 			'url'               => $this->getUrl(),
 			'page'              => $this->type == "Content Page" ? $this->page->title : false,
 			'pagePublishedDate' => $this->type == "Content Page" ? $this->page->published_at : null,
-			'label'             => $this->label,
+			'label'             => $this->getLabel(),
 			'icon'              => $this->getIcon(),
 			'class'             => $this->getClass($setSelectedClass),
 			'active'            => $this->active,

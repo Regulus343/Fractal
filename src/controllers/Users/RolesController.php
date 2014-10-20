@@ -22,15 +22,13 @@ class RolesController extends BaseController {
 	{
 		parent::__construct();
 
-		Site::set('section', 'Content');
-
-		$subSection = "User Roles";
 		Site::set('section', 'Users');
-		Site::setMulti(array('subSection', 'title'), $subSection);
+		Site::set('subSection', 'Roles');
+		Site::set('title', Fractal::lang('labels.userRoles'));
 
 		Fractal::setContentType('user-role', true);
 
-		Site::set('defaultSorting', array('field' => 'display_order', 'order' => 'asc'));
+		Site::set('defaultSorting', ['field' => 'display_order', 'order' => 'asc']);
 
 		Fractal::setViewsLocation('users.roles');
 
@@ -51,8 +49,8 @@ class RolesController extends BaseController {
 			$roles = Role::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
-			'label' => Lang::get('fractal::labels.createRole'),
-			'icon'  => 'glyphicon glyphicon-star',
+			'label' => Fractal::lang('labels.createRole'),
+			'icon'  => 'glyphicon glyphicon-book',
 			'uri'   => 'users/roles/create',
 		]);
 
@@ -87,7 +85,7 @@ class RolesController extends BaseController {
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Lang::get('fractal::labels.returnToRolesList'),
+			'label' => Fractal::lang('labels.returnToRolesList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => 'users/roles',
 		]);
@@ -101,36 +99,37 @@ class RolesController extends BaseController {
 		Site::set('wysiwyg', true);
 
 		$tablePrefix = Config::get('identify::tablePrefix');
-		$rules = array(
-			'role' => array('required', 'unique:'.$tablePrefix.'roles'),
-			'name' => array('required', 'unique:'.$tablePrefix.'roles'),
-		);
+		$rules = [
+			'role' => ['required', 'unique:'.$tablePrefix.'roles'],
+			'name' => ['required', 'unique:'.$tablePrefix.'roles'],
+		];
 		Form::setValidationRules($rules);
 
-		$messages = array();
+		$messages = [];
 		if (Form::validated()) {
-			$messages['success'] = Lang::get('fractal::messages.successCreated', array('item' => Format::a('page')));
+			$messages['success'] = Fractal::lang('messages.successCreated', ['item' => Fractal::langLowerA('labels.role')]);
 
 			$role = new Role;
-			$role->role = strtolower(trim(Input::get('role')));
-			$role->name = ucfirst(trim(Input::get('name')));
+			$role->role        = strtolower(trim(Input::get('role')));
+			$role->name        = ucfirst(trim(Input::get('name')));
+			$role->description = Input::get('description') != "" ? ucfirst(trim(Input::get('description'))) : null;
 			$role->save();
 
-			Activity::log(array(
+			Activity::log([
 				'contentId'   => $role->id,
-				'contentType' => 'UserRole',
+				'contentType' => 'Role',
 				'action'      => 'Create',
 				'description' => 'Created a User Role',
 				'details'     => 'Role: '.$role->name,
-			));
+			]);
 
-			return Redirect::to(Fractal::uri('user-roles'))
+			return Redirect::to(Fractal::uri('users/roles'))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
+			$messages['error'] = Fractal::lang('messages.errorGeneral');
 		}
 
-		return Redirect::to(Fractal::uri('user-roles/create'))
+		return Redirect::to(Fractal::uri('users/roles/create'))
 			->with('messages', $messages)
 			->with('errors', Form::getErrors())
 			->withInput();
@@ -140,8 +139,9 @@ class RolesController extends BaseController {
 	{
 		$role = Role::find($id);
 		if (empty($role))
-			return Redirect::to(Fractal::uri('user-roles'))
-				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'role'))));
+			return Redirect::to(Fractal::uri('users/roles'))->with('messages', [
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.role')])
+			]);
 
 		Site::set('title', $role->name.' (User Role)');
 		Site::set('titleHeading', 'Update User Role: <strong>'.Format::entities($role->name).'</strong>');
@@ -151,7 +151,7 @@ class RolesController extends BaseController {
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Lang::get('fractal::labels.returnToRolesList'),
+			'label' => Fractal::lang('labels.returnToRolesList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => 'users/roles',
 		]);
@@ -163,43 +163,45 @@ class RolesController extends BaseController {
 	{
 		$role = Role::find($id);
 		if (empty($role))
-			return Redirect::to(Fractal::uri('user-roles'))
-				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'role'))));
+			return Redirect::to(Fractal::uri('users/roles'))->with('messages', [
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.role')])
+			]);
 
 		Site::set('title', $role->name.' (User Role)');
 		Site::set('titleHeading', 'Update User Role: <strong>'.Format::entities($role->name).'</strong>');
 		Site::set('wysiwyg', true);
 
 		$tablePrefix = Config::get('identify::tablePrefix');
-		$rules = array(
-			'role' => array('required', 'unique:'.$tablePrefix.'roles,role,'.$id),
-			'name' => array('required', 'unique:'.$tablePrefix.'roles,name,'.$id),
-		);
+		$rules = [
+			'role' => ['required', 'unique:'.$tablePrefix.'roles,role,'.$id],
+			'name' => ['required', 'unique:'.$tablePrefix.'roles,name,'.$id],
+		];
 		Form::setValidationRules($rules);
 		Form::setErrors();
 
-		$messages = array();
+		$messages = [];
 		if (Form::validated()) {
-			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Format::a('page')));
+			$messages['success'] = Fractal::lang('messages.successUpdated', ['item' => Fractal::langLowerA('labels.role')]);
 
-			$role->role = strtolower(trim(Input::get('role')));
-			$role->name = ucfirst(trim(Input::get('name')));
+			$role->role        = strtolower(trim(Input::get('role')));
+			$role->name        = ucfirst(trim(Input::get('name')));
+			$role->description = Input::get('description') != "" ? ucfirst(trim(Input::get('description'))) : null;
 			$role->save();
 
-			Activity::log(array(
+			Activity::log([
 				'contentId'   => $role->id,
-				'contentType' => 'UserRole',
+				'contentType' => 'Role',
 				'action'      => 'Update',
 				'description' => 'Updated a User Role',
 				'details'     => 'Role: '.$role->name,
-			));
+			]);
 
-			return Redirect::to(Fractal::uri('user-roles'))
+			return Redirect::to(Fractal::uri('users/roles'))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
+			$messages['error'] = Fractal::lang('messages.errorGeneral');
 
-			return Redirect::to(Fractal::uri('user-roles/'.$id.'/edit'))
+			return Redirect::to(Fractal::uri('users/roles/'.$id.'/edit'))
 				->with('messages', $messages)
 				->with('errors', Form::getErrors())
 				->withInput();
@@ -208,37 +210,40 @@ class RolesController extends BaseController {
 
 	public function destroy($id)
 	{
-		$result = array(
+		$result = [
 			'resultType' => 'Error',
-			'message'    => Lang::get('fractal::messages.errorGeneral'),
-		);
+			'message'    => Fractal::lang('messages.errorGeneral'),
+		];
 
 		$role = Role::find($id);
 		if (empty($role))
 			return $result;
 
 		$existingUsers = $role->users()->count();
-		if ($existingUsers) {
-			$messageData = array(
-				'item'        => Lang::get('fractal::labels.userRole'),
+		if ($existingUsers)
+		{
+			$messageData = [
+				'item'        => Fractal::lang('labels.userRole'),
 				'total'       => $existingUsers,
-				'relatedItem' => Format::pluralize(strtolower(Lang::get('fractal::labels.user')), $existingUsers),
-			);
-			$result['message'] = Lang::get('fractal::messages.errorDeleteItemsExist', $messageData);
+				'relatedItem' => Format::pluralize(strtolower(Fractal::lang('labels.user')), $existingUsers),
+			];
+
+			$result['message'] = Fractal::lang('messages.errorDeleteItemsExist', $messageData);
 			return $result;
 		}
 
-		Activity::log(array(
+		Activity::log([
 			'contentId'   => $role->id,
 			'contentType' => 'Role',
 			'action'      => 'Delete',
-			'description' => 'Deleted a Role',
+			'description' => 'Deleted a User Role',
 			'details'     => 'Role: '.$role->name,
-		));
+		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Lang::get('fractal::messages.successDeleted', array('item' => '<strong>'.$role->name.'</strong>'));
+		$result['message']    = Fractal::lang('messages.successDeleted', ['item' => '<strong>'.$role->name.'</strong>']);
 
+		$role->rolePermissions()->sync([]);
 		$role->delete();
 
 		return $result;

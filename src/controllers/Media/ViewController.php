@@ -27,7 +27,7 @@ class ViewController extends BaseController {
 	public function __construct()
 	{
 		$section = "Media";
-		Site::setMulti(array('section', 'title'), $section);
+		Site::setMulti(['section', 'title'], $section);
 
 		Site::set('menus', 'Front');
 
@@ -64,7 +64,7 @@ class ViewController extends BaseController {
 		if (empty($mediaItem))
 			return Redirect::to('');
 
-		Site::setMulti(array('section', 'subSection', 'title', 'mediaItemTitle'), $mediaItem->title);
+		Site::setMulti(['section', 'subSection', 'title', 'mediaItemTitle'], $mediaItem->title);
 
 		$mediaItem->logView();
 
@@ -75,15 +75,15 @@ class ViewController extends BaseController {
 
 		$media = $media->get();
 
-		$messages = array();
+		$messages = [];
 		if (!$mediaItem->isPublished()) {
 			if ($mediaItem->isPublishedFuture())
-				$messages['info'] = Lang::get('fractal::messages.notPublishedUntil', array(
+				$messages['info'] = Lang::get('fractal::messages.notPublishedUntil', [
 					'item'     => strtolower(Lang::get('fractal::labels.page')),
 					'dateTime' => $mediaItem->getPublishedDateTime(),
-				));
+				]);
 			else
-				$messages['info'] = Lang::get('fractal::messages.notPublished', array('item' => Lang::get('fractal::labels.mediaItem')));
+				$messages['info'] = Lang::get('fractal::messages.notPublished', ['item' => Lang::get('fractal::labels.mediaItem')]);
 		}
 
 		return View::make(Fractal::view('item'))

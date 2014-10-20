@@ -33,42 +33,42 @@ class MediaSet extends BaseModel {
 	 *
 	 * @var    array
 	 */
-	protected $fillable = array(
+	protected $fillable = [
 		'user_id',
 		'slug',
 		'title',
 		'description_type',
 		'description',
 		'published_at',
-	);
+	];
 
 	/**
 	 * The special typed fields for the model.
 	 *
 	 * @var    array
 	 */
-	protected $types = array(
+	protected $types = [
 		'slug'         => 'unique-slug',
 		'published_at' => 'date-time',
-	);
+	];
 
 	/**
 	 * The special formatted fields for the model.
 	 *
 	 * @var    array
 	 */
-	protected $formats = array(
+	protected $formats = [
 		'published' => 'trueIfNotNull:published_at',
-	);
+	];
 
 	/**
 	 * The special formatted fields for the model for saving to the database.
 	 *
 	 * @var    array
 	 */
-	protected $formatsForDb = array(
+	protected $formatsForDb = [
 		'published_at' => 'nullIfBlank',
-	);
+	];
 
 	/**
 	 * Get the validation rules used by the model.
@@ -78,10 +78,10 @@ class MediaSet extends BaseModel {
 	 */
 	public static function validationRules($id = null)
 	{
-		return array(
-			'slug'  => array('required'),
-			'title' => array('required'),
-		);
+		return [
+			'slug'  => ['required'],
+			'title' => ['required'],
+		];
 	}
 
 	/**

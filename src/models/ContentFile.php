@@ -30,12 +30,12 @@ class ContentFile extends BaseModel {
 	 */
 	public static function validationRules($id = null)
 	{
-		$rules = array(
-			'name' => array('required'),
-		);
+		$rules = [
+			'name' => ['required'],
+		];
 
 		if (!$id)
-			$rules['file'] = array('required');
+			$rules['file'] = ['required'];
 
 		return $rules;
 	}
@@ -222,14 +222,14 @@ class ContentFile extends BaseModel {
 		if (!empty($fileType))
 			$path .= '/'.$fileType->slug;
 
-		$config = array(
+		$config = [
 			'path'            => $path,
 			'fields'          => 'file',
 			'filename'        => $basename,
 			'createDirectory' => true,
 			'overwrite'       => true,
 			'maxFileSize'     => '8MB',
-		);
+		];
 
 		//set image resize settings
 		if (!empty($fileType) && $fileType->name == "Image") {
@@ -246,12 +246,12 @@ class ContentFile extends BaseModel {
 			}
 
 			$config['imageThumb']      = Form::value('create_thumbnail', 'checkbox');
-			$config['imageDimensions'] = array(
+			$config['imageDimensions'] = [
 				'w'  => (int) $width,
 				'h'  => (int) $height,
 				'tw' => (int) Input::get('thumbnail_width') > 0  ? (int) Input::get('thumbnail_width')  : $defaultThumbnailSize,
 				'th' => (int) Input::get('thumbnail_height') > 0 ? (int) Input::get('thumbnail_height') : $defaultThumbnailSize,
-			);
+			];
 		}
 
 		$upstream = Upstream::make($config);

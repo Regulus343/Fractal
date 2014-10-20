@@ -188,12 +188,12 @@
 			<div class="col-md-12">
 				@if (isset($update) && $update)
 					<a href="{{ $pageUrl }}" target="_blank" class="btn btn-default right-padded pull-right">
-						<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Lang::get('fractal::labels.viewPage') }}
+						<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Fractal::lang('labels.viewPage') }}
 					</a>
 				@endif
 
 				<a href="{{ Fractal::url('pages') }}" class="btn btn-default pull-right">
-					<span class="glyphicon glyphicon-list"></span>&nbsp; {{ Lang::get('fractal::labels.returnToPagesList') }}
+					<span class="glyphicon glyphicon-list"></span>&nbsp; {{ Fractal::lang('labels.returnToPagesList') }}
 				</a>
 			</div>
 		</div>
@@ -206,21 +206,21 @@
 				{{ Form::field('slug') }}
 			</div>
 			<div class="col-md-4">
-				{{ Form::field('layout_template_id', 'select', array(
+				{{ Form::field('layout_template_id', 'select', [
 					'label'       => 'Layout Template',
-					'options'     => Form::prepOptions(Regulus\Fractal\Models\ContentLayoutTemplate::orderBy('name')->get(), array('id', 'name')),
+					'options'     => Form::prepOptions(Regulus\Fractal\Models\ContentLayoutTemplate::orderBy('name')->get(), ['id', 'name']),
 					'null-option' => 'Custom Layout'
-				)) }}
+				]) }}
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field('layout', 'textarea', array(
+				{{ Form::field('layout', 'textarea', [
 					'id-field-container'    => 'layout-area',
 					'class-field-container' => HTML::hiddenArea(Form::value('layout_template_id') != "", true),
 					'class-field'           => 'tab'
-				)) }}
+				]) }}
 			</div>
 		</div>
 
@@ -235,19 +235,19 @@
 
 		<div class="row clear">
 			<div class="col-md-2">
-				{{ Form::field('published', 'checkbox', array(
+				{{ Form::field('published', 'checkbox', [
 					'data-checked-show'      => '.published-at-area',
 					'data-show-hide-type'    => 'visibility',
 					'data-callback-function' => 'publishedCheckedCallback'
-				)) }}
+				]) }}
 			</div>
 			<div class="col-md-3 published-at-area{{ HTML::invisibleArea(!Form::value('published', 'checkbox'), true) }}">
 				<div class="form-group">
 					<div class="input-group date date-time-picker">
-						{{ Form::text('published_at', null, array(
+						{{ Form::text('published_at', null, [
 							'class'       => 'date',
 							'placeholder' => 'Date/Time Published',
-						)) }}
+						]) }}
 
 						<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
 					</div>

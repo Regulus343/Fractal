@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
 	/*
 	|--------------------------------------------------------------------------
@@ -48,4 +48,4 @@ return array(
 	*/
 	'viewController' => 'Regulus\Fractal\Controllers\Media\ViewController',
 
-);
+];

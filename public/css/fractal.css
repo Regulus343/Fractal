@@ -1,3 +1,5 @@
+@import url(http://fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700);
+
 html, body { margin: 0; padding: 0; height: 100%; overflow-x: hidden; white-space: nowrap; }
 
 .navbar { margin-bottom: 0; }
@@ -92,7 +94,15 @@ a#logo img { height: 30px; border: none; }
 
 h1, h2, h3, h4, h5, h6 { margin-top: 0; }
 
-table.table { margin-bottom: 10px; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-collapse: separate; }
+h1 {
+	margin-bottom: 12px;
+	padding-bottom: 4px;
+	border-bottom: 1px solid #e5e5e5;
+	font-family: "Dosis", Arial, Helvetica, sans-serif;
+	font-weight: 300;
+}
+
+table.table { margin-bottom: 10px; border-collapse: separate; }
 
 table.table-bordered { border-color: #aaa; }
 
@@ -115,16 +125,10 @@ table.table-sortable thead tr th.sort-desc span.sort-icon { color: #666; }
 
 .table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(odd) > th { background-color: #eee; }
 
-table tr td.actions { border-left: 1px solid #999 !important; text-align: center; line-height: 100%; }
-
-table tr td.actions a { margin-right: 6px; color: #555; font-size: 18px; }
-table tr td.actions a:hover { color: #428bca; }
-
-table tr td.actions a.orange { color: #c60; }
-table tr td.actions a.orange:hover { color: #d50; }
-
-table tr td.actions a.red { color: #900; }
-table tr td.actions a.red:hover { color: #c00; }
+table tr td.actions { width: 120px; border-left: 1px solid #999 !important; text-align: right; line-height: 100%; }
+table tr td.actions a.btn { padding: 2px 5px; font-size: 12px; text-shadow: #333 1px 1px 1px; }
+table tr td.actions a.btn-default { background: #333; color: #fff; border-color: #000; }
+table tr td.actions a.btn-default:hover { background: #222; }
 
 table tr.danger:hover td.actions, table tr.danger td.actions { border-left: 1px solid #999; }
 
@@ -138,6 +142,8 @@ table tr td span.boolean-true { color: #030; }
 table tr td span.boolean-false { color: #500; }
 
 .table tr.danger td { background-color: #f2dede !important; }
+
+.breadcrumb { margin-bottom: 10px; border: 1px solid #ddd; }
 
 .alert-top {
 	z-index: 3000;
@@ -266,7 +272,7 @@ fieldset.indent-level-3 { margin-left: 96px; }
 input#search {
 	float: right;
 	margin-top: 7px;
-	margin-right: 40px;
+	margin-right: 16px;
 	width: 164px;
 	color: #555;
 	border: none;

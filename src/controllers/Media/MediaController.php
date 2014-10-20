@@ -26,14 +26,8 @@ class MediaController extends BaseController {
 	{
 		parent::__construct();
 
-		Site::set('section', 'Content');
-		$subSection = "Media";
-		Site::setMulti(array('subSection', 'title'), $subSection);
-
-		//set content type and views location
-		Fractal::setContentType('media-item', true);
-
-		Fractal::setViewsLocation('media.items');
+		Site::setMulti(['section', 'subSection'], 'Media');
+		Site::set('title', Fractal::lang('labels.media'));
 	}
 
 	public function index()

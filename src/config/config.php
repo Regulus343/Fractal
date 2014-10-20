@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
 	/*
 	|--------------------------------------------------------------------------
@@ -24,25 +24,26 @@ return array(
 	| to any project. You may even redefine core controllers such as "pages".
 	|
 	*/
-	'controllers' => array(
-		'standard' => array(
-			'home'           => 'Regulus\Fractal\Controllers\CoreController',
-			'settings'       => 'Regulus\Fractal\Controllers\SettingsController',
-			'account'        => 'Regulus\Fractal\Controllers\AccountController',
-			'users/activity' => 'Regulus\Fractal\Controllers\Users\ActivityController',
-		),
-		'resource' => array(
-			'menus'          => 'Regulus\Fractal\Controllers\MenusController',
-			'pages'          => 'Regulus\Fractal\Controllers\PagesController',
-			'files'          => 'Regulus\Fractal\Controllers\FilesController',
-			'users/roles'    => 'Regulus\Fractal\Controllers\Users\RolesController',
-			'users'          => 'Regulus\Fractal\Controllers\Users\UsersController',
-			'media/items'    => 'Regulus\Fractal\Controllers\Media\ItemsController',
-			'media'          => 'Regulus\Fractal\Controllers\Media\MediaController',
-			'blogs/articles' => 'Regulus\Fractal\Controllers\Blogs\ArticlesController',
-			'blogs'          => 'Regulus\Fractal\Controllers\Blogs\BlogsController',
-		),
-	),
+	'controllers' => [
+		'standard' => [
+			'home'              => 'Regulus\Fractal\Controllers\CoreController',
+			'settings'          => 'Regulus\Fractal\Controllers\SettingsController',
+			'account'           => 'Regulus\Fractal\Controllers\AccountController',
+			'users/activity'    => 'Regulus\Fractal\Controllers\Users\ActivityController',
+		],
+		'resource' => [
+			'menus'             => 'Regulus\Fractal\Controllers\MenusController',
+			'pages'             => 'Regulus\Fractal\Controllers\PagesController',
+			'files'             => 'Regulus\Fractal\Controllers\FilesController',
+			'users/roles'       => 'Regulus\Fractal\Controllers\Users\RolesController',
+			'users/permissions' => 'Regulus\Fractal\Controllers\Users\PermissionsController',
+			'users'             => 'Regulus\Fractal\Controllers\Users\UsersController',
+			'media/items'       => 'Regulus\Fractal\Controllers\Media\ItemsController',
+			'media'             => 'Regulus\Fractal\Controllers\Media\MediaController',
+			'blogs/articles'    => 'Regulus\Fractal\Controllers\Blogs\ArticlesController',
+			'blogs'             => 'Regulus\Fractal\Controllers\Blogs\BlogsController',
+		],
+	],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -54,8 +55,8 @@ return array(
 	| array.
 	|
 	*/
-	'controllerMethods' => array(
-		'get'  => array(
+	'controllerMethods' => [
+		'get'  => [
 			'pages/add-content-area/{id?}'              => 'Regulus\Fractal\Controllers\PagesController@addContentArea',
 			'pages/get-content-area/{id}'               => 'Regulus\Fractal\Controllers\PagesController@getContentArea',
 			'pages/delete-content-area/{id}'            => 'Regulus\Fractal\Controllers\PagesController@deleteContentArea',
@@ -65,21 +66,22 @@ return array(
 			'blog/articles/add-content-area/{id?}'      => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@addContentArea',
 			'blog/articles/get-content-area/{id}'       => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@getContentArea',
 			'blog/articles/delete-content-area/{id}'    => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@deleteContentArea',
-		),
-		'post' => array(
+		],
+		'post' => [
 			'menus/search'                              => 'Regulus\Fractal\Controllers\MenusController@search',
 			'pages/search'                              => 'Regulus\Fractal\Controllers\PagesController@search',
 			'pages/layout-tags'                         => 'Regulus\Fractal\Controllers\PagesController@layoutTags',
 			'pages/render-markdown-content'             => 'Regulus\Fractal\Controllers\PagesController@renderMarkdownContent',
 			'files/search'                              => 'Regulus\Fractal\Controllers\FilesController@search',
 			'users/search'                              => 'Regulus\Fractal\Controllers\UsersController@search',
-			'user-roles/search'                         => 'Regulus\Fractal\Controllers\UserRolesController@search',
+			'user-roles/search'                         => 'Regulus\Fractal\Controllers\Users\RolesController@search',
+			'user-permissions/search'                   => 'Regulus\Fractal\Controllers\Users\PermissionsController@search',
 			'media/items/search'                        => 'Regulus\Fractal\Controllers\Media\ItemsController@search',
-			'blog/articles/search'                      => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@search',
-			'blog/articles/layout-tags'                 => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@layoutTags',
-			'blog/articles/render-markdown-content'     => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@renderMarkdownContent',
-		),
-	),
+			'blogs/articles/search'                     => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@search',
+			'blogs/articles/layout-tags'                => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@layoutTags',
+			'blogs/articles/render-markdown-content'    => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@renderMarkdownContent',
+		],
+	],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -293,14 +295,14 @@ return array(
 	| role authorization for the whole CMS.
 	|
 	*/
-	'authFilters' => array(
-		'x'        => array('admin'),
-		'menus'    => array('admin'),
-		'pages'    => array('admin'),
-		'files'    => array('admin'),
-		'users'    => array('admin'),
-		'settings' => array('admin'),
-	),
+	'authFilters' => [
+		'x'        => ['admin'],
+		'menus'    => ['admin'],
+		'pages'    => ['admin'],
+		'files'    => ['admin'],
+		'users'    => ['admin'],
+		'settings' => ['admin'],
+	],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -326,10 +328,10 @@ return array(
 	| routes fro overriding routes that you have already defined in your app.
 	|
 	*/
-	'preload' => array(
+	'preload' => [
 		'routes'  => true,
 		'filters' => true,
-	),
+	],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -423,4 +425,4 @@ return array(
 	*/
 	'displayVersion' => true,
 
-);
+];

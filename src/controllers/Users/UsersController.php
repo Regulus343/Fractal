@@ -26,9 +26,8 @@ class UsersController extends BaseController {
 	{
 		parent::__construct();
 
-		Site::set('section', 'Content');
-		$section = "Users";
-		Site::setMulti(array('section', 'subSection', 'title'), $section);
+		Site::setMulti(['section', 'subSection'], 'Users');
+		Site::set('title', Fractal::lang('labels.users'));
 
 		//set content type and views location
 		Fractal::setContentType('user', true);
@@ -48,7 +47,7 @@ class UsersController extends BaseController {
 			$users = User::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
-			'label' => Lang::get('fractal::labels.createUser'),
+			'label' => Fractal::lang('labels.createUser'),
 			'icon'  => 'glyphicon glyphicon-user',
 			'uri'   => 'users/create',
 		]);
@@ -81,8 +80,8 @@ class UsersController extends BaseController {
 		Site::set('title', 'Create User');
 		Site::set('wysiwyg', true);
 
-		$defaults    = array('active' => true);
-		$defaultRole = Role::where('default', '=', true)->first();
+		$defaults    = ['active' => true];
+		$defaultRole = Role::where('default', true)->first();
 
 		if (!empty($defaultRole))
 			$defaults['roles.'.$defaultRole->id] = $defaultRole->id;
@@ -91,7 +90,7 @@ class UsersController extends BaseController {
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Lang::get('fractal::labels.returnToUsersList'),
+			'label' => Fractal::lang('labels.returnToUsersList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => 'users',
 		]);
@@ -104,12 +103,12 @@ class UsersController extends BaseController {
 		Site::set('title', 'Create User');
 		Site::set('wysiwyg', true);
 
-		$rules = array(
-			'username' => array('required', 'alpha_dash', 'min:3', 'unique:auth_users,username'),
-			'email'    => array('required', 'email'),
-			'roles'    => array('required'),
-			'password' => array('required', 'confirmed'),
-		);
+		$rules = [
+			'username' => ['required', 'alpha_dash', 'min:3', 'unique:auth_users,username'],
+			'email'    => ['required', 'email'],
+			'roles'    => ['required'],
+			'password' => ['required', 'confirmed'],
+		];
 
 		if (Fractal::getSetting('Require Unique Email Addresses'))
 			$rules['email'][] = 'unique:auth_users,email';
@@ -120,9 +119,9 @@ class UsersController extends BaseController {
 
 		Form::setValidationRules($rules);
 
-		$messages = array();
+		$messages = [];
 		if (Form::validated()) {
-			$messages['success'] = Lang::get('fractal::messages.successCreated', array('item' => 'a user'));
+			$messages['success'] = Fractal::lang('messages.successCreated', ['item' => Fractal::langLowerA('labels.user')]);
 
 			$user = new User;
 			$user->fill(Input::except('csrf_token', 'roles', 'password', 'password_confirmation'));
@@ -133,18 +132,18 @@ class UsersController extends BaseController {
 
 			$user->roles()->sync(Input::get('roles'));
 
-			Activity::log(array(
+			Activity::log([
 				'contentId'   => $user->id,
 				'contentType' => 'User',
 				'action'      => 'Create',
 				'description' => 'Created a User',
 				'details'     => 'Username: '.$user->username,
-			));
+			]);
 
 			return Redirect::to(Fractal::uri('users'))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
+			$messages['error'] = Fractal::lang('messages.errorGeneral');
 		}
 
 		return Redirect::to(Fractal::uri('users/create'))
@@ -157,18 +156,19 @@ class UsersController extends BaseController {
 	{
 		$user = Fractal::userByUsername($username);
 		if (empty($user))
-			return Redirect::to(Fractal::uri('users'))
-				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'user'))));
+			return Redirect::to(Fractal::uri('users'))->with('messages', [
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.user')])
+			]);
 
 		Site::set('title', $user->username.' (User)');
 		Site::set('titleHeading', 'Update User: <strong>'.Format::entities($user->username).'</strong>');
 		Site::set('wysiwyg', true);
 
-		Form::setDefaults($user, array('roles' => 'id'));
+		Form::setDefaults($user, ['roles' => 'id']);
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Lang::get('fractal::labels.returnToUsersList'),
+			'label' => lang('labels.returnToUsersList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => 'users',
 		]);
@@ -180,18 +180,19 @@ class UsersController extends BaseController {
 	{
 		$user = Fractal::userByUsername($username);
 		if (empty($user))
-			return Redirect::to(Fractal::uri('users'))
-				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'user'))));
+			return Redirect::to(Fractal::uri('users'))->with('messages', [
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.user')])
+			]);
 
 		Site::set('title', $user->username.' (User)');
 		Site::set('titleHeading', 'Update User: <strong>'.Format::entities($user->username).'</strong>');
 		Site::set('wysiwyg', true);
 
-		$rules = array(
-			'username' => array('required', 'alpha_dash', 'min:3', 'unique:auth_users,username,'.$user->id),
-			'email'    => array('required', 'email'),
-			'roles'    => array('required'),
-		);
+		$rules = [
+			'username' => ['required', 'alpha_dash', 'min:3', 'unique:auth_users,username,'.$user->id],
+			'email'    => ['required', 'email'],
+			'roles'    => ['required'],
+		];
 
 		if (Fractal::getSetting('Require Unique Email Addresses'))
 			$rules['email'][] = 'unique:auth_users,email,'.$user->id;
@@ -202,9 +203,9 @@ class UsersController extends BaseController {
 
 		Form::setValidationRules($rules);
 
-		$messages = array();
+		$messages = [];
 		if (Form::validated()) {
-			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => 'a user'));
+			$messages['success'] = Fractal::lang('messages.successUpdated', ['item' => Fractal::langLowerA('labels.user')]);
 
 			$user->fill(Input::except('csrf_token', 'roles'));
 			$user->first_name = Format::name($user->first_name);
@@ -213,18 +214,18 @@ class UsersController extends BaseController {
 
 			$user->roles()->sync(Input::get('roles'));
 
-			Activity::log(array(
+			Activity::log([
 				'contentId'   => $user->id,
 				'contentType' => 'User',
 				'action'      => 'Update',
 				'description' => 'Updated a User',
 				'details'     => 'Username: '.$user->username,
-			));
+			]);
 
 			return Redirect::to(Fractal::uri('users'))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
+			$messages['error'] = Fractal::lang('messages.errorGeneral');
 
 			return Redirect::to(Fractal::uri('users/'.$username.'/edit'))
 				->with('messages', $messages)
@@ -235,10 +236,10 @@ class UsersController extends BaseController {
 
 	public function ban($id)
 	{
-		$result = array(
+		$result = [
 			'resultType' => 'Error',
-			'message'    => Lang::get('fractal::messages.errorGeneral'),
-		);
+			'message'    => Fractal::lang('messages.errorGeneral'),
+		];
 
 		$user = User::find($id);
 		if (empty($user))
@@ -250,25 +251,25 @@ class UsersController extends BaseController {
 		$user->banned_at = date('Y-m-d H:i:s');
 		$user->save();
 
-		Activity::log(array(
+		Activity::log([
 			'contentId'   => $user->id,
 			'contentType' => 'User',
 			'action'      => 'Ban',
 			'description' => 'Banned a User',
 			'details'     => 'Username: '.$user->username,
-		));
+		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Lang::get('fractal::messages.successBanned', array('item' => $user->username));
+		$result['message']    = Fractal::lang('messages.successBanned', ['item' => '<strong>'.$user->username.'</strong>']);
 		return $result;
 	}
 
 	public function unban($id)
 	{
-		$result = array(
+		$result = [
 			'resultType' => 'Error',
-			'message'    => Lang::get('fractal::messages.errorGeneral'),
-		);
+			'message'    => Fractal::lang('messages.errorGeneral'),
+		];
 
 		$user = User::find($id);
 		if (empty($user))
@@ -280,42 +281,44 @@ class UsersController extends BaseController {
 		$user->banned_at = null;
 		$user->save();
 
-		Activity::log(array(
+		Activity::log([
 			'contentId'   => $user->id,
 			'contentType' => 'User',
 			'action'      => 'Unban',
 			'description' => 'Unbanned a User',
 			'details'     => 'Username: '.$user->username,
-		));
+		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Lang::get('fractal::messages.successUnbanned', array('item' => '<strong>'.$user->username.'</strong>'));
+		$result['message']    = Fractal::lang('messages.successUnbanned', ['item' => '<strong>'.$user->username.'</strong>']);
 		return $result;
 	}
 
 	public function destroy($id)
 	{
-		$result = array(
+		$result = [
 			'resultType' => 'Error',
-			'message'    => Lang::get('fractal::messages.errorGeneral'),
-		);
+			'message'    => Fractal::lang('messages.errorGeneral'),
+		];
 
 		$user = \User::find($id);
 		if (empty($user))
 			return $result;
 
+		$user->roles()->sync([]);
+		$user->userPermissions()->sync([]);
 		$user->delete();
 
-		Activity::log(array(
+		Activity::log([
 			'contentId'   => $user->id,
 			'contentType' => 'User',
 			'action'      => 'Delete',
 			'description' => 'Deleted a User',
 			'details'     => 'Username: '.$user->username,
-		));
+		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Lang::get('fractal::messages.successDeleted', array('item' => '<strong>'.$user->username.'</strong>'));
+		$result['message']    = Fractal::lang('messages.successDeleted', ['item' => '<strong>'.$user->username.'</strong>']);
 		return $result;
 	}
 

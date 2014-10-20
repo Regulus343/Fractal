@@ -14,83 +14,76 @@ class FileMediaTypesTableSeeder extends Seeder {
 
 		$timestamp = date('Y-m-d H:i:s');
 
-		$fileTypes = array(
-			array(
+		$fileTypes = [
+			[
 				'slug'        => 'images',
 				'name'        => 'Image',
 				'extensions'  => 'gif, jpg, png, svg',
 
-				'media_types' => array(
-					array(
+				'media_types' => [
+					[
 						'slug' => 'photos',
 						'name' => 'Photo',
-					),
-
-					array(
+					],
+					[
 						'slug' => 'artwork',
 						'name' => 'Artwork',
-					),
-				),
-			),
-
-			array(
+					],
+				],
+			],
+			[
 				'slug'        => 'videos',
 				'name'        => 'Video',
 				'extensions'  => 'avi, flv, mkv, mp4, mpg',
-			),
-
-			array(
+			],
+			[
 				'slug'        => 'audio',
 				'name'        => 'Audio',
 				'extensions'  => 'ogg, mp3',
 
-				'media_types' => array(
-					array(
+				'media_types' => [
+					[
 						'slug' => 'music',
 						'name' => 'Music',
-					),
+					],
 
-					array(
+					[
 						'slug' => 'podcasts',
 						'name' => 'Podcast',
-					),
-				),
-			),
-
-			array(
+					],
+				],
+			],
+			[
 				'slug'        => 'documents',
 				'name'        => 'Document',
 				'extensions'  => 'doc, docx, odt, pdf, txt',
 
-				'media_types' => array(
-					array(
+				'media_types' => [
+					[
 						'slug' => 'book',
 						'name' => 'Book',
-					),
-				),
-			),
-
-			array(
+					],
+				],
+			],
+			[
 				'slug'        => 'archives',
 				'name'        => 'Archive',
 				'extensions'  => 'rar, tar, tgz, zip',
-			),
-
-			array(
+			],
+			[
 				'slug'        => 'spreadsheets',
 				'name'        => 'Spreadsheet',
 				'extensions'  => 'csv, ods, xls, xlsx',
-			),
-
-			array(
+			],
+			[
 				'slug'        => 'code',
 				'name'        => 'Code',
 				'extensions'  => 'php, js, as, ts, py, c',
-			),
-		);
+			],
+		];
 
 		foreach ($fileTypes as $fileType) {
-			$mediaTypes = isset($fileType['media_types']) ? $fileType['media_types'] : array();
+			$mediaTypes = isset($fileType['media_types']) ? $fileType['media_types'] : [];
 
 			if (isset($fileType['media_types']))
 				unset($fileType['media_types']);

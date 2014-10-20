@@ -2,11 +2,11 @@
 
 /*----------------------------------------------------------------------------------------------------------
 	Fractal
-		A simple, versatile CMS base for Laravel 4 which uses Twitter Bootstrap 3.
+		A simple, versatile CMS base for Laravel 4.
 
 		created by Cody Jassman
-		version 0.6.2a
-		last updated on October 17, 2014
+		version 0.6.3a
+		last updated on October 19, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
+
+use Regulus\Fractal\Libraries\ArrayFile;
 
 use Regulus\Fractal\Models\ContentPage;
 use Regulus\Fractal\Models\ContentFile;
@@ -262,16 +264,16 @@ class Fractal {
 	 * @param  boolean  $returnJson
 	 * @return mixed
 	 */
-	public function modalView($relativeLocation = '', $data = array(), $root = false, $returnJson = true)
+	public function modalView($relativeLocation = '', $data = [], $root = false, $returnJson = true)
 	{
 		if (substr($relativeLocation, 0, 7) != "modals.")
 			$relativeLocation = "modals.".$relativeLocation;
 
-		$response = array(
+		$response = [
 			'title'   => isset($data['title']) ? $data['title'] : '',
 			'content' => View::make($this->view($relativeLocation, $root))->with($data)->render(),
 			'buttons' => isset($data['buttons']) && $data['buttons'] ? true : false,
-		);
+		];
 
 		if ($returnJson)
 			$response = json_encode($response);
@@ -405,7 +407,7 @@ class Fractal {
 	 * @param  array    $defaultSorting
 	 * @return array
 	 */
-	public function setupPagination($defaultSorting = array())
+	public function setupPagination($defaultSorting = [])
 	{
 		$contentType = $this->getContentType();
 
@@ -413,7 +415,7 @@ class Fractal {
 			$defaultSorting = Site::get('defaultSorting');
 
 		$terms = trim(Input::get('search'));
-		$this->pagination = array(
+		$this->pagination = [
 			'itemsPerPage' => $this->getSetting('Items Listed Per Page', 20),
 			'terms'        => $terms,
 			'likeTerms'    => '%'.$terms.'%',
@@ -424,11 +426,11 @@ class Fractal {
 			'sortField'    => Input::get('sort_field'),
 			'sortOrder'    => (strtolower(Input::get('sort_order')) == 'desc' ? 'desc' : 'asc'),
 			'contentType'  => $contentType,
-			'result'       => array(
+			'result'       => [
 				'resultType' => 'Error',
 				'messageSet' => false,
-			),
-		);
+			],
+		];
 
 		//set default sorting
 		if ($this->pagination['sortField'] == "" && !empty($defaultSorting)) {
@@ -493,40 +495,40 @@ class Fractal {
 	public function setPaginationMessage($initialView = false)
 	{
 		$contentType = $this->getContentTypeCamelCase();
-		$item        = Lang::get('fractal::labels.'.Str::singular($contentType));
+		$item        = static::lang('labels.'.Str::singular($contentType));
 
 		$this->pagination['result']['resultType'] = $this->pagination['content']->getTotal() ? "Success" : "Error";
 
 		if (count($this->pagination['content'])) {
 			if ($this->pagination['changingPage'] || $this->pagination['terms'] == "") {
-				$this->pagination['result']['message'] = Lang::get('fractal::messages.displayingItemsOfTotal', array(
+				$this->pagination['result']['message'] = static::lang('messages.displayingItemsOfTotal', [
 					'start' => $this->pagination['content']->getFrom(),
 					'end'   => $this->pagination['content']->getTo(),
 					'total' => $this->pagination['content']->getTotal(),
 					'items' => Format::pluralize(strtolower($item), $this->pagination['content']->getTotal()),
-				));
+				]);
 			} else {
 				if ($this->pagination['terms'] == "")
-					$this->pagination['result']['message'] = Lang::get('fractal::messages.searchResultsNoTerms', array(
+					$this->pagination['result']['message'] = static::lang('messages.searchResultsNoTerms', [
 						'total' => $this->pagination['content']->getTotal(),
 						'items' => Format::pluralize(strtolower($item), $this->pagination['content']->getTotal()),
-					));
+					]);
 				else
-					$this->pagination['result']['message'] = Lang::get('fractal::messages.searchResults', array(
+					$this->pagination['result']['message'] = static::lang('messages.searchResults', [
 						'terms' => $this->pagination['terms'],
 						'total' => $this->pagination['content']->getTotal(),
 						'items' => Format::pluralize(strtolower($item), $this->pagination['content']->getTotal()),
-					));
+					]);
 			}
 		} else {
 			if (!$initialView) {
 				if ($this->pagination['terms'] == "") {
 					if (empty($this->pagination['filters']))
-						$this->pagination['result']['message'] = Lang::get('fractal::messages.searchNoTerms');
+						$this->pagination['result']['message'] = static::lang('messages.searchNoTerms');
 					else
-						$this->pagination['result']['message'] = Lang::get('fractal::messages.searchNoResultsNoTerms');
+						$this->pagination['result']['message'] = static::lang('messages.searchNoResultsNoTerms');
 				} else {
-					$this->pagination['result']['message'] = Lang::get('fractal::messages.searchNoResults');
+					$this->pagination['result']['message'] = static::lang('messages.searchNoResults');
 				}
 			}
 		}
@@ -548,11 +550,11 @@ class Fractal {
 			$this->setPaginationMessage($initialView);
 
 		if (!isset($this->pagination['result']['message']))
-			return array();
+			return [];
 
-		return array(
+		return [
 			strtolower($this->pagination['result']['resultType']) => $this->pagination['result']['message']
-		);
+		];
 	}
 
 	/**
@@ -562,9 +564,9 @@ class Fractal {
 	 */
 	public function setSearchFormDefaults()
 	{
-		$defaults = array(
+		$defaults = [
 			'search' => $this->pagination['terms'],
-		);
+		];
 
 		if (!empty($this->pagination['filters'])) {
 			foreach ($this->pagination['filters'] as $field => $value) {
@@ -614,7 +616,7 @@ class Fractal {
 		if (is_null($name))
 			$name = Str::plural(Fractal::getContentType());
 
-		$fields      = array();
+		$fields      = [];
 		$tableConfig = Config::get('fractal::tables.'.$name);
 
 		if (empty($tableConfig) || !isset($tableConfig['columns']))
@@ -641,7 +643,7 @@ class Fractal {
 	 * @param  boolean  $bodyOnly
 	 * @return string
 	 */
-	public function createTable($content = array(), $bodyOnly = false)
+	public function createTable($content = [], $bodyOnly = false)
 	{
 		return HTML::table(Config::get('fractal::tables.'.Str::plural($this->getContentTypeCamelCase())), $content, $bodyOnly);
 	}
@@ -956,7 +958,7 @@ class Fractal {
 	 */
 	public function userByUsername($username)
 	{
-		$users = call_user_func_array("\\".Config::get('auth.model')."::where", array('username', '=', str_replace("'", '', $username)));
+		$users = call_user_func_array("\\".Config::get('auth.model')."::where", ['username', '=', str_replace("'", '', $username)]);
 
 		return $users->first();
 	}
@@ -970,11 +972,11 @@ class Fractal {
 	public function getRegionLabel($country)
 	{
 		switch ($country) {
-			case "Canada":        return Lang::get('fractal::labels.province'); break;
-			case "United States": return Lang::get('fractal::labels.state');    break;
+			case "Canada":        return static::lang('labels.province'); break;
+			case "United States": return static::lang('labels.state');    break;
 		}
 
-		return Lang::get('fractal::labels.region');
+		return static::lang('labels.region');
 	}
 
 	/**
@@ -985,14 +987,14 @@ class Fractal {
 	private function configAuth()
 	{
 		if (is_null($this->auth)) {
-			$this->auth = (object) array(
+			$this->auth = (object) [
 				'class'              => Config::get('fractal::authClass'),
 				'methodActiveCheck'  => Config::get('fractal::authMethodActiveCheck'),
 				'methodActiveUser'   => Config::get('fractal::authMethodActiveUser'),
 				'methodActiveUserId' => Config::get('fractal::authMethodActiveUserId'),
 				'methodAdminCheck'   => Config::get('fractal::authMethodAdminCheck'),
 				'methodAdminRole'    => Config::get('fractal::authMethodAdminRole'),
-			);
+			];
 		}
 
 		return $this->auth;
@@ -1011,10 +1013,10 @@ class Fractal {
 		if (!isset($matches[0])) $matches[0] = $function;
 		if (!isset($matches[1])) $matches[1] = str_replace('()', '', $function);
 		if (!isset($matches[2])) $matches[2] = null;
-		return (object) array(
+		return (object) [
 			'method'     => $matches[1],
 			'parameters' => str_replace("'", '', $matches[2]),
-		);
+		];
 	}
 
 	/**
@@ -1053,7 +1055,7 @@ class Fractal {
 	public function exportMenus($fromCli = false)
 	{
 		$menus = Menu::orderBy('cms', 'desc')->orderBy('name')->get();
-		$array = array();
+		$array = [];
 		foreach ($menus as $menu) {
 			$array[$this->toCamelCase($menu->name)] = $menu->createArray(false, true);
 		}
@@ -1083,7 +1085,7 @@ class Fractal {
 	 * @param  array    $options
 	 * @return string
 	 */
-	public function getMenuMarkup($name = 'Main', $options = array())
+	public function getMenuMarkup($name = 'Main', $options = [])
 	{
 		return Menu::createMarkupForMenu($name, $options);
 	}
@@ -1144,7 +1146,7 @@ class Fractal {
 		if (isset($layoutTags[1]) && is_array($layoutTags[1]))
 			return $layoutTags[1];
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -1291,6 +1293,86 @@ class Fractal {
 			return strtotime($dateTime) <= strtotime($dateTimeToCompare);
 		else
 			return strtotime($dateTime) < strtotime($dateTimeToCompare);
+	}
+
+	/**
+	 * Get a language item from Fractal's language arrays.
+	 *
+	 * @param  string   $key
+	 * @param  array    $replace
+	 * @param  mixed    $locale
+	 * @return string
+	 */
+	function lang($key, array $replace = [], $locale = null)
+	{
+		$key = 'fractal::'.$key;
+
+		return \Illuminate\Support\Facades\Lang::get($key, $replace, $locale);
+	}
+
+	/**
+	 * Get a language item from Fractal's language arrays and make it lowercase.
+	 *
+	 * @param  string   $key
+	 * @param  array    $replace
+	 * @param  mixed    $locale
+	 * @return string
+	 */
+	function langLower($key, array $replace = [], $locale = null)
+	{
+		return strtolower(static::lang($key, $replace, $locale));
+	}
+
+	/**
+	 * Get a language item from Fractal's language arrays and add "a" or "an" prefix.
+	 *
+	 * @param  string   $key
+	 * @param  array    $replace
+	 * @param  mixed    $locale
+	 * @return string
+	 */
+	function langA($key, array $replace = [], $locale = null)
+	{
+		return \Regulus\TetraText\Facade::a(static::lang($key, $replace, $locale));
+	}
+
+	/**
+	 * Get a language item from Fractal's language arrays, make it lowercase, and add "a" or "an" prefix.
+	 *
+	 * @param  string   $key
+	 * @param  array    $replace
+	 * @param  mixed    $locale
+	 * @return string
+	 */
+	function langLowerA($key, array $replace = [], $locale = null)
+	{
+		return \Regulus\TetraText\Facade::a(static::langLower($key, $replace, $locale));
+	}
+
+	/**
+	 * Get a language item from Fractal's language arrays and make it plural.
+	 *
+	 * @param  string   $key
+	 * @param  array    $replace
+	 * @param  mixed    $locale
+	 * @return string
+	 */
+	function langPlural($key, array $replace = [], $locale = null)
+	{
+		return Str::plural(static::lang($key, $replace, $locale));
+	}
+
+	/**
+	 * Get a language item from Fractal's language arrays, make it lowercase, and make it plural.
+	 *
+	 * @param  string   $key
+	 * @param  array    $replace
+	 * @param  mixed    $locale
+	 * @return string
+	 */
+	function langLowerPlural($key, array $replace = [], $locale = null)
+	{
+		return Str::plural(static::langLower($key, $replace, $locale));
 	}
 
 }

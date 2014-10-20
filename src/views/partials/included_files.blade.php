@@ -79,8 +79,8 @@
 
 	var csrfToken        = "{{ Session::token() }}";
 
-	var fractalLabels    = {{ json_encode(Lang::get('fractal::labels')) }};
-	var fractalMessages  = {{ json_encode(Lang::get('fractal::messages')) }};
+	var fractalLabels    = {{ json_encode(Fractal::lang('labels')) }};
+	var fractalMessages  = {{ json_encode(Fractal::lang('messages')) }};
 
 	var contentType      = "{{ Fractal::getContentType() }}";
 	var page             = {{ Fractal::getCurrentPage() }};

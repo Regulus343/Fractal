@@ -5,7 +5,7 @@
 	{{ Form::openResource() }}
 		<div class="row">
 			<div class="col-md-4">
-				{{ Form::field('role') }}
+				{{ Form::field('permission') }}
 			</div><div class="col-md-4">
 				{{ Form::field('name') }}
 			</div><div class="col-md-4">
@@ -21,7 +21,7 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field(Form::submitResource(Fractal::lang('labels.role')), 'button') }}
+				{{ Form::field(Form::submitResource(Fractal::lang('labels.permission')), 'button') }}
 			</div>
 		</div>
 	{{ Form::close() }}

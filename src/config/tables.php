@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
 	/*
 	|--------------------------------------------------------------------------
@@ -11,633 +11,717 @@ return array(
 	|
 	*/
 
-	'menus' => array(
-		'table' => array(
+	'menus' => [
+		'table' => [
 			'class'         => 'table-striped table-bordered table-hover',
-			'noDataMessage' => Lang::get('fractal::messages.noItems', array('items' => Str::plural(Lang::get('fractal::labels.menu')))),
-		),
-		'columns' => array(
-			array(
+			'noDataMessage' => Fractal::lang('messages.noItems', ['items' => Fractal::langLowerPlural('labels.menu')]),
+		],
+		'columns' => [
+			[
 				'attribute' => 'id',
-			),
-			array(
+			],
+			[
 				'attribute' => 'name',
-			),
-			array(
+			],
+			[
 				'label'     => 'Preview',
 				'method'    => 'getActiveItemPreview()',
-			),
-			array(
+			],
+			[
 				'label'     => 'CMS',
 				'attribute' => 'cms',
 				'type'      => 'boolean',
 				'developer' => true,
-			),
-			array(
+			],
+			[
 				'label'     => 'Last Updated',
 				'method'    => 'getLastUpdatedDateTime()',
-			),
-			array(
+			],
+			[
 				'label'     => 'Actions',
 				'class'     => 'actions',
-				'elements'  => array(
-					array(
+				'elements'  => [
+					[
 						'icon'       => 'edit',
+						'class'      => 'btn btn-primary',
 						'uri'        => Config::get('fractal::baseUri').'/menus/:id/edit',
-						'attributes' => array(
-							'title'          => Lang::get('fractal::labels.editMenu'),
-						),
-					),
-					array(
+						'attributes' => [
+							'title' => Fractal::lang('labels.editMenu'),
+						],
+					],
+					[
 						'icon'       => 'remove',
-						'class'      => 'action-item red',
-						'attributes' => array(
+						'class'      => 'btn btn-danger action-item',
+						'attributes' => [
 							'data-item-id'         => ':id',
 							'data-item-name'       => ':title',
 							'data-action'          => 'delete',
 							'data-action-type'     => 'delete',
 							'data-action-message'  => 'confirmDelete',
-							'title'                => Lang::get('fractal::labels.deleteMenu'),
-						),
-					),
-				),
-			),
-		),
-		'rows' => array(
+							'title'                => Fractal::lang('labels.deleteMenu'),
+						],
+					],
+				],
+			],
+		],
+		'rows' => [
 			'idPrefix' => 'menu',
-		),
-	),
+		],
+	],
 
-	'pages' => array(
-		'table' => array(
+	'pages' => [
+		'table' => [
 			'class'         => 'table-striped table-bordered table-hover table-sortable',
-			'noDataMessage' => Lang::get('fractal::messages.noItems', array('items' => Str::plural(Lang::get('fractal::labels.page')))),
-		),
-		'columns' => array(
-			array(
+			'noDataMessage' => Fractal::lang('messages.noItems', ['items' => Fractal::langLowerPlural('labels.page')]),
+		],
+		'columns' => [
+			[
 				'attribute' => 'id',
 				'sort'      => true,
-			),
-			array(
+			],
+			[
 				'attribute' => 'title',
 				'class'     => 'title',
 				'sort'      => true,
-			),
-			array(
+			],
+			[
 				'attribute' => 'slug',
 				'sort'      => true,
-			),
-			array(
+			],
+			[
 				'label'     => 'Published',
 				'method'    => 'getPublishedStatus()',
 				'sort'      => 'published_at',
-			),
-			array(
+			],
+			[
 				'label'     => (Fractal::getSetting('Display Unique Content Views') ? 'Unique ' : '').'Views',
 				'method'    => (Fractal::getSetting('Display Unique Content Views') ? 'getUniqueViews()' : 'getViews()'),
 				'bodyClass' => 'text-align-right',
-			),
-			array(
+			],
+			[
 				'label'     => 'Last Updated',
 				'method'    => 'getLastUpdatedDateTime()',
 				'sort'      => 'updated_at',
-			),
-			array(
+			],
+			[
 				'label'     => 'Actions',
 				'class'     => 'actions',
-				'elements'  => array(
-					array(
+				'elements'  => [
+					[
 						'icon'       => 'edit',
+						'class'      => 'btn btn-primary',
 						'uri'        => Config::get('fractal::baseUri').'/pages/:slug/edit',
-						'attributes' => array(
-							'title'        => Lang::get('fractal::labels.editPage'),
-						),
-					),
-					array(
+						'attributes' => [
+							'title' => Fractal::lang('labels.editPage'),
+						],
+					],
+					[
 						'icon'       => 'file',
+						'class'      => 'btn btn-default',
 						'uri'        => Config::get('fractal::pageUri') == "" ? ':slug' : Config::get('fractal::pageUri').'/:slug',
-						'attributes' => array(
-							'title'        => Lang::get('fractal::labels.viewPage'),
-							'target'       => '_blank',
-						),
-					),
-					array(
+						'attributes' => [
+							'title'  => Fractal::lang('labels.viewPage'),
+							'target' => '_blank',
+						],
+					],
+					[
 						'icon'       => 'remove',
-						'class'      => 'action-item red',
-						'attributes' => array(
+						'class'      => 'btn btn-danger action-item',
+						'attributes' => [
 							'data-item-id'        => ':id',
 							'data-item-name'      => ':title',
 							'data-action'         => 'delete',
 							'data-action-type'    => 'delete',
 							'data-action-message' => 'confirmDelete',
-							'title'               => Lang::get('fractal::labels.deletePage'),
-						),
-					),
-				),
-			),
-		),
-		'rows' => array(
+							'title'               => Fractal::lang('labels.deletePage'),
+						],
+					],
+				],
+			],
+		],
+		'rows' => [
 			'idPrefix'       => 'page',
-			'classModifiers' => array(
-				'danger' => array(
+			'classModifiers' => [
+				'danger' => [
 					'isPublished()' => false,
-				),
-			),
-		),
-	),
+				],
+			],
+		],
+	],
 
-	'files' => array(
-		'table' => array(
+	'files' => [
+		'table' => [
 			'class'         => 'table-striped table-bordered table-hover table-sortable',
-			'noDataMessage' => Lang::get('fractal::messages.noItems', array('items' => Str::plural(Lang::get('fractal::labels.file')))),
-		),
-		'columns' => array(
-			array(
+			'noDataMessage' => Fractal::lang('messages.noItems', ['items' => Fractal::langLowerPlural('labels.file')]),
+		],
+		'columns' => [
+			[
 				'attribute' => 'id',
 				'sort'      => true,
-			),
-			array(
-				'label'     => Lang::get('fractal::labels.image'),
+			],
+			[
+				'label'     => Fractal::lang('labels.image'),
 				'method'    => 'getThumbnailImage()',
 				'class'     => 'image',
 				'sort'      => 'filename',
-			),
-			array(
+			],
+			[
 				'attribute' => 'name',
 				'class'     => 'name',
 				'sort'      => true,
-			),
-			array(
-				'label'     => Lang::get('fractal::labels.type'),
+			],
+			[
+				'label'     => Fractal::lang('labels.type'),
 				'method'    => 'getType()',
 				'sort'      => 'type_id',
-			),
-			array(
-				'label'     => Lang::get('fractal::labels.dimensions'),
+			],
+			[
+				'label'     => Fractal::lang('labels.dimensions'),
 				'method'    => 'getImageDimensions()',
 				'sort'      => 'width',
-			),
-			array(
+			],
+			[
 				'label'     => 'Last Updated',
 				'method'    => 'getLastUpdatedDateTime()',
 				'sort'      => 'updated_at',
-			),
-			array(
+			],
+			[
 				'label'     => 'Actions',
 				'class'     => 'actions',
-				'elements'  => array(
-					array(
+				'elements'  => [
+					[
 						'icon'       => 'edit',
+						'class'      => 'btn btn-primary',
 						'uri'        => Config::get('fractal::baseUri').'/files/:id/edit',
-						'attributes' => array(
-							'title'        => Lang::get('fractal::labels.editFile'),
-						),
-					),
-					array(
+						'attributes' => [
+							'title' => Fractal::lang('labels.editFile'),
+						],
+					],
+					[
 						'icon'       => 'remove',
-						'class'      => 'action-item red',
-						'attributes' => array(
+						'class'      => 'btn btn-danger action-item',
+						'attributes' => [
 							'data-item-id'        => ':id',
 							'data-item-name'      => ':name',
 							'data-action'         => 'delete',
 							'data-action-type'    => 'delete',
 							'data-action-message' => 'confirmDelete',
-							'title'               => Lang::get('fractal::labels.deleteFile'),
-						),
-					),
-				),
-			),
-		),
-		'rows' => array(
-			'idPrefix'       => 'file',
-		),
-	),
+							'title'               => Fractal::lang('labels.deleteFile'),
+						],
+					],
+				],
+			],
+		],
+		'rows' => [
+			'idPrefix' => 'file',
+		],
+	],
 
-	'mediaItems' => array(
-		'table' => array(
+	'mediaItems' => [
+		'table' => [
 			'class'         => 'table-striped table-bordered table-hover table-sortable',
-			'noDataMessage' => Lang::get('fractal::messages.noItems', array('items' => Str::plural(Lang::get('fractal::labels.mediaItem')))),
-		),
-		'columns' => array(
-			array(
+			'noDataMessage' => Fractal::lang('messages.noItems', ['items' => Fractal::langLowerPlural('labels.mediaItem')]),
+		],
+		'columns' => [
+			[
 				'attribute' => 'id',
 				'sort'      => true,
-			),
-			array(
-				'label'     => Lang::get('fractal::labels.image'),
+			],
+			[
+				'label'     => Fractal::lang('labels.image'),
 				'method'    => 'getThumbnailImage()',
 				'class'     => 'image',
 				'sort'      => 'filename',
-			),
-			array(
-				'label'     => Lang::get('fractal::labels.mediaType'),
+			],
+			[
+				'label'     => Fractal::lang('labels.mediaType'),
 				'method'    => 'getType()',
 				'sort'      => 'media_type_id',
-			),
-			array(
+			],
+			[
 				'attribute' => 'title',
 				'class'     => 'title',
 				'sort'      => true,
-			),
-			array(
+			],
+			[
 				'label'     => 'Published',
 				'method'    => 'getPublishedStatus()',
 				'sort'      => 'published_at',
-			),
-			array(
+			],
+			[
 				'label'     => (Fractal::getSetting('Display Unique Content Views') ? 'Unique ' : '').'Views',
 				'method'    => (Fractal::getSetting('Display Unique Content Views') ? 'getUniqueViews()' : 'getViews()'),
 				'bodyClass' => 'text-align-right',
-			),
-			array(
+			],
+			[
 				'label'     => (Fractal::getSetting('Display Unique Content Downloads') ? 'Unique ' : '').'Downloads',
 				'method'    => (Fractal::getSetting('Display Unique Content Downloads') ? 'getUniqueDownloads()' : 'getDownloads()'),
 				'bodyClass' => 'text-align-right',
-			),
-			array(
+			],
+			[
 				'label'     => 'Last Updated',
 				'method'    => 'getLastUpdatedDateTime()',
 				'sort'      => 'updated_at',
-			),
-			array(
+			],
+			[
 				'label'     => 'Actions',
 				'class'     => 'actions',
-				'elements'  => array(
-					array(
+				'elements'  => [
+					[
 						'icon'       => 'edit',
+						'class'      => 'btn btn-primary',
 						'uri'        => Config::get('fractal::baseUri').'/media/items/:slug/edit',
-						'attributes' => array(
-							'title'        => Lang::get('fractal::labels.editItem'),
-						),
-					),
-					array(
+						'attributes' => [
+							'title' => Fractal::lang('labels.editItem'),
+						],
+					],
+					[
 						'icon'       => 'file',
+						'class'      => 'btn btn-default',
 						'url'        => Fractal::mediaUrl(Config::get('fractal::blog.baseUri') == false ? 'item/:slug' : Config::get('fractal::blog.baseUri').'/article/:slug'),
-						'attributes' => array(
-							'title'        => Lang::get('fractal::labels.viewItem'),
-							'target'       => '_blank',
-						),
-					),
-					array(
+						'attributes' => [
+							'title'  => Fractal::lang('labels.viewItem'),
+							'target' => '_blank',
+						],
+					],
+					[
 						'icon'       => 'remove',
-						'class'      => 'action-item red',
-						'attributes' => array(
+						'class'      => 'btn btn-danger action-item',
+						'attributes' => [
 							'data-item-id'        => ':id',
 							'data-item-name'      => ':title',
 							'data-action'         => 'delete',
 							'data-action-type'    => 'delete',
 							'data-action-url'     => 'items/:id',
 							'data-action-message' => 'confirmDelete',
-							'title'               => Lang::get('fractal::labels.deleteItem'),
-						),
-					),
-				),
-			),
-		),
-		'rows' => array(
+							'title'               => Fractal::lang('labels.deleteItem'),
+						],
+					],
+				],
+			],
+		],
+		'rows' => [
 			'idPrefix'       => 'media-item',
-			'classModifiers' => array(
-				'danger' => array(
+			'classModifiers' => [
+				'danger' => [
 					'isPublished()' => false,
-				),
-			),
-		),
-	),
+				],
+			],
+		],
+	],
 
-	'blogArticles' => array(
-		'table' => array(
+	'blogArticles' => [
+		'table' => [
 			'class'         => 'table-striped table-bordered table-hover table-sortable',
-			'noDataMessage' => Lang::get('fractal::messages.noItems', array('items' => Str::plural(Lang::get('fractal::labels.article')))),
-		),
-		'columns' => array(
-			array(
+			'noDataMessage' => Fractal::lang('messages.noItems', ['items' => Fractal::langLowerPlural('labels.article')]),
+		],
+		'columns' => [
+			[
 				'attribute' => 'id',
 				'sort'      => true,
-			),
-			array(
+			],
+			[
 				'attribute' => 'title',
 				'class'     => 'title',
 				'sort'      => true,
-			),
-			array(
+			],
+			[
 				'attribute' => 'slug',
 				'sort'      => true,
-			),
-			array(
+			],
+			[
 				'label'     => 'Published',
 				'method'    => 'getPublishedStatus()',
 				'sort'      => 'published_at',
-			),
-			array(
+			],
+			[
 				'label'     => (Fractal::getSetting('Display Unique Content Views') ? 'Unique ' : '').'Views',
 				'method'    => (Fractal::getSetting('Display Unique Content Views') ? 'getUniqueViews()' : 'getViews()'),
 				'bodyClass' => 'text-align-right',
-			),
-			array(
+			],
+			[
 				'label'     => 'Last Updated',
 				'method'    => 'getLastUpdatedDateTime()',
 				'sort'      => 'updated_at',
-			),
-			array(
+			],
+			[
 				'label'     => 'Actions',
 				'class'     => 'actions',
-				'elements'  => array(
-					array(
+				'elements'  => [
+					[
 						'icon'       => 'edit',
+						'class'      => 'btn btn-primary',
 						'uri'        => Config::get('fractal::baseUri').'/blogs/articles/:slug/edit',
-						'attributes' => array(
-							'title'        => Lang::get('fractal::labels.editArticle'),
-						),
-					),
-					array(
+						'attributes' => [
+							'title' => Fractal::lang('labels.editArticle'),
+						],
+					],
+					[
 						'icon'       => 'file',
+						'class'      => 'btn btn-default',
 						'url'        => Fractal::blogUrl(Config::get('fractal::blog.baseUri') == false ? 'article/:slug' : Config::get('fractal::blog.baseUri').'/article/:slug'),
-						'attributes' => array(
-							'title'        => Lang::get('fractal::labels.viewArticle'),
-							'target'       => '_blank',
-						),
-					),
-					array(
+						'attributes' => [
+							'title'  => Fractal::lang('labels.viewArticle'),
+							'target' => '_blank',
+						],
+					],
+					[
 						'icon'       => 'remove',
-						'class'      => 'action-item red',
-						'attributes' => array(
+						'class'      => 'btn btn-danger action-item',
+						'attributes' => [
 							'data-item-id'        => ':id',
 							'data-item-name'      => ':title',
 							'data-action'         => 'delete',
 							'data-action-type'    => 'delete',
 							'data-action-url'     => 'articles/:id',
 							'data-action-message' => 'confirmDelete',
-							'title'               => Lang::get('fractal::labels.deleteArticle'),
-						),
-					),
-				),
-			),
-		),
-		'rows' => array(
+							'title'               => Fractal::lang('labels.deleteArticle'),
+						],
+					],
+				],
+			],
+		],
+		'rows' => [
 			'idPrefix'       => 'blog-article',
-			'classModifiers' => array(
-				'danger' => array(
+			'classModifiers' => [
+				'danger' => [
 					'isPublished()' => false,
-				),
-			),
-		),
-	),
+				],
+			],
+		],
+	],
 
-	'users' => array(
-		'table' => array(
+	'users' => [
+		'table' => [
 			'class'         => 'table-striped table-bordered table-hover table-sortable',
-			'noDataMessage' => Lang::get('fractal::messages.noItems', array('items' => Str::plural(Lang::get('fractal::labels.user')))),
-		),
-		'columns' => array(
-			array(
+			'noDataMessage' => Fractal::lang('messages.noItems', ['items' => Fractal::langLowerPlural('labels.user')]),
+		],
+		'columns' => [
+			[
 				'attribute' => 'id',
 				'sort'      => true,
-			),
-			array(
+			],
+			[
 				'attribute' => 'username',
 				'class'     => 'username',
 				'sort'      => true,
-			),
-			array(
+			],
+			[
 				'attribute' => 'name',
 				'method'    => 'getName()',
 				'sort'      => 'last_name',
-			),
-			array(
+			],
+			[
 				'label'     => 'Email',
-				'elements'  => array(
-					array(
+				'elements'  => [
+					[
 						'text' => ':email',
 						'href' => 'mailto::email',
-					),
-				),
+					],
+				],
 				'sort'      => 'email',
-			),
-			array(
-				'label'     => 'Role(s)',
+			],
+			[
+				'label'     => Str::plural(Fractal::lang('labels.role')),
 				'method'    => 'roles()',
 				'attribute' => 'name',
 				'type'      => 'list',
-			),
-			array(
+			],
+			[
 				'label'     => 'Activated',
 				'method'    => 'isActivated()',
 				'type'      => 'boolean',
 				'sort'      => true,
-			),
-			array(
+			],
+			[
 				'label'     => 'Banned',
 				'method'    => 'isBanned()',
 				'type'      => 'boolean',
 				'class'     => 'banned',
 				'sort'      => true,
-			),
-			array(
+			],
+			[
 				'label'     => 'Last Updated',
 				'attribute' => 'updated_at',
 				'type'      => 'dateTime',
 				'sort'      => true,
-			),
-			array(
+			],
+			[
 				'label'     => 'Actions',
 				'class'     => 'actions',
-				'elements'  => array(
-					array(
+				'elements'  => [
+					[
 						'icon'       => 'edit',
+						'class'      => 'btn btn-primary',
 						'uri'        => Config::get('fractal::baseUri').'/users/:username/edit',
-						'attributes' => array(
-							'title'        => Lang::get('fractal::labels.editUser'),
-						),
-					),
-					array(
+						'attributes' => [
+							'title' => Fractal::lang('labels.editUser'),
+						],
+					],
+					[
 						'icon'           => 'ban-circle',
-						'class'          => 'action-item ban-user red',
-						'classModifiers' => array(
-							'hidden' => array(
+						'class'          => 'btn btn-danger action-item ban-user',
+						'classModifiers' => [
+							'hidden' => [
 								'isBanned()' => true,
-							),
-							'invisible' => array(
+							],
+							'invisible' => [
 								'id' => 1,
-							),
-						),
-						'attributes'     => array(
+							],
+						],
+						'attributes'     => [
 							'data-item-id'         => ':id',
 							'data-item-name'       => ':username',
 							'data-action-function' => 'actionBanUser',
 							'data-action-message'  => 'confirmBanUser',
-							'title'                => Lang::get('fractal::labels.banUser'),
-						),
-					),
-					array(
+							'title'                => Fractal::lang('labels.banUser'),
+						],
+					],
+					[
 						'icon'           => 'ok-circle',
-						'class'          => 'action-item unban-user',
-						'classModifiers' => array(
-							'hidden'       => array(
+						'class'          => 'btn action-item unban-user',
+						'classModifiers' => [
+							'hidden'       => [
 								'isBanned()' => false,
-							),
-							'invisible'    => array(
+							],
+							'invisible'    => [
 								'id' => 1,
-							),
-						),
-						'attributes'     => array(
+							],
+						],
+						'attributes'     => [
 							'data-item-id'         => ':id',
 							'data-item-name'       => ':username',
 							'data-action-function' => 'actionUnbanUser',
 							'data-action-message'  => 'confirmUnbanUser',
-							'title'                => Lang::get('fractal::labels.unbanUser'),
-						),
-					),
-					array(
+							'title'                => Fractal::lang('labels.unbanUser'),
+						],
+					],
+					[
 						'icon'           => 'remove',
-						'class'          => 'action-item red',
-						'classModifiers' => array(
-							'invisible'    => array(
+						'class'          => 'btn btn-danger action-item',
+						'classModifiers' => [
+							'invisible'    => [
 								'id' => 1,
-							),
-						),
-						'attributes'     => array(
+							],
+						],
+						'attributes'     => [
 							'data-item-id'        => ':id',
 							'data-item-name'      => ':username',
 							'data-action'         => 'delete',
 							'data-action-type'    => 'delete',
 							'data-action-message' => 'confirmDelete',
-							'title'               => Lang::get('fractal::labels.deleteUser'),
-						),
-					),
-				),
-			),
-		),
-		'rows' => array(
+							'title'               => Fractal::lang('labels.deleteUser'),
+						],
+					],
+				],
+			],
+		],
+		'rows' => [
 			'idPrefix'       => 'user',
-			'classModifiers' => array(
-				'warning' => array(
+			'classModifiers' => [
+				'warning' => [
 					'isActivated()' => false,
-				),
-				'danger' => array(
+				],
+				'danger' => [
 					'isBanned()'    => true,
-				),
-			),
-		),
-	),
+				],
+			],
+		],
+	],
 
-	'userRoles' => array(
-		'table' => array(
+	'userRoles' => [
+		'table' => [
 			'class'         => 'table-striped table-bordered table-hover table-sortable',
-			'noDataMessage' => Lang::get('fractal::messages.noItems', array('items' => Str::plural(Lang::get('fractal::labels.role')))),
-		),
-		'columns' => array(
-			array(
+			'noDataMessage' => Fractal::lang('messages.noItems', ['items' => Fractal::langLowerPlural('labels.role')]),
+		],
+		'columns' => [
+			[
 				'attribute' => 'id',
 				'sort'      => true,
-			),
-			array(
+			],
+			[
 				'attribute' => 'role',
 				'sort'      => true,
 				'developer' => true,
-			),
-			array(
+			],
+			[
 				'attribute' => 'name',
 				'sort'      => true,
 				'class'     => 'name',
-			),
-			array(
+			],
+			[
 				'label'     => 'Last Updated',
 				'attribute' => 'updated_at',
 				'type'      => 'dateTime',
 				'sort'      => true,
-			),
-			array(
+			],
+			[
 				'label'     => 'Actions',
 				'class'     => 'actions',
-				'elements'  => array(
-					array(
+				'elements'  => [
+					[
 						'icon'       => 'edit',
+						'class'      => 'btn btn-primary',
 						'uri'        => Config::get('fractal::baseUri').'/users/roles/:id/edit',
-						'attributes' => array(
-							'title'        => Lang::get('fractal::labels.editRole'),
-						),
-					),
-					array(
-						'icon'       => 'remove',
-						'class'      => 'action-item red',
-						'classModifiers' => array(
-							'invisible'    => array(
+						'attributes' => [
+							'title' => Fractal::lang('labels.editRole'),
+						],
+					],
+					[
+						'icon'           => 'remove',
+						'class'          => 'btn btn-danger action-item',
+						'classModifiers' => [
+							'invisible' => [
 								'id' => 1,
-							),
-						),
-						'attributes' => array(
+							],
+						],
+						'attributes' => [
 							'data-item-id'        => ':id',
 							'data-item-name'      => ':title',
 							'data-action'         => 'delete',
 							'data-action-type'    => 'delete',
+							'data-action-url'     => 'roles/:id',
 							'data-action-message' => 'confirmDelete',
-							'title'               => Lang::get('fractal::labels.deleteRole'),
-						),
-					),
-				),
-			),
-		),
-		'rows' => array(
+							'title'               => Fractal::lang('labels.deleteRole'),
+						],
+					],
+				],
+			],
+		],
+		'rows' => [
 			'idPrefix' => 'user-role',
-		),
-	),
+		],
+	],
 
-	'activities' => array(
-		'table' => array(
+	'userPermissions' => [
+		'table' => [
 			'class'         => 'table-striped table-bordered table-hover table-sortable',
-			'noDataMessage' => Lang::get('fractal::messages.noItems', array('items' => Str::plural(Lang::get('fractal::labels.activity')))),
-		),
-		'columns' => array(
-			array(
-				'label'     => '',
-				'method'    => 'getIconMarkup()',
-			),
-			array(
+			'noDataMessage' => Fractal::lang('messages.noItems', ['items' => Fractal::langLowerPlural('labels.permission')]),
+		],
+		'columns' => [
+			[
 				'attribute' => 'id',
 				'sort'      => true,
-			),
-			array(
+			],
+			[
+				'attribute' => 'permission',
+				'sort'      => true,
+			],
+			[
+				'attribute' => 'name',
+				'sort'      => true,
+				'class'     => 'name',
+			],
+			[
+				'attribute' => 'description',
+				'sort'      => true,
+			],
+			[
+				'label'     => Str::plural(Fractal::lang('labels.role')),
+				'method'    => 'roles()',
+				'attribute' => 'name',
+				'type'      => 'list',
+			],
+			[
+				'label'     => 'Last Updated',
+				'attribute' => 'updated_at',
+				'type'      => 'dateTime',
+				'sort'      => true,
+			],
+			[
+				'label'     => 'Actions',
+				'class'     => 'actions',
+				'elements'  => [
+					[
+						'icon'       => 'edit',
+						'class'      => 'btn btn-primary',
+						'uri'        => Config::get('fractal::baseUri').'/users/permissions/:id/edit',
+						'attributes' => [
+							'title' => Fractal::lang('labels.editPermission'),
+						],
+					],
+					[
+						'icon'           => 'remove',
+						'class'          => 'btn btn-danger action-item',
+						'classModifiers' => [
+							'invisible' => [
+								'id' => 1,
+							],
+						],
+						'attributes' => [
+							'data-item-id'        => ':id',
+							'data-item-name'      => ':title',
+							'data-action'         => 'delete',
+							'data-action-type'    => 'delete',
+							'data-action-url'     => 'permissions/:id',
+							'data-action-message' => 'confirmDelete',
+							'title'               => Fractal::lang('labels.deletePermission'),
+						],
+					],
+				],
+			],
+		],
+		'rows' => [
+			'idPrefix' => 'user-permission',
+		],
+	],
+
+	'activities' => [
+		'table' => [
+			'class'         => 'table-striped table-bordered table-hover table-sortable',
+			'noDataMessage' => Fractal::lang('messages.noItems', ['items' => Fractal::langLowerPlural('labels.activity')]),
+		],
+		'columns' => [
+			[
+				'label'     => '',
+				'method'    => 'getIconMarkup()',
+			],
+			[
+				'attribute' => 'id',
+				'sort'      => true,
+			],
+			[
 				'label'     => 'Name',
 				'method'    => 'getName()',
 				'sort'      => 'user_id',
-			),
-			array(
+			],
+			[
 				'attribute' => 'description',
 				'sort'      => true,
-			),
-			array(
+			],
+			[
 				'attribute' => 'details',
 				'sort'      => true,
-			),
-			array(
+			],
+			[
 				'attribute' => 'developer',
 				'type'      => 'boolean',
 				'sort'      => true,
 				'developer' => true,
-			),
-			array(
+			],
+			[
 				'label'     => 'IP Address',
 				'attribute' => 'ip_address',
 				'sort'      => true,
 				'developer' => true,
-			),
-			array(
+			],
+			[
 				'label'     => 'User Agent',
 				'method'    => 'getUserAgentPreview()',
 				'sort'      => 'user_agent',
 				'class'     => 'small-text',
 				'developer' => true,
-			),
-			array(
-				'label'     => Lang::get('fractal::labels.timestamp'),
+			],
+			[
+				'label'     => Fractal::lang('labels.timestamp'),
 				'attribute' => 'created_at',
 				'type'      => 'dateTime',
 				'sort'      => true,
-			),
-		),
-		'rows' => array(
+			],
+		],
+		'rows' => [
 			'idPrefix' => 'activity',
-		),
-	),
+		],
+	],
 
-);
+];

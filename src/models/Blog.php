@@ -18,9 +18,9 @@ class Blog extends BaseModel {
 	 *
 	 * @var    array
 	 */
-	protected $fillable = array(
+	protected $fillable = [
 		'user_id',
 		'slug',
-	);
+	];
 
 }

@@ -1,4 +1,4 @@
-<?php namespace Regulus\Fractal;
+<?php namespace Regulus\Fractal\Libraries;
 
 class ArrayFile {
 
@@ -102,7 +102,7 @@ class ArrayFile {
 				$data = (array) $data;
 
 			if (is_null($item))
-				$this->data .= "return array(\n";
+				$this->data .= "return [\n";
 			else
 				$this->data .= "[";
 
@@ -133,7 +133,7 @@ class ArrayFile {
 			}
 
 			if (is_null($item))
-				$this->data .= "\n); //Exported from DB on ".date('m/d/Y \a\t g:ia');
+				$this->data .= "\n]; //Exported from DB on ".date('m/d/Y \a\t g:ia');
 			else
 				$this->data .= "],";
 

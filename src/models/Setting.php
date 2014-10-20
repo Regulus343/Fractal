@@ -29,11 +29,11 @@ class Setting extends Eloquent {
 		if ($this->type == "Boolean") {
 			$options = $this->options != "" ? explode(', ', $this->options) : ['Yes', 'No'];
 
-			$html = Form::field($name, 'radio-set', array(
+			$html = Form::field($name, 'radio-set', [
 				'label'   => $this->getLabel(),
 				'options' => Form::booleanOptions($options),
 				'value'   => (int) $this->value,
-			));
+			]);
 		} else if ($this->type == "Integer") {
 			$range   = true;
 			$options = explode(':', $this->options);
@@ -46,20 +46,20 @@ class Setting extends Eloquent {
 				if ($range) {
 					$optionsAdditional = explode('; +', $options[1]);
 
-					$html = Form::field($name, 'select', array(
+					$html = Form::field($name, 'select', [
 						'label'   => $this->getLabel(),
 						'options' => Form::numberOptions($options[0], $optionsAdditional[0], (isset($optionsAdditional[1]) ? $optionsAdditional[1] : 1)),
 						'value'   => $this->value,
-					));
+					]);
 				} else {
-					$html = Form::field($name, 'select', array(
+					$html = Form::field($name, 'select', [
 						'label'   => $this->getLabel(),
 						'options' => Form::simpleOptions($options),
 						'value'   => $this->value,
-					));
+					]);
 				}
 			} else {
-				$html = Form::field($name, 'number', array('label' => $this->getLabel(), 'value' => $this->value));
+				$html = Form::field($name, 'number', ['label' => $this->getLabel(), 'value' => $this->value]);
 			}
 		} else {
 			if ($this->options != "") {
@@ -75,11 +75,11 @@ class Setting extends Eloquent {
 					$options = Form::simpleOptions($options);
 				}
 
-				$attributes = array(
+				$attributes = [
 					'label'   => $this->getLabel(),
 					'options' => $options,
 					'value'   => $this->getValue(),
-				);
+				];
 
 				if ($this->type == "List") {
 					$name .= ".";
@@ -88,7 +88,7 @@ class Setting extends Eloquent {
 
 				$html = Form::field($name, 'select', $attributes);
 			} else {
-				$html = Form::field($name, 'text', array('label' => $this->getLabel()));
+				$html = Form::field($name, 'text', ['label' => $this->getLabel()]);
 			}
 		}
 
@@ -170,7 +170,7 @@ class Setting extends Eloquent {
 		if (is_null($settings))
 			$settings = static::orderBy('category')->orderBy('display_order')->orderBy('name')->get();
 
-		$array = array();
+		$array = [];
 		foreach ($settings as $setting) {
 			$array[Fractal::toCamelCase($setting->name)] = $setting->getValue();
 		}

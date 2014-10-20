@@ -13,28 +13,26 @@ class ContentPagesTableSeeder extends Seeder {
 
 		$timestamp = date('Y-m-d H:i:s');
 
-		$pages = array(
-			array(
+		$pages = [
+			[
 				'slug'               => 'home',
 				'title'              => 'Home',
 				'layout_template_id' => 1,
 				'layout'             => '',
-			),
-
-			array(
+			],
+			[
 				'slug'               => 'about',
 				'title'              => 'About Us',
 				'layout_template_id' => 2,
 				'layout'             => '',
-			),
-
-			array(
+			],
+			[
 				'slug'               => 'contact',
 				'title'              => 'Contact Us',
 				'layout_template_id' => 1,
 				'layout'             => '',
-			),
-		);
+			],
+		];
 
 		foreach ($pages as $page) {
 			$page['user_id']      = 1;

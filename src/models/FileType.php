@@ -33,20 +33,20 @@ class FileType extends BaseModel {
 	 *
 	 * @var    array
 	 */
-	protected $fillable = array(
+	protected $fillable = [
 		'slug',
 		'name',
 		'extensions',
-	);
+	];
 
 	/**
 	 * The special typed fields for the model.
 	 *
 	 * @var    array
 	 */
-	protected $types = array(
+	protected $types = [
 		'slug' => 'unique-slug',
-	);
+	];
 
 	/**
 	 * Get the validation rules used by the model.
@@ -56,10 +56,10 @@ class FileType extends BaseModel {
 	 */
 	public static function validationRules($id = null)
 	{
-		return array(
-			'slug' => array('required'),
-			'name' => array('required'),
-		);
+		return [
+			'slug' => ['required'],
+			'name' => ['required'],
+		];
 	}
 
 	/**
@@ -121,7 +121,7 @@ class FileType extends BaseModel {
 	 */
 	public static function getExtensionsForIds($id = null)
 	{
-		$result = array();
+		$result = [];
 
 		if ($id) {
 			$fileType = static::find($id);

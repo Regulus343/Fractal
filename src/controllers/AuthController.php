@@ -18,8 +18,8 @@ class AuthController extends BaseController {
 
 	public function __construct()
 	{
-		$section = "Log In";
-		Site::setMulti(array('section', 'title'), $section);
+		Site::setMulti(array('section', 'subSection'), 'Log In');
+		Site::set('title', Fractal::lang('labels.logIn'));
 		Site::set('hideSidebar', true);
 
 		Fractal::setViewsLocation('auth');
@@ -29,7 +29,7 @@ class AuthController extends BaseController {
 	{
 		//check if an active session already exists
 		if (Fractal::auth())
-			return Redirect::to(Fractal::uri('account'))->with('messages', array('error' => Lang::get('fractal::messages.errorAlreadyLoggedIn')));
+			return Redirect::to(Fractal::uri('account'))->with('messages', array('error' => Fractal::lang('messages.errorAlreadyLoggedIn')));
 
 		//add a default username if it is set through a session variable
 		if (!is_null(Session::get('username'))) {
@@ -62,11 +62,11 @@ class AuthController extends BaseController {
 			Session::forget('returnUri');
 
 			return Redirect::to($returnUri)->with('messages', array(
-				'success' => Lang::get('fractal::messages.successLoggedIn', array('website' => Site::name(), 'user' => $user->getName()))
+				'success' => Fractal::lang('messages.successLoggedIn', array('website' => Site::name(), 'user' => $user->getName()))
 			));
 		} else {
 			if ($_POST) {
-				$messages['error'] = Lang::get('fractal::messages.errorLogIn');
+				$messages['error'] = Fractal::lang('messages.errorLogIn');
 
 				Activity::log(array(
 					'description' => 'Attempted to Log In',
@@ -92,7 +92,7 @@ class AuthController extends BaseController {
 		//set username session variable for easy logging back in
 		Session::set('username', $user->username);
 
-		return Redirect::to(Fractal::uri('login'))->with('messages', array('success' => Lang::get('fractal::messages.successLoggedOut')));
+		return Redirect::to(Fractal::uri('login'))->with('messages', array('success' => Fractal::lang('messages.successLoggedOut')));
 	}
 
 	public function activate($userId = '', $code = '')
@@ -155,11 +155,11 @@ class AuthController extends BaseController {
 
 			//even if user doesn't exist, suggest the user does exist to prevent someone from using this function to find usernames
 			return Redirect::to(Fractal::uri('login'))->with('messages', array(
-				'success' => Lang::get('fractal::messages.successForgotPassword')
+				'success' => Fractal::lang('messages.successForgotPassword')
 			));
 		} else {
 			if ($_POST)
-				$messages['error'] = Lang::get('fractal::messages.errorGeneral');
+				$messages['error'] = Fractal::lang('messages.errorGeneral');
 		}
 
 		return View::make(Fractal::view('forgot_password'))->with('messages', $messages);
@@ -170,13 +170,13 @@ class AuthController extends BaseController {
 	{
 		if (!$id || $code == "")
 			return Redirect::to(Fractal::uri('forgot-password'))->with('messages', array(
-				'error' => Lang::get('fractal::messages.errorResetPasswordInvalidUri')
+				'error' => Fractal::lang('messages.errorResetPasswordInvalidUri')
 			));
 
 		$user = User::getActiveById($id);
 		if (empty($user) || $user->reset_password_code != $code)
 			return Redirect::to(Fractal::uri('forgot-password'))->with('messages', array(
-				'error' => Lang::get('fractal::messages.errorNotFound', array('item' => strtolower(Lang::get('fractal::labels.user'))))
+				'error' => Fractal::lang('messages.errorNotFound', array('item' => strtolower(Fractal::lang('labels.user'))))
 			));
 
 		Site::set('title', 'Reset Password');
@@ -202,10 +202,10 @@ class AuthController extends BaseController {
 			));
 
 			return Redirect::to(Fractal::uri('login'))
-				->with('messages', array('success' => Lang::get('fractal::messages.successResetPassword')));
+				->with('messages', array('success' => Fractal::lang('messages.successResetPassword')));
 		} else {
 			if ($_POST)
-				$messages['error'] = Lang::get('fractal::messages.errorGeneral');
+				$messages['error'] = Fractal::lang('messages.errorGeneral');
 		}
 
 		return View::make(Fractal::view('reset_password'))->with('messages', $messages);

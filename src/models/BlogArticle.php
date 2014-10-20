@@ -34,7 +34,7 @@ class BlogArticle extends BaseModel {
 	 *
 	 * @var    array
 	 */
-	protected $fillable = array(
+	protected $fillable = [
 		'blog_id',
 		'slug',
 		'title',
@@ -42,35 +42,35 @@ class BlogArticle extends BaseModel {
 		'layout',
 		'user_id',
 		'published_at',
-	);
+	];
 
 	/**
 	 * The special typed fields for the model.
 	 *
 	 * @var    array
 	 */
-	protected $types = array(
+	protected $types = [
 		'slug'         => 'unique-slug',
 		'published_at' => 'date-time',
-	);
+	];
 
 	/**
 	 * The special formatted fields for the model.
 	 *
 	 * @var    array
 	 */
-	protected $formats = array(
+	protected $formats = [
 		'published' => 'trueIfNotNull:published_at',
-	);
+	];
 
 	/**
 	 * The special formatted fields for the model for saving to the database.
 	 *
 	 * @var    array
 	 */
-	protected $formatsForDb = array(
+	protected $formatsForDb = [
 		'published_at' => 'nullIfBlank',
-	);
+	];
 
 	/**
 	 * The default values for the model.
@@ -79,11 +79,11 @@ class BlogArticle extends BaseModel {
 	 */
 	public static function defaults()
 	{
-		$defaults = array(
+		$defaults = [
 			'layout_template_id' => 1,
 			'published'          => true,
 			'published_at'       => date(Form::getDateTimeFormat()),
-		);
+		];
 
 		$defaults = array_merge($defaults, static::addPrefixToDefaults(ContentArea::defaults(), 'content_areas.1'));
 
@@ -98,10 +98,10 @@ class BlogArticle extends BaseModel {
 	 */
 	public static function validationRules($id = null)
 	{
-		$rules = array(
-			'slug'  => array('required'),
-			'title' => array('required'),
-		);
+		$rules = [
+			'slug'  => ['required'],
+			'title' => ['required'],
+		];
 
 		if (Form::post()) {
 			foreach (Form::getValuesObject('content_areas') as $number => $values)
@@ -111,11 +111,11 @@ class BlogArticle extends BaseModel {
 				{
 					$contentField = Form::getValueFromObject('content_type', $values) == "HTML" ? "content_html" : "content_markdown";
 
-					$rules = array_merge($rules, array(
-						'content_areas.'.$number.'.pivot.layout_tag' => array('required'),
-						'content_areas.'.$number.'.content_type'     => array('required'),
-						'content_areas.'.$number.'.'.$contentField   => array('required'),
-					));
+					$rules = array_merge($rules, [
+						'content_areas.'.$number.'.pivot.layout_tag' => ['required'],
+						'content_areas.'.$number.'.content_type'     => ['required'],
+						'content_areas.'.$number.'.'.$contentField   => ['required'],
+					]);
 				}
 			}
 		}
@@ -296,17 +296,17 @@ class BlogArticle extends BaseModel {
 	public function getPublishedStatus($dateFormat = false)
 	{
 
-		$yesNo = array(
+		$yesNo = [
 			'<span class="boolean-true">Yes</span>',
 			'<span class="boolean-false">No</span>',
-		);
+		];
 
 		$status = Format::boolToStr($this->isPublished(), $yesNo);
 
 		if ($this->isPublishedFuture())
-			$status .= '<div><small><em>'.Lang::get('fractal::labels.toBePublished', array(
+			$status .= '<div><small><em>'.Lang::get('fractal::labels.toBePublished', [
 				'dateTime' => $this->getPublishedDateTime()
-			)).'</em></small></div>';
+			]).'</em></small></div>';
 
 		return $status;
 	}

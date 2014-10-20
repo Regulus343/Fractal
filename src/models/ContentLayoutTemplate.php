@@ -23,10 +23,10 @@ class ContentLayoutTemplate extends Eloquent {
 	 */
 	public static function validationRules($id = false)
 	{
-		return array(
-			'name'   => array('required'),
-			'layout' => array('required'),
-		);
+		return [
+			'name'   => ['required'],
+			'layout' => ['required'],
+		];
 	}
 
 	/**

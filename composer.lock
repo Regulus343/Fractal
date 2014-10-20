@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/erusev/parsedown.git",
-                "reference": "e33ac1c56ea591f21b9cf2fa74356ef708d4e130"
+                "reference": "2adb87ef4159844fa8d7db5f611a359c50891f0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erusev/parsedown/zipball/e33ac1c56ea591f21b9cf2fa74356ef708d4e130",
-                "reference": "e33ac1c56ea591f21b9cf2fa74356ef708d4e130",
+                "url": "https://api.github.com/repos/erusev/parsedown/zipball/2adb87ef4159844fa8d7db5f611a359c50891f0c",
+                "reference": "2adb87ef4159844fa8d7db5f611a359c50891f0c",
                 "shasum": ""
             },
             "type": "library",
@@ -43,7 +43,7 @@
                 "markdown",
                 "parser"
             ],
-            "time": "2014-06-18 09:27:25"
+            "time": "2014-10-10 18:11:23"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -221,12 +221,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Regulus343/ActivityLog.git",
-                "reference": "381f900e9b4dec47c4fe7f9801402b090375a29c"
+                "reference": "d29e2cdbd38edff3d3e37daa21f7bc3e1dca1668"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Regulus343/ActivityLog/zipball/381f900e9b4dec47c4fe7f9801402b090375a29c",
-                "reference": "381f900e9b4dec47c4fe7f9801402b090375a29c",
+                "url": "https://api.github.com/repos/Regulus343/ActivityLog/zipball/d29e2cdbd38edff3d3e37daa21f7bc3e1dca1668",
+                "reference": "d29e2cdbd38edff3d3e37daa21f7bc3e1dca1668",
                 "shasum": ""
             },
             "require": {
@@ -254,7 +254,7 @@
                 }
             ],
             "description": "A clean and simple Laravel 4 activity logger for monitoring user activity on a website or web application.",
-            "time": "2014-07-26 07:10:47"
+            "time": "2014-10-18 20:41:46"
         },
         {
             "name": "regulus/elemental",
@@ -262,12 +262,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Regulus343/Elemental.git",
-                "reference": "70a1b123a06cb10b76c998adadc08517f8e301ee"
+                "reference": "dcb17c85d8f8e8f49e692e2eb0f701a4d96cc7f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Regulus343/Elemental/zipball/70a1b123a06cb10b76c998adadc08517f8e301ee",
-                "reference": "70a1b123a06cb10b76c998adadc08517f8e301ee",
+                "url": "https://api.github.com/repos/Regulus343/Elemental/zipball/dcb17c85d8f8e8f49e692e2eb0f701a4d96cc7f7",
+                "reference": "dcb17c85d8f8e8f49e692e2eb0f701a4d96cc7f7",
                 "shasum": ""
             },
             "require": {
@@ -295,7 +295,7 @@
                 }
             ],
             "description": "An HTML element building composer package that simplifies creation of active, selected, or hidden elements.",
-            "time": "2014-10-09 01:23:48"
+            "time": "2014-10-18 23:01:14"
         },
         {
             "name": "regulus/formation",
@@ -303,12 +303,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Regulus343/Formation.git",
-                "reference": "25595d52a6e973753bcc4abf6c2f7e5fd19bb17c"
+                "reference": "4726383de837f223581b3901e15d1befcc1446a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Regulus343/Formation/zipball/25595d52a6e973753bcc4abf6c2f7e5fd19bb17c",
-                "reference": "25595d52a6e973753bcc4abf6c2f7e5fd19bb17c",
+                "url": "https://api.github.com/repos/Regulus343/Formation/zipball/4726383de837f223581b3901e15d1befcc1446a8",
+                "reference": "4726383de837f223581b3901e15d1befcc1446a8",
                 "shasum": ""
             },
             "require": {
@@ -337,7 +337,7 @@
                 }
             ],
             "description": "A powerful form creation composer package for Laravel 4.",
-            "time": "2014-10-09 01:18:48"
+            "time": "2014-10-18 23:00:20"
         },
         {
             "name": "regulus/solid-site",
@@ -345,12 +345,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Regulus343/SolidSite.git",
-                "reference": "48e8c086d8feaf11685a0ffb9bd7d459ed2528c1"
+                "reference": "a8fb095ee7ae0714b9e697b006d2d8fce126a956"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Regulus343/SolidSite/zipball/48e8c086d8feaf11685a0ffb9bd7d459ed2528c1",
-                "reference": "48e8c086d8feaf11685a0ffb9bd7d459ed2528c1",
+                "url": "https://api.github.com/repos/Regulus343/SolidSite/zipball/a8fb095ee7ae0714b9e697b006d2d8fce126a956",
+                "reference": "a8fb095ee7ae0714b9e697b006d2d8fce126a956",
                 "shasum": ""
             },
             "require": {
@@ -377,7 +377,7 @@
                 }
             ],
             "description": "A composer package that assigns section names & titles to pages and simplifies creation of breadcrumb trails and is useful for other components that require page identifying information such as menus that highlight the current location.",
-            "time": "2014-08-20 04:04:18"
+            "time": "2014-10-16 06:07:49"
         },
         {
             "name": "regulus/tetra-text",

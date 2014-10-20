@@ -30,21 +30,21 @@ class ContentArea extends BaseModel {
 	 *
 	 * @var    array
 	 */
-	protected $fillable = array(
+	protected $fillable = [
 		'title',
 		'content_type',
 		'content',
 		'user_id',
-	);
+	];
 
 	/**
 	 * The special typed fields for the model.
 	 *
 	 * @var    string
 	 */
-	protected $types = array(
+	protected $types = [
 		'updated_at' => 'date-time',
-	);
+	];
 
 	/**
 	 * The default values for the model.
@@ -53,9 +53,9 @@ class ContentArea extends BaseModel {
 	 */
 	public static function defaults()
 	{
-		$defaults = array(
+		$defaults = [
 			'content_type' => 'Markdown',
-		);
+		];
 
 		return static::addPrefixToDefaults($defaults);
 	}
@@ -87,7 +87,7 @@ class ContentArea extends BaseModel {
 	 */
 	public function getContentPageIds()
 	{
-		$ids = array();
+		$ids = [];
 
 		foreach ($this->contentPages as $contentPage) {
 			$ids[] = (int) $contentPage->id;

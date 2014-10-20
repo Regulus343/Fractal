@@ -11,37 +11,37 @@
 				<?=Form::field('content_areas.{{number}}.title')?>
 			</div>
 			<div class="col-md-4">
-				<?=Form::field('content_areas.{{number}}.pivot.layout_tag', 'select', array(
+				<?=Form::field('content_areas.{{number}}.pivot.layout_tag', 'select', [
 					'options'     => Form::simpleOptions($layoutTagOptions),
 					'null-option' => 'Select a Layout Tag'
-				))?>
+				])?>
 			</div>
 			<div class="col-md-4">
-				<?=Form::field('content_areas.{{number}}.content_type', 'select', array(
-					'options' => Form::simpleOptions(array('HTML', 'Markdown')),
+				<?=Form::field('content_areas.{{number}}.content_type', 'select', [
+					'options' => Form::simpleOptions(['HTML', 'Markdown']),
 					'value'   => Fractal::getSetting('Default Content Area Type'),
-				))?>
+				])?>
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-md-12">
-				<?=Form::field('content_areas.{{number}}.content_html', 'textarea', array(
+				<?=Form::field('content_areas.{{number}}.content_html', 'textarea', [
 					'label'                 => 'HTML Content',
 					'class-field-container' => 'html-content-area',
 					'class-field'           => 'ckeditor',
-				))?>
+				])?>
 
-				<?=Form::field('content_areas.{{number}}.content_markdown', 'textarea', array(
+				<?=Form::field('content_areas.{{number}}.content_markdown', 'textarea', [
 					'label'                 => 'Markdown Content',
 					'class-field-container' => 'markdown-content-area',
 					'class-field'           => 'tab',
-				))?>
+				])?>
 			</div>
 		</div>
 
 		<a href="" class="btn btn-danger btn-xs remove-template-item pull-right">
-			<span class="glyphicon glyphicon-remove-circle"></span>&nbsp; <?=Lang::get('fractal::labels.removeContentArea')?>
+			<span class="glyphicon glyphicon-remove-circle"></span>&nbsp; <?=Fractal::lang('labels.removeContentArea')?>
 		</a>
 	</fieldset>
 </script>

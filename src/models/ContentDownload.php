@@ -22,14 +22,14 @@ class ContentDownload extends BaseModel {
 	 *
 	 * @var    array
 	 */
-	protected $fillable = array(
+	protected $fillable = [
 		'user_id',
 		'content_id',
 		'content_type',
 		'ip_address',
 		'user_agent',
 		'downloads',
-	);
+	];
 
 	/**
 	 * Log a content view.

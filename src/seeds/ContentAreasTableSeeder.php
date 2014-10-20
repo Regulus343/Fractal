@@ -14,63 +14,60 @@ class ContentAreasTableSeeder extends Seeder {
 
 		$timestamp = date('Y-m-d H:i:s');
 
-		$areas = array(
-			array(
+		$areas = [
+			[
 				'title'        => 'Home',
 				'content_type' => 'Markdown',
 				'content'      => 'Welcome to the home page of a new website!',
 
-				'page_areas'   => array(
-					array(
+				'page_areas'   => [
+					[
 						'page_id'    => 1,
 						'area_id'    => 1,
 						'layout_tag' => 'main',
-					),
-				),
-			),
-
-			array(
+					],
+				],
+			],
+			[
 				'title'        => 'About Us: Main',
 				'content_type' => 'Markdown',
 				'content'      => 'About Us content coming soon.',
 
-				'page_areas'   => array(
-					array(
+				'page_areas'   => [
+					[
 						'page_id'    => 2,
 						'area_id'    => 2,
 						'layout_tag' => 'main',
-					),
-				),
-			),
-
-			array(
+					],
+				],
+			],
+			[
 				'title'        => 'About Us: Side',
 				'content_type' => 'Markdown',
 				'content'      => 'About Us side content coming soon.',
 
-				'page_areas'   => array(
-					array(
+				'page_areas'   => [
+					[
 						'page_id'    => 2,
 						'area_id'    => 3,
 						'layout_tag' => 'side',
-					),
-				),
-			),
-
-			array(
+					],
+				],
+			],
+			[
 				'title'        => 'Contact Us',
 				'content_type' => 'Markdown',
 				'content'      => 'You may contact us at **(403) 555-5555** or by filling out the following form:'."\n\n".'[view:"fractal::pages.inserts.form_contact"]',
 
-				'page_areas'   => array(
-					array(
+				'page_areas'   => [
+					[
 						'page_id'    => 3,
 						'area_id'    => 4,
 						'layout_tag' => 'main',
-					),
-				),
-			),
-		);
+					],
+				],
+			],
+		];
 
 		foreach ($areas as $area) {
 			$pageAreas = $area['page_areas'];

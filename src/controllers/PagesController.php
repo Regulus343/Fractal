@@ -26,8 +26,8 @@ class PagesController extends BaseController {
 		parent::__construct();
 
 		Site::set('section', 'Content');
-		$subSection = "Pages";
-		Site::setMulti(array('subSection', 'title'), $subSection);
+		Site::set('subSection', 'Pages');
+		Site::set('title', Fractal::lang('labels.pages'));
 
 		//set content type and views location
 		Fractal::setContentType('page', true);
@@ -49,7 +49,7 @@ class PagesController extends BaseController {
 			$pages = ContentPage::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
-			'label' => Lang::get('fractal::labels.createPage'),
+			'label' => Fractal::lang('labels.createPage'),
 			'icon'  => 'glyphicon glyphicon-file',
 			'uri'   => 'pages/create',
 		]);
@@ -88,7 +88,7 @@ class PagesController extends BaseController {
 		$layoutTagOptions = $this->getLayoutTagOptions();
 
 		Fractal::addButton([
-			'label' => Lang::get('fractal::labels.returnToPagesList'),
+			'label' => Fractal::lang('labels.returnToPagesList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => 'pages',
 		]);
@@ -101,9 +101,9 @@ class PagesController extends BaseController {
 	{
 		Form::setValidationRules(ContentPage::validationRules());
 
-		$messages = array();
+		$messages = [];
 		if (Form::validated()) {
-			$messages['success'] = Lang::get('fractal::messages.successCreated', array('item' => Format::a('page')));
+			$messages['success'] = Fractal::lang('messages.successCreated', ['item' => Fractal::langLowerA('labels.page')]);
 
 			$input = Input::all();
 			$input['user_id'] = Auth::user()->id;
@@ -113,18 +113,18 @@ class PagesController extends BaseController {
 			//re-export menus to config array in case published status for page has changed
 			Fractal::exportMenus();
 
-			Activity::log(array(
+			Activity::log([
 				'contentId'   => $page->id,
 				'contentType' => 'ContentPage',
 				'action'      => 'Create',
 				'description' => 'Created a Page',
 				'details'     => 'Title: '.$page->title,
-			));
+			]);
 
 			return Redirect::to(Fractal::uri('pages/'.$page->slug.'/edit'))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
+			$messages['error'] = Fractal::lang('messages.errorGeneral');
 		}
 
 		return Redirect::to(Fractal::uri('pages/create'))
@@ -137,25 +137,26 @@ class PagesController extends BaseController {
 	{
 		$page = ContentPage::findBySlug($slug);
 		if (empty($page))
-			return Redirect::to(Fractal::uri('pages'))
-				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'page'))));
+			return Redirect::to(Fractal::uri('pages'))->with('messages', [
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.page')])
+			]);
 
 		Site::set('title', $page->title.' (Page)');
 		Site::set('titleHeading', 'Update Page: <strong>'.Format::entities($page->title).'</strong>');
 		Site::set('wysiwyg', true);
 
-		$page->setDefaults(array('contentAreas'));
+		$page->setDefaults(['contentAreas']);
 		Form::setErrors();
 
 		$layoutTagOptions = $this->getLayoutTagOptions($page->getLayoutTags());
 
 		Fractal::addButtons([
 			[
-				'label' => Lang::get('fractal::labels.returnToPagesList'),
+				'label' => Fractal::lang('labels.returnToPagesList'),
 				'icon'  => 'glyphicon glyphicon-list',
 				'uri'   => 'pages',
 			],[
-				'label' => Lang::get('fractal::labels.viewPage'),
+				'label' => Fractal::lang('labels.viewPage'),
 				'icon'  => 'glyphicon glyphicon-file',
 				'url'   => $page->getUrl(),
 			]
@@ -172,33 +173,34 @@ class PagesController extends BaseController {
 	{
 		$page = ContentPage::findBySlug($slug);
 		if (empty($page))
-			return Redirect::to(Fractal::uri('pages'))
-				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'page'))));
+			return Redirect::to(Fractal::uri('pages'))->with('messages', [
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.page')])
+			]);
 
 		$page->setValidationRules();
 
-		$messages = array();
+		$messages = [];
 		if (Form::validated()) {
-			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Format::a('page')));
+			$messages['success'] = Fractal::lang('messages.successUpdated', ['item' => Fractal::langLowerA('labels.page')]);
 
 			$page->saveData();
 
 			//re-export menus to config array in case published status for page has changed
 			Fractal::exportMenus();
 
-			Activity::log(array(
+			Activity::log([
 				'contentId'   => $page->id,
 				'contentType' => 'ContentPage',
 				'action'      => 'Update',
 				'description' => 'Updated a Page',
 				'details'     => 'Title: '.$page->title,
 				'updated'     => true,
-			));
+			]);
 
 			return Redirect::to(Fractal::uri('pages/'.$slug.'/edit'))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
+			$messages['error'] = Fractal::lang('messages.errorGeneral');
 
 			return Redirect::to(Fractal::uri('pages/'.$slug.'/edit'))
 				->with('messages', $messages)
@@ -209,27 +211,27 @@ class PagesController extends BaseController {
 
 	public function destroy($id)
 	{
-		$result = array(
+		$result = [
 			'resultType' => 'Error',
-			'message'    => Lang::get('fractal::messages.errorGeneral'),
-		);
+			'message'    => Fractal::lang('messages.errorGeneral'),
+		];
 
 		$page = ContentPage::find($id);
 		if (empty($page))
 			return $result;
 
-		Activity::log(array(
+		Activity::log([
 			'contentId'   => $page->id,
 			'contentType' => 'ContentPage',
 			'action'      => 'Delete',
 			'description' => 'Deleted a Page',
 			'details'     => 'Title: '.$page->title,
-		));
+		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Lang::get('fractal::messages.successDeleted', array('item' => '<strong>'.$page->title.'</strong>'));
+		$result['message']    = Fractal::lang('messages.successDeleted', ['item' => '<strong>'.$page->title.'</strong>']);
 
-		$page->contentAreas()->sync(array());
+		$page->contentAreas()->sync([]);
 		$page->delete();
 
 		return $result;
@@ -247,20 +249,20 @@ class PagesController extends BaseController {
 		if (empty($page))
 			return Redirect::to('');
 
-		Site::setMulti(array('section', 'subSection', 'title'), $page->title);
+		Site::setMulti(['section', 'subSection', 'title'], $page->title);
 		Site::set('menus', 'Front');
 
 		$page->logView();
 
-		$messages = array();
+		$messages = [];
 		if (!$page->isPublished()) {
 			if ($page->isPublishedFuture())
-				$messages['info'] = Lang::get('fractal::messages.notPublishedUntil', array(
-					'item'     => strtolower(Lang::get('fractal::labels.page')),
+				$messages['info'] = Fractal::lang('messages.notPublishedUntil', [
+					'item'     => strtolower(Fractal::lang('labels.page')),
 					'dateTime' => $page->getPublishedDateTime(),
-				));
+				]);
 			else
-				$messages['info'] = Lang::get('fractal::messages.notPublished', array('item' => Lang::get('fractal::labels.page')));
+				$messages['info'] = Fractal::lang('messages.notPublished', ['item' => Fractal::lang('labels.page')]);
 		}
 
 		return View::make(Config::get('fractal::pageView'))
@@ -284,7 +286,7 @@ class PagesController extends BaseController {
 		return json_encode(Fractal::getLayoutTagsFromLayout($layout));
 	}
 
-	private function getLayoutTagOptions($layoutTagOptions = array())
+	private function getLayoutTagOptions($layoutTagOptions = [])
 	{
 		if (Input::old()) {
 			$layout = Input::old('layout');
@@ -307,11 +309,11 @@ class PagesController extends BaseController {
 
 	public function addContentArea($id = false)
 	{
-		$data = array(
-			'title'        => Lang::get('fractal::labels.addContentArea'),
+		$data = [
+			'title'        => Fractal::lang('labels.addContentArea'),
 			'pageId'       => $id,
 			'contentAreas' => ContentArea::orderBy('title')->get(),
-		);
+		];
 
 		return Fractal::modalView('add_content_area', $data);
 	}

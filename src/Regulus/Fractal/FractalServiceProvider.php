@@ -32,7 +32,7 @@ class FractalServiceProvider extends ServiceProvider {
 		else
 			$pathPrefix = __DIR__.'/../../../../../';
 
-		$configPackages = array(
+		$configPackages = [
 			'regulus/fractal',
 			'regulus/activity-log',
 			'regulus/identify',
@@ -41,7 +41,7 @@ class FractalServiceProvider extends ServiceProvider {
 			'regulus/solid-site',
 			'regulus/tetra-text',
 			'regulus/upstream',
-		);
+		];
 
 		if ($exterminator)
 			$configPackages[] = "regulus/exterminator";
@@ -81,6 +81,7 @@ class FractalServiceProvider extends ServiceProvider {
 		if (Config::get('fractal::preload.filters'))
 			include __DIR__.'/../../../../../../app/filters.php';
 
+		include __DIR__.'/../../helpers.php';
 		include __DIR__.'/../../routes.php';
 		include __DIR__.'/../../filters.php';
 		include __DIR__.'/../../view_composers.php';
@@ -123,7 +124,7 @@ class FractalServiceProvider extends ServiceProvider {
 	 */
 	public function provides()
 	{
-		return array();
+		return [];
 	}
 
 }

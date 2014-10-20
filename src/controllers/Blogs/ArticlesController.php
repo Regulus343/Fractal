@@ -25,10 +25,9 @@ class ArticlesController extends BaseController {
 	{
 		parent::__construct();
 
-		Site::set('section', 'Content');
-		$subSection = "Blogs";
-		Site::set('subSection', $subSection);
-		Site::set('title', 'Blog Articles');
+		Site::set('section', 'Blogs');
+		Site::set('subSection', 'Articles');
+		Site::set('title', Fractal::lang('labels.blogArticles'));
 
 		//set content type and views location
 		Fractal::setContentType('blog-article', true);
@@ -52,7 +51,7 @@ class ArticlesController extends BaseController {
 			$articles = BlogArticle::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
-			'label' => Lang::get('fractal::labels.createArticle'),
+			'label' => Fractal::lang('labels.createArticle'),
 			'icon'  => 'glyphicon glyphicon-file',
 			'uri'   => 'blogs/articles/create',
 		]);
@@ -91,7 +90,7 @@ class ArticlesController extends BaseController {
 		$layoutTagOptions = $this->getLayoutTagOptions();
 
 		Fractal::addButton([
-			'label' => Lang::get('fractal::labels.returnToArticlesList'),
+			'label' => Fractal::lang('labels.returnToArticlesList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => 'blogs/articles',
 		]);
@@ -104,9 +103,9 @@ class ArticlesController extends BaseController {
 	{
 		Form::setValidationRules(BlogArticle::validationRules());
 
-		$messages = array();
+		$messages = [];
 		if (Form::validated()) {
-			$messages['success'] = Lang::get('fractal::messages.successCreated', array('item' => Format::a('article')));
+			$messages['success'] = Fractal::lang('messages.successCreated', ['item' => Fractal::langLowerA('labels.article')]);
 
 			$input = Input::all();
 			$input['user_id'] = Auth::user()->id;
@@ -116,18 +115,18 @@ class ArticlesController extends BaseController {
 			//re-export menus to config array in case published status for article has changed
 			Fractal::exportMenus();
 
-			Activity::log(array(
+			Activity::log([
 				'contentId'   => $article->id,
 				'contentType' => 'BlogArticle',
 				'action'      => 'Create',
 				'description' => 'Created an Article',
 				'details'     => 'Title: '.$article->title,
-			));
+			]);
 
 			return Redirect::to(Fractal::uri('blog/articles/'.$article->slug.'/edit'))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
+			$messages['error'] = Fractal::lang('messages.errorGeneral');
 		}
 
 		return Redirect::to(Fractal::uri('blog/articles/create'))
@@ -140,25 +139,26 @@ class ArticlesController extends BaseController {
 	{
 		$article = BlogArticle::findBySlug($slug);
 		if (empty($article))
-			return Redirect::to(Fractal::uri('pages'))
-				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'article'))));
+			return Redirect::to(Fractal::uri('pages'))->with('messages', [
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.article')])
+			]);
 
 		Site::set('title', $article->title.' (Article)');
 		Site::set('titleHeading', 'Update Article: <strong>'.Format::entities($article->title).'</strong>');
 		Site::set('wysiwyg', true);
 
-		$article->setDefaults(array('contentAreas'));
+		$article->setDefaults(['contentAreas']);
 		Form::setErrors();
 
 		$layoutTagOptions = $this->getLayoutTagOptions($article->getLayoutTags());
 
 		Fractal::addButtons([
 			[
-				'label' => Lang::get('fractal::labels.returnToArticlesList'),
+				'label' => Fractal::lang('labels.returnToArticlesList'),
 				'icon'  => 'glyphicon glyphicon-list',
 				'uri'   => 'blogs/articles',
 			],[
-				'label' => Lang::get('fractal::labels.viewArticle'),
+				'label' => Fractal::lang('labels.viewArticle'),
 				'icon'  => 'glyphicon glyphicon-file',
 				'url'   => $article->getUrl(),
 			]
@@ -175,30 +175,31 @@ class ArticlesController extends BaseController {
 	{
 		$article = BlogArticle::findBySlug($slug);
 		if (empty($article))
-			return Redirect::to(Fractal::uri('pages'))
-				->with('messages', array('error' => Lang::get('fractal::messages.errorNotFound', array('item' => 'article'))));
+			return Redirect::to(Fractal::uri('pages'))->with('messages', [
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.article')])
+			]);
 
 		$article->setValidationRules();
 
-		$messages = array();
+		$messages = [];
 		if (Form::validated()) {
-			$messages['success'] = Lang::get('fractal::messages.successUpdated', array('item' => Format::a('article')));
+			$messages['success'] = Fractal::lang('messages.successUpdated', ['item' => Fractal::langLowerA('labels.article')]);
 
 			$article->saveData();
 
-			Activity::log(array(
+			Activity::log([
 				'contentId'   => $article->id,
 				'contentType' => 'BlogArticle',
 				'action'      => 'Update',
 				'description' => 'Updated an Article',
 				'details'     => 'Title: '.$article->title,
 				'updated'     => true,
-			));
+			]);
 
 			return Redirect::to(Fractal::uri('blog/articles/'.$slug.'/edit'))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Lang::get('fractal::messages.errorGeneral');
+			$messages['error'] = Fractal::lang('messages.errorGeneral');
 
 			return Redirect::to(Fractal::uri('blog/articles/'.$slug.'/edit'))
 				->with('messages', $messages)
@@ -209,27 +210,27 @@ class ArticlesController extends BaseController {
 
 	public function destroy($id)
 	{
-		$result = array(
+		$result = [
 			'resultType' => 'Error',
-			'message'    => Lang::get('fractal::messages.errorGeneral'),
-		);
+			'message'    => Fractal::lang('messages.errorGeneral'),
+		];
 
 		$article = BlogArticle::find($id);
 		if (empty($article))
 			return $result;
 
-		Activity::log(array(
+		Activity::log([
 			'contentId'   => $article->id,
 			'contentType' => 'BlogArticle',
 			'action'      => 'Delete',
 			'description' => 'Deleted an Article',
 			'details'     => 'Title: '.$article->title,
-		));
+		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Lang::get('fractal::messages.successDeleted', array('item' => '<strong>'.$article->title.'</strong>'));
+		$result['message']    = Fractal::lang('messages.successDeleted', ['item' => '<strong>'.$article->title.'</strong>']);
 
-		$article->contentAreas()->sync(array());
+		$article->contentAreas()->sync([]);
 		$article->delete();
 
 		return $result;
@@ -251,7 +252,7 @@ class ArticlesController extends BaseController {
 		return json_encode(Fractal::getLayoutTagsFromLayout($layout));
 	}
 
-	private function getLayoutTagOptions($layoutTagOptions = array())
+	private function getLayoutTagOptions($layoutTagOptions = [])
 	{
 		if (Input::old()) {
 			$layout = Input::old('layout');
@@ -274,11 +275,11 @@ class ArticlesController extends BaseController {
 
 	public function addContentArea($id = false)
 	{
-		$data = array(
-			'title'        => Lang::get('fractal::labels.addContentArea'),
+		$data = [
+			'title'        => Fractal::lang('labels.addContentArea'),
 			'articleId'    => $id,
 			'contentAreas' => BlogContentArea::orderBy('title')->get(),
-		);
+		];
 
 		return Fractal::modalView('add_content_area', $data);
 	}

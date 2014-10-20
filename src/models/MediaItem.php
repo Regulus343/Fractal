@@ -38,7 +38,7 @@ class MediaItem extends BaseModel {
 	 *
 	 * @var    array
 	 */
-	protected $fillable = array(
+	protected $fillable = [
 		'file_type_id',
 		'media_type_id',
 		'user_id',
@@ -58,35 +58,35 @@ class MediaItem extends BaseModel {
 		'thumbnail_height',
 		'date_created',
 		'published_at',
-	);
+	];
 
 	/**
 	 * The special typed fields for the model.
 	 *
 	 * @var    array
 	 */
-	protected $types = array(
+	protected $types = [
 		'slug'         => 'unique-slug',
 		'published_at' => 'date-time',
-	);
+	];
 
 	/**
 	 * The special formatted fields for the model.
 	 *
 	 * @var    array
 	 */
-	protected $formats = array(
+	protected $formats = [
 		'published' => 'trueIfNotNull:published_at',
-	);
+	];
 
 	/**
 	 * The special formatted fields for the model for saving to the database.
 	 *
 	 * @var    array
 	 */
-	protected $formatsForDb = array(
+	protected $formatsForDb = [
 		'published_at' => 'nullIfBlank',
-	);
+	];
 
 	/**
 	 * The default values for the model.
@@ -95,11 +95,11 @@ class MediaItem extends BaseModel {
 	 */
 	public static function defaults()
 	{
-		$defaults = array(
+		$defaults = [
 			'description_type' => Fractal::getSetting('Default Content Area Type'),
 			'published'        => true,
 			'published_at'     => date(Form::getDateTimeFormat()),
-		);
+		];
 
 		return $defaults;
 	}
@@ -112,11 +112,10 @@ class MediaItem extends BaseModel {
 	 */
 	public static function validationRules($id = null)
 	{
-		$rules = array(
-			'slug'  => array('required'),
-			'title' => array('required'),
-		);
-
+		$rules = [
+			'slug'  => ['required'],
+			'title' => ['required'],
+		];
 
 		return $rules;
 	}
@@ -349,17 +348,17 @@ class MediaItem extends BaseModel {
 	public function getPublishedStatus($dateFormat = false)
 	{
 
-		$yesNo = array(
+		$yesNo = [
 			'<span class="boolean-true">Yes</span>',
 			'<span class="boolean-false">No</span>',
-		);
+		];
 
 		$status = Format::boolToStr($this->isPublished(), $yesNo);
 
 		if ($this->isPublishedFuture())
-			$status .= '<div><small><em>'.Lang::get('fractal::labels.toBePublished', array(
+			$status .= '<div><small><em>'.Lang::get('fractal::labels.toBePublished', [
 				'dateTime' => $this->getPublishedDateTime()
-			)).'</em></small></div>';
+			]).'</em></small></div>';
 
 		return $status;
 	}
@@ -531,10 +530,10 @@ class MediaItem extends BaseModel {
 
 		$filters = $searchData['filters'];
 		if (!empty($filters)) {
-			$allowedFilters = array(
+			$allowedFilters = [
 				'media_type_id',
 				'media_set_id',
-			);
+			];
 
 			foreach ($allowedFilters as $allowedFilter) {
 				if (isset($filters[$allowedFilter]) && $filters[$allowedFilter] && $filters[$allowedFilter] != "")
@@ -566,7 +565,7 @@ class MediaItem extends BaseModel {
 		if (!empty($fileType))
 			$path .= '/'.$fileType->slug;
 
-		$config = array(
+		$config = [
 			'path'            => $path,
 			'fields'          => ['file', 'thumbnail_image'],
 			'fieldThumb'      => 'thumbnail_image',
@@ -575,7 +574,7 @@ class MediaItem extends BaseModel {
 			'overwrite'       => true,
 			'maxFileSize'     => '8MB',
 			'imageThumb'      => true,
-		);
+		];
 
 		//set image resize settings
 		if (!empty($fileType)) {
@@ -592,12 +591,12 @@ class MediaItem extends BaseModel {
 			}
 
 			$config['imageThumb']      = true; //always create thumbnail for media items
-			$config['imageDimensions'] = array(
+			$config['imageDimensions'] = [
 				'w'  => (int) $width,
 				'h'  => (int) $height,
 				'tw' => (int) Input::get('thumbnail_width') > 0  ? (int) Input::get('thumbnail_width')  : $defaultThumbnailSize,
 				'th' => (int) Input::get('thumbnail_height') > 0 ? (int) Input::get('thumbnail_height') : $defaultThumbnailSize,
-			);
+			];
 		}
 
 		$upstream = Upstream::make($config);
