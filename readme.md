@@ -9,7 +9,7 @@ Fractal is a simple yet versative Admin/CMS base for Laravel 4. The core philoso
 
 Fractal attempts not to lock you into a specific way of doing things whenever possible. You may define controllers additional to the core controllers, remove core controllers, or point the URI paths of core controllers to your own custom controllers. You may adjust the views location for all Fractal view files so you can completely customize the views, or you may simple edit `config/tables.php` to adjust the setup of the content display tables.
 
-You may use the menu to handle all Admin/CMS permissions (Fractal's own menu makes use of its "menu" and "menu_items" database tables for full and easy customization), or you may simply set your permissions in `config/config.php`. Fractal uses the "Identify" authorization package, but the goal is to eventually, as the CMS matures, decouple the authorization package from Fractal and make it authorization class agnostic.
+Fractal uses the "Identify" authorization/authentication package and uses Twitter Bootstrap 3 as its CSS framework.
 
 Some of the things you can do with Fractal:
 
