@@ -163,7 +163,7 @@ table tr td span.boolean-false { color: #500; }
 .alert-transparent { opacity: 0.95; filter: alpha(opacity=95); }
 
 .alert-success { background: #156e05; color: #fff; }
-.alert-error { background: #900; color: #fff; }
+.alert-danger { background: #800; color: #fff; }
 
 div.checkbox-set, div.radio-set {
 	padding: 0 8px;
