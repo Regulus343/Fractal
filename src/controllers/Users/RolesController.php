@@ -16,11 +16,13 @@ use \Form;
 use \Format;
 use \Site;
 
-class RolesController extends BaseController {
+class RolesController extends UsersController {
 
 	public function __construct()
 	{
 		parent::__construct();
+
+		Fractal::setControllerPath($this);
 
 		Site::set('section', 'Users');
 		Site::set('subSection', 'Roles');
@@ -32,7 +34,7 @@ class RolesController extends BaseController {
 
 		Fractal::setViewsLocation('users.roles');
 
-		Fractal::addTrailItem('Roles', 'users/roles');
+		Fractal::addTrailItem('Roles', Fractal::getControllerPath());
 	}
 
 	public function index()
@@ -51,7 +53,7 @@ class RolesController extends BaseController {
 		Fractal::addButton([
 			'label' => Fractal::lang('labels.createRole'),
 			'icon'  => 'glyphicon glyphicon-book',
-			'uri'   => 'users/roles/create',
+			'uri'   => Fractal::uri('create', true),
 		]);
 
 		return View::make(Fractal::view('list'))
@@ -87,7 +89,7 @@ class RolesController extends BaseController {
 		Fractal::addButton([
 			'label' => Fractal::lang('labels.returnToRolesList'),
 			'icon'  => 'glyphicon glyphicon-list',
-			'uri'   => 'users/roles',
+			'uri'   => Fractal::uri('', true),
 		]);
 
 		return View::make(Fractal::view('form'));
@@ -123,13 +125,13 @@ class RolesController extends BaseController {
 				'details'     => 'Role: '.$role->name,
 			]);
 
-			return Redirect::to(Fractal::uri('users/roles'))
+			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
 			$messages['error'] = Fractal::lang('messages.errorGeneral');
 		}
 
-		return Redirect::to(Fractal::uri('users/roles/create'))
+		return Redirect::to(Fractal::uri('create', true))
 			->with('messages', $messages)
 			->with('errors', Form::getErrors())
 			->withInput();
@@ -139,7 +141,7 @@ class RolesController extends BaseController {
 	{
 		$role = Role::find($id);
 		if (empty($role))
-			return Redirect::to(Fractal::uri('users/roles'))->with('messages', [
+			return Redirect::to(Fractal::uri('', true))->with('messages', [
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.role')])
 			]);
 
@@ -153,7 +155,7 @@ class RolesController extends BaseController {
 		Fractal::addButton([
 			'label' => Fractal::lang('labels.returnToRolesList'),
 			'icon'  => 'glyphicon glyphicon-list',
-			'uri'   => 'users/roles',
+			'uri'   => Fractal::uri('', true),
 		]);
 
 		return View::make(Fractal::view('form'))->with('update', true);
@@ -163,7 +165,7 @@ class RolesController extends BaseController {
 	{
 		$role = Role::find($id);
 		if (empty($role))
-			return Redirect::to(Fractal::uri('users/roles'))->with('messages', [
+			return Redirect::to(Fractal::uri('', true))->with('messages', [
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.role')])
 			]);
 
@@ -196,12 +198,12 @@ class RolesController extends BaseController {
 				'details'     => 'Role: '.$role->name,
 			]);
 
-			return Redirect::to(Fractal::uri('users/roles'))
+			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
 			$messages['error'] = Fractal::lang('messages.errorGeneral');
 
-			return Redirect::to(Fractal::uri('users/roles/'.$id.'/edit'))
+			return Redirect::to(Fractal::uri($id.'/edit', true))
 				->with('messages', $messages)
 				->with('errors', Form::getErrors())
 				->withInput();

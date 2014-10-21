@@ -20,11 +20,13 @@ use \Form;
 use \Format;
 use \Site;
 
-class ItemsController extends BaseController {
+class ItemsController extends MediaController {
 
 	public function __construct()
 	{
 		parent::__construct();
+
+		Fractal::setControllerPath($this);
 
 		Site::set('section', 'Media');
 		Site::set('subSection', 'Items');
@@ -35,7 +37,7 @@ class ItemsController extends BaseController {
 
 		Fractal::setViewsLocation('media.items');
 
-		Fractal::addTrailItem('Items', 'media/items');
+		Fractal::addTrailItem('Items', Fractal::getControllerPath());
 	}
 
 	public function index()
@@ -54,7 +56,7 @@ class ItemsController extends BaseController {
 		Fractal::addButton([
 			'label' => Fractal::lang('labels.createItem'),
 			'icon'  => 'glyphicon glyphicon-file',
-			'uri'   => 'media/items/create',
+			'uri'   => Fractal::uri('create', true),
 		]);
 
 		return View::make(Fractal::view('list'))
@@ -94,7 +96,7 @@ class ItemsController extends BaseController {
 		Fractal::addButton([
 			'label' => Fractal::lang('labels.returnToItemsList'),
 			'icon'  => 'glyphicon glyphicon-list',
-			'uri'   => 'media/items',
+			'uri'   => Fractal::uri('', true),
 		]);
 
 		return View::make(Fractal::view('form'));
@@ -183,7 +185,7 @@ class ItemsController extends BaseController {
 					'details'     => 'Title: '.$item->title,
 				]);
 
-				return Redirect::to(Fractal::uri('media/items'))
+				return Redirect::to(Fractal::uri('', true))
 					->with('messages', $messages);
 			} else {
 				$messages['error'] = $result['error'];
@@ -192,7 +194,7 @@ class ItemsController extends BaseController {
 			$messages['error'] = Fractal::lang('messages.errorGeneral');
 		}
 
-		return Redirect::to(Fractal::uri('media/items/create'))
+		return Redirect::to(Fractal::uri('create', true))
 			->with('messages', $messages)
 			->with('errors', Form::getErrors())
 			->withInput();
@@ -220,7 +222,7 @@ class ItemsController extends BaseController {
 			[
 				'label' => Fractal::lang('labels.returnToItemsList'),
 				'icon'  => 'glyphicon glyphicon-list',
-				'uri'   => 'media/items',
+				'uri'   => Fractal::uri('', true),
 			],[
 				'label' => Fractal::lang('labels.viewItem'),
 				'icon'  => 'glyphicon glyphicon-file',
@@ -238,7 +240,7 @@ class ItemsController extends BaseController {
 	{
 		$item = MediaItem::findBySlug($slug);
 		if (empty($item))
-			return Redirect::to(Fractal::uri('media/items'))->with('messages', [
+			return Redirect::to(Fractal::uri('', true))->with('messages', [
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.mediaItem')]),
 			]);
 
@@ -259,6 +261,7 @@ class ItemsController extends BaseController {
 			$filename  = Format::unique(Format::slug(Input::get('title')).'.'.File::extension($item->filename), 'media_items', 'filename', $item->id);
 			$basename  = str_replace('.'.$originalExtension, '', $filename);
 			$extension = $originalExtension;
+			$thumbnail = Form::value('create_thumbnail', 'checkbox');
 
 			if ((isset($_FILES['file']['name']) && $_FILES['file']['name'] != "") || (isset($_FILES['thumbnail_image']['name']) && $_FILES['thumbnail_image']['name']))
 			{
@@ -272,13 +275,9 @@ class ItemsController extends BaseController {
 					$basename   = $fileResult['basename'];
 					$extension  = $fileResult['extension'];
 
-					//delete current file
-					if (File::exists('uploads/'.$item->getFilePath()))
-						File::delete('uploads/'.$item->getFilePath());
-
 					//delete current thumbnail image if it exists
-					if (File::exists('uploads/'.$item->getFilePath(true)) && $item->thumbnail)
-						File::delete('uploads/'.$item->getFilePath(true));
+					if (!$thumbnail && $item->thumbnail && File::exists('uploads/'.$file->getPath(true)))
+						File::delete('uploads/'.$file->getPath(true));
 				}
 
 				if (!$result['files']['thumbnail_image']['error']) {
@@ -386,7 +385,7 @@ class ItemsController extends BaseController {
 			$messages['error'] = Fractal::lang('messages.errorGeneral');
 		}
 
-		return Redirect::to(Fractal::uri('media/items/'.$item->slug.'/edit'))
+		return Redirect::to(Fractal::uri($item->slug.'/edit', true))
 			->with('messages', $messages)
 			->with('errors', Form::getErrors())
 			->withInput();

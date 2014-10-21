@@ -79,7 +79,8 @@
 				{{ Form::field('thumbnail_image', 'file', [
 					'class-field'          => 'file-upload-button',
 					'label'                => 'Thumbnail Image',
-					'data-file-type-field' => 'Image')) }}
+					'data-file-type-field' => 'Image'
+				]) }}
 			</div>
 			<div class="col-md-4">
 				{{ Form::field('file_type_id', 'select', [

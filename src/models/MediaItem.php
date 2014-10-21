@@ -548,15 +548,16 @@ class MediaItem extends BaseModel {
 	/**
 	 * Upload a file.
 	 *
+	 * @param  mixed    $id
 	 * @return array
 	 */
-	public static function uploadFile() {
+	public static function uploadFile($id = null) {
 		//get original uploaded filename
 		$originalFilename  = isset($_FILES['file']['name']) ? $_FILES['file']['name'] : '';
 		$originalExtension = strtolower(File::extension($originalFilename));
 
 		//make sure filename is unique and then again remove extension to set basename
-		$uniqueFilename = Format::unique(Format::slug(Input::get('title')).'.'.$originalExtension, 'media_items', 'filename');
+		$uniqueFilename = Format::unique(Format::slug(Input::get('title')).'.'.$originalExtension, 'media_items', 'filename', $id, true);
 		$basename       = str_replace('.'.$originalExtension, '', $uniqueFilename);
 
 		$path = "uploads/media";

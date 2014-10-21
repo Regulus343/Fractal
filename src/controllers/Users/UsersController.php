@@ -26,11 +26,15 @@ class UsersController extends BaseController {
 	{
 		parent::__construct();
 
+		Fractal::setControllerPath(get_class());
+
 		Site::setMulti(['section', 'subSection'], 'Users');
 		Site::set('title', Fractal::lang('labels.users'));
 
 		//set content type and views location
 		Fractal::setContentType('user', true);
+
+		Fractal::addTrailItem('Users', Fractal::getControllerPath());
 	}
 
 	public function index()
@@ -49,7 +53,7 @@ class UsersController extends BaseController {
 		Fractal::addButton([
 			'label' => Fractal::lang('labels.createUser'),
 			'icon'  => 'glyphicon glyphicon-user',
-			'uri'   => 'users/create',
+			'uri'   => Fractal::uri('create', true),
 		]);
 
 		return View::make(Fractal::view('list'))
@@ -92,7 +96,7 @@ class UsersController extends BaseController {
 		Fractal::addButton([
 			'label' => Fractal::lang('labels.returnToUsersList'),
 			'icon'  => 'glyphicon glyphicon-list',
-			'uri'   => 'users',
+			'uri'   => Fractal::uri('', true),
 		]);
 
 		return View::make(Fractal::view('form'));
@@ -140,13 +144,13 @@ class UsersController extends BaseController {
 				'details'     => 'Username: '.$user->username,
 			]);
 
-			return Redirect::to(Fractal::uri('users'))
+			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
 			$messages['error'] = Fractal::lang('messages.errorGeneral');
 		}
 
-		return Redirect::to(Fractal::uri('users/create'))
+		return Redirect::to(Fractal::uri('create', true))
 			->with('messages', $messages)
 			->with('errors', Form::getErrors())
 			->withInput();
@@ -156,7 +160,7 @@ class UsersController extends BaseController {
 	{
 		$user = Fractal::userByUsername($username);
 		if (empty($user))
-			return Redirect::to(Fractal::uri('users'))->with('messages', [
+			return Redirect::to(Fractal::uri('', true))->with('messages', [
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.user')])
 			]);
 
@@ -170,7 +174,7 @@ class UsersController extends BaseController {
 		Fractal::addButton([
 			'label' => lang('labels.returnToUsersList'),
 			'icon'  => 'glyphicon glyphicon-list',
-			'uri'   => 'users',
+			'uri'   => Fractal::uri('', true),
 		]);
 
 		return View::make(Fractal::view('form'))->with('update', true);
@@ -180,7 +184,7 @@ class UsersController extends BaseController {
 	{
 		$user = Fractal::userByUsername($username);
 		if (empty($user))
-			return Redirect::to(Fractal::uri('users'))->with('messages', [
+			return Redirect::to(Fractal::uri('', true))->with('messages', [
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.user')])
 			]);
 
@@ -222,12 +226,12 @@ class UsersController extends BaseController {
 				'details'     => 'Username: '.$user->username,
 			]);
 
-			return Redirect::to(Fractal::uri('users'))
+			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
 			$messages['error'] = Fractal::lang('messages.errorGeneral');
 
-			return Redirect::to(Fractal::uri('users/'.$username.'/edit'))
+			return Redirect::to(Fractal::uri($username.'/edit', true))
 				->with('messages', $messages)
 				->with('errors', Form::getErrors())
 				->withInput();

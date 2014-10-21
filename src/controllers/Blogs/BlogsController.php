@@ -25,13 +25,17 @@ class BlogsController extends BaseController {
 	{
 		parent::__construct();
 
+		Fractal::setControllerPath(get_class());
+
 		Site::setMulti(['section', 'subSection'], 'Blogs');
 		Site::set('title', Fractal::lang('labels.blogs'));
+
+		Fractal::addTrailItem('Blogs', Fractal::getControllerPath());
 	}
 
 	public function index()
 	{
-		return Redirect::to(Fractal::uri('blogs/articles'));
+		return Redirect::to(Fractal::uri('articles', true));
 	}
 
 }

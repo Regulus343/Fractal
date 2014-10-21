@@ -23,6 +23,8 @@ class MenusController extends BaseController {
 	{
 		parent::__construct();
 
+		Fractal::setControllerPath($this);
+
 		Site::set('section', 'Content');
 		Site::set('subSection', 'Menus');
 		Site::set('title', Fractal::lang('labels.menus'));
@@ -32,7 +34,7 @@ class MenusController extends BaseController {
 
 		Site::set('defaultSorting', ['field' => 'cms']);
 
-		Fractal::addTrailItem('Menus', 'menus');
+		Fractal::addTrailItem('Menus', Fractal::getControllerPath());
 	}
 
 	public function index()
@@ -51,7 +53,7 @@ class MenusController extends BaseController {
 		Fractal::addButton([
 			'label' => Fractal::lang('labels.createMenu'),
 			'icon'  => 'glyphicon glyphicon-list',
-			'uri'   => 'menus/create',
+			'uri'   => Fractal::uri('create', true),
 		]);
 
 		return View::make(Fractal::view('list'))
@@ -86,7 +88,7 @@ class MenusController extends BaseController {
 		Fractal::addButton([
 			'label' => Fractal::lang('labels.returnToMenusList'),
 			'icon'  => 'glyphicon glyphicon-list',
-			'uri'   => 'menus',
+			'uri'   => Fractal::uri('', true),
 		]);
 
 		return View::make(Fractal::view('form'));
@@ -113,13 +115,13 @@ class MenusController extends BaseController {
 				'details'     => 'Name: '.$menu->name,
 			]);
 
-			return Redirect::to(Fractal::uri('menus'))
+			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
 			$messages['error'] = Fractal::lang('messages.errorGeneral');
 		}
 
-		return Redirect::to(Fractal::uri('menus/create'))
+		return Redirect::to(Fractal::uri('create', true))
 			->with('messages', $messages)
 			->with('errors', Form::getErrors())
 			->withInput();
@@ -154,7 +156,7 @@ class MenusController extends BaseController {
 	{
 		$menu = Menu::find($id);
 		if (empty($menu))
-			return Redirect::to(Fractal::uri('menus'))->with('messages', [
+			return Redirect::to(Fractal::uri('', true))->with('messages', [
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.menu')])
 			]);
 
@@ -178,12 +180,12 @@ class MenusController extends BaseController {
 				'updated'     => true,
 			]);
 
-			return Redirect::to(Fractal::uri('menus'))
+			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
 			$messages['error'] = Fractal::lang('messages.errorGeneral');
 
-			return Redirect::to(Fractal::uri('menus/'.$id.'/edit'))
+			return Redirect::to(Fractal::uri($id.'/edit', true))
 				->with('messages', $messages)
 				->with('errors', Form::getErrors())
 				->withInput();

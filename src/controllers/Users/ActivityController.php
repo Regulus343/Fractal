@@ -15,11 +15,13 @@ use \Form;
 use \Format;
 use \Site;
 
-class ActivityController extends BaseController {
+class ActivityController extends UsersController {
 
 	public function __construct()
 	{
 		parent::__construct();
+
+		Fractal::setControllerPath($this);
 
 		Site::set('section', 'Users');
 		Site::set('subSection', 'Activity');
@@ -31,7 +33,7 @@ class ActivityController extends BaseController {
 
 		Fractal::setViewsLocation('users.activity');
 
-		Fractal::addTrailItem('Activity', 'users/activity');
+		Fractal::addTrailItem('Activity', Fractal::getControllerPath());
 	}
 
 	public function getIndex()

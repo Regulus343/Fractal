@@ -19,11 +19,13 @@ use \Form;
 use \Format;
 use \Site;
 
-class ArticlesController extends BaseController {
+class ArticlesController extends BlogsController {
 
 	public function __construct()
 	{
 		parent::__construct();
+
+		Fractal::setControllerPath($this);
 
 		Site::set('section', 'Blogs');
 		Site::set('subSection', 'Articles');
@@ -34,7 +36,7 @@ class ArticlesController extends BaseController {
 
 		Fractal::setViewsLocation('blogs.articles');
 
-		Fractal::addTrailItem('Articles', 'blogs/articles');
+		Fractal::addTrailItem('Articles', Fractal::getControllerPath());
 	}
 
 	public function index()
@@ -53,7 +55,7 @@ class ArticlesController extends BaseController {
 		Fractal::addButton([
 			'label' => Fractal::lang('labels.createArticle'),
 			'icon'  => 'glyphicon glyphicon-file',
-			'uri'   => 'blogs/articles/create',
+			'uri'   => Fractal::uri('create', true),
 		]);
 
 		return View::make(Fractal::view('list'))
@@ -92,7 +94,7 @@ class ArticlesController extends BaseController {
 		Fractal::addButton([
 			'label' => Fractal::lang('labels.returnToArticlesList'),
 			'icon'  => 'glyphicon glyphicon-list',
-			'uri'   => 'blogs/articles',
+			'uri'   => Fractal::uri('', true),
 		]);
 
 		return View::make(Fractal::view('form'))
@@ -123,13 +125,13 @@ class ArticlesController extends BaseController {
 				'details'     => 'Title: '.$article->title,
 			]);
 
-			return Redirect::to(Fractal::uri('blog/articles/'.$article->slug.'/edit'))
+			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
 			$messages['error'] = Fractal::lang('messages.errorGeneral');
 		}
 
-		return Redirect::to(Fractal::uri('blog/articles/create'))
+		return Redirect::to(Fractal::uri('create', true))
 			->with('messages', $messages)
 			->with('errors', Form::getErrors())
 			->withInput();
@@ -156,7 +158,8 @@ class ArticlesController extends BaseController {
 			[
 				'label' => Fractal::lang('labels.returnToArticlesList'),
 				'icon'  => 'glyphicon glyphicon-list',
-				'uri'   => 'blogs/articles',
+				'uri'   => Fractal::uri('', true),
+
 			],[
 				'label' => Fractal::lang('labels.viewArticle'),
 				'icon'  => 'glyphicon glyphicon-file',
@@ -196,12 +199,12 @@ class ArticlesController extends BaseController {
 				'updated'     => true,
 			]);
 
-			return Redirect::to(Fractal::uri('blog/articles/'.$slug.'/edit'))
+			return Redirect::to(Fractal::uri($slug.'/edit', true))
 				->with('messages', $messages);
 		} else {
 			$messages['error'] = Fractal::lang('messages.errorGeneral');
 
-			return Redirect::to(Fractal::uri('blog/articles/'.$slug.'/edit'))
+			return Redirect::to(Fractal::uri($slug.'/edit', true))
 				->with('messages', $messages)
 				->with('errors', Form::getErrors())
 				->withInput();

@@ -16,11 +16,13 @@ use \Form;
 use \Format;
 use \Site;
 
-class PermissionsController extends BaseController {
+class PermissionsController extends UsersController {
 
 	public function __construct()
 	{
 		parent::__construct();
+
+		Fractal::setControllerPath($this);
 
 		Site::set('section', 'Users');
 		Site::set('subSection', 'Permissions');
@@ -32,7 +34,7 @@ class PermissionsController extends BaseController {
 
 		Fractal::setViewsLocation('users.permissions');
 
-		Fractal::addTrailItem('Permissions', 'users/permissions');
+		Fractal::addTrailItem('Permissions', Fractal::getControllerPath());
 	}
 
 	public function index()
@@ -51,7 +53,7 @@ class PermissionsController extends BaseController {
 		Fractal::addButton([
 			'label' => Fractal::lang('labels.createPermission'),
 			'icon'  => 'glyphicon glyphicon-star',
-			'uri'   => 'users/permissions/create',
+			'uri'   => Fractal::uri('create', true),
 		]);
 
 		return View::make(Fractal::view('list'))
@@ -87,7 +89,7 @@ class PermissionsController extends BaseController {
 		Fractal::addButton([
 			'label' => Fractal::lang('labels.returnToPermissionsList'),
 			'icon'  => 'glyphicon glyphicon-list',
-			'uri'   => 'users/permissions',
+			'uri'   => Fractal::uri('', true),
 		]);
 
 		return View::make(Fractal::view('form'));
@@ -123,13 +125,13 @@ class PermissionsController extends BaseController {
 				'details'     => 'Permission: '.$permission->name,
 			]);
 
-			return Redirect::to(Fractal::uri('users/permissions'))
+			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
 			$messages['error'] = Fractal::lang('messages.errorGeneral');
 		}
 
-		return Redirect::to(Fractal::uri('users/permissions/create'))
+		return Redirect::to(Fractal::uri('create', true))
 			->with('messages', $messages)
 			->with('errors', Form::getErrors())
 			->withInput();
@@ -139,7 +141,7 @@ class PermissionsController extends BaseController {
 	{
 		$permission = Role::find($id);
 		if (empty($permission))
-			return Redirect::to(Fractal::uri('users/permissions'))->with('messages', [
+			return Redirect::to(Fractal::uri('', true))->with('messages', [
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.permission')])
 			]);
 
@@ -153,7 +155,7 @@ class PermissionsController extends BaseController {
 		Fractal::addButton([
 			'label' => Fractal::lang('labels.returnToPermissionsList'),
 			'icon'  => 'glyphicon glyphicon-list',
-			'uri'   => 'users/permissions',
+			'uri'   => Fractal::uri('', true),
 		]);
 
 		return View::make(Fractal::view('form'))->with('update', true);
@@ -163,7 +165,7 @@ class PermissionsController extends BaseController {
 	{
 		$permission = Role::find($id);
 		if (empty($permission))
-			return Redirect::to(Fractal::uri('users/permissions'))->with('messages', [
+			return Redirect::to(Fractal::uri('', true))->with('messages', [
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.permission')])
 			]);
 
@@ -196,12 +198,12 @@ class PermissionsController extends BaseController {
 				'details'     => 'Permission: '.$permission->name,
 			]);
 
-			return Redirect::to(Fractal::uri('users/permissions'))
+			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
 			$messages['error'] = Fractal::lang('messages.errorGeneral');
 
-			return Redirect::to(Fractal::uri('users/permissions/'.$id.'/edit'))
+			return Redirect::to(Fractal::uri($id.'/edit', true))
 				->with('messages', $messages)
 				->with('errors', Form::getErrors())
 				->withInput();

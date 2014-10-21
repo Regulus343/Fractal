@@ -25,6 +25,8 @@ class PagesController extends BaseController {
 	{
 		parent::__construct();
 
+		Fractal::setControllerPath($this);
+
 		Site::set('section', 'Content');
 		Site::set('subSection', 'Pages');
 		Site::set('title', Fractal::lang('labels.pages'));
@@ -32,7 +34,7 @@ class PagesController extends BaseController {
 		//set content type and views location
 		Fractal::setContentType('page', true);
 
-		Fractal::addTrailItem('Pages', 'pages');
+		Fractal::addTrailItem('Pages', Fractal::getControllerPath());
 	}
 
 	public function index()
@@ -51,7 +53,7 @@ class PagesController extends BaseController {
 		Fractal::addButton([
 			'label' => Fractal::lang('labels.createPage'),
 			'icon'  => 'glyphicon glyphicon-file',
-			'uri'   => 'pages/create',
+			'uri'   => Fractal::uri('create', true),
 		]);
 
 		return View::make(Fractal::view('list'))
@@ -90,7 +92,7 @@ class PagesController extends BaseController {
 		Fractal::addButton([
 			'label' => Fractal::lang('labels.returnToPagesList'),
 			'icon'  => 'glyphicon glyphicon-list',
-			'uri'   => 'pages',
+			'uri'   => Fractal::uri('', true),
 		]);
 
 		return View::make(Fractal::view('form'))
@@ -121,13 +123,13 @@ class PagesController extends BaseController {
 				'details'     => 'Title: '.$page->title,
 			]);
 
-			return Redirect::to(Fractal::uri('pages/'.$page->slug.'/edit'))
+			return Redirect::to(Fractal::uri($page->slug.'/edit', true))
 				->with('messages', $messages);
 		} else {
 			$messages['error'] = Fractal::lang('messages.errorGeneral');
 		}
 
-		return Redirect::to(Fractal::uri('pages/create'))
+		return Redirect::to(Fractal::uri('create', true))
 			->with('messages', $messages)
 			->with('errors', Form::getErrors())
 			->withInput();
@@ -137,7 +139,7 @@ class PagesController extends BaseController {
 	{
 		$page = ContentPage::findBySlug($slug);
 		if (empty($page))
-			return Redirect::to(Fractal::uri('pages'))->with('messages', [
+			return Redirect::to(Fractal::uri('', true))->with('messages', [
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.page')])
 			]);
 
@@ -154,7 +156,7 @@ class PagesController extends BaseController {
 			[
 				'label' => Fractal::lang('labels.returnToPagesList'),
 				'icon'  => 'glyphicon glyphicon-list',
-				'uri'   => 'pages',
+				'uri'   => Fractal::uri('', true),
 			],[
 				'label' => Fractal::lang('labels.viewPage'),
 				'icon'  => 'glyphicon glyphicon-file',
@@ -173,7 +175,7 @@ class PagesController extends BaseController {
 	{
 		$page = ContentPage::findBySlug($slug);
 		if (empty($page))
-			return Redirect::to(Fractal::uri('pages'))->with('messages', [
+			return Redirect::to(Fractal::uri('', true))->with('messages', [
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.page')])
 			]);
 
@@ -197,12 +199,12 @@ class PagesController extends BaseController {
 				'updated'     => true,
 			]);
 
-			return Redirect::to(Fractal::uri('pages/'.$slug.'/edit'))
+			return Redirect::to(Fractal::uri($slug.'/edit', true))
 				->with('messages', $messages);
 		} else {
 			$messages['error'] = Fractal::lang('messages.errorGeneral');
 
-			return Redirect::to(Fractal::uri('pages/'.$slug.'/edit'))
+			return Redirect::to(Fractal::uri($slug.'/edit', true))
 				->with('messages', $messages)
 				->with('errors', Form::getErrors())
 				->withInput();

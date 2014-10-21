@@ -14,6 +14,8 @@
 
 					var slug = strToSlug($('#title').val());
 					$('#slug').val(slug);
+
+					$('#content-areas-1-title').val($('#title').val());
 				});
 			@endif
 

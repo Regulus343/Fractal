@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4.
 
 		created by Cody Jassman
-		version 0.6.3a
-		last updated on October 19, 2014
+		version 0.6.4a
+		last updated on October 20, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -44,9 +44,16 @@ class Fractal {
 	public $auth;
 
 	/**
+	 * The current controller route path.
+	 *
+	 * @var    mixed
+	 */
+	public $controllerPath;
+
+	/**
 	 * The views location for the current controller.
 	 *
-	 * @var    string
+	 * @var    mixed
 	 */
 	public $viewsLocation;
 
@@ -55,7 +62,7 @@ class Fractal {
 	 *
 	 * @var    array
 	 */
-	public $pagination;
+	public $pagination = [];
 
 	/**
 	 * The current content type.
@@ -68,21 +75,26 @@ class Fractal {
 	 * Create a CMS URL.
 	 *
 	 * @param  string   $uri
+	 * @param  boolean  $controller
 	 * @return string
 	 */
-	public function url($uri = '')
+	public function url($uri = '', $controller = false)
 	{
-		return URL::to($this->uri($uri));
+		return URL::to($this->uri($uri, $controller));
 	}
 
 	/**
 	 * Create a CMS URI.
 	 *
 	 * @param  string   $uri
+	 * @param  boolean  $controller
 	 * @return string
 	 */
-	public function uri($uri = '')
+	public function uri($uri = '', $controller = false)
 	{
+		if ($controller)
+			$uri = $this->getControllerPath().'/'.$uri;
+
 		$fullUri = Config::get('fractal::baseUri');
 		if ($fullUri != "" && $fullUri !== false && !is_null($fullUri))
 			$fullUri .= '/'.$uri;
@@ -90,46 +102,6 @@ class Fractal {
 			$fullUri = $uri;
 
 		return $fullUri;
-	}
-
-	/**
-	 * Create a CMS URL for a particular controller.
-	 *
-	 * @param  string   $uri
-	 * @param  string   $controller
-	 * @return string
-	 */
-	public function controllerUrl($uri = '', $controller)
-	{
-		$controller   = ucfirst($controller).'Controller';
-		$controllers  = Config::get('fractal::controllers');
-		$uriCompleted = false;
-		if (isset($controllers['standard'])) {
-			foreach ($controllers['standard'] as $controllerUri => $controllerListed) {
-				if (!$uriCompleted) {
-					$controllerArray = explode('\\', $controllerListed);
-					$controllerName  = end($controllerArray);
-					if ($controllerName == $controller) {
-						$uri = $controllerUri.'/'.$uri;
-						$uriCompleted = true;
-					}
-				}
-			}
-		}
-		if (isset($controllers['resource'])) {
-			foreach ($controllers['resource'] as $controllerUri => $controllerListed) {
-				if (!$uriCompleted) {
-					$controllerArray = explode('\\', $controllerListed);
-					$controllerName  = end($controllerArray);
-					if ($controllerName == $controller) {
-						$uri = $controllerUri.'/'.$uri;
-						$uriCompleted = true;
-					}
-				}
-			}
-		}
-
-		return $this->url($uri);
 	}
 
 	/**
@@ -202,6 +174,43 @@ class Fractal {
 			$fullUri = $uri;
 
 		return $fullUri;
+	}
+
+	/**
+	 * Set the controller route path.
+	 *
+	 * @param  mixed    $controller
+	 * @return boolean
+	 */
+	public function setControllerPath($controller)
+	{
+		if (!is_string($controller))
+			$controller = get_class($controller);
+
+		foreach (Config::get('fractal::controllers') as $type) {
+			foreach ($type as $controllerPath => $controllerForRoute) {
+				if ($controller == $controllerForRoute) {
+					$this->controllerPath = $controllerPath;
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get the controller route path.
+	 *
+	 * @param  mixed    $controller
+	 * @return mixed
+	 */
+	public function getControllerPath($controller = null)
+	{
+		if (!is_null($controller))
+			$this->setRoutePath($controller);
+
+		return $this->controllerPath;
 	}
 
 	/**
@@ -1159,7 +1168,7 @@ class Fractal {
 	public function addTrailItem($title = '', $uri = null)
 	{
 		if (!is_null($uri))
-			$uri = static::uri($uri);
+			$uri = $this->uri($uri);
 
 		Site::addTrailItem($title, $uri);
 	}
@@ -1187,11 +1196,15 @@ class Fractal {
 	public function addButton($label = '', $uri = null)
 	{
 		if (is_array($label) && isset($label['uri']) && !is_null($label['uri'])) {
-			$label['uri'] = static::uri($label['uri']);
+			$uri = $this->uri($label['uri']);
 		} else {
 			if (!is_null($uri))
-				$uri = static::uri($uri);
+				$uri = $this->uri($uri);
 		}
+
+		$fullUri = Config::get('fractal::baseUri');
+		if (!is_null($uri) && $fullUri != "")
+			$uri = str_replace($fullUri.'/'.$fullUri.'/', $fullUri.'/', $uri);
 
 		Site::addButton($label, $uri);
 	}

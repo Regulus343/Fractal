@@ -22,12 +22,14 @@ class SettingsController extends BaseController {
 	{
 		parent::__construct();
 
+		Fractal::setControllerPath($this);
+
 		Site::setMulti(['section', 'subSection'], 'Settings');
 		Site::set('title', Fractal::lang('labels.settings'));
 
 		Fractal::setViewsLocation('settings');
 
-		Fractal::addTrailItem('Settings', 'settings');
+		Fractal::addTrailItem('Settings', Fractal::getControllerPath());
 	}
 
 	public function getIndex()
@@ -93,7 +95,7 @@ class SettingsController extends BaseController {
 			$messages['error'] = Fractal::lang('messages.errorGeneral');
 		}
 
-		return Redirect::to(Fractal::uri('settings'))
+		return Redirect::to(Fractal::uri('', true))
 			->with('messages', $messages)
 			->with('errors', Form::getErrors())
 			->withInput();

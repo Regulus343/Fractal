@@ -14,6 +14,8 @@
 
 					var slug = strToSlug($('#title').val());
 					$('#slug').val(slug);
+
+					$('#content-areas-1-title').val($('#title').val());
 				});
 			@endif
 
@@ -53,7 +55,7 @@
 			}
 
 			Formation.ajaxForSelect({
-				url:              baseUrl + '/blog/articles/layout-tags',
+				url:              baseUrl + '/blogs/articles/layout-tags',
 				postData:         postData,
 				targetSelect:     '.field-pivot-layout-tag',
 				callbackFunction: autoSelectFirstLayoutTagCallback,
@@ -105,7 +107,7 @@
 
 		var deleteContentArea = function() {
 			$.ajax({
-				url:     baseUrl + '/blog/articles/delete-content-area/' + contentAreaId,
+				url:     baseUrl + '/blogs/articles/delete-content-area/' + contentAreaId,
 				success: function(result) {
 					if (result == "Success") {
 						$('#modal-secondary').hide();
@@ -123,7 +125,7 @@
 						Formation.loadNewTemplate('#content-areas', contentAreaTemplateCallback);
 					} else {
 						$.ajax({
-							url:      baseUrl + '/blogs/article/get-content-area/' + $(this).attr('data-content-area-id'),
+							url:      baseUrl + '/blogs/articles/get-content-area/' + $(this).attr('data-content-area-id'),
 							dataType: 'json',
 							success:  function(contentArea) {
 								addingContentArea = true;
@@ -192,7 +194,7 @@
 					</a>
 				@endif
 
-				<a href="{{ Fractal::url('blog/articles') }}" class="btn btn-default pull-right">
+				<a href="{{ Fractal::url('blogs/articles') }}" class="btn btn-default pull-right">
 					<span class="glyphicon glyphicon-list"></span>&nbsp; {{ Fractal::lang('labels.returnToArticlesList') }}
 				</a>
 			</div>
