@@ -203,7 +203,7 @@ class MenusTableSeeder extends Seeder {
 						'uri'           => Config::get('fractal::media.baseUri'),
 						'subdomain'     => Config::get('fractal::media.subdomain'),
 						'label'         => 'Media',
-						'icon'          => 'comment',
+						'icon'          => 'book',
 						'display_order' => 3,
 					],
 					[
