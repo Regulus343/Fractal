@@ -479,7 +479,7 @@ return [
 					],
 					[
 						'icon'           => 'ok-circle',
-						'class'          => 'btn action-item unban-user',
+						'class'          => 'btn btn-primary action-item unban-user',
 						'classModifiers' => [
 							'hidden'       => [
 								'isBanned()' => false,
