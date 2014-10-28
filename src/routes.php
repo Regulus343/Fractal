@@ -70,34 +70,6 @@ Route::any($baseUri.'/reset-password/{id?}/{code?}', Config::get('fractal::authC
 
 Route::controller($baseUri.'/auth', Config::get('fractal::authController'));
 
-/* Set up Website Content Pages Routes */
-$pageUri    = Config::get('fractal::pageUri');
-$pageMethod = Config::get('fractal::pageMethod');
-if ($pageUri == "") {
-	//ensure DB tables have been migrated first
-	if (Config::get('fractal::migrated') && !App::runningInConsole()) {
-		$pages = ContentPage::select(['slug', 'published_at']);
-
-			$pages
-				->whereNotNull('published_at')
-				->where('published_at', '<=', date('Y-m-d H:i:s'));
-
-		$pages = $pages->get();
-
-		foreach ($pages as $page) {
-			Route::get('{'.$page->slug.'}', $pageMethod);
-
-			if (Config::get('fractal::useHomePageForRoot') && $page->slug == "home")
-				Route::get('', $pageMethod);
-		}
-	}
-} else {
-	Route::get($pageUri.'/{slug}', $pageMethod);
-
-	if (Config::get('fractal::useHomePageForRoot'))
-		Route::get('', $pageMethod);
-}
-
 /* Set up Blog Routes */
 if (Config::get('fractal::blog.enabled')) {
 	$blogSubdomain  = Config::get('fractal::blog.subdomain');
@@ -134,4 +106,32 @@ if (Config::get('fractal::media.enabled')) {
 	{
 		Route::controller('', $mediaController);
 	});
+}
+
+/* Set up Website Content Pages Routes */
+$pageUri    = Config::get('fractal::pageUri');
+$pageMethod = Config::get('fractal::pageMethod');
+if ($pageUri == "") {
+	//ensure DB tables have been migrated first
+	if (Config::get('fractal::migrated') && !App::runningInConsole()) {
+		$pages = ContentPage::select(['slug', 'published_at']);
+
+			$pages
+				->whereNotNull('published_at')
+				->where('published_at', '<=', date('Y-m-d H:i:s'));
+
+		$pages = $pages->get();
+
+		foreach ($pages as $page) {
+			Route::get('{'.$page->slug.'}', $pageMethod);
+
+			if (Config::get('fractal::useHomePageForRoot') && $page->slug == "home")
+				Route::get('', $pageMethod);
+		}
+	}
+} else {
+	Route::get($pageUri.'/{slug}', $pageMethod);
+
+	if (Config::get('fractal::useHomePageForRoot'))
+		Route::get('', $pageMethod);
 }

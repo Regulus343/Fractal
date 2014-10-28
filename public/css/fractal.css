@@ -5,7 +5,8 @@ html, body { margin: 0; padding: 0; height: 100%; overflow-x: hidden; white-spac
 .navbar { margin-bottom: 0; }
 .navbar-inverse { border: none; }
 
-a#logo { padding-top: 10px; padding-bottom: 0; width: 200px; }
+a#logo { padding-top: 10px; padding-bottom: 0; }
+.container-fluid a#logo { width: 200px; }
 a#logo img { height: 30px; border: none; }
 
 #top-buttons { float: left; padding-top: 6px; }
@@ -143,7 +144,7 @@ table tr td span.boolean-false { color: #500; }
 
 .table tr.danger td { background-color: #f2dede !important; }
 
-.breadcrumb { margin-bottom: 10px; border: 1px solid #ddd; }
+.breadcrumb { border: 1px solid #ddd; }
 
 .alert-top {
 	z-index: 3000;
@@ -383,3 +384,6 @@ div.article-heading time { color: #555; font-style: italic; }
 div.article-body img { max-width: 100%; }
 
 img.media-image { max-width: 100%; }
+
+.form-group .alert { margin: 5px 0 0 0; padding: 3px 12px; }
+.form-group .alert strong.highlight { color: #900; text-decoration: underline; }

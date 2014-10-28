@@ -19,6 +19,10 @@
 					@endif
 				</p>
 			@endif
+
+			<ul class="menu">
+				{{ Fractal::getMenuMarkup('Footer', ['listItemsOnly' => true]) }}
+			</ul>
 		</div><!-- /.pad -->
 	</div><!-- /#footer -->
 

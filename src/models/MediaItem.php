@@ -46,6 +46,9 @@ class MediaItem extends BaseModel {
 		'title',
 		'description_type',
 		'description',
+		'hosted_externally',
+		'hosted_content_type',
+		'hosted_content_uri',
 		'filename',
 		'basename',
 		'extension',
@@ -116,6 +119,11 @@ class MediaItem extends BaseModel {
 			'slug'  => ['required'],
 			'title' => ['required'],
 		];
+
+		if (Input::get('hosted_externally')) {
+			$rules['hosted_content_type'] = ['required'];
+			$rules['hosted_content_uri']  = ['required'];
+		}
 
 		return $rules;
 	}
@@ -242,7 +250,9 @@ class MediaItem extends BaseModel {
 	 */
 	public function getImageUrl($thumbnail = false)
 	{
-		if ($this->getFileType() == "Image" || ($thumbnail && $this->thumbnail))
+		if ($this->hostedExternally('YouTube') && (!$this->thumbnail || !$thumbnail))
+			return 'http://img.youtube.com/vi/'.$this->hosted_content_uri.'/0.jpg';
+		else if ($this->getFileType() == "Image" || ($thumbnail && $this->thumbnail))
 			return $this->getFileUrl($thumbnail);
 		else
 			return Site::img('image-not-available', 'regulus/fractal');
@@ -288,7 +298,21 @@ class MediaItem extends BaseModel {
 	}
 
 	/**
-	 * Get the rendered content.
+	 * Check whether media item is hosted externally.
+	 *
+	 * @param  mixed    $type
+	 * @return string
+	 */
+	public function hostedExternally($type = null)
+	{
+		if (is_null($type))
+			return (boolean) $this->hosted_externally;
+		else
+			return (boolean) ($this->hosted_externally && $this->hosted_content_type == $type);
+	}
+
+	/**
+	 * Get the rendered description.
 	 *
 	 * @return string
 	 */
@@ -298,7 +322,7 @@ class MediaItem extends BaseModel {
 	}
 
 	/**
-	 * Gets the published pages.
+	 * Gets the published items.
 	 *
 	 * @return Collection
 	 */
@@ -308,7 +332,7 @@ class MediaItem extends BaseModel {
 	}
 
 	/**
-	 * Gets only the published pages.
+	 * Gets only the published items.
 	 *
 	 * @return Collection
 	 */

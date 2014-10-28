@@ -1,13 +1,15 @@
-@extends(Config::get('fractal::layout'))
+@extends(Config::get('fractal::layoutPublic'))
 
 @section(Config::get('fractal::section'))
 
-	@foreach ($articles as $article)
+	@foreach ($media as $mediaItem)
+
 		<div class="article-preview">
 
-			@include(Fractal::blogView('partials.article', true))
+			@include(Fractal::mediaView('partials.item', true))
 
 		</div>
+
 	@endforeach
 
 @stop

@@ -1,11 +1,9 @@
 <div class="article-heading">
 	@if (Site::get('articleList'))
-		<h1><a href="{{ $article->getUrl() }}">{{ $article->title }}</a></h1>
-	@else
-		<h1>{{ $article->title }}</h1>
+		<h3><a href="{{ $article->getUrl() }}">{{ $article->title }}</a></h3>
 	@endif
 
-	<time datetime="{{ $article->published_at }}">{{ $article->getPublishedDateTime() }}</time>
+	<time datetime="{{ $article->published_at }}">Published {{ $article->getPublishedDateTime() }}</time>
 </div>
 
 <div class="article-body">

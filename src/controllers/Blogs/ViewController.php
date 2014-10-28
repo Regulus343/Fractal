@@ -26,17 +26,18 @@ class ViewController extends BaseController {
 
 	public function __construct()
 	{
-		$section = "Blog";
-		Site::setMulti(['section', 'title'], $section);
-
-		Site::set('menus', 'Front');
+		Site::setMulti(['section', 'title'], Fractal::lang('labels.blog'));
 
 		Fractal::setViewsLocation('blogs.view');
+
+		Site::addTrailItems([
+			Fractal::lang('labels.home') => Site::rootUrl(),
+			Fractal::lang('labels.blog') => Fractal::blogUrl(),
+		]);
 	}
 
 	public function getIndex()
 	{
-		Site::set('hideTitle', true);
 		Site::set('articleList', true);
 
 		$articles = BlogArticle::orderBy('published_at', 'desc');
@@ -52,8 +53,6 @@ class ViewController extends BaseController {
 
 	public function getArticle($slug)
 	{
-		Site::set('hideTitle', true);
-
 		$article = BlogArticle::where('slug', $slug);
 
 		if (Auth::isNot('admin'))
@@ -65,6 +64,8 @@ class ViewController extends BaseController {
 			return Redirect::to('');
 
 		Site::setMulti(['section', 'subSection', 'title', 'articleTitle'], $article->title);
+
+		Site::addTrailItem($article->title, $article->getUrl());
 
 		$article->logView();
 

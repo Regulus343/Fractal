@@ -252,7 +252,12 @@ class PagesController extends BaseController {
 			return Redirect::to('');
 
 		Site::setMulti(['section', 'subSection', 'title'], $page->title);
-		Site::set('menus', 'Front');
+
+		Site::resetTrailItems();
+		Site::addTrailItem(Fractal::lang('labels.home'), '');
+
+		if ($page->slug != "home")
+			Site::addTrailItem($page->title, $page->slug);
 
 		$page->logView();
 

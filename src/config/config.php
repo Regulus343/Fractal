@@ -85,7 +85,7 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Layout
+	| Layouts
 	|--------------------------------------------------------------------------
 	|
 	| The location of your forum view layout. It is defaulted to
@@ -94,7 +94,8 @@ return [
 	| customization.
 	|
 	*/
-	'layout' => 'fractal::layouts.master',
+	'layout'       => 'fractal::layouts.master',
+	'layoutPublic' => 'fractal::layouts.public',
 
 	/*
 	|--------------------------------------------------------------------------

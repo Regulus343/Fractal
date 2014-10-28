@@ -21,6 +21,16 @@
 				$('#slug').val(slug);
 			});
 
+			checkHostedContentType();
+
+			$('#hosted-externally').click(function(){
+				checkHostedContentType();
+			});
+
+			$('#hosted-content-type').change(function(){
+				checkHostedContentType();
+			});
+
 			$('#description-type').change(function(){
 				if ($(this).val() == "HTML") {
 					$('.html-description-area').show().removeClass('hidden');
@@ -43,6 +53,43 @@
 					$('#description').val($('#description-markdown').val());
 			});
 		});
+
+		function checkHostedContentType() {
+			if ($('#hosted-externally').prop('checked'))
+			{
+				if ($('#hosted-content-type').val() == "YouTube") {
+					$('#hosted-content-uri').val($('#hosted-content-uri').val().substr(0, 11)).attr('maxlength', 11);
+					$('#hosted-content-uri-help-youtube').hide().removeClass('hidden').fadeIn('fast');
+				} else {
+					$('#hosted-content-uri').attr('maxlength', false);
+					$('.hosted-content-uri-help').fadeOut('fast');
+				}
+
+				if ($('#hosted-content-type').val() == "Vimeo" || $('#hosted-content-type').val() == "YouTube") {
+					var fileTypeId = null;
+					$('#file-type-id option').each(function(){
+						if ($(this).text() == "Video")
+							fileTypeId = $(this).attr('value');
+					});
+
+					if (fileTypeId)
+						$('#file-type-id').val(fileTypeId).trigger('change').select2('readonly', true);
+				} else if ($('#hosted-content-type').val() == "SoundCloud") {
+					var fileTypeId = null;
+					$('#file-type-id option').each(function(){
+						if ($(this).text() == "Audio")
+							fileTypeId = $(this).attr('value');
+					});
+
+					if (fileTypeId)
+						$('#file-type-id').val(fileTypeId).trigger('change').select2('readonly', true);
+				} else {
+					$('#file-type-id').select2('readonly', false);
+				}
+			} else {
+				$('#file-type-id').select2('readonly', false);
+			}
+		}
 
 		function publishedCheckedCallback(checked) {
 			if (checked)
@@ -104,12 +151,19 @@
 
 			<div class="media-hosted-area{{ (!Form::value('hosted_externally', 'checkbox') ? ' hidden' : '') }}">
 				<div class="col-md-4">
-					{{ Form::field('hosted_type', 'select', [
-						'options' => Form::simpleOptions(['URL', 'YouTube', 'Vimeo', 'SoundCloud']),
+					{{ Form::field('hosted_content_type', 'select', [
+						'options' => Form::simpleOptions(['URL', 'SoundCloud', 'Vimeo', 'YouTube']),
 					]) }}
 				</div>
 				<div class="col-md-4">
-					{{ Form::field('hosted_uri', 'text', ['label' => 'Hosted URI']) }}
+					{{ Form::openFieldContainer('hosted_content_uri') }}
+						{{ Form::label('hosted_content_uri', 'Hosted Content URI') }}
+						{{ Form::text('hosted_content_uri', null, ['label' => 'Hosted URI']) }}
+
+						<div id="hosted-content-uri-help-youtube" class="alert alert-info hosted-content-uri-help{{ HTML::hiddenArea(Form::value('hosted_type') != "YouTube", true) }}">
+							https://www.youtube.com/watch?v=<strong class="highlight">y0uTuB3-iDx</strong>&amp;list=xyz
+						</div>
+					{{ Form::closeFieldContainer('hosted_content_uri') }}
 				</div>
 			</div>
 		</div>

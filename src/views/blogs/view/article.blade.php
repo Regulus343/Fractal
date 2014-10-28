@@ -1,4 +1,4 @@
-@extends(Config::get('fractal::layout'))
+@extends(Config::get('fractal::layoutPublic'))
 
 @section(Config::get('fractal::section'))
 

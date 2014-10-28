@@ -115,23 +115,28 @@ class ItemsController extends MediaController {
 			else
 				$result = MediaItem::uploadFile();
 
-			if (!$result['error'] && !$result['files']['file']['error']) {
+			if (!$result['error']) {
 				$messages['success'] = Fractal::lang('messages.successCreated', ['item' => Fractal::langLowerA('labels.mediaItem')]);
 
-				$fileResult = $result['files']['file'];
+				$path = null;
+				$uploadedThumbnail = false;
 
-				if (!$result['files']['thumbnail_image']['error']) {
-					$uploadedThumbnail = true;
-					$thumbnailResult   = $result['files']['thumbnail_image'];
+				if (isset($result['files'])) {
+					$fileResult = $result['files']['file'];
+
+					if (!$result['files']['thumbnail_image']['error']) {
+						$uploadedThumbnail = true;
+						$thumbnailResult   = $result['files']['thumbnail_image'];
+					}
+
+					$path = str_replace('uploads/media', '', $fileResult['path']);
+
+					if (substr($path, 0, 1) == "/")
+						$path = substr($path, 1);
+
+					if (substr($path, -1) == "/")
+						$path = substr($path, 0, (strlen($path) - 1));
 				}
-
-				$path = str_replace('uploads/media', '', $fileResult['path']);
-
-				if (substr($path, 0, 1) == "/")
-					$path = substr($path, 1);
-
-				if (substr($path, -1) == "/")
-					$path = substr($path, 0, (strlen($path) - 1));
 
 				$item = new MediaItem(Input::all());
 
@@ -139,7 +144,7 @@ class ItemsController extends MediaController {
 				$item->hosted_externally = $hostedExternally;
 
 				if ($hostedExternally) {
-					$item->hosted_content_uri  = trim($item->hosted_content_uri);
+					$item->hosted_content_uri = trim(Input::get('hosted_content_uri'));
 				} else {
 					$item->hosted_content_type = null;
 					$item->hosted_content_uri  = null;
@@ -174,6 +179,8 @@ class ItemsController extends MediaController {
 					$item->thumbnail_width     = $thumbnailResult['imageDimensions']['tw'];
 					$item->thumbnail_height    = $thumbnailResult['imageDimensions']['th'];
 				}
+
+				$item->published_at = Input::get('published') ? date('Y-m-d H:i:s', strtotime(Input::get('published_at'))) : null;
 
 				$item->save();
 
@@ -261,6 +268,12 @@ class ItemsController extends MediaController {
 			$filename  = Format::unique(Format::slug(Input::get('title')).'.'.File::extension($item->filename), 'media_items', 'filename', $item->id);
 			$basename  = str_replace('.'.$originalExtension, '', $filename);
 			$extension = $originalExtension;
+
+			if ($originalExtension == "") {
+				$filename = null;
+				$basename = null;
+			}
+
 			$thumbnail = Form::value('create_thumbnail', 'checkbox');
 
 			if ((isset($_FILES['file']['name']) && $_FILES['file']['name'] != "") || (isset($_FILES['thumbnail_image']['name']) && $_FILES['thumbnail_image']['name']))
@@ -287,7 +300,8 @@ class ItemsController extends MediaController {
 			}
 
 			//if file was not uploaded but path or name was changed, move/rename file
-			if (!$uploaded && $item->filename != $filename) {
+			if (!$uploaded && $item->filename != $filename && !is_null($filename)) {
+				var_dump($filename); exit;
 				//move/rename file
 				if (File::exists('uploads/'.$item->getFilePath()))
 					File::move('uploads/'.$item->getFilePath(), 'uploads/media/'.$item->path.'/'.$filename);
@@ -310,7 +324,7 @@ class ItemsController extends MediaController {
 				$item->hosted_externally = $hostedExternally;
 
 				if ($hostedExternally) {
-					$item->hosted_content_uri  = trim($item->hosted_content_uri);
+					$item->hosted_content_uri = trim(Input::get('hosted_content_uri'));
 				} else {
 					$item->hosted_content_type = null;
 					$item->hosted_content_uri  = null;
@@ -356,6 +370,8 @@ class ItemsController extends MediaController {
 						$item->thumbnail_height    = $thumbnailResult['imageDimensions']['th'];
 					}
 				}
+
+				$item->published_at = Input::get('published') ? date('Y-m-d H:i:s', strtotime(Input::get('published_at'))) : null;
 
 				$item->save();
 

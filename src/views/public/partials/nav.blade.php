@@ -1,5 +1,5 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-	<div class="container-fluid">
+	<div class="container">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 				<span class="icon-bar"></span>
@@ -22,10 +22,10 @@
 
 		<div class="navbar-collapse collapse">
 
-			{{ Fractal::getMenuMarkup('CMS Account', ['class' => 'nav navbar-nav navbar-right']) }}
+			{{ Fractal::getMenuMarkup('Main') }}
 
 			@yield('search')
 
 		</div><!-- /.nav-collapse -->
-	</div><!-- /.container-fluid -->
+	</div><!-- /.container -->
 </nav>
