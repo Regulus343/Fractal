@@ -7,10 +7,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	@include(Fractal::view('partials.included_files', true))
-
-	<style type="text/css">
-
-	</style>
 </head>
 <body>
 	@include(Fractal::view('partials.modal', true))
