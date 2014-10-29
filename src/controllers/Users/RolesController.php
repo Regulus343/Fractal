@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 
@@ -34,7 +35,7 @@ class RolesController extends UsersController {
 
 		Fractal::setViewsLocation('users.roles');
 
-		Fractal::addTrailItem('Roles', Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::lang('labels.roles'), Fractal::getControllerPath());
 	}
 
 	public function index()
@@ -81,7 +82,7 @@ class RolesController extends UsersController {
 
 	public function create()
 	{
-		Site::set('title', 'Create User Role');
+		Site::set('title', Fractal::lang('labels.createRole'));
 		Site::set('wysiwyg', true);
 
 		Form::setErrors();
@@ -91,6 +92,8 @@ class RolesController extends UsersController {
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
+
+		Fractal::addTrailItem(Fractal::lang('labels.create'), Request::url());
 
 		return View::make(Fractal::view('form'));
 	}
@@ -145,8 +148,8 @@ class RolesController extends UsersController {
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.role')])
 			]);
 
-		Site::set('title', $role->name.' (User Role)');
-		Site::set('titleHeading', 'Update User Role: <strong>'.Format::entities($role->name).'</strong>');
+		Site::set('title', $role->name.' ('.Fractal::lang('labels.role').')');
+		Site::set('titleHeading', Fractal::lang('labels.updateRole').': <strong>'.Format::entities($role->name).'</strong>');
 		Site::set('wysiwyg', true);
 
 		Form::setDefaults($role);
@@ -157,6 +160,8 @@ class RolesController extends UsersController {
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
+
+		Fractal::addTrailItem(Fractal::lang('labels.update'), Request::url());
 
 		return View::make(Fractal::view('form'))->with('update', true);
 	}

@@ -39,6 +39,7 @@ class ViewController extends BaseController {
 	public function getIndex()
 	{
 		Site::set('mediaList', true);
+		Site::set('contentColumnWidth', 9);
 
 		$media = MediaItem::orderBy('published_at', 'desc');
 
@@ -53,6 +54,8 @@ class ViewController extends BaseController {
 
 	public function getItem($slug)
 	{
+		Site::set('contentColumnWidth', 9);
+
 		$mediaItem = MediaItem::where('slug', $slug);
 
 		if (Auth::isNot('admin'))
@@ -63,7 +66,7 @@ class ViewController extends BaseController {
 		if (empty($mediaItem))
 			return Redirect::to('');
 
-		Site::setMulti(['section', 'subSection', 'title', 'mediaItemTitle'], $mediaItem->title);
+		Site::setMulti(['subSection', 'title', 'mediaItemTitle'], $mediaItem->title);
 
 		Site::addTrailItem($mediaItem->title, $mediaItem->getUrl());
 

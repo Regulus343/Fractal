@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 
@@ -34,7 +35,7 @@ class PagesController extends BaseController {
 		//set content type and views location
 		Fractal::setContentType('page', true);
 
-		Fractal::addTrailItem('Pages', Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::lang('labels.pages'), Fractal::getControllerPath());
 	}
 
 	public function index()
@@ -81,7 +82,7 @@ class PagesController extends BaseController {
 
 	public function create()
 	{
-		Site::set('title', 'Create Page');
+		Site::set('title', Fractal::lang('labels.createPage'));
 		Site::set('wysiwyg', true);
 
 		ContentPage::setDefaultsForNew();
@@ -94,6 +95,8 @@ class PagesController extends BaseController {
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
+
+		Fractal::addTrailItem(Fractal::lang('labels.create'), Request::url());
 
 		return View::make(Fractal::view('form'))
 			->with('layoutTagOptions', $layoutTagOptions);
@@ -143,8 +146,8 @@ class PagesController extends BaseController {
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.page')])
 			]);
 
-		Site::set('title', $page->title.' (Page)');
-		Site::set('titleHeading', 'Update Page: <strong>'.Format::entities($page->title).'</strong>');
+		Site::set('title', $page->title.' ('.Fractal::lang('labels.page').')');
+		Site::set('titleHeading', Fractal::lang('labels.updatePage').': <strong>'.Format::entities($page->title).'</strong>');
 		Site::set('wysiwyg', true);
 
 		$page->setDefaults(['contentAreas']);
@@ -163,6 +166,8 @@ class PagesController extends BaseController {
 				'url'   => $page->getUrl(),
 			]
 		]);
+
+		Fractal::addTrailItem(Fractal::lang('labels.update'), Request::url());
 
 		return View::make(Fractal::view('form'))
 			->with('update', true)

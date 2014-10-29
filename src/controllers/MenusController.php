@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 
@@ -34,7 +35,7 @@ class MenusController extends BaseController {
 
 		Site::set('defaultSorting', ['field' => 'cms']);
 
-		Fractal::addTrailItem('Menus', Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::lang('labels.menus'), Fractal::getControllerPath());
 	}
 
 	public function index()
@@ -81,7 +82,7 @@ class MenusController extends BaseController {
 
 	public function create()
 	{
-		Site::set('title', 'Create Menu');
+		Site::set('title', Fractal::lang('labels.createMenu'));
 
 		Form::setErrors();
 
@@ -90,6 +91,8 @@ class MenusController extends BaseController {
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
+
+		Fractal::addTrailItem(Fractal::lang('labels.create'), Request::url());
 
 		return View::make(Fractal::view('form'));
 	}
@@ -135,8 +138,8 @@ class MenusController extends BaseController {
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.menu')])
 			]);
 
-		Site::set('title', $menu->name.' (Menu)');
-		Site::set('titleHeading', 'Update Menu: <strong>'.Format::entities($menu->name).'</strong>');
+		Site::set('title', $menu->name.' ('.Fractal::lang('labels.menu').')');
+		Site::set('titleHeading', Fractal::lang('labels.updateMenu').': <strong>'.Format::entities($menu->name).'</strong>');
 
 		$menu->setDefaults(['items']);
 		Form::setErrors();
@@ -146,6 +149,8 @@ class MenusController extends BaseController {
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => 'menus',
 		]);
+
+		Fractal::addTrailItem(Fractal::lang('labels.update'), Request::url());
 
 		return View::make(Fractal::view('form'))
 			->with('update', true)

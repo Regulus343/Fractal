@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
@@ -28,7 +29,7 @@ class AccountController extends BaseController {
 
 		Fractal::setViewsLocation('account');
 
-		Fractal::addTrailItem('account', Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::lang('labels.account'), Fractal::getControllerPath());
 	}
 
 	public function getIndex()

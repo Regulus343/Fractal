@@ -1,3 +1,9 @@
+					</div><!-- /.col-md-(x) -->
+
+					@yield('rightColumn')
+
+				</div><!-- /.row -->
+
 			</div><!-- /.container-pad -->
 		</div><!-- /#container-content -->
 	</div><!-- /#container -->

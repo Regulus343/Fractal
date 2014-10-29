@@ -154,6 +154,32 @@ class BlogArticle extends BaseModel {
 	}
 
 	/**
+	 * The content areas that the article belongs to.
+	 *
+	 * @return Collection
+	 */
+	public function contentAreas()
+	{
+		return $this
+			->belongsToMany('Regulus\Fractal\Models\BlogContentArea', 'blog_article_content_areas', 'article_id', 'area_id')
+			->withPivot('layout_tag')
+			->orderBy('title');
+	}
+
+	/**
+	 * The categories that the article belongs to.
+	 *
+	 * @return Collection
+	 */
+	public function categories()
+	{
+		return $this
+			->belongsToMany('Regulus\Fractal\Models\BlogCategory', 'blog_article_categories', 'article_id', 'category_id')
+			->withPivot('layout_tag')
+			->orderBy('title');
+	}
+
+	/**
 	 * Get the URL for the article.
 	 *
 	 * @return string
@@ -230,19 +256,6 @@ class BlogArticle extends BaseModel {
 		}
 
 		return $content;
-	}
-
-	/**
-	 * The content areas that the article belongs to.
-	 *
-	 * @return Collection
-	 */
-	public function contentAreas()
-	{
-		return $this
-			->belongsToMany('Regulus\Fractal\Models\BlogContentArea', 'blog_article_content_areas', 'article_id', 'area_id')
-			->withPivot('layout_tag')
-			->orderBy('title');
 	}
 
 	/**

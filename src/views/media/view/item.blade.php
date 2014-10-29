@@ -2,14 +2,12 @@
 
 @section(Config::get('fractal::section'))
 
-	<div class="row">
-		<div class="col-md-9">
-			@include(Fractal::mediaView('partials.item', true))
-		</div>
+	@include(Fractal::mediaView('partials.item', true))
 
-		<div class="col-md-3">
-			@include(Fractal::mediaView('partials.nav_side', true))
-		</div>
-	</div>
+@endsection
 
-@stop
+@section('rightColumn')
+
+	@include(Fractal::mediaView('partials.nav_side', true))
+
+@endsection

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
@@ -34,7 +35,7 @@ class UsersController extends BaseController {
 		//set content type and views location
 		Fractal::setContentType('user', true);
 
-		Fractal::addTrailItem('Users', Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::lang('labels.users'), Fractal::getControllerPath());
 	}
 
 	public function index()
@@ -81,7 +82,7 @@ class UsersController extends BaseController {
 
 	public function create()
 	{
-		Site::set('title', 'Create User');
+		Site::set('title', Fractal::lang('labels.createUser'));
 		Site::set('wysiwyg', true);
 
 		$defaults    = ['active' => true];
@@ -98,6 +99,8 @@ class UsersController extends BaseController {
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
+
+		Fractal::addTrailItem(Fractal::lang('labels.create'), Request::url());
 
 		return View::make(Fractal::view('form'));
 	}
@@ -164,18 +167,20 @@ class UsersController extends BaseController {
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.user')])
 			]);
 
-		Site::set('title', $user->username.' (User)');
-		Site::set('titleHeading', 'Update User: <strong>'.Format::entities($user->username).'</strong>');
+		Site::set('title', $user->username.' ('.Fractal::lang('labels.user').')');
+		Site::set('titleHeading', Fractal::lang('labels.updateUser').': <strong>'.Format::entities($user->username).'</strong>');
 		Site::set('wysiwyg', true);
 
 		Form::setDefaults($user, ['roles' => 'id']);
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => lang('labels.returnToUsersList'),
+			'label' => Fractal::lang('labels.returnToUsersList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
+
+		Fractal::addTrailItem(Fractal::lang('labels.update'), Request::url());
 
 		return View::make(Fractal::view('form'))->with('update', true);
 	}

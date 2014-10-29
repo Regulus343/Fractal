@@ -41,6 +41,7 @@ return [
 			'media/items'       => 'Regulus\Fractal\Controllers\Media\ItemsController',
 			'media'             => 'Regulus\Fractal\Controllers\Media\MediaController',
 			'blogs/articles'    => 'Regulus\Fractal\Controllers\Blogs\ArticlesController',
+			'blogs/categories'  => 'Regulus\Fractal\Controllers\Blogs\CategoriesController',
 			'blogs'             => 'Regulus\Fractal\Controllers\Blogs\BlogsController',
 		],
 	],

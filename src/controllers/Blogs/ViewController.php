@@ -39,6 +39,7 @@ class ViewController extends BaseController {
 	public function getIndex()
 	{
 		Site::set('articleList', true);
+		Site::set('contentColumnWidth', 9);
 
 		$articles = BlogArticle::orderBy('published_at', 'desc');
 
@@ -53,6 +54,8 @@ class ViewController extends BaseController {
 
 	public function getArticle($slug)
 	{
+		Site::set('contentColumnWidth', 9);
+
 		$article = BlogArticle::where('slug', $slug);
 
 		if (Auth::isNot('admin'))
@@ -63,7 +66,7 @@ class ViewController extends BaseController {
 		if (empty($article))
 			return Redirect::to('');
 
-		Site::setMulti(['section', 'subSection', 'title', 'articleTitle'], $article->title);
+		Site::setMulti(['subSection', 'title', 'articleTitle'], $article->title);
 
 		Site::addTrailItem($article->title, $article->getUrl());
 

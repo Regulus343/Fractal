@@ -41,7 +41,9 @@
 			@endif
 
 		@endforeach
+
 		{{ Form::field(Form::submitResource(Lang::get('fractal::labels.settings'), true), 'button') }}
+
 	{{ Form::close() }}
 
 @stop

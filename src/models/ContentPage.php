@@ -143,6 +143,19 @@ class ContentPage extends BaseModel {
 	}
 
 	/**
+	 * The content areas that the page belongs to.
+	 *
+	 * @return Collection
+	 */
+	public function contentAreas()
+	{
+		return $this
+			->belongsToMany('Regulus\Fractal\Models\ContentArea', 'content_page_areas', 'page_id', 'area_id')
+			->withPivot('layout_tag')
+			->orderBy('title');
+	}
+
+	/**
 	 * Get the URL for the page.
 	 *
 	 * @return string
@@ -199,19 +212,6 @@ class ContentPage extends BaseModel {
 		}
 
 		return $content;
-	}
-
-	/**
-	 * The content areas that the page belongs to.
-	 *
-	 * @return Collection
-	 */
-	public function contentAreas()
-	{
-		return $this
-			->belongsToMany('Regulus\Fractal\Models\ContentArea', 'content_page_areas', 'page_id', 'area_id')
-			->withPivot('layout_tag')
-			->orderBy('title');
 	}
 
 	/**

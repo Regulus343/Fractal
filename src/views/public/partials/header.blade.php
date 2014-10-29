@@ -19,8 +19,15 @@
 
 		<div id="container-content">
 			<div class="container-pad">
-				@if (!Site::get('hideTitle'))
-					<h1 id="main-heading">{{ Site::titleHeading() }}</h1>
 
-					{{ Site::getBreadcrumbTrailMarkup() }}
-				@endif
+				<div class="row">
+
+					@yield('leftColumn')
+
+					<div class="col-md-{{ Site::get('contentColumnWidth', 12) }}">
+
+						@if (!Site::get('hideTitle'))
+							<h1 id="main-heading">{{ Site::titleHeading() }}</h1>
+
+							{{ Site::getBreadcrumbTrailMarkup() }}
+						@endif

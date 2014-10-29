@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
@@ -35,7 +36,7 @@ class FilesController extends BaseController {
 		//set content type and views location
 		Fractal::setContentType('file', true);
 
-		Fractal::addTrailItem('Files', Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::lang('labels.files'), Fractal::getControllerPath());
 	}
 
 	public function index()
@@ -82,7 +83,7 @@ class FilesController extends BaseController {
 
 	public function create()
 	{
-		Site::set('title', 'Upload File');
+		Site::set('title', Fractal::lang('labels.uploadFile'));
 
 		$this->setDefaultImageSize();
 
@@ -93,6 +94,8 @@ class FilesController extends BaseController {
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
+
+		Fractal::addTrailItem(Fractal::lang('labels.upload'), Request::url());
 
 		return View::make(Fractal::view('form'))->with('update', false);
 	}
@@ -164,8 +167,8 @@ class FilesController extends BaseController {
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.file')])
 			]);
 
-		Site::set('title', $file->name.' (File)');
-		Site::set('titleHeading', 'Update File: <strong>'.Format::entities($file->name).'</strong>');
+		Site::set('title', $file->name.' ('.Fractal::lang('labels.file').')');
+		Site::set('titleHeading', Fractal::lang('labels.updateFile').': <strong>'.Format::entities($file->name).'</strong>');
 
 		Form::setDefaults($file);
 
@@ -178,6 +181,8 @@ class FilesController extends BaseController {
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => 'files',
 		]);
+
+		Fractal::addTrailItem(Fractal::lang('labels.update'), Request::url());
 
 		return View::make(Fractal::view('form'))->with('update', true);
 	}

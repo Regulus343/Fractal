@@ -9,7 +9,7 @@ class BaseController extends \BaseController {
 
 	public function __construct()
 	{
-		Fractal::addTrailItem('Home', '');
+		Fractal::addTrailItem(Fractal::lang('labels.home'), '');
 	}
 
 }

@@ -2,7 +2,7 @@
 
 return [
 
-	'version'                 => '0.6.4.5a',
+	'version'                 => '0.6.5a',
 
 	'home'                    => 'Home',
 	'returnToCms'             => 'Return to CMS',
@@ -10,6 +10,7 @@ return [
 	'create'                  => 'Create',
 	'edit'                    => 'Edit',
 	'update'                  => 'Update',
+	'upload'                  => 'Upload',
 	'activate'                => 'Activate',
 	'delete'                  => 'Delete',
 	'undelete'                => 'Undelete',
@@ -17,12 +18,14 @@ return [
 
 	'createMenu'              => 'Create Menu',
 	'editMenu'                => 'Edit Menu',
+	'updateMenu'              => 'Update Menu',
 	'deleteMenu'              => 'Delete Menu',
 	'removeMenuItem'          => 'Remove Menu Item',
 	'returnToMenusList'       => 'Return to Menus List',
 
 	'createPage'              => 'Create Page',
 	'editPage'                => 'Edit Page',
+	'updatePage'              => 'Update Page',
 	'viewPage'                => 'View Page',
 	'deletePage'              => 'Delete Page',
 	'returnToPagesList'       => 'Return to Pages List',
@@ -33,24 +36,34 @@ return [
 
 	'uploadFile'              => 'Upload File',
 	'editFile'                => 'Edit File',
+	'updateFile'              => 'Update File',
 	'openFile'                => 'Open File',
 	'deleteFile'              => 'Delete File',
 	'returnToFilesList'       => 'Return to Files List',
 
 	'createArticle'           => 'Create Article',
 	'editArticle'             => 'Edit Article',
+	'updateArticle'           => 'Update Article',
 	'viewArticle'             => 'View Article',
 	'deleteArticle'           => 'Delete Article',
 	'returnToArticlesList'    => 'Return to Articles List',
 
+	'createCategory'          => 'Create Category',
+	'editCategory'            => 'Edit Category',
+	'updateCategory'          => 'Update Category',
+	'deleteCategory'          => 'Delete Category',
+	'returnToCategoriesList'  => 'Return to Categories List',
+
 	'createItem'              => 'Create Item',
 	'editItem'                => 'Edit Item',
+	'updateItem'              => 'Update Item',
 	'viewItem'                => 'View Item',
 	'deleteItem'              => 'Delete Item',
 	'returnToItemsList'       => 'Return to Items List',
 
 	'createUser'              => 'Create User',
 	'editUser'                => 'Edit User',
+	'updateUser'              => 'Update User',
 	'banUser'                 => 'Ban User',
 	'unbanUser'               => 'Unban User',
 	'deleteUser'              => 'Delete User',
@@ -58,11 +71,13 @@ return [
 
 	'createRole'              => 'Create Role',
 	'editRole'                => 'Edit Role',
+	'updateRole'              => 'Update Role',
 	'deleteRole'              => 'Delete Role',
 	'returnToRolesList'       => 'Return to Roles List',
 
 	'createPermission'        => 'Create Permission',
 	'editPermission'          => 'Edit Permission',
+	'updatePermission'        => 'Update Permission',
 	'deletePermission'        => 'Delete Permission',
 	'returnToPermissionsList' => 'Return to Permissions List',
 
@@ -79,6 +94,8 @@ return [
 	'blog'                    => 'Blog',
 	'blogArticle'             => 'Blog Article',
 	'article'                 => 'Article',
+	'blogCategory'            => 'Blog Category',
+	'category'                => 'Category',
 	'user'                    => 'User',
 	'userRole'                => 'User Role',
 	'role'                    => 'Role',
@@ -98,6 +115,8 @@ return [
 	'blogs'                   => 'Blogs',
 	'blogArticles'            => 'Blog Articles',
 	'articles'                => 'Articles',
+	'blogCategories'          => 'Blog Categories',
+	'categories'              => 'Categories',
 	'users'                   => 'Users',
 	'userRoles'               => 'User Roles',
 	'roles'                   => 'Roles',

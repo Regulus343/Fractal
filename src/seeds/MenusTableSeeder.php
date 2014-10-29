@@ -90,6 +90,14 @@ class MenusTableSeeder extends Seeder {
 								'display_order'      => 1,
 								'auth_status'        => 1,
 							],
+							[
+								'uri'                => 'blogs/categories',
+								'label'              => 'Categories',
+								'label_language_key' => 'categories',
+								'icon'               => 'book',
+								'display_order'      => 2,
+								'auth_status'        => 1,
+							],
 						],
 					],
 					[

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 
@@ -37,7 +38,7 @@ class ItemsController extends MediaController {
 
 		Fractal::setViewsLocation('media.items');
 
-		Fractal::addTrailItem('Items', Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::lang('labels.items'), Fractal::getControllerPath());
 	}
 
 	public function index()
@@ -84,7 +85,7 @@ class ItemsController extends MediaController {
 
 	public function create()
 	{
-		Site::set('title', 'Create Media Item');
+		Site::set('title', Fractal::lang('labels.createItem'));
 		Site::set('wysiwyg', true);
 
 		MediaItem::setDefaultsForNew();
@@ -98,6 +99,8 @@ class ItemsController extends MediaController {
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
+
+		Fractal::addTrailItem(Fractal::lang('labels.create'), Request::url());
 
 		return View::make(Fractal::view('form'));
 	}
@@ -215,8 +218,8 @@ class ItemsController extends MediaController {
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.mediaItem')])
 			]);
 
-		Site::set('title', $item->title.' (Media Item)');
-		Site::set('titleHeading', 'Update Media Item: <strong>'.Format::entities($item->title).'</strong>');
+		Site::set('title', $item->title.' ('.Fractal::lang('labels.mediaItem').')');
+		Site::set('titleHeading', Fractal::lang('labels.updateItem').': <strong>'.Format::entities($item->title).'</strong>');
 		Site::set('wysiwyg', true);
 
 		$item->setDefaults();
@@ -236,6 +239,8 @@ class ItemsController extends MediaController {
 				'url'   => $item->getUrl(),
 			]
 		]);
+
+		Fractal::addTrailItem(Fractal::lang('labels.update'), Request::url());
 
 		return View::make(Fractal::view('form'))
 			->with('update', true)

@@ -8,6 +8,7 @@
 	<script type="text/javascript" src="{{ Site::js('fractal/forms/user', 'regulus/fractal') }}"></script>
 
 	{{ Form::openResource() }}
+
 		<div class="row">
 			<div class="col-md-6">
 				{{ Form::field('username') }}
@@ -105,6 +106,7 @@
 				{{ Form::field(Form::submitResource(Fractal::lang('labels.user')), 'button') }}
 			</div>
 		</div>
+
 	{{ Form::close() }}
 
 @stop

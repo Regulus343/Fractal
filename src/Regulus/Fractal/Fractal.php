@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4.
 
 		created by Cody Jassman
-		version 0.6.4.5a
-		last updated on October 27, 2014
+		version 0.6.5a
+		last updated on October 28, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -1167,7 +1167,7 @@ class Fractal {
 	 */
 	public function addTrailItem($title = '', $uri = null)
 	{
-		if (!is_null($uri))
+		if (!is_null($uri) && substr($uri, 0, 7) != "http://" && substr($uri, 0, 8) != "https://")
 			$uri = $this->uri($uri);
 
 		Site::addTrailItem($title, $uri);

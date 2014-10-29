@@ -3,12 +3,15 @@
 @section(Config::get('fractal::section'))
 
 	{{ Form::openResource() }}
+
 		<div class="row">
 			<div class="col-md-4">
 				{{ Form::field('role') }}
-			</div><div class="col-md-4">
+			</div>
+			<div class="col-md-4">
 				{{ Form::field('name') }}
-			</div><div class="col-md-4">
+			</div>
+			<div class="col-md-4">
 				{{ Form::field('display_order', 'select', ['options' => Form::numberOptions(1, 36)]) }}
 			</div>
 		</div>
@@ -24,6 +27,7 @@
 				{{ Form::field(Form::submitResource(Fractal::lang('labels.role')), 'button') }}
 			</div>
 		</div>
+
 	{{ Form::close() }}
 
 @stop

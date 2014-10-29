@@ -33,7 +33,7 @@ class ActivityController extends UsersController {
 
 		Fractal::setViewsLocation('users.activity');
 
-		Fractal::addTrailItem('Activity', Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::lang('labels.activity'), Fractal::getControllerPath());
 	}
 
 	public function getIndex()

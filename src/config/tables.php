@@ -121,7 +121,6 @@ return [
 						'uri'        => Config::get('fractal::pageUri') == "" ? ':slug' : Config::get('fractal::pageUri').'/:slug',
 						'attributes' => [
 							'title'  => Fractal::lang('labels.viewPage'),
-							'target' => '_blank',
 						],
 					],
 					[
@@ -281,7 +280,6 @@ return [
 						'url'        => Fractal::mediaUrl(Config::get('fractal::blog.baseUri') == false ? 'item/:slug' : Config::get('fractal::blog.baseUri').'/article/:slug'),
 						'attributes' => [
 							'title'  => Fractal::lang('labels.viewItem'),
-							'target' => '_blank',
 						],
 					],
 					[
@@ -362,7 +360,6 @@ return [
 						'url'        => Fractal::blogUrl(Config::get('fractal::blog.baseUri') == false ? 'article/:slug' : Config::get('fractal::blog.baseUri').'/article/:slug'),
 						'attributes' => [
 							'title'  => Fractal::lang('labels.viewArticle'),
-							'target' => '_blank',
 						],
 					],
 					[
@@ -388,6 +385,63 @@ return [
 					'isPublished()' => false,
 				],
 			],
+		],
+	],
+
+	'blogCategories' => [
+		'table' => [
+			'class'         => 'table-striped table-bordered table-hover table-sortable',
+			'noDataMessage' => Fractal::lang('messages.noItems', ['items' => Fractal::langLowerPlural('labels.category')]),
+		],
+		'columns' => [
+			[
+				'attribute' => 'id',
+				'sort'      => true,
+			],
+			[
+				'attribute' => 'name',
+				'class'     => 'title',
+				'sort'      => true,
+			],
+			[
+				'label'     => 'slug',
+				'sort'      => true,
+			],
+			[
+				'label'     => '# of Articles',
+				'method'    => 'getNumberOfArticles()',
+				'sort'      => true,
+			],
+			[
+				'label'     => 'Actions',
+				'class'     => 'actions',
+				'elements'  => [
+					[
+						'icon'       => 'edit',
+						'class'      => 'btn btn-primary',
+						'uri'        => Config::get('fractal::baseUri').'/blogs/categories/:slug/edit',
+						'attributes' => [
+							'title' => Fractal::lang('labels.editCategory'),
+						],
+					],
+					[
+						'icon'       => 'remove',
+						'class'      => 'btn btn-danger action-item',
+						'attributes' => [
+							'data-item-id'        => ':id',
+							'data-item-name'      => ':title',
+							'data-action'         => 'delete',
+							'data-action-type'    => 'delete',
+							'data-action-url'     => 'articles/:id',
+							'data-action-message' => 'confirmDelete',
+							'title'               => Fractal::lang('labels.deleteCategory'),
+						],
+					],
+				],
+			],
+		],
+		'rows' => [
+			'idPrefix' => 'blog-category',
 		],
 	],
 

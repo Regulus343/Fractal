@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 
@@ -36,7 +37,7 @@ class ArticlesController extends BlogsController {
 
 		Fractal::setViewsLocation('blogs.articles');
 
-		Fractal::addTrailItem('Articles', Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::lang('labels.articles'), Fractal::getControllerPath());
 	}
 
 	public function index()
@@ -83,7 +84,7 @@ class ArticlesController extends BlogsController {
 
 	public function create()
 	{
-		Site::set('title', 'Create Article');
+		Site::set('title', Fractal::lang('labels.createArticle'));
 		Site::set('wysiwyg', true);
 
 		BlogArticle::setDefaultsForNew();
@@ -96,6 +97,8 @@ class ArticlesController extends BlogsController {
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
+
+		Fractal::addTrailItem(Fractal::lang('labels.create'), Request::url());
 
 		return View::make(Fractal::view('form'))
 			->with('layoutTagOptions', $layoutTagOptions);
@@ -145,8 +148,8 @@ class ArticlesController extends BlogsController {
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.article')])
 			]);
 
-		Site::set('title', $article->title.' (Article)');
-		Site::set('titleHeading', 'Update Article: <strong>'.Format::entities($article->title).'</strong>');
+		Site::set('title', $article->title.' ('.Fractal::lang('labels.article').')');
+		Site::set('titleHeading', Fractal::lang('labels.updateArticle').': <strong>'.Format::entities($article->title).'</strong>');
 		Site::set('wysiwyg', true);
 
 		$article->setDefaults(['contentAreas']);
@@ -166,6 +169,8 @@ class ArticlesController extends BlogsController {
 				'url'   => $article->getUrl(),
 			]
 		]);
+
+		Fractal::addTrailItem(Fractal::lang('labels.update'), Request::url());
 
 		return View::make(Fractal::view('form'))
 			->with('update', true)
