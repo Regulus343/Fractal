@@ -404,7 +404,7 @@ return [
 				'sort'      => true,
 			],
 			[
-				'label'     => 'slug',
+				'attribute' => 'slug',
 				'sort'      => true,
 			],
 			[
