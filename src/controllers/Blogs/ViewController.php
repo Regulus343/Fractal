@@ -63,6 +63,21 @@ class ViewController extends BaseController {
 
 		Site::set('contentColumnWidth', 9);
 
+		//allow article selection by ID for to allow shorter URLs
+		if (is_numeric($slug))
+		{
+			$article = BlogArticle::where('id', $slug);
+
+			if (Auth::isNot('admin'))
+				$article->onlyPublished();
+
+			$article = $article->first();
+
+			//if article is found by ID, redirect to URL with slug
+			if (!empty($article))
+				return Redirect::to($article->getUrl());
+		}
+
 		$article = BlogArticle::where('slug', $slug);
 
 		if (Auth::isNot('admin'))
@@ -86,7 +101,7 @@ class ViewController extends BaseController {
 		if (Auth::isNot('admin'))
 			$articles->onlyPublished();
 
-		$articles = $articles->get();
+		$articles = $articles->take(5)->get();
 
 		$messages = [];
 		if (!$article->isPublished()) {

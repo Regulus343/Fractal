@@ -72,7 +72,7 @@ a#logo img { height: 30px; border: none; }
 #nav-side.collapsed ul { display: none; }
 
 #container-content.sidebar-offset { margin-left: 16%; }
-#container-content .container-pad { padding: 64px 28px 28px 20px; }
+#container-content .container-pad { padding: 72px 28px 28px 20px; }
 
 @media (min-width: 768px) {
 	#nav-side { width: 22%; }
