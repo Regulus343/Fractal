@@ -64,9 +64,9 @@ return [
 			'users/{id}/ban'                            => 'Regulus\Fractal\Controllers\Users\UsersController@ban',
 			'users/{id}/unban'                          => 'Regulus\Fractal\Controllers\Users\UsersController@unban',
 			'media/items/get-types-for-file-type/{id?}' => 'Regulus\Fractal\Controllers\Media\ItemsController@getTypesForFileType',
-			'blog/articles/add-content-area/{id?}'      => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@addContentArea',
-			'blog/articles/get-content-area/{id}'       => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@getContentArea',
-			'blog/articles/delete-content-area/{id}'    => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@deleteContentArea',
+			'blogs/articles/add-content-area/{id?}'     => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@addContentArea',
+			'blogs/articles/get-content-area/{id}'      => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@getContentArea',
+			'blogs/articles/delete-content-area/{id}'   => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@deleteContentArea',
 		],
 		'post' => [
 			'menus/search'                              => 'Regulus\Fractal\Controllers\MenusController@search',

@@ -231,7 +231,7 @@
 
 		@include(Fractal::view('blogs.articles.templates.content_area', true))
 
-		<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="blog/articles/add-content-area{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="get" data-modal-callback-function="selectContentAreaActions">
+		<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="blogs/articles/add-content-area{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="get" data-modal-callback-function="selectContentAreaActions">
 			<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Lang::get('fractal::labels.addContentArea') }}
 		</a>
 

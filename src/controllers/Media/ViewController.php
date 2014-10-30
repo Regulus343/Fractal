@@ -61,6 +61,21 @@ class ViewController extends BaseController {
 
 		Site::set('contentColumnWidth', 9);
 
+		//allow item selection by ID for to allow shorter URLs
+		if (is_numeric($slug))
+		{
+			$mediaItem = MediaItem::where('id', $slug);
+
+			if (Auth::isNot('admin'))
+				$mediaItem->onlyPublished();
+
+			$mediaItem = $mediaItem->first();
+
+			//if item is found by ID, redirect to URL with slug
+			if (!empty($mediaItem))
+				return Redirect::to($mediaItem->getUrl());
+		}
+
 		$mediaItem = MediaItem::where('slug', $slug);
 
 		if (Auth::isNot('admin'))
