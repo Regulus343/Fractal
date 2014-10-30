@@ -20,7 +20,9 @@
 
 				<li{{ HTML::activeArea(isset($category) && $categoryListed->id == $category->id) }}>
 					<a href="{{ $categoryListed->getUrl() }}">
-						{{ $categoryListed->name }} <span class="badge primary">{{ $categoryListed->articles()->count() }}</span>
+						<span class="glyphicon glyphicon-tag"></span> {{ $categoryListed->name }}
+
+						<span class="badge primary">{{ $categoryListed->articles()->count() }}</span>
 					</a>
 				</li>
 

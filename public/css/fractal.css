@@ -421,9 +421,10 @@ ul.nav-side li a {
 
 ul.nav-side li.active a { background-color: #222; }
 
-ul.nav-side li.special a { background-color: #336; }
-
 ul.nav-side li a:hover, ul.nav-side li.active a:hover { background-color: #282828; }
+
+ul.nav-side li.special a { background-color: #336; }
+ul.nav-side li.special a:hover { background-color: #448; }
 
 ul.nav-side li div time { font-size: 0.75em; }
 
