@@ -14,6 +14,13 @@ class BlogCategory extends BaseModel {
 	protected $table = 'blog_categories';
 
 	/**
+	 * The foreign key for the model.
+	 *
+	 * @var    string
+	 */
+	protected $foreignKey = 'category_id';
+
+	/**
 	 * The fillable fields for the model.
 	 *
 	 * @var    array
@@ -42,6 +49,16 @@ class BlogCategory extends BaseModel {
 	public function getNumberOfArticles()
 	{
 		return $this->articles()->count();
+	}
+
+	/**
+	 * Get the URL for the category.
+	 *
+	 * @return string
+	 */
+	public function getUrl()
+	{
+		return Fractal::blogUrl('c/'.$this->slug);
 	}
 
 	/**

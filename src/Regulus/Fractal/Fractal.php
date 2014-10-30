@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4.
 
 		created by Cody Jassman
-		version 0.6.5a
-		last updated on October 28, 2014
+		version 0.6.5.5a
+		last updated on October 29, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;

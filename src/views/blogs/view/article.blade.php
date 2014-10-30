@@ -8,6 +8,12 @@
 
 @section('rightColumn')
 
-	@include(Fractal::blogView('partials.nav_side', true))
+	<div class="col-md-{{ (12 - Site::get('contentColumnWidth', 12)) }}">
+
+		@include(Fractal::blogView('partials.nav.articles', true))
+
+		@include(Fractal::blogView('partials.nav.categories', true))
+
+	</div>
 
 @endsection

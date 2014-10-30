@@ -52,8 +52,13 @@ class ViewController extends BaseController {
 			->with('media', $media);
 	}
 
-	public function getItem($slug)
+	public function getItem($slug = null)
 	{
+		if (is_null($slug))
+			return Redirect::to(Fractal::mediaUrl())->with('messages', [
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.mediaItem')])
+			]);
+
 		Site::set('contentColumnWidth', 9);
 
 		$mediaItem = MediaItem::where('slug', $slug);
@@ -64,7 +69,9 @@ class ViewController extends BaseController {
 		$mediaItem = $mediaItem->first();
 
 		if (empty($mediaItem))
-			return Redirect::to('');
+			return Redirect::to(Fractal::mediaUrl())->with('messages', [
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.mediaItem')])
+			]);
 
 		Site::setMulti(['subSection', 'title', 'mediaItemTitle'], $mediaItem->title);
 
@@ -96,7 +103,7 @@ class ViewController extends BaseController {
 			->with('messages', $messages);
 	}
 
-	public function getI($slug) {
+	public function getI($slug = null) {
 		return $this->getItem($slug);
 	}
 

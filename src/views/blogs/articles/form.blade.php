@@ -235,6 +235,15 @@
 			<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Lang::get('fractal::labels.addContentArea') }}
 		</a>
 
+		<div class="row">
+			<div class="col-md-6">
+				{{ Form::field('categories.pivot.', 'select', [
+					'multiple' => 'multiple',
+					'options'  => Form::prepOptions(Regulus\Fractal\Models\BlogCategory::orderBy('name')->get(), ['id', 'name'])
+				]) }}
+			</div>
+		</div>
+
 		<div class="row clear">
 			<div class="col-md-2">
 				{{ Form::field('published', 'checkbox', [

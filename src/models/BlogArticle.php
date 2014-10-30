@@ -60,7 +60,7 @@ class BlogArticle extends BaseModel {
 	 * @var    array
 	 */
 	protected $formats = [
-		'published' => 'trueIfNotNull:published_at',
+		'published'  => 'trueIfNotNull:published_at',
 	];
 
 	/**
@@ -69,6 +69,7 @@ class BlogArticle extends BaseModel {
 	 * @var    array
 	 */
 	protected $formatsForDb = [
+		'categories'   => 'pivotArray',
 		'published_at' => 'nullIfBlank',
 	];
 
@@ -175,8 +176,7 @@ class BlogArticle extends BaseModel {
 	{
 		return $this
 			->belongsToMany('Regulus\Fractal\Models\BlogCategory', 'blog_article_categories', 'article_id', 'category_id')
-			->withPivot('layout_tag')
-			->orderBy('title');
+			->orderBy('name');
 	}
 
 	/**

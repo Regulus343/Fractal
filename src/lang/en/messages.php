@@ -4,6 +4,7 @@ return [
 
 	'errorGeneral'                 => 'Something went wrong. Please correct any errors and try again.',
 	'errorNotFound'                => 'The :item you selected was not found.',
+	'errorNoItems'                 => 'The :item you selected contained no :items.',
 	'errorLogIn'                   => 'Something went wrong. Please check your username and password and try again.',
 	'errorAlreadyLoggedIn'         => 'You are already logged in.',
 	'errorLogInRequired'           => 'You must be logged in to access the requested page.',

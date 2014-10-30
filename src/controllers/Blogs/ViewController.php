@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
@@ -14,6 +15,7 @@ use Fractal;
 
 use Regulus\Fractal\Models\BlogArticle;
 use Regulus\Fractal\Models\BlogContentArea;
+use Regulus\Fractal\Models\BlogCategory;
 use Regulus\Fractal\Models\ContentLayoutTemplate;
 
 use Regulus\ActivityLog\Activity;
@@ -52,8 +54,13 @@ class ViewController extends BaseController {
 			->with('articles', $articles);
 	}
 
-	public function getArticle($slug)
+	public function getArticle($slug = null)
 	{
+		if (is_null($slug))
+			return Redirect::to(Fractal::blogUrl())->with('messages', [
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.article')])
+			]);
+
 		Site::set('contentColumnWidth', 9);
 
 		$article = BlogArticle::where('slug', $slug);
@@ -64,7 +71,9 @@ class ViewController extends BaseController {
 		$article = $article->first();
 
 		if (empty($article))
-			return Redirect::to('');
+			return Redirect::to(Fractal::blogUrl())->with('messages', [
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.article')])
+			]);
 
 		Site::setMulti(['subSection', 'title', 'articleTitle'], $article->title);
 
@@ -96,8 +105,68 @@ class ViewController extends BaseController {
 			->with('messages', $messages);
 	}
 
-	public function getA($slug) {
+	public function getA($slug = null) {
 		return $this->getArticle($slug);
+	}
+
+	public function getCategory($slug = null) {
+		if (is_null($slug))
+			return Redirect::to(Fractal::blogUrl())->with('messages', [
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.category')])
+			]);
+
+		Site::set('articleList', true);
+		Site::set('contentColumnWidth', 9);
+
+		$category = BlogCategory::findBySlug($slug);
+		if (empty($category))
+			return Redirect::to(Fractal::blogUrl())->with('messages', [
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.category')])
+			]);
+
+		$articles = BlogArticle::query()
+			->select('blog_articles.id')
+			->leftJoin('blog_article_categories', 'blog_articles.id', '=', 'blog_article_categories.article_id')
+			->leftJoin('blog_categories', 'blog_article_categories.category_id', '=', 'blog_categories.id')
+			->with('contentAreas')
+			->where('blog_categories.slug', $slug);
+
+		if (Auth::isNot('admin'))
+			$articles->onlyPublished();
+
+		$articles = $articles->get();
+
+		$articleIds = [];
+		foreach ($articles as $article) {
+			if (!in_array($article->id, $articleIds))
+				$articleIds[] = $article->id;
+		}
+
+		if (empty($articleIds))
+			return Redirect::to(Fractal::blogUrl())->with('messages', [
+				'error' => Fractal::lang('messages.errorNoItems', [
+					'item'  => Fractal::langLower('labels.category'),
+					'items' => Fractal::langLower('labels.articles'),
+				])
+			]);
+
+		$articles = BlogArticle::whereIn('id', $articleIds)
+			->orderBy('published_at', 'desc');
+
+		if (Auth::isNot('admin'))
+			$articles->onlyPublished();
+
+		$articles = $articles->get();
+
+		Site::addTrailItem($category->name, Request::url());
+
+		return View::make(Fractal::view('home'))
+			->with('articles', $articles)
+			->with('category', $category);
+	}
+
+	public function getC($slug = null) {
+		return $this->getCategory($slug);
 	}
 
 }

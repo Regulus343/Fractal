@@ -103,6 +103,11 @@ h1 {
 	font-weight: 300;
 }
 
+h2, h3 {
+	font-family: "Dosis", Arial, Helvetica, sans-serif;
+	font-weight: 300;
+}
+
 table.table { margin-bottom: 10px; border-collapse: separate; }
 
 table.table-bordered { border-color: #aaa; }
@@ -403,6 +408,8 @@ div.media-item-body iframe.youtube { width: 450px; height: 240px; }
 
 img.media-image { max-width: 100%; }
 
+ul.nav-side { margin: 0 0 18px 0; }
+
 ul.nav-side li a {
 	display: block;
 	padding: 6px;
@@ -413,6 +420,11 @@ ul.nav-side li a {
 }
 
 ul.nav-side li.active a { background-color: #222; }
+
+ul.nav-side li.special a { background-color: #336; }
+
 ul.nav-side li a:hover, ul.nav-side li.active a:hover { background-color: #282828; }
 
 ul.nav-side li div time { font-size: 0.75em; }
+
+ul.nav-side li .badge { float: right; background-color: #559; box-shadow: #000 0 0 5px; }

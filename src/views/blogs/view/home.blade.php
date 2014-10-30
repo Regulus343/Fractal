@@ -12,4 +12,14 @@
 
 	@endforeach
 
-@stop
+@endsection
+
+@section('rightColumn')
+
+	<div class="col-md-{{ (12 - Site::get('contentColumnWidth', 12)) }}">
+
+		@include(Fractal::blogView('partials.nav.categories', true))
+
+	</div>
+
+@endsection

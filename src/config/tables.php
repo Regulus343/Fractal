@@ -328,6 +328,12 @@ return [
 				'sort'      => true,
 			],
 			[
+				'label'     => Fractal::lang('labels.categories'),
+				'method'    => 'categories()',
+				'attribute' => 'name',
+				'type'      => 'list',
+			],
+			[
 				'label'     => 'Published',
 				'method'    => 'getPublishedStatus()',
 				'sort'      => 'published_at',
@@ -476,7 +482,7 @@ return [
 				'sort'      => 'email',
 			],
 			[
-				'label'     => Str::plural(Fractal::lang('labels.role')),
+				'label'     => Fractal::lang('labels.roles'),
 				'method'    => 'roles()',
 				'attribute' => 'name',
 				'type'      => 'list',

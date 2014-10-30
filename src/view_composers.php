@@ -19,6 +19,7 @@ use \Form as Form;
 use Regulus\Fractal\Models\ContentPage;
 use Regulus\Fractal\Models\FileType;
 use Regulus\Fractal\Models\MediaType;
+use Regulus\Fractal\Models\BlogCategory;
 
 use Regulus\Identify\User;
 use Regulus\Identify\Role;
@@ -56,4 +57,11 @@ View::composer($viewsLocation.'media.items.form', function($view)
 	$mediaTypeOptions = Form::prepOptions($mediaTypes->get(), array('id', 'name'));
 
 	$view->with('mediaTypeOptions', $mediaTypeOptions);
+});
+
+View::composer($viewsLocation.'blogs.view.partials.nav.categories', function($view)
+{
+	$categories = BlogCategory::orderBy('name')->get();
+
+	$view->with('categories', $categories);
 });

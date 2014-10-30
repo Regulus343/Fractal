@@ -2,7 +2,7 @@
 
 return [
 
-	'version'                 => '0.6.5a',
+	'version'                 => '0.6.5.5a',
 
 	'home'                    => 'Home',
 	'returnToCms'             => 'Return to CMS',
@@ -174,6 +174,8 @@ return [
 
 	'blogReturnToHome'        => 'Return to Blog Home Page',
 	'mediaReturnToHome'       => 'Return to Media Home Page',
+
+	'allCategories'           => 'All Categories',
 
 	'text'                    => 'Text',
 	'languageKey'             => 'Language Key',

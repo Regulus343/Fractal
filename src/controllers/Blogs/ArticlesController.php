@@ -152,7 +152,10 @@ class ArticlesController extends BlogsController {
 		Site::set('titleHeading', Fractal::lang('labels.updateArticle').': <strong>'.Format::entities($article->title).'</strong>');
 		Site::set('wysiwyg', true);
 
-		$article->setDefaults(['contentAreas']);
+		$article->setDefaults([
+			'contentAreas' => true,
+			'categories'   => 'category_id',
+		]);
 		Form::setErrors();
 
 		$layoutTagOptions = $this->getLayoutTagOptions($article->getLayoutTags());
