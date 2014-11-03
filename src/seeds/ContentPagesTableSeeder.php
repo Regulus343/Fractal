@@ -23,7 +23,7 @@ class ContentPagesTableSeeder extends Seeder {
 			[
 				'slug'               => 'about',
 				'title'              => 'About Us',
-				'layout_template_id' => 2,
+				'layout_template_id' => 3,
 				'layout'             => '',
 			],
 			[

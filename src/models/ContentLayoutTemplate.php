@@ -16,6 +16,17 @@ class ContentLayoutTemplate extends Eloquent {
 	protected $table = 'content_layout_templates';
 
 	/**
+	 * The fillable fields for the model.
+	 *
+	 * @var    array
+	 */
+	protected $fillable = [
+		'name',
+		'layout',
+		'static',
+	];
+
+	/**
 	 * Get the validation rules used by the model.
 	 *
 	 * @param  boolean  $id

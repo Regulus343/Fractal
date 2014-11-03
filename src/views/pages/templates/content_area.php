@@ -25,18 +25,24 @@
 		</div>
 
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-12 html-content-area">
 				<?=Form::field('content_areas.{{number}}.content_html', 'textarea', [
-					'label'                 => 'HTML Content',
-					'class-field-container' => 'html-content-area',
-					'class-field'           => 'ckeditor',
+					'label'       => 'HTML Content',
+					'class-field' => 'ckeditor',
 				])?>
+			</div>
 
+			<div class="col-md-12 col-lg-6 markdown-content-area">
 				<?=Form::field('content_areas.{{number}}.content_markdown', 'textarea', [
-					'label'                 => 'Markdown Content',
-					'class-field-container' => 'markdown-content-area',
-					'class-field'           => 'tab',
+					'label'       => 'Markdown Content',
+					'class-field' => 'tab',
 				])?>
+			</div>
+
+			<div class="col-lg-6 col-markdown-preview-content">
+				<?=Form::label('')?>
+
+				<div class="markdown-preview-content"></div>
 			</div>
 		</div>
 

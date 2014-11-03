@@ -12,7 +12,7 @@
 					<img src="{{ Site::img(Config::get('fractal::logo'), (Config::get('fractal::logoFractal') ? 'regulus/fractal' : false)) }}" alt="{{{ Site::get('name') }}}" title="{{{ Site::get('name') }}}" id="logo" />
 				</a>
 			@else
-				<a class="navbar-brand" href="{{ Site::get('menus') == "Front" ? URL::to('') : Fractal::url() }}">{{{ Site::get('name') }}}</a>
+				<a class="navbar-brand" href="{{ URL::to('') }}">{{{ Site::get('name') }}}</a>
 			@endif
 		</div>
 

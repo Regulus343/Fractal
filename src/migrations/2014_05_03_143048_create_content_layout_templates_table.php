@@ -18,6 +18,7 @@ class CreateContentLayoutTemplatesTable extends Migration {
 
 			$table->string('name', 120);
 			$table->text('layout');
+			$table->boolean('static');
 
 			$table->integer('user_id');
 

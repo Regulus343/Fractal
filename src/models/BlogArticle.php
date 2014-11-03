@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\URL;
 
 use \Form;
 use \Format;
+use \Site;
 
 use Regulus\Fractal\Traits\PublishingTrait;
 
@@ -40,6 +41,9 @@ class BlogArticle extends BaseModel {
 		'title',
 		'layout_template_id',
 		'layout',
+		'thumbnail_image_type',
+		'thumbnail_image_file_id',
+		'thumbnail_image_media_item_id',
 		'user_id',
 		'published_at',
 	];
@@ -69,8 +73,11 @@ class BlogArticle extends BaseModel {
 	 * @var    array
 	 */
 	protected $formatsForDb = [
-		'categories'   => 'pivotArray',
-		'published_at' => 'nullIfBlank',
+		'thumbnail_image_type'          => 'nullIfBlank',
+		'thumbnail_image_file_id'       => 'nullIfBlank',
+		'thumbnail_image_media_item_id' => 'nullIfBlank',
+		'categories'                    => 'pivotArray',
+		'published_at'                  => 'nullIfBlank',
 	];
 
 	/**
@@ -155,6 +162,26 @@ class BlogArticle extends BaseModel {
 	}
 
 	/**
+	 * The thumbnail image content file.
+	 *
+	 * @return ContentFile
+	 */
+	public function thumbnailImageFile()
+	{
+		return $this->belongsTo('Regulus\Fractal\Models\ContentFile', 'thumbnail_image_file_id');
+	}
+
+	/**
+	 * The thumbnail image media item.
+	 *
+	 * @return ContentFile
+	 */
+	public function thumbnailImageMediaItem()
+	{
+		return $this->belongsTo('Regulus\Fractal\Models\MediaItem', 'thumbnail_image_media_item_id');
+	}
+
+	/**
 	 * The content areas that the article belongs to.
 	 *
 	 * @return Collection
@@ -223,6 +250,54 @@ class BlogArticle extends BaseModel {
 	}
 
 	/**
+	 * Get the thumbnail image URL or a placeholder image URL for the article.
+	 *
+	 * @return string
+	 */
+	public function getThumbnailImageUrl()
+	{
+		$image            = null;
+		$imagePlaceholder = $image = Site::img(Config::get('fractal::blogs.placeholderThumbnailImage'), (Config::get('fractal::blogs.placeholderThumbnailImageFractal') ? 'regulus/fractal' : false));
+
+		if ($this->thumbnail_image_type == "File" && $this->thumbnailImageFile)
+			$image = $this->thumbnailImageFile->getImageUrl(true);
+
+		if ($this->thumbnail_image_type == "Media Item" && $this->thumbnailImageMediaItem)
+			$image = $this->thumbnailImageMediaItem->getImageUrl(true);
+
+		if (is_null($image) || $image == Site::img('image-not-available', 'regulus/fractal'))
+			$image = $imagePlaceholder;
+
+		return $image;
+	}
+
+	/**
+	 * Check whether article has a thumbnail image.
+	 *
+	 * @return boolean
+	 */
+	public function hasThumbnailImage()
+	{
+		if ($this->thumbnail_image_type == "File" && $this->thumbnailImageFile)
+			return true;
+
+		if ($this->thumbnail_image_type == "Media Item" && $this->thumbnailImageMediaItem)
+			return true;
+
+		return false;
+	}
+
+	/**
+	 * Get the thumbnail image or a placeholder image for the article.
+	 *
+	 * @return string
+	 */
+	public function getThumbnailImage()
+	{
+		return '<a href="'.$this->getUrl().'" class="thumbnail-image article-thumbnail-image"><img src="'.$this->getThumbnailImageUrl().'" alt="'.$this->title.'" title="'.$this->title.'" /></a>';
+	}
+
+	/**
 	 * Get the rendered content for the article.
 	 *
 	 * @param  boolean  $previewOnly
@@ -234,21 +309,33 @@ class BlogArticle extends BaseModel {
 
 		//if preview only is set, select only the main or primary content area for display
 		$contentAreas = $this->contentAreas;
-		if ($previewOnly && $this->contentAreas()->count() > 1 && Config::get('fractal::blog.useStandardLayoutForArticleList')) {
-			$mainExists = false;
-			$mainTags   = ['main', 'primary'];
+		if ($previewOnly && Config::get('fractal::blogs.useStandardLayoutForArticleList'))
+		{
+			if ($this->contentAreas()->count() > 1)
+			{
+				$mainTags   = ['main', 'primary'];
+				foreach ($this->contentAreas as $contentArea) {
+					if (in_array($contentArea->pivot->layout_tag, $mainTags)) {
+						$contentArea->pivot->layout_tag = "main";
 
-			foreach ($this->contentAreas as $contentArea) {
-				if (in_array($contentArea->pivot->layout_tag, $mainTags)) {
-					$contentArea->pivot->layout_tag = "main";
-
-					$contentAreas = [$contentArea];
+						$contentAreas = [$contentArea];
+					}
 				}
 			}
 
-			$layoutTemplate = ContentLayoutTemplate::find(1);
-			if (!empty($layoutTemplate))
-				$content = $layoutTemplate->layout;
+			$content = '<div class="row"><div class="col-md-12">{{main}}</div></div>';
+
+			if ((boolean) Fractal::getSetting('Show Thumbnail Images on Article List', true) && ($this->hasThumbnailImage() || (boolean) Fractal::getSetting('Show Placeholder Thumbnail Images on Article List', true))) {
+				$layoutTemplate = ContentLayoutTemplate::find(4); //layout template: "Standard with Image"
+				if (!empty($layoutTemplate)) {
+					$content = $layoutTemplate->layout;
+					$content = str_replace('{{image}}', $this->getThumbnailImage(), $content);
+				}
+			} else {
+				$layoutTemplate = ContentLayoutTemplate::find(1); //layout template: "Standard with Image"
+				if (!empty($layoutTemplate))
+					$content = $layoutTemplate->layout;
+			}
 		}
 
 		foreach ($contentAreas as $contentArea) {

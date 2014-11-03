@@ -25,6 +25,19 @@ $baseUri     = Config::get('fractal::baseUri');
 $controllers = Config::get('fractal::controllers');
 $methods     = Config::get('fractal::controllerMethods');
 
+/* Set up Additional Routes for Defined Controller Methods */
+foreach (array('get', 'post') as $type) {
+	if (isset($methods[$type])) {
+		foreach ($methods[$type] as $route => $method) {
+			if ($type == "get") {
+				Route::get($baseUri.'/'.$route, $method);
+			} else {
+				Route::post($baseUri.'/'.$route, $method);
+			}
+		}
+	}
+}
+
 /* Set up Routes for Defined Standard Controllers */
 if (isset($controllers['standard'])) {
 	foreach ($controllers['standard'] as $controllerURI => $controller) {
@@ -43,19 +56,6 @@ if (isset($controllers['resource'])) {
 if (isset($controllers['resource']['home']))
 	Route::get($baseUri, $controllers['resource']['home'].'@getIndex');
 
-/* Set up Additional Routes for Defined Controller Methods */
-foreach (array('get', 'post') as $type) {
-	if (isset($methods[$type])) {
-		foreach ($methods[$type] as $route => $method) {
-			if ($type == "get") {
-				Route::get($baseUri.'/'.$route, $method);
-			} else {
-				Route::post($baseUri.'/'.$route, $method);
-			}
-		}
-	}
-}
-
 /* Set up Developer Route (executing route enables "developer mode" via "developer" session variable) */
 Route::get($baseUri.'/developer/{off?}', 'Regulus\Fractal\Controllers\CoreController@getDeveloper');
 
@@ -71,10 +71,10 @@ Route::any($baseUri.'/reset-password/{id?}/{code?}', Config::get('fractal::authC
 Route::controller($baseUri.'/auth', Config::get('fractal::authController'));
 
 /* Set up Blog Routes */
-if (Config::get('fractal::blog.enabled')) {
-	$blogSubdomain  = Config::get('fractal::blog.subdomain');
-	$blogUri        = Config::get('fractal::blog.baseUri');
-	$blogController = Config::get('fractal::blog.viewController');
+if (Config::get('fractal::blogs.enabled')) {
+	$blogSubdomain  = Config::get('fractal::blogs.subdomain');
+	$blogUri        = Config::get('fractal::blogs.baseUri');
+	$blogController = Config::get('fractal::blogs.viewController');
 
 	$group = [];
 	if ($blogSubdomain != false && !is_null($blogSubdomain) && $blogSubdomain != "")

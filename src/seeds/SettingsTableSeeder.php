@@ -15,6 +15,9 @@ class SettingsTableSeeder extends Seeder {
 		$timestamp           = date('Y-m-d H:i:s');
 
 		$settings = [
+
+			/* General */
+
 			[
 				'name'          => 'Website Name',
 				'value'         => 'Fractal',
@@ -50,13 +53,6 @@ class SettingsTableSeeder extends Seeder {
 				'options'       => '5:300; +5',
 			],
 			[
-				'name'          => 'Default Content Area Type',
-				'value'         => 'Markdown',
-				'type'          => 'Text',
-				'category'      => 'Pages',
-				'options'       => 'HTML, Markdown',
-			],
-			[
 				'name'          => 'Content View Logging Type',
 				'value'         => 'Unique',
 				'type'          => 'Text',
@@ -82,6 +78,19 @@ class SettingsTableSeeder extends Seeder {
 				'type'          => 'Boolean',
 				'developer'     => true,
 			],
+
+			/* Pages */
+
+			[
+				'name'          => 'Default Content Area Type',
+				'value'         => 'Markdown',
+				'type'          => 'Text',
+				'category'      => 'Pages',
+				'options'       => 'HTML, Markdown',
+			],
+
+			/* Files */
+
 			[
 				'name'          => 'Default Image Thumbnail Size',
 				'value'         => 200,
@@ -114,6 +123,9 @@ class SettingsTableSeeder extends Seeder {
 				'options'       => '1:100',
 				'developer'     => true,
 			],
+
+			/* Users */
+
 			[
 				'name'          => 'Minimum Password Length',
 				'value'         => 8,
@@ -128,6 +140,31 @@ class SettingsTableSeeder extends Seeder {
 				'value'         => true,
 				'type'          => 'Boolean',
 				'category'      => 'Users',
+				'developer'     => true,
+			],
+			[
+				'name'          => 'Image Resize Quality',
+				'value'         => 65,
+				'type'          => 'Integer',
+				'category'      => 'Files',
+				'options'       => '1:100',
+				'developer'     => true,
+			],
+
+			/* Blogs */
+
+			[
+				'name'          => 'Show Thumbnail Images on Article List',
+				'value'         => true,
+				'type'          => 'Boolean',
+				'category'      => 'Blogs',
+				'developer'     => true,
+			],
+			[
+				'name'          => 'Show Placeholder Thumbnail Images on Article List',
+				'value'         => true,
+				'type'          => 'Boolean',
+				'category'      => 'Blogs',
 				'developer'     => true,
 			],
 		];

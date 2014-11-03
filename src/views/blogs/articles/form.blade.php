@@ -28,6 +28,16 @@
 				getLayoutTags();
 			});
 
+			$('#remove-thumbnail-image').click(function(e){
+				e.preventDefault();
+
+				$('#thumbnail-image-type').val('');
+				$('#thumbnail-image-file-id').val('');
+				$('#thumbnail-image-media-item-id').val('');
+
+				$('#thumbnail-image-area').fadeOut('fast');
+			});
+
 			Formation.loadTemplates('#content-areas', $.parseJSON('{{ Form::getJsonValues('content_areas') }}'), contentAreaTemplateCallback);
 
 			$('form').submit(function(e){
@@ -59,6 +69,41 @@
 				postData:         postData,
 				targetSelect:     '.field-pivot-layout-tag',
 				callbackFunction: autoSelectFirstLayoutTagCallback,
+			});
+		}
+
+		function selectThumbnailImageActions() {
+			$('#select-thumbnail-image-type button').click(function(){
+				$('#select-thumbnail-image-type button').removeClass('active');
+				$(this).addClass('active');
+
+				if ($(this).attr('data-type') == "File") {
+					$('#select-thumbnail-image-media-item').hide().fadeOut('fast');
+					$('#select-thumbnail-image-file').hide().removeClass('hidden').fadeIn('fast');
+				} else {
+					$('#select-thumbnail-image-file').hide().fadeOut('fast');
+					$('#select-thumbnail-image-media-item').hide().removeClass('hidden').fadeIn('fast');
+				}
+			});
+
+			$('#select-thumbnail-image-file li').off('click').on('click', function(e){
+				$('#thumbnail-image-type').val('File');
+				$('#thumbnail-image-file-id').val($(this).attr('data-file-id'));
+
+				$('#modal').modal('hide');
+
+				$('#thumbnail-image-area img').attr('src', $(this).attr('data-image-url'));
+				$('#thumbnail-image-area').hide().removeClass('hidden').fadeIn();
+			});
+
+			$('#select-thumbnail-image-media-item li').off('click').on('click', function(e){
+				$('#thumbnail-image-type').val('Media Item');
+				$('#thumbnail-image-media-item-id').val($(this).attr('data-media-item-id'));
+
+				$('#modal').modal('hide');
+
+				$('#thumbnail-image-area img').attr('src', $(this).attr('data-image-url'));
+				$('#thumbnail-image-area').hide().removeClass('hidden').fadeIn();
 			});
 		}
 
@@ -210,7 +255,7 @@
 			<div class="col-md-4">
 				{{ Form::field('layout_template_id', 'select', [
 					'label'       => 'Layout Template',
-					'options'     => Form::prepOptions(Regulus\Fractal\Models\ContentLayoutTemplate::orderBy('name')->get(), ['id', 'name']),
+					'options'     => Form::prepOptions(Regulus\Fractal\Models\ContentLayoutTemplate::orderBy('static', 'desc')->orderBy('name')->get(), ['id', 'name']),
 					'null-option' => 'Custom Layout'
 				]) }}
 			</div>
@@ -226,18 +271,45 @@
 			</div>
 		</div>
 
+		<div class="row">
+			<div class="col-md-4">
+				{{ Form::hidden('thumbnail_image_type') }}
+
+				{{ Form::hidden('thumbnail_image_file_id') }}
+				{{ Form::hidden('thumbnail_image_media_item_id') }}
+
+				<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="blogs/articles/select-thumbnail-image{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="get" data-modal-callback-function="selectThumbnailImageActions">
+					<span class="glyphicon glyphicon-picture"></span>&nbsp; {{ Lang::get('fractal::labels.selectThumbnailImage') }}
+				</a>
+			</div>
+			<div class="col-md-8 text-align-right">
+				<div id="thumbnail-image-area"{{ HTML::hiddenArea(!isset($article) || !$article->hasThumbnailImage()) }}>
+					<img src="{{ (isset($article) ? $article->getThumbnailImageUrl() : '') }}" alt="Thumbnail Image" title="Thumbnail Image" class="thumbnail-image" />
+
+					<a href="" class="btn btn-danger vertical-align-top" id="remove-thumbnail-image">
+						<span class="glyphicon glyphicon-remove"></span>&nbsp; {{ Lang::get('fractal::labels.removeThumbnailImage') }}
+					</a>
+				</div>
+			</div>
+		</div>
+
 		{{-- Content Areas --}}
 		<div id="content-areas" data-template-id="content-area-template"></div>
 
 		@include(Fractal::view('blogs.articles.templates.content_area', true))
 
-		<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="blogs/articles/add-content-area{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="get" data-modal-callback-function="selectContentAreaActions">
-			<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Lang::get('fractal::labels.addContentArea') }}
-		</a>
+		<div class="row">
+			<div class="col-md-12">
+				<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="blogs/articles/add-content-area{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="get" data-modal-callback-function="selectContentAreaActions">
+					<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Lang::get('fractal::labels.addContentArea') }}
+				</a>
+			</div>
+		</div>
 
 		<div class="row">
 			<div class="col-md-6">
 				{{ Form::field('categories.pivot.', 'select', [
+					'label'    => Fractal::lang('labels.categories'),
 					'multiple' => 'multiple',
 					'options'  => Form::prepOptions(Regulus\Fractal\Models\BlogCategory::orderBy('name')->get(), ['id', 'name'])
 				]) }}

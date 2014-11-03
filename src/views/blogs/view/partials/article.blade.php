@@ -7,5 +7,7 @@
 </div>
 
 <div class="article-body">
+
 	{{ $article->getRenderedContent(Site::get('articleList')) }}
+
 </div>

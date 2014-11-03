@@ -23,6 +23,27 @@ class ContentFile extends BaseModel {
 	protected $table = 'content_files';
 
 	/**
+	 * The fillable fields for the model.
+	 *
+	 * @var    array
+	 */
+	protected $fillable = [
+		'type_id',
+		'image_template_id',
+		'name',
+		'filename',
+		'basename',
+		'extension',
+		'path',
+		'width',
+		'height',
+		'thumbnail',
+		'thumbnail_width',
+		'thumbnail_height',
+		'user_id',
+	];
+
+	/**
 	 * Get the validation rules used by the model.
 	 *
 	 * @param  boolean  $id

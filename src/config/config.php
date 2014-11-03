@@ -58,29 +58,30 @@ return [
 	*/
 	'controllerMethods' => [
 		'get'  => [
-			'pages/add-content-area/{id?}'              => 'Regulus\Fractal\Controllers\PagesController@addContentArea',
-			'pages/get-content-area/{id}'               => 'Regulus\Fractal\Controllers\PagesController@getContentArea',
-			'pages/delete-content-area/{id}'            => 'Regulus\Fractal\Controllers\PagesController@deleteContentArea',
-			'users/{id}/ban'                            => 'Regulus\Fractal\Controllers\Users\UsersController@ban',
-			'users/{id}/unban'                          => 'Regulus\Fractal\Controllers\Users\UsersController@unban',
-			'media/items/get-types-for-file-type/{id?}' => 'Regulus\Fractal\Controllers\Media\ItemsController@getTypesForFileType',
-			'blogs/articles/add-content-area/{id?}'     => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@addContentArea',
-			'blogs/articles/get-content-area/{id}'      => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@getContentArea',
-			'blogs/articles/delete-content-area/{id}'   => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@deleteContentArea',
+			'pages/add-content-area/{id?}'                => 'Regulus\Fractal\Controllers\PagesController@addContentArea',
+			'pages/get-content-area/{id}'                 => 'Regulus\Fractal\Controllers\PagesController@getContentArea',
+			'pages/delete-content-area/{id}'              => 'Regulus\Fractal\Controllers\PagesController@deleteContentArea',
+			'users/{id}/ban'                              => 'Regulus\Fractal\Controllers\Users\UsersController@ban',
+			'users/{id}/unban'                            => 'Regulus\Fractal\Controllers\Users\UsersController@unban',
+			'media/items/get-types-for-file-type/{id?}'   => 'Regulus\Fractal\Controllers\Media\ItemsController@getTypesForFileType',
+			'blogs/articles/add-content-area/{id?}'       => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@addContentArea',
+			'blogs/articles/get-content-area/{id}'        => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@getContentArea',
+			'blogs/articles/delete-content-area/{id}'     => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@deleteContentArea',
+			'blogs/articles/select-thumbnail-image/{id?}' => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@selectThumbnailImage',
 		],
 		'post' => [
-			'menus/search'                              => 'Regulus\Fractal\Controllers\MenusController@search',
-			'pages/search'                              => 'Regulus\Fractal\Controllers\PagesController@search',
-			'pages/layout-tags'                         => 'Regulus\Fractal\Controllers\PagesController@layoutTags',
-			'pages/render-markdown-content'             => 'Regulus\Fractal\Controllers\PagesController@renderMarkdownContent',
-			'files/search'                              => 'Regulus\Fractal\Controllers\FilesController@search',
-			'users/search'                              => 'Regulus\Fractal\Controllers\Users\UsersController@search',
-			'user-roles/search'                         => 'Regulus\Fractal\Controllers\Users\RolesController@search',
-			'user-permissions/search'                   => 'Regulus\Fractal\Controllers\Users\PermissionsController@search',
-			'media/items/search'                        => 'Regulus\Fractal\Controllers\Media\ItemsController@search',
-			'blogs/articles/search'                     => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@search',
-			'blogs/articles/layout-tags'                => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@layoutTags',
-			'blogs/articles/render-markdown-content'    => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@renderMarkdownContent',
+			'menus/search'                                => 'Regulus\Fractal\Controllers\MenusController@search',
+			'pages/search'                                => 'Regulus\Fractal\Controllers\PagesController@search',
+			'pages/layout-tags'                           => 'Regulus\Fractal\Controllers\PagesController@layoutTags',
+			'pages/render-markdown-content'               => 'Regulus\Fractal\Controllers\PagesController@renderMarkdownContent',
+			'files/search'                                => 'Regulus\Fractal\Controllers\FilesController@search',
+			'users/search'                                => 'Regulus\Fractal\Controllers\Users\UsersController@search',
+			'user-roles/search'                           => 'Regulus\Fractal\Controllers\Users\RolesController@search',
+			'user-permissions/search'                     => 'Regulus\Fractal\Controllers\Users\PermissionsController@search',
+			'media/items/search'                          => 'Regulus\Fractal\Controllers\Media\ItemsController@search',
+			'blogs/articles/search'                       => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@search',
+			'blogs/articles/layout-tags'                  => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@layoutTags',
+			'blogs/articles/render-markdown-content'      => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@renderMarkdownContent',
 		],
 	],
 
@@ -194,8 +195,8 @@ return [
 	| Logo
 	|--------------------------------------------------------------------------
 	|
-	| The filename of the logo. Set this to false to use text instead of a
-	| logo image. If no extension is given, PNG will be assumed.
+	| The path and filename of the logo. Set this to false to use text instead
+	| of a logo image. If no extension is given, PNG will be assumed.
 	|
 	*/
 	'logo' => 'logo',

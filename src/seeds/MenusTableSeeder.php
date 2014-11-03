@@ -201,8 +201,8 @@ class MenusTableSeeder extends Seeder {
 						'display_order' => 1,
 					],
 					[
-						'uri'           => Config::get('fractal::blog.baseUri'),
-						'subdomain'     => Config::get('fractal::blog.subdomain'),
+						'uri'           => Config::get('fractal::blogs.baseUri'),
+						'subdomain'     => Config::get('fractal::blogs.subdomain'),
 						'label'         => 'Blog',
 						'icon'          => 'comment',
 						'display_order' => 2,
@@ -241,8 +241,8 @@ class MenusTableSeeder extends Seeder {
 						'display_order' => 1,
 					],
 					[
-						'uri'           => Config::get('fractal::blog.baseUri'),
-						'subdomain'     => Config::get('fractal::blog.subdomain'),
+						'uri'           => Config::get('fractal::blogs.baseUri'),
+						'subdomain'     => Config::get('fractal::blogs.subdomain'),
 						'label'         => 'Blog',
 						'display_order' => 2,
 					],

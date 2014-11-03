@@ -319,7 +319,7 @@ class PagesController extends BaseController {
 		return Fractal::renderMarkdownContent(Input::get('content'));
 	}
 
-	public function addContentArea($id = false)
+	public function addContentArea($id = null)
 	{
 		$data = [
 			'title'        => Fractal::lang('labels.addContentArea'),
@@ -330,7 +330,7 @@ class PagesController extends BaseController {
 		return Fractal::modalView('add_content_area', $data);
 	}
 
-	public function getContentArea($id = false)
+	public function getContentArea($id = null)
 	{
 		return ContentArea::find($id)->toJson();
 	}

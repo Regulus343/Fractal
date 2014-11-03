@@ -13,6 +13,8 @@ use Fractal;
 use Regulus\Fractal\Models\BlogArticle;
 use Regulus\Fractal\Models\BlogContentArea;
 use Regulus\Fractal\Models\ContentLayoutTemplate;
+use Regulus\Fractal\Models\ContentFile;
+use Regulus\Fractal\Models\MediaItem;
 
 use Regulus\ActivityLog\Activity;
 use \Auth;
@@ -178,6 +180,7 @@ class ArticlesController extends BlogsController {
 		return View::make(Fractal::view('form'))
 			->with('update', true)
 			->with('id', $article->id)
+			->with('article', $article)
 			->with('articleUrl', $article->getUrl())
 			->with('layoutTagOptions', $layoutTagOptions);
 	}
@@ -284,7 +287,7 @@ class ArticlesController extends BlogsController {
 		return Fractal::renderMarkdownContent(Input::get('content'));
 	}
 
-	public function addContentArea($id = false)
+	public function addContentArea($id = null)
 	{
 		$data = [
 			'title'        => Fractal::lang('labels.addContentArea'),
@@ -295,7 +298,7 @@ class ArticlesController extends BlogsController {
 		return Fractal::modalView('add_content_area', $data);
 	}
 
-	public function getContentArea($id = false)
+	public function getContentArea($id = null)
 	{
 		return BlogContentArea::find($id)->toJson();
 	}
@@ -311,6 +314,39 @@ class ArticlesController extends BlogsController {
 		}
 
 		return "Error";
+	}
+
+	public function selectThumbnailImage($id = null)
+	{
+		$defaultThumbnailImageType = "File";
+		$selectedFileId            = null;
+		$selectedMediaItemId       = null;
+
+		if (!is_null($id)) {
+			$article = BlogArticle::find($id);
+
+			if (!empty($article) && !is_null($article->thumbnail_image_type))
+			{
+				$defaultThumbnailImageType = $article->thumbnail_image_type;
+
+				if ($article->thumbnail_image_type == "File")
+					$selectedFileId = $article->thumbnail_image_file_id;
+
+				if ($article->thumbnail_image_type == "Media Item")
+					$selectedMediaItemId = $article->thumbnail_image_media_item_id;
+			}
+		}
+
+		$data = [
+			'title'                     => Fractal::lang('labels.selectThumbnailImage'),
+			'defaultThumbnailImageType' => $defaultThumbnailImageType,
+			'selectedFileId'            => $selectedFileId,
+			'selectedMediaItemId'       => $selectedMediaItemId,
+			'files'                     => ContentFile::where('type_id', 1)->orderBy('name')->get(),
+			'mediaItems'                => MediaItem::where('file_type_id', 1)->orderBy('title')->get(),
+		];
+
+		return Fractal::modalView('select_thumbnail_image', $data);
 	}
 
 }

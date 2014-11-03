@@ -277,7 +277,7 @@ return [
 					[
 						'icon'       => 'file',
 						'class'      => 'btn btn-default',
-						'url'        => Fractal::mediaUrl(Config::get('fractal::blog.baseUri') == false ? 'item/:slug' : Config::get('fractal::blog.baseUri').'/article/:slug'),
+						'url'        => Fractal::mediaUrl(Config::get('fractal::blogs.baseUri') == false ? 'item/:slug' : Config::get('fractal::blogs.baseUri').'/article/:slug'),
 						'attributes' => [
 							'title'  => Fractal::lang('labels.viewItem'),
 						],
@@ -363,7 +363,7 @@ return [
 					[
 						'icon'       => 'file',
 						'class'      => 'btn btn-default',
-						'url'        => Fractal::blogUrl(Config::get('fractal::blog.baseUri') == false ? 'article/:slug' : Config::get('fractal::blog.baseUri').'/article/:slug'),
+						'url'        => Fractal::blogUrl(Config::get('fractal::blogs.baseUri') == false ? 'article/:slug' : Config::get('fractal::blogs.baseUri').'/article/:slug'),
 						'attributes' => [
 							'title'  => Fractal::lang('labels.viewArticle'),
 						],

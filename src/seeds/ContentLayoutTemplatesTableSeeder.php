@@ -17,10 +17,22 @@ class ContentLayoutTemplatesTableSeeder extends Seeder {
 			[
 				'name'   => 'Standard',
 				'layout' => "<div class=\"row\">\n\t<div class=\"col-md-12\">{{main}}</div>\n</div>",
+				'static' => true,
 			],
 			[
-				'name'   => 'Standard with Side',
+				'name'   => 'Standard with Side (Left)',
+				'layout' => "<div class=\"row\">\n\t<div class=\"col-md-3\"><div class=\"content-side\">{{side}}</div></div>\n\t<div class=\"col-md-9\">{{main}}</div>\n</div>",
+				'static' => true,
+			],
+			[
+				'name'   => 'Standard with Side (Right)',
 				'layout' => "<div class=\"row\">\n\t<div class=\"col-md-9\">{{main}}</div>\n\t<div class=\"col-md-3\"><div class=\"content-side\">{{side}}</div></div>\n</div>",
+				'static' => true,
+			],
+			[
+				'name'   => 'Standard with Image',
+				'layout' => "<div class=\"row\">\n\t<div class=\"col-sm-2\">{{image}}</div>\n\t<div class=\"col-sm-10\">{{main}}</div>\n</div>",
+				'static' => true,
 			],
 			[
 				'name'   => '2 Columns',

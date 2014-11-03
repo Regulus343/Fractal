@@ -24,6 +24,10 @@ class CreateBlogArticlesTable extends Migration {
 			$table->integer('layout_template_id');
 			$table->text('layout');
 
+			$table->string('thumbnail_image_type', 16)->nullable();
+			$table->integer('thumbnail_image_file_id')->nullable();
+			$table->integer('thumbnail_image_media_item_id')->nullable();
+
 			$table->timestamps();
 			$table->timestamp('published_at')->nullable();
 			$table->softDeletes();

@@ -26,7 +26,7 @@ class ArrayFile {
 	{
 		$file = new static;
 
-		$file->data = "<?php";
+		$file->data = "<?php\n";
 
 		$file->addDataToArray(null, $array);
 

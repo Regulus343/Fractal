@@ -2,7 +2,7 @@
 
 return [
 
-	'version'                 => '0.6.5.5a',
+	'version'                 => '0.6.6a',
 
 	'home'                    => 'Home',
 	'returnToCms'             => 'Return to CMS',
@@ -150,6 +150,9 @@ return [
 	'toBePublished'           => 'To Be Published on :dateTime',
 
 	'untitled'                => 'Untitled',
+
+	'selectThumbnailImage'    => 'Select Thumbnail Image',
+	'removeThumbnailImage'    => 'Remove Thumbnail Image',
 
 	'size'                    => 'Size',
 	'width'                   => 'Width',

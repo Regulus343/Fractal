@@ -733,6 +733,8 @@ function setupMarkdownField(field) {
 		}).on('blur', function(){
 			$('#markdown-preview').fadeOut();
 		});
+
+		renderMarkdownPreview(field);
 	}
 }
 
@@ -743,8 +745,12 @@ function setupMarkdownFields() {
 }
 
 function renderMarkdownPreview(field) {
-	$('#markdown-preview-content').html(converter.makeHtml(field.val()));
+	var markdownContent = converter.makeHtml(field.val());
+
+	$('#markdown-preview-content').html(markdownContent);
 	$('#markdown-preview-content').animate({scrollTop: $('#markdown-preview-content').height()}, 500);
+
+	field.parents('.row').find('.markdown-preview-content').html(markdownContent);
 
 	markdownContentField       = field;
 	markdownContentUpdateTimer = setTimeout(incrementMarkdownContentUpdateTimer, 3000);
@@ -754,12 +760,14 @@ function incrementMarkdownContentUpdateTimer() {
 	clearTimeout(markdownContentUpdateTimer);
 
 	$.ajax({
-		type:     'post',
-		url:      baseUrl + '/pages/render-markdown-content',
-		data:     {content: markdownContentField.val()},
-		success:  function(content) {
+		type:    'post',
+		url:     baseUrl + '/pages/render-markdown-content',
+		data:    {content: markdownContentField.val()},
+		success: function(content) {
 			$('#markdown-preview-content').html(content);
 			$('#markdown-preview-content').animate({scrollTop: $('#markdown-preview-content').height()}, 500);
+
+			markdownContentField.parents('.row').find('.markdown-preview-content').html(content);
 		}
 	});
 }

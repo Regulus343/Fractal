@@ -85,4 +85,27 @@ return [
 	*/
 	'useStandardLayoutForArticleList' => true,
 
+	/*
+	|--------------------------------------------------------------------------
+	| Placeholder Thumbnail Image for Blog Articles
+	|--------------------------------------------------------------------------
+	|
+	| The path and filename of the placeholder thumbnail image. If no extension
+	| is given, PNG will be assumed.
+	|
+	*/
+	'placeholderThumbnailImage' => 'image-not-available',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Placeholder Thumbnail Image in Fractal Assets Directory
+	|--------------------------------------------------------------------------
+	|
+	| Set this to false if your placeholder lies in your regular images
+	| directory. If true, the path will be
+	| "public/packages/regulus/fractal/images".
+	|
+	*/
+	'placeholderThumbnailImageFractal' => true,
+
 ];

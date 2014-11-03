@@ -210,7 +210,7 @@
 			<div class="col-md-4">
 				{{ Form::field('layout_template_id', 'select', [
 					'label'       => 'Layout Template',
-					'options'     => Form::prepOptions(Regulus\Fractal\Models\ContentLayoutTemplate::orderBy('name')->get(), ['id', 'name']),
+					'options'     => Form::prepOptions(Regulus\Fractal\Models\ContentLayoutTemplate::orderBy('static', 'desc')->orderBy('name')->get(), ['id', 'name']),
 					'null-option' => 'Custom Layout'
 				]) }}
 			</div>

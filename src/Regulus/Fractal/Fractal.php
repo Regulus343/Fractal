@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4.
 
 		created by Cody Jassman
-		version 0.6.5.5a
-		last updated on October 29, 2014
+		version 0.6.6a
+		last updated on November 2, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -114,7 +114,7 @@ class Fractal {
 	{
 		$url = URL::to($this->blogUri($uri));
 
-		$subdomain = Config::get('fractal::blog.subdomain');
+		$subdomain = Config::get('fractal::blogs.subdomain');
 		if ($subdomain != "" && $subdomain !== false && !is_null($subdomain)) {
 			$url = str_replace($subdomain.'.', '', $url);
 			$url = str_replace('http://', 'http://'.$subdomain.'.', str_replace('https://', 'https://'.$subdomain.'.', $url));
@@ -131,7 +131,7 @@ class Fractal {
 	 */
 	public function blogUri($uri = '')
 	{
-		$fullUri = Config::get('fractal::blog.baseUri');
+		$fullUri = Config::get('fractal::blogs.baseUri');
 		if ($fullUri != "" && $fullUri !== false && !is_null($fullUri))
 			$fullUri .= '/'.$uri;
 		else
@@ -779,7 +779,7 @@ class Fractal {
 			$content = Markdown::parse($content);
 
 		//cut off content after the preview divider for blog articles if preview only option is set
-		$previewDivider = Config::get('fractal::blog.previewDivider');
+		$previewDivider = Config::get('fractal::blogs.previewDivider');
 		if ($previewOnly) {
 			$dividerPosition = strpos($content, $previewDivider);
 			if ($dividerPosition)

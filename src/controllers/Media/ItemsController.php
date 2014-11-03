@@ -127,7 +127,7 @@ class ItemsController extends MediaController {
 				if (isset($result['files'])) {
 					$fileResult = $result['files']['file'];
 
-					if (!$result['files']['thumbnail_image']['error']) {
+					if (isset($result['files']['thumbnail_image']) && !$result['files']['thumbnail_image']['error']) {
 						$uploadedThumbnail = true;
 						$thumbnailResult   = $result['files']['thumbnail_image'];
 					}
