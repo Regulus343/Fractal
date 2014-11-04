@@ -94,7 +94,7 @@ return [
 	| is given, PNG will be assumed.
 	|
 	*/
-	'placeholderThumbnailImage' => 'image-not-available',
+	'placeholderThumbnailImage' => 'article-placeholder',
 
 	/*
 	|--------------------------------------------------------------------------

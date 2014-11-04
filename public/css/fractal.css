@@ -440,7 +440,7 @@ a.thumbnail-image img { max-width: 180px; border: none; }
 	a.thumbnail-image img { max-width: 100%; }
 }
 
-img.thumbnail-image { max-width: 120px; }
+img.thumbnail-image { padding: 3px; max-width: 120px; border: 1px solid #aaa; }
 
 div.media-item-body iframe.youtube { width: 450px; height: 240px; }
 
