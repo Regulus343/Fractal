@@ -34,20 +34,20 @@
 			}).data('gridster');
 
 			@if (!isset($update) || !$update)
-				$('#title').keyup(function(){
-					$('#title').val($('#title').val().replace(/  /g, ' '));
+				$('#field-title').keyup(function(){
+					$('#field-title').val($('#field-title').val().replace(/  /g, ' '));
 
-					var slug = strToSlug($('#title').val());
-					$('#slug').val(slug);
+					var slug = strToSlug($('#field-title').val());
+					$('#field-slug').val(slug);
 				});
 			@endif
 
-			$('#slug').keyup(function(){
-				var slug = strToSlug($('#slug').val());
-				$('#slug').val(slug);
+			$('#field-slug').keyup(function(){
+				var slug = strToSlug($('#field-slug').val());
+				$('#field-slug').val(slug);
 			});
 
-			$('#description-type').change(function(){
+			$('#field-description-type').change(function(){
 				if ($(this).val() == "HTML") {
 					$('.html-description-area').show().removeClass('hidden');
 					$('.markdown-description-area').hide();
@@ -57,10 +57,10 @@
 				}
 			});
 
-			if ($('#description-type').val() == "HTML")
-				$('#description-html').val($('#description').val());
+			if ($('#field-description-type').val() == "HTML")
+				$('#field-description-html').val($('#field-description').val());
 			else
-				$('#description-markdown').val($('#description').val());
+				$('#field-description-markdown').val($('#field-description').val());
 
 			$('form').submit(function(e){
 				if ($('#field-description-type').val() == "HTML")
@@ -138,21 +138,7 @@
 		</div>
 
 		{{-- Items --}}
-		<ul class="image-list gridster" id="items" data-template-id="item-template">
-
-			<li data-item-id="5" data-sizex="1" data-sizey="1" data-row="1" data-col="1">
-				<img src="http://laravel.local/uploads/media/images/calendar-13.png" alt="" title="" />
-			</li>
-
-			<li data-item-id="6" data-sizex="1" data-sizey="1" data-row="1" data-col="1">
-				<img src="http://laravel.local/uploads/media/images/calendar-13.png" alt="" title="" />
-			</li>
-
-			<li data-item-id="7" data-sizex="1" data-sizey="1" data-row="1" data-col="1">
-				<img src="http://laravel.local/uploads/media/images/calendar-13.png" alt="" title="" />
-			</li>
-
-		</ul>
+		<ul class="image-list gridster" id="items" data-template-id="item-template"></ul>
 
 		{{ Form::text('items') }}
 

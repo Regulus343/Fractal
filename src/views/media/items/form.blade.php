@@ -8,30 +8,30 @@
 		$(document).ready(function(){
 
 			@if (!isset($update) || !$update)
-				$('#title').keyup(function(){
-					$('#title').val($('#title').val().replace(/  /g, ' '));
+				$('#field-title').keyup(function(){
+					$('#field-title').val($('#field-title').val().replace(/  /g, ' '));
 
-					var slug = strToSlug($('#title').val());
-					$('#slug').val(slug);
+					var slug = strToSlug($('#field-title').val());
+					$('#field-slug').val(slug);
 				});
 			@endif
 
-			$('#slug').keyup(function(){
-				var slug = strToSlug($('#slug').val());
-				$('#slug').val(slug);
+			$('#field-slug').keyup(function(){
+				var slug = strToSlug($('#field-slug').val());
+				$('#field-slug').val(slug);
 			});
 
 			checkHostedContentType();
 
-			$('#hosted-externally').click(function(){
+			$('#field-hosted-externally').click(function(){
 				checkHostedContentType();
 			});
 
-			$('#hosted-content-type').change(function(){
+			$('#field-hosted-content-type').change(function(){
 				checkHostedContentType();
 			});
 
-			$('#description-type').change(function(){
+			$('#field-description-type').change(function(){
 				if ($(this).val() == "HTML") {
 					$('.html-description-area').show().removeClass('hidden');
 					$('.markdown-description-area').hide();
@@ -41,61 +41,61 @@
 				}
 			});
 
-			if ($('#description-type').val() == "HTML")
-				$('#description-html').val($('#description').val());
+			if ($('#field-description-type').val() == "HTML")
+				$('#field-description-html').val($('#description').val());
 			else
-				$('#description-markdown').val($('#description').val());
+				$('#field-description-markdown').val($('#description').val());
 
 			$('form').submit(function(e){
-				if ($('#description-type').val() == "HTML")
-					$('#description').val(CKEDITOR.instances[$('#description-html').attr('id')].getData());
+				if ($('#field-description-type').val() == "HTML")
+					$('#field-description').val(CKEDITOR.instances[$('#field-description-html').attr('id')].getData());
 				else
-					$('#description').val($('#description-markdown').val());
+					$('#field-description').val($('#field-description-markdown').val());
 			});
 		});
 
 		function checkHostedContentType() {
-			if ($('#hosted-externally').prop('checked'))
+			if ($('#field-hosted-externally').prop('checked'))
 			{
-				if ($('#hosted-content-type').val() == "YouTube") {
-					$('#hosted-content-uri').val($('#hosted-content-uri').val().substr(0, 11)).attr('maxlength', 11);
-					$('#hosted-content-uri-help-youtube').hide().removeClass('hidden').fadeIn('fast');
+				if ($('#field-hosted-content-type').val() == "YouTube") {
+					$('#field-hosted-content-uri').val($('#field-hosted-content-uri').val().substr(0, 11)).attr('maxlength', 11);
+					$('#field-hosted-content-uri-help-youtube').hide().removeClass('hidden').fadeIn('fast');
 				} else {
-					$('#hosted-content-uri').attr('maxlength', false);
+					$('#field-hosted-content-uri').attr('maxlength', false);
 					$('.hosted-content-uri-help').fadeOut('fast');
 				}
 
-				if ($('#hosted-content-type').val() == "Vimeo" || $('#hosted-content-type').val() == "YouTube") {
+				if ($('#field-hosted-content-type').val() == "Vimeo" || $('#field-hosted-content-type').val() == "YouTube") {
 					var fileTypeId = null;
-					$('#file-type-id option').each(function(){
+					$('#field-file-type-id option').each(function(){
 						if ($(this).text() == "Video")
 							fileTypeId = $(this).attr('value');
 					});
 
 					if (fileTypeId)
-						$('#file-type-id').val(fileTypeId).trigger('change').select2('readonly', true);
-				} else if ($('#hosted-content-type').val() == "SoundCloud") {
+						$('#field-file-type-id').val(fileTypeId).trigger('change').select2('readonly', true);
+				} else if ($('#field-hosted-content-type').val() == "SoundCloud") {
 					var fileTypeId = null;
-					$('#file-type-id option').each(function(){
+					$('#field-file-type-id option').each(function(){
 						if ($(this).text() == "Audio")
 							fileTypeId = $(this).attr('value');
 					});
 
 					if (fileTypeId)
-						$('#file-type-id').val(fileTypeId).trigger('change').select2('readonly', true);
+						$('#field-file-type-id').val(fileTypeId).trigger('change').select2('readonly', true);
 				} else {
-					$('#file-type-id').select2('readonly', false);
+					$('#field-file-type-id').select2('readonly', false);
 				}
 			} else {
-				$('#file-type-id').select2('readonly', false);
+				$('#field-file-type-id').select2('readonly', false);
 			}
 		}
 
 		function publishedCheckedCallback(checked) {
 			if (checked)
-				$('#published-at').val(moment().format('MM/DD/YYYY hh:mm A'));
+				$('#field-published-at').val(moment().format('MM/DD/YYYY hh:mm A'));
 			else
-				$('#published-at').val('');
+				$('#field-published-at').val('');
 		}
 	</script>
 	<script type="text/javascript" src="{{ Site::js('fractal/forms/file-upload', 'regulus/fractal') }}"></script>
