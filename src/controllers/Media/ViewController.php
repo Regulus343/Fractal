@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use Regulus\Fractal\Models\MediaItem;
-use Regulus\Fractal\Models\MediaType;
-use Regulus\Fractal\Models\MediaSet;
+use Regulus\Fractal\Models\Media\Item;
+use Regulus\Fractal\Models\Media\Type;
+use Regulus\Fractal\Models\Media\Set;
 
 use Regulus\ActivityLog\Activity;
 use \Auth;
@@ -41,7 +41,7 @@ class ViewController extends BaseController {
 		Site::set('mediaList', true);
 		Site::set('contentColumnWidth', 9);
 
-		$media = MediaItem::orderBy('published_at', 'desc');
+		$media = Item::orderBy('published_at', 'desc');
 
 		if (Auth::isNot('admin'))
 			$media->onlyPublished();
@@ -64,7 +64,7 @@ class ViewController extends BaseController {
 		//allow item selection by ID for to allow shorter URLs
 		if (is_numeric($slug))
 		{
-			$mediaItem = MediaItem::where('id', $slug);
+			$mediaItem = Item::where('id', $slug);
 
 			if (Auth::isNot('admin'))
 				$mediaItem->onlyPublished();
@@ -76,7 +76,7 @@ class ViewController extends BaseController {
 				return Redirect::to($mediaItem->getUrl());
 		}
 
-		$mediaItem = MediaItem::where('slug', $slug);
+		$mediaItem = Item::where('slug', $slug);
 
 		if (Auth::isNot('admin'))
 			$mediaItem->onlyPublished();
@@ -94,7 +94,7 @@ class ViewController extends BaseController {
 
 		$mediaItem->logView();
 
-		$media = MediaItem::orderBy('published_at', 'desc');
+		$media = Item::orderBy('published_at', 'desc');
 
 		if (Auth::isNot('admin'))
 			$media->onlyPublished();

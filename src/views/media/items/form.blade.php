@@ -132,7 +132,7 @@
 			<div class="col-md-4">
 				{{ Form::field('file_type_id', 'select', [
 					'label'          => 'File Type',
-					'options'        => Form::prepOptions(Regulus\Fractal\Models\FileType::orderBy('name')->get(), array('id', 'name')),
+					'options'        => Form::prepOptions(Regulus\Fractal\Models\Content\FileType::orderBy('name')->get(), array('id', 'name')),
 					'null-option'    => 'None',
 					'readonly-field' => 'readonly',
 				]) }}

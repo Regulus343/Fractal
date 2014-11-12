@@ -13,10 +13,8 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use Regulus\Fractal\Models\BlogArticle;
-use Regulus\Fractal\Models\BlogContentArea;
-use Regulus\Fractal\Models\BlogCategory;
-use Regulus\Fractal\Models\ContentLayoutTemplate;
+use Regulus\Fractal\Models\Blogs\Article;
+use Regulus\Fractal\Models\Blogs\Category;
 
 use Regulus\ActivityLog\Activity;
 use \Auth;
@@ -43,7 +41,7 @@ class ViewController extends BaseController {
 		Site::set('articleList', true);
 		Site::set('contentColumnWidth', 9);
 
-		$articles = BlogArticle::orderBy('published_at', 'desc');
+		$articles = Article::orderBy('published_at', 'desc');
 
 		if (Auth::isNot('admin'))
 			$articles->onlyPublished();
@@ -66,7 +64,7 @@ class ViewController extends BaseController {
 		//allow article selection by ID for to allow shorter URLs
 		if (is_numeric($slug))
 		{
-			$article = BlogArticle::where('id', $slug);
+			$article = Article::where('id', $slug);
 
 			if (Auth::isNot('admin'))
 				$article->onlyPublished();
@@ -78,7 +76,7 @@ class ViewController extends BaseController {
 				return Redirect::to($article->getUrl());
 		}
 
-		$article = BlogArticle::where('slug', $slug);
+		$article = Article::where('slug', $slug);
 
 		if (Auth::isNot('admin'))
 			$article->onlyPublished();
@@ -96,7 +94,7 @@ class ViewController extends BaseController {
 
 		$article->logView();
 
-		$articles = BlogArticle::orderBy('published_at', 'desc');
+		$articles = Article::orderBy('published_at', 'desc');
 
 		if (Auth::isNot('admin'))
 			$articles->onlyPublished();
@@ -133,13 +131,13 @@ class ViewController extends BaseController {
 		Site::set('articleList', true);
 		Site::set('contentColumnWidth', 9);
 
-		$category = BlogCategory::findBySlug($slug);
+		$category = Category::findBySlug($slug);
 		if (empty($category))
 			return Redirect::to(Fractal::blogUrl())->with('messages', [
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.category')])
 			]);
 
-		$articles = BlogArticle::query()
+		$articles = Article::query()
 			->select('blog_articles.id')
 			->leftJoin('blog_article_categories', 'blog_articles.id', '=', 'blog_article_categories.article_id')
 			->leftJoin('blog_categories', 'blog_article_categories.category_id', '=', 'blog_categories.id')
@@ -165,7 +163,7 @@ class ViewController extends BaseController {
 				])
 			]);
 
-		$articles = BlogArticle::whereIn('id', $articleIds)
+		$articles = Article::whereIn('id', $articleIds)
 			->orderBy('published_at', 'desc');
 
 		if (Auth::isNot('admin'))

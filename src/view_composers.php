@@ -16,10 +16,10 @@ use Illuminate\Support\Facades\View;
 use \Site as Site;
 use \Form as Form;
 
-use Regulus\Fractal\Models\ContentPage;
-use Regulus\Fractal\Models\FileType;
-use Regulus\Fractal\Models\MediaType;
-use Regulus\Fractal\Models\BlogCategory;
+use Regulus\Fractal\Models\Content\Page;
+use Regulus\Fractal\Models\Content\FileType;
+use Regulus\Fractal\Models\Media\Type as MediaType;
+use Regulus\Fractal\Models\Blogs\Category as BlogCategory;
 
 use Regulus\Identify\User;
 use Regulus\Identify\Role;
@@ -32,17 +32,17 @@ View::composer($viewsLocation.'partials.messages', function($view)
 	$view->with('sessionMessages', $sessionMessages);
 });
 
-View::composer($viewsLocation.'menus.form', function($view)
+View::composer($viewsLocation.'content.menus.form', function($view)
 {
 	$typeOptions = Form::simpleOptions(array('URI', 'Content Page'));
-	$pageOptions = Form::prepOptions(ContentPage::select('id', 'title')->orderBy('title')->get(), array('id', 'title'));
+	$pageOptions = Form::prepOptions(Page::select('id', 'title')->orderBy('title')->get(), array('id', 'title'));
 
 	$view
 		->with('typeOptions', $typeOptions)
 		->with('pageOptions', $pageOptions);
 });
 
-View::composer(array($viewsLocation.'files.form', $viewsLocation.'media.items.form'), function($view)
+View::composer(array($viewsLocation.'content.files.form', $viewsLocation.'media.items.form'), function($view)
 {
 	$view->with('fileTypeExtensions', FileType::getExtensionsForIds());
 });

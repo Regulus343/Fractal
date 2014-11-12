@@ -8,7 +8,7 @@
 	</button>
 </div>
 
-<ul class="select-thumbnail-image{{ HTML::hiddenArea($defaultThumbnailImageType != "File", true) }}" id="select-thumbnail-image-file">
+<ul class="image-list select-thumbnail-image{{ HTML::hiddenArea($defaultThumbnailImageType != "File", true) }}" id="select-thumbnail-image-file">
 	@foreach ($files as $file)
 
 		<li{{ HTML::selectedArea($selectedFileId == $file->id) }} data-file-id="{{ $file->id }}" data-image-url="{{ $file->getImageUrl(true) }}">
@@ -18,7 +18,7 @@
 	@endforeach
 </ul>
 
-<ul class="select-thumbnail-image{{ HTML::hiddenArea($defaultThumbnailImageType != "Media Item", true) }}" id="select-thumbnail-image-media-item">
+<ul class="image-list select-thumbnail-image{{ HTML::hiddenArea($defaultThumbnailImageType != "Media Item", true) }}" id="select-thumbnail-image-media-item">
 	@foreach ($mediaItems as $mediaItem)
 
 		<li{{ HTML::selectedArea($selectedMediaItemId == $mediaItem->id) }} data-media-item-id="{{ $mediaItem->id }}" data-image-url="{{ $mediaItem->getImageUrl(true) }}">

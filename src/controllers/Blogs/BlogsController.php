@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use Regulus\Fractal\Models\BlogArticle;
-use Regulus\Fractal\Models\BlogContentArea;
-use Regulus\Fractal\Models\ContentLayoutTemplate;
+use Regulus\Fractal\Models\Blogs\Article;
 
 use Regulus\ActivityLog\Activity;
 use \Auth;

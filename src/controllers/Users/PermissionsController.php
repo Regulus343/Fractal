@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use Regulus\Fractal\Models\Permission;
+use Regulus\Fractal\Models\Users\Permission;
 
 use Regulus\ActivityLog\Activity;
 use \Form;
@@ -29,13 +29,13 @@ class PermissionsController extends UsersController {
 		Site::set('subSection', 'Permissions');
 		Site::set('title', Fractal::lang('labels.userPermissions'));
 
-		Fractal::setContentType('user-permission', true);
-
-		Site::set('defaultSorting', ['field' => 'display_order', 'order' => 'asc']);
+		Fractal::setContentType('user-permission');
 
 		Fractal::setViewsLocation('users.permissions');
 
 		Fractal::addTrailItem(Fractal::lang('labels.permissions'), Fractal::getControllerPath());
+
+		Site::set('defaultSorting', ['field' => 'display_order', 'order' => 'asc']);
 	}
 
 	public function index()

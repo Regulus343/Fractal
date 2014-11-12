@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4.
 
 		created by Cody Jassman
-		version 0.6.6a
-		last updated on November 2, 2014
+		version 0.6.7a
+		last updated on November 10, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -21,11 +21,11 @@ use Illuminate\Support\Facades\View;
 
 use Regulus\Fractal\Libraries\ArrayFile;
 
-use Regulus\Fractal\Models\ContentPage;
-use Regulus\Fractal\Models\ContentFile;
-use Regulus\Fractal\Models\Menu;
-use Regulus\Fractal\Models\MenuItem;
-use Regulus\Fractal\Models\Setting;
+use Regulus\Fractal\Models\Content\Page;
+use Regulus\Fractal\Models\Content\File as ContentFile;
+use Regulus\Fractal\Models\Content\Menu;
+use Regulus\Fractal\Models\Content\MenuItem;
+use Regulus\Fractal\Models\General\Setting;
 
 use \Form;
 use \Format;

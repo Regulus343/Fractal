@@ -3,35 +3,35 @@ $(document).ready(function(){
 	if (fileTypeExtensions === undefined)
 		fileTypeExtensions = {};
 
-	$('#file').change(function(){
+	$('#field-file').change(function(){
 		var path      = $(this).val().split('\\');
 		var filename  = path[(path.length - 1)].split('.');
 		var basename  = filename[0];
 		var extension = filename[(filename.length - 1)].toLowerCase();
 		var name      = upperCaseWords(basename.replace(/_/g, ' ').replace(/-/g, ' '));
 
-		$('#name').val(name);
-		$('#title').val(name);
+		$('#field-name').val(name);
+		$('#field-title').val(name);
 
 		var fileTypeId = false;
 		for (var fileTypeIdListed in fileTypeExtensions) {
 			extensions = fileTypeExtensions[fileTypeIdListed];
 
 			if ($.inArray(extension, extensions) >= 0) {
-				$('#type-id').val(fileTypeIdListed);
-				$('#file-type-id').val(fileTypeIdListed);
+				$('#field-type-id').val(fileTypeIdListed);
+				$('#field-file-type-id').val(fileTypeIdListed);
 
 				fileTypeId = fileTypeIdListed;
 			}
 		}
 
 		if (!fileTypeId) {
-			$('#type-id').val('');
-			$('#file-type-id').val('');
+			$('#field-type-id').val('');
+			$('#field-file-type-id').val('');
 		}
 
-		$('#type-id').select2();
-		$('#file-type-id').select2();
+		$('#field-type-id').select2();
+		$('#field-file-type-id').select2();
 
 		Formation.ajaxForSelect({
 			type:                 'get',
@@ -53,13 +53,13 @@ $(document).ready(function(){
 			$('#thumbnail-image-area button').attr('disabled', false);
 		}
 
-		$('#title').val($('#title').val().replace(/  /g, ' '));
+		$('#field-title').val($('#field-title').val().replace(/  /g, ' '));
 
-		var slug = strToSlug($('#title').val());
-		$('#slug').val(slug);
+		var slug = strToSlug($('#field-title').val());
+		$('#field-slug').val(slug);
 	});
 
-	$('#create-thumbnail').click(function(){
+	$('#field-create-thumbnail').click(function(){
 		if ($(this).prop('checked')) {
 			$('#thumbnail-settings-area').removeClass('hidden');
 		} else {
@@ -70,5 +70,5 @@ $(document).ready(function(){
 });
 
 function refreshMediaTypeSelect() {
-	$('#media-type-id').select2();
+	$('#field-media-type-id').select2();
 }

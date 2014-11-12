@@ -26,19 +26,22 @@ return [
 	*/
 	'controllers' => [
 		'standard' => [
-			'home'              => 'Regulus\Fractal\Controllers\CoreController',
-			'settings'          => 'Regulus\Fractal\Controllers\SettingsController',
-			'account'           => 'Regulus\Fractal\Controllers\AccountController',
+			'home'              => 'Regulus\Fractal\Controllers\General\DashboardController',
+			'settings'          => 'Regulus\Fractal\Controllers\General\SettingsController',
+			'account'           => 'Regulus\Fractal\Controllers\Auth\AccountController',
 			'users/activity'    => 'Regulus\Fractal\Controllers\Users\ActivityController',
 		],
 		'resource' => [
-			'menus'             => 'Regulus\Fractal\Controllers\MenusController',
-			'pages'             => 'Regulus\Fractal\Controllers\PagesController',
-			'files'             => 'Regulus\Fractal\Controllers\FilesController',
+			'menus'             => 'Regulus\Fractal\Controllers\Content\MenusController',
+			'pages'             => 'Regulus\Fractal\Controllers\Content\PagesController',
+			'files'             => 'Regulus\Fractal\Controllers\Content\FilesController',
+			'layout-templates'  => 'Regulus\Fractal\Controllers\Content\LayoutTemplatesController',
 			'users/roles'       => 'Regulus\Fractal\Controllers\Users\RolesController',
 			'users/permissions' => 'Regulus\Fractal\Controllers\Users\PermissionsController',
 			'users'             => 'Regulus\Fractal\Controllers\Users\UsersController',
 			'media/items'       => 'Regulus\Fractal\Controllers\Media\ItemsController',
+			'media/types'       => 'Regulus\Fractal\Controllers\Media\TypesController',
+			'media/sets'        => 'Regulus\Fractal\Controllers\Media\SetsController',
 			'media'             => 'Regulus\Fractal\Controllers\Media\MediaController',
 			'blogs/articles'    => 'Regulus\Fractal\Controllers\Blogs\ArticlesController',
 			'blogs/categories'  => 'Regulus\Fractal\Controllers\Blogs\CategoriesController',
@@ -58,23 +61,24 @@ return [
 	*/
 	'controllerMethods' => [
 		'get'  => [
-			'pages/add-content-area/{id?}'                => 'Regulus\Fractal\Controllers\PagesController@addContentArea',
-			'pages/get-content-area/{id}'                 => 'Regulus\Fractal\Controllers\PagesController@getContentArea',
-			'pages/delete-content-area/{id}'              => 'Regulus\Fractal\Controllers\PagesController@deleteContentArea',
+			'pages/add-content-area/{id?}'                => 'Regulus\Fractal\Controllers\Content\PagesController@addContentArea',
+			'pages/get-content-area/{id}'                 => 'Regulus\Fractal\Controllers\Content\PagesController@getContentArea',
+			'pages/delete-content-area/{id}'              => 'Regulus\Fractal\Controllers\Content\PagesController@deleteContentArea',
 			'users/{id}/ban'                              => 'Regulus\Fractal\Controllers\Users\UsersController@ban',
 			'users/{id}/unban'                            => 'Regulus\Fractal\Controllers\Users\UsersController@unban',
 			'media/items/get-types-for-file-type/{id?}'   => 'Regulus\Fractal\Controllers\Media\ItemsController@getTypesForFileType',
+			'media/sets/add-item/{id?}'                   => 'Regulus\Fractal\Controllers\Media\SetsController@addItem',
 			'blogs/articles/add-content-area/{id?}'       => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@addContentArea',
 			'blogs/articles/get-content-area/{id}'        => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@getContentArea',
 			'blogs/articles/delete-content-area/{id}'     => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@deleteContentArea',
 			'blogs/articles/select-thumbnail-image/{id?}' => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@selectThumbnailImage',
 		],
 		'post' => [
-			'menus/search'                                => 'Regulus\Fractal\Controllers\MenusController@search',
-			'pages/search'                                => 'Regulus\Fractal\Controllers\PagesController@search',
-			'pages/layout-tags'                           => 'Regulus\Fractal\Controllers\PagesController@layoutTags',
-			'pages/render-markdown-content'               => 'Regulus\Fractal\Controllers\PagesController@renderMarkdownContent',
-			'files/search'                                => 'Regulus\Fractal\Controllers\FilesController@search',
+			'menus/search'                                => 'Regulus\Fractal\Controllers\Content\MenusController@search',
+			'pages/search'                                => 'Regulus\Fractal\Controllers\Content\PagesController@search',
+			'pages/layout-tags'                           => 'Regulus\Fractal\Controllers\Content\PagesController@layoutTags',
+			'pages/render-markdown-content'               => 'Regulus\Fractal\Controllers\Content\PagesController@renderMarkdownContent',
+			'files/search'                                => 'Regulus\Fractal\Controllers\Content\FilesController@search',
 			'users/search'                                => 'Regulus\Fractal\Controllers\Users\UsersController@search',
 			'user-roles/search'                           => 'Regulus\Fractal\Controllers\Users\RolesController@search',
 			'user-permissions/search'                     => 'Regulus\Fractal\Controllers\Users\PermissionsController@search',
@@ -133,7 +137,7 @@ return [
 	| point this setting to it instead of the default.
 	|
 	*/
-	'pageMethod' => 'Regulus\Fractal\Controllers\PagesController@view',
+	'pageMethod' => 'Regulus\Fractal\Controllers\Content\PagesController@view',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -147,7 +151,7 @@ return [
 	| setting to it.
 	|
 	*/
-	'pageView' => 'fractal::pages.view',
+	'pageView' => 'fractal::content.pages.view',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -232,7 +236,7 @@ return [
 	| The name of your authorization controller.
 	|
 	*/
-	'authController' => 'Regulus\Fractal\Controllers\AuthController',
+	'authController' => 'Regulus\Fractal\Controllers\Auth\AuthController',
 
 	/*
 	|--------------------------------------------------------------------------

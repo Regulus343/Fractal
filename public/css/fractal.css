@@ -9,7 +9,7 @@ a#logo { padding-top: 10px; padding-bottom: 0; }
 .container-fluid a#logo { width: 200px; }
 a#logo img { height: 30px; border: none; }
 
-#top-buttons { float: left; padding-top: 6px; }
+#top-buttons { position: absolute; top: 6px; }
 #top-buttons .btn { background: none; color: #fff; border-color: #444; text-shadow: none; }
 #top-buttons .btn:hover { border-color: #777; }
 
@@ -77,20 +77,24 @@ a#logo img { height: 30px; border: none; }
 @media (min-width: 768px) {
 	#nav-side { width: 22%; }
 	#container-content.sidebar-offset { margin-left: 22%; }
+	#top-buttons { left: 22%; }
 }
 
 @media (min-width: 992px) {
 	#nav-side { width: 16%; }
 	#container-content.sidebar-offset { margin-left: 16%; }
+	#top-buttons { left: 16%; }
 }
 
 @media (min-width: 1200px) {
 	#nav-side { width: 12%; }
 	#container-content.sidebar-offset { margin-left: 12%; }
+	#top-buttons { left: 12%; }
 }
 
 @media (max-width: 768px) {
 	#nav-side ul li span.menu-item-label { display: none; }
+	#top-buttons { display: none; }
 }
 
 h1, h2, h3, h4, h5, h6 { margin-top: 0; }
@@ -277,7 +281,7 @@ fieldset.indent-level-3 { margin-left: 96px; }
 	border: 1px solid #428bca;
 }
 
-input#search {
+input#field-search {
 	float: right;
 	margin-top: 7px;
 	margin-right: 16px;
@@ -405,11 +409,11 @@ ul#select-content-area li div.info div.actions { float: right; padding-left: 5px
 ul#select-content-area li div.info div.actions span.glyphicon-remove { color: #900; font-size: 15px; }
 ul#select-content-area li div.info div.actions span.glyphicon-remove:hover { color: #c00; }
 
-ul.select-thumbnail-image { margin-top: 12px; padding-left: 0; list-style: none; }
-ul.select-thumbnail-image li { float: left; margin: 0 6px 6px 0; padding: 3px; border: 1px solid #aaa; cursor: pointer; }
-ul.select-thumbnail-image li img { width: 90px; border: none; opacity: 0.9; }
-ul.select-thumbnail-image li:hover, ul.select-thumbnail-image li.selected { border-color: #2b669a; }
-ul.select-thumbnail-image li:hover img, ul.select-thumbnail-image li.selected img { opacity: 1; }
+ul.image-list { margin-top: 12px; padding-left: 0; list-style: none; }
+ul.image-list li { float: left; margin: 0 6px 6px 0; padding: 3px; border: 1px solid #aaa; cursor: pointer; }
+ul.image-list li img { width: 90px; height: 90px; border: none; opacity: 0.9; }
+ul.image-list li:hover, ul.select-thumbnail-image li.selected { border-color: #2b669a; }
+ul.image-list li:hover img, ul.select-thumbnail-image li.selected img { opacity: 1; }
 
 .button-menu { margin-bottom: 16px; }
 .button-menu a.btn { margin-left: 6px; }

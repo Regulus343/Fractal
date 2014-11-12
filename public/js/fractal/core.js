@@ -69,7 +69,7 @@ $(document).ready(function(){
 		searchContent();
 	});
 
-	$('#search').focus(function(){
+	$('#field-search').focus(function(){
 		$(this).animate({
 			width: '280px'
 		}, 200);
@@ -147,7 +147,7 @@ $(document).ready(function(){
 
 				$(this).addClass('sort-changed');
 
-				$('#sort-field').val(sortField);
+				$('#field-sort-field').val(sortField);
 
 				if ($(this).hasClass('sort-asc')) {
 					$(this)
@@ -158,7 +158,7 @@ $(document).ready(function(){
 						.addClass('glyphicon-download')
 						.removeClass('glyphicon-upload');
 
-					$('#sort-order').val('desc');
+					$('#field-sort-order').val('desc');
 				} else {
 					$(this)
 						.addClass('sort-asc')
@@ -168,7 +168,7 @@ $(document).ready(function(){
 						.addClass('glyphicon-upload')
 						.removeClass('glyphicon-download');
 
-					$('#sort-order').val('asc');
+					$('#field-sort-order').val('asc');
 				}
 
 				searchContent();
@@ -255,10 +255,10 @@ function setMainMessage(message, type) {
 	clearTimeout(messageTimer);
 
 	$('#message-'+type+' div').html(message);
-	$('#message-'+type).hide().removeClass('hidden').slideDown('medium');
+	$('#message-'+type).hide().removeClass('hidden').css('z-index', 10000).slideDown('medium');
 
 	messageTimer = setTimeout(function(){
-		$('.alert-dismissable-hide').slideUp('fast');
+		$('.alert-dismissable-hide').slideUp('fast').css('z-index', 1000);
 	}, messageShowTime);
 }
 

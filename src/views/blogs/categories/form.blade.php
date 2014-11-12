@@ -6,17 +6,17 @@
 		$(document).ready(function(){
 
 			@if (!isset($update) || !$update)
-				$('#name').keyup(function(){
-					$('#name').val($('#name').val().replace(/  /g, ' '));
+				$('#field-name').keyup(function(){
+					$('#field-name').val($('#field-name').val().replace(/  /g, ' '));
 
-					var slug = strToSlug($('#name').val());
-					$('#slug').val(slug);
+					var slug = strToSlug($('#field-name').val());
+					$('#field-slug').val(slug);
 				});
 			@endif
 
-			$('#slug').keyup(function(){
-				var slug = strToSlug($('#slug').val());
-				$('#slug').val(slug);
+			$('#field-slug').keyup(function(){
+				var slug = strToSlug($('#field-slug').val());
+				$('#field-slug').val(slug);
 			});
 
 		});

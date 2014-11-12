@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/erusev/parsedown.git",
-                "reference": "2adb87ef4159844fa8d7db5f611a359c50891f0c"
+                "reference": "6df242bc97cef547b1a77d00c5114b3ac211750a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erusev/parsedown/zipball/2adb87ef4159844fa8d7db5f611a359c50891f0c",
-                "reference": "2adb87ef4159844fa8d7db5f611a359c50891f0c",
+                "url": "https://api.github.com/repos/erusev/parsedown/zipball/6df242bc97cef547b1a77d00c5114b3ac211750a",
+                "reference": "6df242bc97cef547b1a77d00c5114b3ac211750a",
                 "shasum": ""
             },
             "type": "library",
@@ -43,7 +43,7 @@
                 "markdown",
                 "parser"
             ],
-            "time": "2014-10-10 18:11:23"
+            "time": "2014-11-12 01:37:36"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -51,12 +51,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "cd60294ada5245c5835baebf0dbb3f44ee851317"
+                "reference": "b307f3d9ef0960b74ea8bd8d5bbdef2049368947"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/cd60294ada5245c5835baebf0dbb3f44ee851317",
-                "reference": "cd60294ada5245c5835baebf0dbb3f44ee851317",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/b307f3d9ef0960b74ea8bd8d5bbdef2049368947",
+                "reference": "b307f3d9ef0960b74ea8bd8d5bbdef2049368947",
                 "shasum": ""
             },
             "require": {
@@ -87,7 +87,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2014-08-31 11:12:38"
+            "time": "2014-10-23 22:36:02"
         },
         {
             "name": "illuminate/support",
@@ -303,12 +303,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Regulus343/Formation.git",
-                "reference": "4726383de837f223581b3901e15d1befcc1446a8"
+                "reference": "b60fb6626758614b69c10bce46ed3fad0451783c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Regulus343/Formation/zipball/4726383de837f223581b3901e15d1befcc1446a8",
-                "reference": "4726383de837f223581b3901e15d1befcc1446a8",
+                "url": "https://api.github.com/repos/Regulus343/Formation/zipball/b60fb6626758614b69c10bce46ed3fad0451783c",
+                "reference": "b60fb6626758614b69c10bce46ed3fad0451783c",
                 "shasum": ""
             },
             "require": {
@@ -337,7 +337,7 @@
                 }
             ],
             "description": "A powerful form creation composer package for Laravel 4.",
-            "time": "2014-10-18 23:00:20"
+            "time": "2014-11-12 07:25:33"
         },
         {
             "name": "regulus/solid-site",
@@ -345,12 +345,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Regulus343/SolidSite.git",
-                "reference": "a8fb095ee7ae0714b9e697b006d2d8fce126a956"
+                "reference": "9105a8a620df8e035b20bcdbcaa588ef0385707b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Regulus343/SolidSite/zipball/a8fb095ee7ae0714b9e697b006d2d8fce126a956",
-                "reference": "a8fb095ee7ae0714b9e697b006d2d8fce126a956",
+                "url": "https://api.github.com/repos/Regulus343/SolidSite/zipball/9105a8a620df8e035b20bcdbcaa588ef0385707b",
+                "reference": "9105a8a620df8e035b20bcdbcaa588ef0385707b",
                 "shasum": ""
             },
             "require": {
@@ -377,7 +377,7 @@
                 }
             ],
             "description": "A composer package that assigns section names & titles to pages and simplifies creation of breadcrumb trails and is useful for other components that require page identifying information such as menus that highlight the current location.",
-            "time": "2014-10-16 06:07:49"
+            "time": "2014-10-29 02:10:34"
         },
         {
             "name": "regulus/tetra-text",
@@ -426,12 +426,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Regulus343/Upstream.git",
-                "reference": "b1bbb143e7942ad65777041b4bb9689e9ccd1f46"
+                "reference": "40dfd2e21bbc54e65534c0fd5d2e5e8b58d763a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Regulus343/Upstream/zipball/b1bbb143e7942ad65777041b4bb9689e9ccd1f46",
-                "reference": "b1bbb143e7942ad65777041b4bb9689e9ccd1f46",
+                "url": "https://api.github.com/repos/Regulus343/Upstream/zipball/40dfd2e21bbc54e65534c0fd5d2e5e8b58d763a8",
+                "reference": "40dfd2e21bbc54e65534c0fd5d2e5e8b58d763a8",
                 "shasum": ""
             },
             "require": {
@@ -459,7 +459,7 @@
                 }
             ],
             "description": "A simple composer package that assists in file uploads and image resizing/cropping.",
-            "time": "2014-10-09 00:59:38"
+            "time": "2014-10-21 01:52:20"
         }
     ],
     "packages-dev": [],

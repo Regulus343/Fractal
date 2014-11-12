@@ -10,9 +10,8 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use Regulus\Fractal\Models\MediaItem;
-use Regulus\Fractal\Models\MediaType;
-use Regulus\Fractal\Models\FileType;
+use Regulus\Fractal\Models\Media\Item;
+use Regulus\Fractal\Models\Media\Type;
 
 use Regulus\ActivityLog\Activity;
 use \Auth;

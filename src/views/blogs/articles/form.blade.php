@@ -9,22 +9,22 @@
 		$(document).ready(function(){
 
 			@if (!isset($update) || !$update)
-				$('#title').keyup(function(){
-					$('#title').val($('#title').val().replace(/  /g, ' '));
+				$('#field-title').keyup(function(){
+					$('#field-title').val($('#field-title').val().replace(/  /g, ' '));
 
-					var slug = strToSlug($('#title').val());
-					$('#slug').val(slug);
+					var slug = strToSlug($('#field-title').val());
+					$('#field-slug').val(slug);
 
-					$('#content-areas-1-title').val($('#title').val());
+					$('#content-areas-1-title').val($('#field-title').val());
 				});
 			@endif
 
-			$('#slug').keyup(function(){
+			$('#field-slug').keyup(function(){
 				var slug = strToSlug($('#slug').val());
-				$('#slug').val(slug);
+				$('#field-slug').val(slug);
 			});
 
-			$('#layout-template-id, #layout').change(function(){
+			$('#field-layout-template-id, #field-layout').change(function(){
 				getLayoutTags();
 			});
 
@@ -56,9 +56,9 @@
 				layout:             ''
 			};
 
-			if ($('#layout-template-id').val() != "") {
+			if ($('#field-layout-template-id').val() != "") {
 				$('#layout-area').addClass('hidden');
-				postData.layout_template_id = $('#layout-template-id').val();
+				postData.layout_template_id = $('#field-layout-template-id').val();
 			} else {
 				$('#layout-area').removeClass('hidden');
 				postData.layout = $('#layout').val();
@@ -221,9 +221,9 @@
 
 		function publishedCheckedCallback(checked) {
 			if (checked)
-				$('#published-at').val(moment().format('MM/DD/YYYY hh:mm A'));
+				$('#field-published-at').val(moment().format('MM/DD/YYYY hh:mm A'));
 			else
-				$('#published-at').val('');
+				$('#field-published-at').val('');
 		}
 	</script>
 
@@ -255,7 +255,7 @@
 			<div class="col-md-4">
 				{{ Form::field('layout_template_id', 'select', [
 					'label'       => 'Layout Template',
-					'options'     => Form::prepOptions(Regulus\Fractal\Models\ContentLayoutTemplate::orderBy('static', 'desc')->orderBy('name')->get(), ['id', 'name']),
+					'options'     => Form::prepOptions(Regulus\Fractal\Models\Content\LayoutTemplate::orderBy('static', 'desc')->orderBy('name')->get(), ['id', 'name']),
 					'null-option' => 'Custom Layout'
 				]) }}
 			</div>
@@ -311,7 +311,7 @@
 				{{ Form::field('categories.pivot.', 'select', [
 					'label'    => Fractal::lang('labels.categories'),
 					'multiple' => 'multiple',
-					'options'  => Form::prepOptions(Regulus\Fractal\Models\BlogCategory::orderBy('name')->get(), ['id', 'name'])
+					'options'  => Form::prepOptions(Regulus\Fractal\Models\Blogs\Category::orderBy('name')->get(), ['id', 'name'])
 				]) }}
 			</div>
 		</div>

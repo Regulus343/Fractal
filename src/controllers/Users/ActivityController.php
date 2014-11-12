@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use Regulus\Fractal\Models\Activity;
+use Regulus\Fractal\Models\Users\Activity;
 
 use \Form;
 use \Format;
@@ -29,11 +29,11 @@ class ActivityController extends UsersController {
 
 		Fractal::setContentType('activities');
 
-		Site::set('defaultSorting', ['order' => 'desc']);
-
 		Fractal::setViewsLocation('users.activity');
 
 		Fractal::addTrailItem(Fractal::lang('labels.activity'), Fractal::getControllerPath());
+
+		Site::set('defaultSorting', ['order' => 'desc']);
 	}
 
 	public function getIndex()

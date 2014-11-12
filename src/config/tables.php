@@ -216,6 +216,71 @@ return [
 		],
 	],
 
+	'layoutTemplates' => [
+		'table' => [
+			'class'         => 'table-striped table-bordered table-hover table-sortable',
+			'noDataMessage' => Fractal::lang('messages.noItems', ['items' => Fractal::langLowerPlural('labels.layoutTemplate')]),
+		],
+		'columns' => [
+			[
+				'attribute' => 'id',
+				'sort'      => true,
+			],
+			[
+				'attribute' => 'name',
+				'class'     => 'name',
+				'sort'      => true,
+			],
+			[
+				'label'     => Fractal::lang('labels.pages'),
+				'method'    => 'getNumberOfPages()',
+			],
+			[
+				'label'     => Fractal::lang('labels.blogArticles'),
+				'method'    => 'getNumberOfArticles()',
+			],
+			[
+				'label'     => 'Actions',
+				'class'     => 'actions',
+				'elements'  => [
+					[
+						'icon'       => 'edit',
+						'class'      => 'btn btn-primary',
+						'classModifiers' => [
+							'invisible' => [
+								'static' => true,
+							],
+						],
+						'uri'        => Config::get('fractal::baseUri').'/layout-templates/:id/edit',
+						'attributes' => [
+							'title' => Fractal::lang('labels.editLayoutTemplate'),
+						],
+					],
+					[
+						'icon'           => 'remove',
+						'class'          => 'btn btn-danger action-item',
+						'classModifiers' => [
+							'invisible' => [
+								'static' => true,
+							],
+						],
+						'attributes'     => [
+							'data-item-id'        => ':id',
+							'data-item-name'      => ':name',
+							'data-action'         => 'delete',
+							'data-action-type'    => 'delete',
+							'data-action-message' => 'confirmDelete',
+							'title'               => Fractal::lang('labels.deleteLayoutTemplate'),
+						],
+					],
+				],
+			],
+		],
+		'rows' => [
+			'idPrefix' => 'layout-template',
+		],
+	],
+
 	'mediaItems' => [
 		'table' => [
 			'class'         => 'table-striped table-bordered table-hover table-sortable',
@@ -305,6 +370,112 @@ return [
 					'isPublished()' => false,
 				],
 			],
+		],
+	],
+
+	'mediaTypes' => [
+		'table' => [
+			'class'         => 'table-striped table-bordered table-hover table-sortable',
+			'noDataMessage' => Fractal::lang('messages.noItems', ['items' => Fractal::langLowerPlural('labels.mediaType')]),
+		],
+		'columns' => [
+			[
+				'attribute' => 'id',
+				'sort'      => true,
+			],
+			[
+				'attribute' => 'name',
+				'class'     => 'name',
+				'sort'      => true,
+			],
+			[
+				'attribute' => 'slug',
+				'sort'      => true,
+			],
+			[
+				'label'     => Fractal::lang('labels.items'),
+				'method'    => 'getNumberOfItems()',
+			],
+			[
+				'label'     => 'Actions',
+				'class'     => 'actions',
+				'elements'  => [
+					[
+						'icon'       => 'edit',
+						'class'      => 'btn btn-primary',
+						'uri'        => Config::get('fractal::baseUri').'/media/types/:slug/edit',
+						'attributes' => [
+							'title' => Fractal::lang('labels.editType'),
+						],
+					],
+					[
+						'icon'           => 'remove',
+						'class'          => 'btn btn-danger action-item',
+						'attributes'     => [
+							'data-item-id'        => ':id',
+							'data-item-name'      => ':name',
+							'data-action'         => 'delete',
+							'data-action-type'    => 'delete',
+							'data-action-message' => 'confirmDelete',
+							'title'               => Fractal::lang('labels.deleteType'),
+						],
+					],
+				],
+			],
+		],
+		'rows' => [
+			'idPrefix' => 'media-type',
+		],
+	],
+
+	'mediaSets' => [
+		'table' => [
+			'class'         => 'table-striped table-bordered table-hover table-sortable',
+			'noDataMessage' => Fractal::lang('messages.noItems', ['items' => Fractal::langLowerPlural('labels.mediaSet')]),
+		],
+		'columns' => [
+			[
+				'attribute' => 'id',
+				'sort'      => true,
+			],
+			[
+				'attribute' => 'name',
+				'class'     => 'name',
+				'sort'      => true,
+			],
+			[
+				'label'     => Fractal::lang('labels.items'),
+				'method'    => 'getNumberOfItems()',
+			],
+			[
+				'label'     => 'Actions',
+				'class'     => 'actions',
+				'elements'  => [
+					[
+						'icon'       => 'edit',
+						'class'      => 'btn btn-primary',
+						'uri'        => Config::get('fractal::baseUri').'/media/sets/:slug/edit',
+						'attributes' => [
+							'title' => Fractal::lang('labels.editMediaSet'),
+						],
+					],
+					[
+						'icon'           => 'remove',
+						'class'          => 'btn btn-danger action-item',
+						'attributes'     => [
+							'data-item-id'        => ':id',
+							'data-item-name'      => ':name',
+							'data-action'         => 'delete',
+							'data-action-type'    => 'delete',
+							'data-action-message' => 'confirmDelete',
+							'title'               => Fractal::lang('labels.deleteMediaSet'),
+						],
+					],
+				],
+			],
+		],
+		'rows' => [
+			'idPrefix' => 'media-set',
 		],
 	],
 
@@ -416,7 +587,6 @@ return [
 			[
 				'label'     => '# of Articles',
 				'method'    => 'getNumberOfArticles()',
-				'sort'      => true,
 			],
 			[
 				'label'     => 'Actions',
@@ -541,10 +711,10 @@ return [
 						'icon'           => 'ok-circle',
 						'class'          => 'btn btn-primary action-item unban-user',
 						'classModifiers' => [
-							'hidden'       => [
+							'hidden' => [
 								'isBanned()' => false,
 							],
-							'invisible'    => [
+							'invisible' => [
 								'id' => 1,
 							],
 						],
@@ -560,7 +730,7 @@ return [
 						'icon'           => 'remove',
 						'class'          => 'btn btn-danger action-item',
 						'classModifiers' => [
-							'invisible'    => [
+							'invisible' => [
 								'id' => 1,
 							],
 						],

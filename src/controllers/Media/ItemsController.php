@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use Regulus\Fractal\Models\MediaItem;
-use Regulus\Fractal\Models\MediaType;
-use Regulus\Fractal\Models\FileType;
+use Regulus\Fractal\Models\Media\Item;
+use Regulus\Fractal\Models\Media\Type;
+use Regulus\Fractal\Models\Content\FileType;
 
 use Regulus\ActivityLog\Activity;
 use \Auth;
@@ -34,7 +34,7 @@ class ItemsController extends MediaController {
 		Site::set('title', Fractal::lang('labels.mediaItems'));
 
 		//set content type and views location
-		Fractal::setContentType('media-item', true);
+		Fractal::setContentType('media-item');
 
 		Fractal::setViewsLocation('media.items');
 
@@ -44,7 +44,7 @@ class ItemsController extends MediaController {
 	public function index()
 	{
 		$data  = Fractal::setupPagination();
-		$media = MediaItem::getSearchResults($data);
+		$media = Item::getSearchResults($data);
 
 		Fractal::setContentForPagination($media);
 
@@ -52,11 +52,11 @@ class ItemsController extends MediaController {
 		$messages = Fractal::getPaginationMessageArray();
 
 		if (!count($media))
-			$media = MediaItem::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
+			$media = Item::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
 			'label' => Fractal::lang('labels.createItem'),
-			'icon'  => 'glyphicon glyphicon-file',
+			'icon'  => 'glyphicon glyphicon-picture',
 			'uri'   => Fractal::uri('create', true),
 		]);
 
@@ -68,14 +68,14 @@ class ItemsController extends MediaController {
 	public function search()
 	{
 		$data  = Fractal::setupPagination();
-		$media = MediaItem::getSearchResults($data);
+		$media = Item::getSearchResults($data);
 
 		Fractal::setContentForPagination($media);
 
 		$data = Fractal::setPaginationMessage();
 
 		if (!count($media))
-			$data['content'] = MediaItem::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
+			$data['content'] = Item::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		$data['result']['pages']     = Fractal::getLastPage();
 		$data['result']['tableBody'] = Fractal::createTable($data['content'], true);
@@ -88,7 +88,7 @@ class ItemsController extends MediaController {
 		Site::set('title', Fractal::lang('labels.createItem'));
 		Site::set('wysiwyg', true);
 
-		MediaItem::setDefaultsForNew();
+		Item::setDefaultsForNew();
 
 		$this->setDefaultImageSizes();
 
@@ -107,7 +107,7 @@ class ItemsController extends MediaController {
 
 	public function store()
 	{
-		Form::setValidationRules(MediaItem::validationRules());
+		Form::setValidationRules(Item::validationRules());
 
 		$messages = [];
 		if (Form::validated()) {
@@ -116,7 +116,7 @@ class ItemsController extends MediaController {
 			if ($hostedExternally)
 				$result = ['error' => false];
 			else
-				$result = MediaItem::uploadFile();
+				$result = Item::uploadFile();
 
 			if (!$result['error']) {
 				$messages['success'] = Fractal::lang('messages.successCreated', ['item' => Fractal::langLowerA('labels.mediaItem')]);
@@ -141,7 +141,7 @@ class ItemsController extends MediaController {
 						$path = substr($path, 0, (strlen($path) - 1));
 				}
 
-				$item = new MediaItem(Input::all());
+				$item = new Item(Input::all());
 
 				$item->title             = ucfirst(trim(Input::get('title')));
 				$item->hosted_externally = $hostedExternally;
@@ -189,7 +189,7 @@ class ItemsController extends MediaController {
 
 				Activity::log([
 					'contentId'   => $item->id,
-					'contentType' => 'MediaItem',
+					'contentType' => 'Item',
 					'action'      => 'Create',
 					'description' => 'Created a Media Item',
 					'details'     => 'Title: '.$item->title,
@@ -212,7 +212,7 @@ class ItemsController extends MediaController {
 
 	public function edit($slug)
 	{
-		$item = MediaItem::findBySlug($slug);
+		$item = Item::findBySlug($slug);
 		if (empty($item))
 			return Redirect::to(Fractal::uri('media/items'))->with('messages', [
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.mediaItem')])
@@ -250,13 +250,13 @@ class ItemsController extends MediaController {
 
 	public function update($slug)
 	{
-		$item = MediaItem::findBySlug($slug);
+		$item = Item::findBySlug($slug);
 		if (empty($item))
 			return Redirect::to(Fractal::uri('', true))->with('messages', [
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.mediaItem')]),
 			]);
 
-		Form::setValidationRules(MediaItem::validationRules($item->id));
+		Form::setValidationRules(Item::validationRules($item->id));
 
 		$messages = [];
 		if (Form::validated()) {
@@ -283,7 +283,7 @@ class ItemsController extends MediaController {
 
 			if ((isset($_FILES['file']['name']) && $_FILES['file']['name'] != "") || (isset($_FILES['thumbnail_image']['name']) && $_FILES['thumbnail_image']['name']))
 			{
-				$result = MediaItem::uploadFile();
+				$result = Item::uploadFile();
 
 				if (!$result['files']['file']['error']) {
 					$uploaded = true;
@@ -382,7 +382,7 @@ class ItemsController extends MediaController {
 
 				Activity::log([
 					'contentId'   => $item->id,
-					'contentType' => 'MediaItem',
+					'contentType' => 'Item',
 					'action'      => 'Update',
 					'description' => 'Updated a Media Item',
 					'details'     => 'Title: '.$item->title,
@@ -419,13 +419,13 @@ class ItemsController extends MediaController {
 			'message'    => Fractal::lang('messages.errorGeneral'),
 		];
 
-		$item = MediaItem::find($id);
+		$item = Item::find($id);
 		if (empty($item))
 			return $result;
 
 		Activity::log([
 			'contentId'   => $item->id,
-			'contentType' => 'MediaItem',
+			'contentType' => 'Item',
 			'action'      => 'Delete',
 			'description' => 'Deleted a Media Item',
 			'details'     => 'Title: '.$item->title,
@@ -443,7 +443,7 @@ class ItemsController extends MediaController {
 
 	public function getTypesForFileType($fileTypeId = null)
 	{
-		$mediaTypes = MediaType::select('id', 'name')->orderBy('name');
+		$mediaTypes = Type::select('id', 'name')->orderBy('name');
 
 		if ($fileTypeId)
 			$mediaTypes->where('file_type_id', $fileTypeId);

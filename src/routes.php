@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Config;
 
 use \Auth as Auth;
 
-use Regulus\Fractal\Models\ContentPage;
-use Regulus\Fractal\Models\BlogArticle;
+use Regulus\Fractal\Models\Content\Page;
+use Regulus\Fractal\Models\Blogs\Article;
 
 $baseUri     = Config::get('fractal::baseUri');
 $controllers = Config::get('fractal::controllers');
@@ -57,10 +57,10 @@ if (isset($controllers['resource']['home']))
 	Route::get($baseUri, $controllers['resource']['home'].'@getIndex');
 
 /* Set up Developer Route (executing route enables "developer mode" via "developer" session variable) */
-Route::get($baseUri.'/developer/{off?}', 'Regulus\Fractal\Controllers\CoreController@getDeveloper');
+Route::get($baseUri.'/developer/{off?}', 'Regulus\Fractal\Controllers\General\DashboardController@getDeveloper');
 
 /* Set up API Routes */
-Route::controller($baseUri.'/api', 'Regulus\Fractal\Controllers\ApiController');
+Route::controller($baseUri.'/api', 'Regulus\Fractal\Controllers\General\ApiController');
 
 /* Set up Authorization Routes */
 Route::any($baseUri.'/login', Config::get('fractal::authController').'@login');
@@ -114,7 +114,7 @@ $pageMethod = Config::get('fractal::pageMethod');
 if ($pageUri == "") {
 	//ensure DB tables have been migrated first
 	if (Config::get('fractal::migrated') && !App::runningInConsole()) {
-		$pages = ContentPage::select(['slug', 'published_at']);
+		$pages = Page::select(['slug', 'published_at']);
 
 			$pages
 				->whereNotNull('published_at')

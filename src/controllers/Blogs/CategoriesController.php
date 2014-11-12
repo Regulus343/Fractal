@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use Regulus\Fractal\Models\BlogCategory;
+use Regulus\Fractal\Models\Blogs\Category;
 
 use Regulus\ActivityLog\Activity;
 use \Auth;
@@ -31,7 +31,7 @@ class CategoriesController extends BlogsController {
 		Site::set('title', Fractal::lang('labels.blogCategories'));
 
 		//set content type and views location
-		Fractal::setContentType('blog-category', true);
+		Fractal::setContentType('blog-category');
 
 		Fractal::setViewsLocation('blogs.categories');
 
@@ -41,7 +41,7 @@ class CategoriesController extends BlogsController {
 	public function index()
 	{
 		$data       = Fractal::setupPagination();
-		$categories = BlogCategory::getSearchResults($data);
+		$categories = Category::getSearchResults($data);
 
 		Fractal::setContentForPagination($categories);
 
@@ -49,7 +49,7 @@ class CategoriesController extends BlogsController {
 		$messages = Fractal::getPaginationMessageArray();
 
 		if (!count($categories))
-			$categories = BlogCategory::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
+			$categories = Category::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
 			'label' => Fractal::lang('labels.createCategory'),
@@ -65,14 +65,14 @@ class CategoriesController extends BlogsController {
 	public function search()
 	{
 		$data       = Fractal::setupPagination();
-		$categories = BlogCategory::getSearchResults($data);
+		$categories = Category::getSearchResults($data);
 
 		Fractal::setContentForPagination($categories);
 
 		$data = Fractal::setPaginationMessage();
 
 		if (!count($categories))
-			$data['content'] = BlogCategory::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
+			$data['content'] = Category::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		$data['result']['pages']     = Fractal::getLastPage();
 		$data['result']['tableBody'] = Fractal::createTable($data['content'], true);
@@ -84,7 +84,7 @@ class CategoriesController extends BlogsController {
 	{
 		Site::set('title', Fractal::lang('labels.createCategory'));
 
-		BlogCategory::setDefaultsForNew();
+		Category::setDefaultsForNew();
 		Form::setErrors();
 
 		Fractal::addButton([
@@ -100,7 +100,7 @@ class CategoriesController extends BlogsController {
 
 	public function store()
 	{
-		Form::setValidationRules(BlogCategory::validationRules());
+		Form::setValidationRules(Category::validationRules());
 
 		$messages = [];
 		if (Form::validated()) {
@@ -109,11 +109,11 @@ class CategoriesController extends BlogsController {
 			$input = Input::all();
 			$input['user_id'] = Auth::user()->id;
 
-			$category = BlogCategory::createNew($input);
+			$category = Category::createNew($input);
 
 			Activity::log([
 				'contentId'   => $category->id,
-				'contentType' => 'BlogCategory',
+				'contentType' => 'Category',
 				'action'      => 'Create',
 				'description' => 'Created a Category',
 				'details'     => 'Name: '.$category->name,
@@ -133,7 +133,7 @@ class CategoriesController extends BlogsController {
 
 	public function edit($slug)
 	{
-		$category = BlogCategory::findBySlug($slug);
+		$category = Category::findBySlug($slug);
 		if (empty($category))
 			return Redirect::to(Fractal::uri('pages'))->with('messages', [
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.category')])
@@ -160,7 +160,7 @@ class CategoriesController extends BlogsController {
 
 	public function update($slug)
 	{
-		$category = BlogCategory::findBySlug($slug);
+		$category = Category::findBySlug($slug);
 		if (empty($category))
 			return Redirect::to(Fractal::uri('pages'))->with('messages', [
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.category')])
@@ -176,14 +176,14 @@ class CategoriesController extends BlogsController {
 
 			Activity::log([
 				'contentId'   => $category->id,
-				'contentType' => 'BlogCategory',
+				'contentType' => 'Category',
 				'action'      => 'Update',
 				'description' => 'Updated a Category',
 				'details'     => 'Name: '.$category->name,
 				'updated'     => true,
 			]);
 
-			return Redirect::to(Fractal::uri($slug.'/edit', true))
+			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
 			$messages['error'] = Fractal::lang('messages.errorGeneral');
@@ -202,13 +202,13 @@ class CategoriesController extends BlogsController {
 			'message'    => Fractal::lang('messages.errorGeneral'),
 		];
 
-		$category = BlogCategory::find($id);
+		$category = Category::find($id);
 		if (empty($category))
 			return $result;
 
 		Activity::log([
 			'contentId'   => $category->id,
-			'contentType' => 'BlogCategory',
+			'contentType' => 'Category',
 			'action'      => 'Delete',
 			'description' => 'Deleted a Category',
 			'details'     => 'Name: '.$category->name,

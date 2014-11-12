@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use Regulus\Fractal\Models\BlogArticle;
-use Regulus\Fractal\Models\BlogContentArea;
-use Regulus\Fractal\Models\ContentLayoutTemplate;
-use Regulus\Fractal\Models\ContentFile;
-use Regulus\Fractal\Models\MediaItem;
+use Regulus\Fractal\Models\Blogs\Article;
+use Regulus\Fractal\Models\Blogs\ContentArea;
+use Regulus\Fractal\Models\Content\LayoutTemplate;
+use Regulus\Fractal\Models\Content\File as ContentFile;
+use Regulus\Fractal\Models\Media\Item as MediaItem;
 
 use Regulus\ActivityLog\Activity;
 use \Auth;
@@ -35,7 +35,7 @@ class ArticlesController extends BlogsController {
 		Site::set('title', Fractal::lang('labels.blogArticles'));
 
 		//set content type and views location
-		Fractal::setContentType('blog-article', true);
+		Fractal::setContentType('blog-article');
 
 		Fractal::setViewsLocation('blogs.articles');
 
@@ -45,7 +45,7 @@ class ArticlesController extends BlogsController {
 	public function index()
 	{
 		$data     = Fractal::setupPagination();
-		$articles = BlogArticle::getSearchResults($data);
+		$articles = Article::getSearchResults($data);
 
 		Fractal::setContentForPagination($articles);
 
@@ -53,7 +53,7 @@ class ArticlesController extends BlogsController {
 		$messages = Fractal::getPaginationMessageArray();
 
 		if (!count($articles))
-			$articles = BlogArticle::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
+			$articles = Article::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
 			'label' => Fractal::lang('labels.createArticle'),
@@ -69,14 +69,14 @@ class ArticlesController extends BlogsController {
 	public function search()
 	{
 		$data     = Fractal::setupPagination();
-		$articles = BlogArticle::getSearchResults($data);
+		$articles = Article::getSearchResults($data);
 
 		Fractal::setContentForPagination($articles);
 
 		$data = Fractal::setPaginationMessage();
 
 		if (!count($articles))
-			$data['content'] = BlogArticle::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
+			$data['content'] = Article::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		$data['result']['pages']     = Fractal::getLastPage();
 		$data['result']['tableBody'] = Fractal::createTable($data['content'], true);
@@ -89,7 +89,7 @@ class ArticlesController extends BlogsController {
 		Site::set('title', Fractal::lang('labels.createArticle'));
 		Site::set('wysiwyg', true);
 
-		BlogArticle::setDefaultsForNew();
+		Article::setDefaultsForNew();
 		Form::setErrors();
 
 		$layoutTagOptions = $this->getLayoutTagOptions();
@@ -108,7 +108,7 @@ class ArticlesController extends BlogsController {
 
 	public function store()
 	{
-		Form::setValidationRules(BlogArticle::validationRules());
+		Form::setValidationRules(Article::validationRules());
 
 		$messages = [];
 		if (Form::validated()) {
@@ -117,14 +117,14 @@ class ArticlesController extends BlogsController {
 			$input = Input::all();
 			$input['user_id'] = Auth::user()->id;
 
-			$article = BlogArticle::createNew($input);
+			$article = Article::createNew($input);
 
 			//re-export menus to config array in case published status for article has changed
 			Fractal::exportMenus();
 
 			Activity::log([
 				'contentId'   => $article->id,
-				'contentType' => 'BlogArticle',
+				'contentType' => 'Article',
 				'action'      => 'Create',
 				'description' => 'Created an Article',
 				'details'     => 'Title: '.$article->title,
@@ -144,7 +144,7 @@ class ArticlesController extends BlogsController {
 
 	public function edit($slug)
 	{
-		$article = BlogArticle::findBySlug($slug);
+		$article = Article::findBySlug($slug);
 		if (empty($article))
 			return Redirect::to(Fractal::uri('pages'))->with('messages', [
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.article')])
@@ -187,7 +187,7 @@ class ArticlesController extends BlogsController {
 
 	public function update($slug)
 	{
-		$article = BlogArticle::findBySlug($slug);
+		$article = Article::findBySlug($slug);
 		if (empty($article))
 			return Redirect::to(Fractal::uri('pages'))->with('messages', [
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.article')])
@@ -203,7 +203,7 @@ class ArticlesController extends BlogsController {
 
 			Activity::log([
 				'contentId'   => $article->id,
-				'contentType' => 'BlogArticle',
+				'contentType' => 'Article',
 				'action'      => 'Update',
 				'description' => 'Updated an Article',
 				'details'     => 'Title: '.$article->title,
@@ -229,13 +229,13 @@ class ArticlesController extends BlogsController {
 			'message'    => Fractal::lang('messages.errorGeneral'),
 		];
 
-		$article = BlogArticle::find($id);
+		$article = Article::find($id);
 		if (empty($article))
 			return $result;
 
 		Activity::log([
 			'contentId'   => $article->id,
-			'contentType' => 'BlogArticle',
+			'contentType' => 'Article',
 			'action'      => 'Delete',
 			'description' => 'Deleted an Article',
 			'details'     => 'Title: '.$article->title,
@@ -258,7 +258,7 @@ class ArticlesController extends BlogsController {
 
 		$layout = $input['layout'];
 		if ($input['layout_template_id'] != "") {
-			$template = ContentLayoutTemplate::find($input['layout_template_id']);
+			$template = LayoutTemplate::find($input['layout_template_id']);
 			if (!empty($template))
 				$layout = $template->layout;
 		}
@@ -271,7 +271,7 @@ class ArticlesController extends BlogsController {
 		if (Input::old()) {
 			$layout = Input::old('layout');
 			if (Input::old('layout_template_id') != "") {
-				$template = ContentLayoutTemplate::find(Input::old('layout_template_id'));
+				$template = LayoutTemplate::find(Input::old('layout_template_id'));
 				if (!empty($template))
 					$layout = $template->layout;
 			}
@@ -292,7 +292,7 @@ class ArticlesController extends BlogsController {
 		$data = [
 			'title'        => Fractal::lang('labels.addContentArea'),
 			'articleId'    => $id,
-			'contentAreas' => BlogContentArea::orderBy('title')->get(),
+			'contentAreas' => ContentArea::orderBy('title')->get(),
 		];
 
 		return Fractal::modalView('add_content_area', $data);
@@ -300,14 +300,14 @@ class ArticlesController extends BlogsController {
 
 	public function getContentArea($id = null)
 	{
-		return BlogContentArea::find($id)->toJson();
+		return ContentArea::find($id)->toJson();
 	}
 
 	public function deleteContentArea($id)
 	{
-		$contentArea = BlogContentArea::find($id);
+		$contentArea = ContentArea::find($id);
 		if ($contentArea) {
-			if (!$contentArea->contentPages()->count()) {
+			if (!$contentArea->articles()->count()) {
 				$contentArea->delete();
 				return "Success";
 			}
@@ -323,7 +323,7 @@ class ArticlesController extends BlogsController {
 		$selectedMediaItemId       = null;
 
 		if (!is_null($id)) {
-			$article = BlogArticle::find($id);
+			$article = Article::find($id);
 
 			if (!empty($article) && !is_null($article->thumbnail_image_type))
 			{

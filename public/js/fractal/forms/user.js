@@ -1,10 +1,10 @@
 $(document).ready(function(){
 
-	$('#username').keyup(function(){
-		$('#username').val($('#username').val().replace(/ /g, '-'));
+	$('#field-username').keyup(function(){
+		$('#field-username').val($('#field-username').val().replace(/ /g, '-'));
 	});
 
-	$('#country').change(function(){
+	$('#field-country').change(function(){
 		if ($(this).val() == "Canada") {
 			$('#region-area').removeClass('hidden');
 			$('label[for="region"]').text('Province');
@@ -18,9 +18,9 @@ $(document).ready(function(){
 		}
 	});
 
-	$('#password').val(''); //prevent browser from automatically inserting a password
+	$('#field-password').val(''); //prevent browser from automatically inserting a password
 
-	$('#password, #password-confirmation').change(function(){
+	$('#field-password, #field-password-confirmation').change(function(){
 		checkPasswords();
 	}).keyup(function(){
 		checkPasswords();
@@ -29,8 +29,8 @@ $(document).ready(function(){
 });
 
 function checkPasswords() {
-	var password             = $('#password').val();
-	var passwordConfirmation = $('#password-confirmation').val();
+	var password             = $('#field-password').val();
+	var passwordConfirmation = $('#field-password-confirmation').val();
 
 	if (password != "") {
 		if (password == passwordConfirmation && password.length >= minimumPasswordLength) {

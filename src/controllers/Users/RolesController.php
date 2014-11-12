@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use Regulus\Fractal\Models\Role;
+use Regulus\Fractal\Models\Users\Role;
 
 use Regulus\ActivityLog\Activity;
 use \Form;
@@ -29,13 +29,13 @@ class RolesController extends UsersController {
 		Site::set('subSection', 'Roles');
 		Site::set('title', Fractal::lang('labels.userRoles'));
 
-		Fractal::setContentType('user-role', true);
-
-		Site::set('defaultSorting', ['field' => 'display_order', 'order' => 'asc']);
+		Fractal::setContentType('user-role');
 
 		Fractal::setViewsLocation('users.roles');
 
 		Fractal::addTrailItem(Fractal::lang('labels.roles'), Fractal::getControllerPath());
+
+		Site::set('defaultSorting', ['field' => 'display_order', 'order' => 'asc']);
 	}
 
 	public function index()
