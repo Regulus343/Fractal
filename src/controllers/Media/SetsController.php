@@ -43,38 +43,38 @@ class SetsController extends BaseController {
 
 	public function index()
 	{
-		$data       = Fractal::setupPagination();
-		$categories = Set::getSearchResults($data);
+		$data = Fractal::setupPagination();
+		$sets = Set::getSearchResults($data);
 
-		Fractal::setContentForPagination($categories);
+		Fractal::setContentForPagination($sets);
 
 		$data     = Fractal::setPaginationMessage(true);
 		$messages = Fractal::getPaginationMessageArray();
 
-		if (!count($categories))
-			$categories = Set::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
+		if (!count($sets))
+			$sets = Set::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
 			'label' => Fractal::lang('labels.createSet'),
-			'icon'  => 'glyphicon glyphicon-file',
+			'icon'  => 'glyphicon glyphicon-folder-open',
 			'uri'   => Fractal::uri('create', true),
 		]);
 
 		return View::make(Fractal::view('list'))
-			->with('content', $categories)
+			->with('content', $sets)
 			->with('messages', $messages);
 	}
 
 	public function search()
 	{
-		$data       = Fractal::setupPagination();
-		$categories = Set::getSearchResults($data);
+		$data = Fractal::setupPagination();
+		$sets = Set::getSearchResults($data);
 
-		Fractal::setContentForPagination($categories);
+		Fractal::setContentForPagination($sets);
 
 		$data = Fractal::setPaginationMessage();
 
-		if (!count($categories))
+		if (!count($sets))
 			$data['content'] = Set::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		$data['result']['pages']     = Fractal::getLastPage();
@@ -92,30 +92,33 @@ class SetsController extends BaseController {
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.returnToCategoriesList'),
+			'label' => Fractal::lang('labels.returnToSetsList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
 
 		Fractal::addTrailItem(Fractal::lang('labels.create'), Request::url());
 
-		return View::make(Fractal::view('form'));
+		$items = $this->getItems();
+
+		return View::make(Fractal::view('form'))
+			->with('items', $items);
 	}
 
 	public function store()
 	{
 		Form::setValidationRules(Set::validationRules());
 
-echo '<pre>'; var_dump(Input::all()); echo '</pre>'; exit;
-
 		$messages = [];
 		if (Form::validated()) {
-			$messages['success'] = Fractal::lang('messages.successCreated', ['item' => Fractal::langLowerA('labels.category')]);
+			$messages['success'] = Fractal::lang('messages.successCreated', ['item' => Fractal::langLowerA('labels.set')]);
 
 			$input = Input::all();
 			$input['user_id'] = Auth::user()->id;
 
 			$set = Set::createNew($input);
+
+			$set->saveItems(explode(',', $input['items']));
 
 			Activity::log([
 				'contentId'   => $set->id,
@@ -142,10 +145,10 @@ echo '<pre>'; var_dump(Input::all()); echo '</pre>'; exit;
 		$set = Set::findBySlug($slug);
 		if (empty($set))
 			return Redirect::to(Fractal::uri('pages'))->with('messages', [
-				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.category')])
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.set')])
 			]);
 
-		Site::set('title', $set->name.' ('.Fractal::lang('labels.category').')');
+		Site::set('title', $set->name.' ('.Fractal::lang('labels.set').')');
 		Site::set('titleHeading', Fractal::lang('labels.updateSet').': <strong>'.Format::entities($set->name).'</strong>');
 		Site::set('wysiwyg', true);
 
@@ -153,33 +156,38 @@ echo '<pre>'; var_dump(Input::all()); echo '</pre>'; exit;
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.returnToCategoriesList'),
+			'label' => Fractal::lang('labels.returnToSetsList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
 
 		Fractal::addTrailItem(Fractal::lang('labels.update'), Request::url());
 
+		$items = $this->getItems($set);
+
 		return View::make(Fractal::view('form'))
 			->with('update', true)
-			->with('id', $set->id);
+			->with('id', $set->id)
+			->with('items', $items);
 	}
 
-	public function update($id)
+	public function update($slug)
 	{
 		$set = Set::findBySlug($slug);
 		if (empty($set))
 			return Redirect::to(Fractal::uri('pages'))->with('messages', [
-				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.category')])
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.set')])
 			]);
 
 		$set->setValidationRules();
 
 		$messages = [];
 		if (Form::validated()) {
-			$messages['success'] = Fractal::lang('messages.successUpdated', ['item' => Fractal::langLowerA('labels.category')]);
+			$messages['success'] = Fractal::lang('messages.successUpdated', ['item' => Fractal::langLowerA('labels.set')]);
 
 			$set->saveData();
+
+			$set->saveItems(explode(',', Input::get('items')));
 
 			Activity::log([
 				'contentId'   => $set->id,
@@ -235,12 +243,38 @@ echo '<pre>'; var_dump(Input::all()); echo '</pre>'; exit;
 	public function addItem($id = null)
 	{
 		$data = [
-			'title'      => Fractal::lang('labels.addMediaItem'),
-			'setId'      => $id,
-			'mediaItems' => Item::orderBy('title')->get(),
+			'title'              => Fractal::lang('labels.addMediaItem'),
+			'setId'              => $id,
+			'mediaItems'         => Item::orderBy('title')->get(),
+			'mediaItemsSelected' => !is_null(Input::get('items')) ? Input::get('items') : [],
 		];
 
 		return Fractal::modalView('add_item', $data);
+	}
+
+	private function getItems($set = null)
+	{
+		$items = [];
+
+		if (!Input::old('items') && !is_null($set))
+		{
+			foreach ($set->items as $item)
+			{
+				$items[] = array_merge($item->toArray(), ['imageUrl' => $item->getImageUrl(true)]);
+			}
+		} else {
+			$itemIds = explode(',', Input::old('items'));
+
+			foreach ($itemIds as $itemId)
+			{
+				$item = Item::find($itemId);
+
+				if (!empty($item))
+					$items[] = array_merge($item->toArray(), ['imageUrl' => $item->getImageUrl(true)]);
+			}
+		}
+
+		return $items;
 	}
 
 }

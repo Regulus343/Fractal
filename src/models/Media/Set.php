@@ -97,6 +97,7 @@ class Set extends BaseModel {
 		return [
 			'slug'  => ['required'],
 			'title' => ['required'],
+			'items' => ['required'],
 		];
 	}
 
@@ -131,6 +132,21 @@ class Set extends BaseModel {
 	public function getUrl()
 	{
 		return Fractal::mediaUrl('set/'.$this->slug);
+	}
+
+	/**
+	 * Save the items and their display orders for the media set.
+	 *
+	 * @return string
+	 */
+	public function saveItems($itemIds)
+	{
+		$items = [];
+		foreach ($itemIds as $i => $itemId) {
+			$items[$itemId] = ['display_order' => ($i + 1)];
+		}
+
+		$this->items()->sync($items);
 	}
 
 	/**

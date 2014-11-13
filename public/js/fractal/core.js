@@ -231,9 +231,20 @@ $(document).ready(function(){
 
 		var url              = baseUrl + '/' + $(this).attr('data-modal-ajax-uri');
 		var type             = $(this).attr('data-modal-ajax-action') == "get" ? "get" : "post";
+		var dataVars         = $(this).attr('data-modal-ajax-data-variables') !== undefined ? $(this).attr('data-modal-ajax-data-variables').split(',') : [];
 		var callbackFunction = $(this).attr('data-modal-callback-function');
 
-		modalAjax(url, type, callbackFunction);
+		var data = {};
+		for (v in dataVars) {
+			dataVar = window[dataVars[v]];
+
+			if (dataVar === undefined)
+				dataVar = "";
+
+			data[dataVars[v]] = dataVar;
+		}
+
+		modalAjax(url, type, data, callbackFunction);
 	});
 
 	/* Set Up Return To Top */
@@ -276,13 +287,17 @@ function modalConfirm(title, message, action, modalId) {
 		$('#'+modalId+' .btn-primary').off('click').on('click', action);
 }
 
-function modalAjax(url, type, callbackFunction, modalId) {
+function modalAjax(url, type, data, callbackFunction, modalId) {
 	if (modalId === undefined)
 		modalId = "modal";
+
+	if (data === undefined)
+		data = [];
 
 	$.ajax({
 		type:     type,
 		url:      url,
+		data:     data,
 		dataType: 'json',
 		success: function(result) {
 			$('#'+modalId+' .modal-title').html(result.title);

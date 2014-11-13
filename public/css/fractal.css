@@ -411,7 +411,18 @@ ul#select-content-area li div.info div.actions span.glyphicon-remove:hover { col
 
 ul.image-list { margin-top: 12px; padding-left: 0; list-style: none; }
 ul.image-list li { float: left; margin: 0 6px 6px 0; padding: 3px; border: 1px solid #aaa; cursor: pointer; }
-ul.image-list li img { width: 90px; height: 90px; border: none; opacity: 0.9; }
+ul.image-list li img { width: 90px; height: 90px; border: none; opacity: 0.7; }
+ul.image-list li .remove {
+	z-index: 10;
+	display: none;
+	position: absolute;
+	top: 4px; right: 4px;
+	color: #900;
+	font-size: 16px;
+	opacity: 0.8;
+}
+ul.image-list li:hover .remove { display: block; }
+ul.image-list li .remove:hover { opacity: 1; }
 ul.image-list li:hover, ul.select-thumbnail-image li.selected { border-color: #2b669a; }
 ul.image-list li:hover img, ul.select-thumbnail-image li.selected img { opacity: 1; }
 

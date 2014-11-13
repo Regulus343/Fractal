@@ -22,16 +22,21 @@
 				},
 				draggable:              {
 					stop: function(){
-						items = [];
-						var itemWidgets = this.sort_by_row_and_col_asc(this.serialize());
-						for (i in itemWidgets) {
-							items.push(itemWidgets[i].id);
-						}
-
-						updateItemsField();
+						setItemsOrder();
 					}
 				}
 			}).data('gridster');
+
+			setItemsOrder();
+			addItemRemoveAction();
+
+			@if (!empty($items))
+
+				var defaultItems = $.parseJSON('{{ json_encode($items) }}');
+				console.log(defaultItems);
+				addInitialItems(defaultItems);
+
+			@endif
 
 			@if (!isset($update) || !$update)
 				$('#field-title').keyup(function(){
@@ -71,7 +76,19 @@
 
 		});
 
-		function addItemActions() {
+		function addInitialItems(items) {
+			for (i in items) {
+				var itemHtml = Formation.getTemplateHtml('#items', items[i]);
+
+				gridster.add_widget(itemHtml, 1, 1);
+			}
+
+			setItemsOrder();
+
+			addItemRemoveAction();
+		}
+
+		function addSelectItemAction() {
 			$('#select-item li').off('click').on('click', function(e){
 				var item = {
 					'id':       $(this).attr('data-item-id'),
@@ -83,12 +100,30 @@
 
 				gridster.add_widget(itemHtml, 1, 1);
 
-				items.push($(this).attr('data-item-id'));
+				setItemsOrder();
 
-				updateItemsField();
+				addItemRemoveAction();
 
 				$('#modal').modal('hide');
 			});
+		}
+
+		function addItemRemoveAction() {
+			$('#items .remove').off('click').on('click', function(){
+				gridster.remove_widget($(this).parent('li'));
+
+				setItemsOrder();
+			});
+		}
+
+		function setItemsOrder() {
+			items = [];
+			var itemWidgets = gridster.sort_by_row_and_col_asc(gridster.serialize());
+			for (i in itemWidgets) {
+				items.push(itemWidgets[i].id);
+			}
+
+			updateItemsField();
 		}
 
 		function updateItemsField() {
@@ -140,11 +175,12 @@
 		{{-- Items --}}
 		<ul class="image-list gridster" id="items" data-template-id="item-template"></ul>
 
-		{{ Form::text('items') }}
+		{{ Form::hidden('items') }}
+		{{ Form::error('items') }}
 
 		@include(Fractal::view('media.sets.templates.item', true))
 
-		<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="media/sets/add-item{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="get" data-modal-callback-function="addItemActions">
+		<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="media/sets/add-item{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="post" data-modal-ajax-data-variables="items" data-modal-callback-function="addSelectItemAction">
 			<span class="glyphicon glyphicon-picture"></span>&nbsp; {{ Lang::get('fractal::labels.addMediaItem') }}
 		</a>
 

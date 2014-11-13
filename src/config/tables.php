@@ -416,6 +416,7 @@ return [
 							'data-item-name'      => ':name',
 							'data-action'         => 'delete',
 							'data-action-type'    => 'delete',
+							'data-action-url'     => 'types/:id',
 							'data-action-message' => 'confirmDelete',
 							'title'               => Fractal::lang('labels.deleteType'),
 						],
@@ -439,8 +440,12 @@ return [
 				'sort'      => true,
 			],
 			[
-				'attribute' => 'name',
+				'attribute' => 'title',
 				'class'     => 'name',
+				'sort'      => true,
+			],
+			[
+				'attribute' => 'slug',
 				'sort'      => true,
 			],
 			[
@@ -456,7 +461,7 @@ return [
 						'class'      => 'btn btn-primary',
 						'uri'        => Config::get('fractal::baseUri').'/media/sets/:slug/edit',
 						'attributes' => [
-							'title' => Fractal::lang('labels.editMediaSet'),
+							'title' => Fractal::lang('labels.editSet'),
 						],
 					],
 					[
@@ -467,8 +472,9 @@ return [
 							'data-item-name'      => ':name',
 							'data-action'         => 'delete',
 							'data-action-type'    => 'delete',
+							'data-action-url'     => 'sets/:id',
 							'data-action-message' => 'confirmDelete',
-							'title'               => Fractal::lang('labels.deleteMediaSet'),
+							'title'               => Fractal::lang('labels.deleteSet'),
 						],
 					],
 				],

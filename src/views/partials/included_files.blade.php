@@ -62,7 +62,7 @@
 
 {{-- Gridster --}}
 <link type="text/css" rel="stylesheet" href="{{ Site::css('jquery.gridster', 'regulus/fractal') }}" />
-<script type="text/javascript" src="{{ Site::js('jquery.gridster.min', 'regulus/fractal') }}"></script>
+<script type="text/javascript" src="{{ Site::js('jquery.gridster', 'regulus/fractal') }}"></script>
 
 {{-- Formation JS --}}
 @include('formation::load_js')
