@@ -82,7 +82,7 @@ return [
 			'user-roles/search'                           => 'Regulus\Fractal\Controllers\Users\RolesController@search',
 			'user-permissions/search'                     => 'Regulus\Fractal\Controllers\Users\PermissionsController@search',
 			'media/items/search'                          => 'Regulus\Fractal\Controllers\Media\ItemsController@search',
-			'media/sets/add-item/{id?}'                   => 'Regulus\Fractal\Controllers\Media\SetsController@addItem',
+			'media/sets/add-item'                         => 'Regulus\Fractal\Controllers\Media\SetsController@addItem',
 			'blogs/articles/search'                       => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@search',
 			'blogs/articles/layout-tags'                  => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@layoutTags',
 			'blogs/articles/render-markdown-content'      => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@renderMarkdownContent',

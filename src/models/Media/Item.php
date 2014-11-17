@@ -172,7 +172,18 @@ class Item extends BaseModel {
 		return $this
 			->belongsToMany('Regulus\Fractal\Models\Media\Set', 'media_item_sets', 'item_id', 'set_id')
 			->withPivot('display_order')
+			->withTimestamps()
 			->orderBy('title');
+	}
+
+	/**
+	 * The number of media sets that the item belongs to.
+	 *
+	 * @return integer
+	 */
+	public function getNumberOfSets()
+	{
+		return $this->sets()->count();
 	}
 
 	/**
@@ -358,7 +369,7 @@ class Item extends BaseModel {
 	 */
 	public function scopeOnlyPublished($query)
 	{
-		return $query->whereNotNull('published_at')->where('published_at', '<=', date('Y-m-d H:i:s'));
+		return $query->whereNotNull('media_items.published_at')->where('media_items.published_at', '<=', date('Y-m-d H:i:s'));
 	}
 
 	/**

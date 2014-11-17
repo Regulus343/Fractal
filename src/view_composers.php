@@ -13,12 +13,14 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
-use \Site as Site;
-use \Form as Form;
+use \Auth;
+use \Form;
+use \Site;
 
 use Regulus\Fractal\Models\Content\Page;
 use Regulus\Fractal\Models\Content\FileType;
 use Regulus\Fractal\Models\Media\Type as MediaType;
+use Regulus\Fractal\Models\Media\Set as MediaSet;
 use Regulus\Fractal\Models\Blogs\Category as BlogCategory;
 
 use Regulus\Identify\User;
@@ -57,6 +59,25 @@ View::composer($viewsLocation.'media.items.form', function($view)
 	$mediaTypeOptions = Form::prepOptions($mediaTypes->get(), array('id', 'name'));
 
 	$view->with('mediaTypeOptions', $mediaTypeOptions);
+});
+
+View::composer($viewsLocation.'media.view.partials.nav.types', function($view)
+{
+	$mediaTypes = MediaType::orderBy('name')->get();
+
+	$view->with('mediaTypes', $mediaTypes);
+});
+
+View::composer($viewsLocation.'media.view.partials.nav.sets', function($view)
+{
+	$mediaSets = MediaSet::orderBy('title');
+
+	if (Auth::isNot('admin'))
+		$mediaSets->onlyPublished();
+
+	$mediaSets = $mediaSets->get();
+
+	$view->with('mediaSets', $mediaSets);
 });
 
 View::composer($viewsLocation.'blogs.view.partials.nav.categories', function($view)

@@ -36,6 +36,8 @@ class ViewController extends BaseController {
 		]);
 	}
 
+	/* Articles List */
+
 	public function getIndex()
 	{
 		Site::set('articleList', true);
@@ -48,9 +50,11 @@ class ViewController extends BaseController {
 
 		$articles = $articles->get();
 
-		return View::make(Fractal::view('home'))
+		return View::make(Fractal::view('list'))
 			->with('articles', $articles);
 	}
+
+	/* Article */
 
 	public function getArticle($slug = null)
 	{
@@ -122,6 +126,8 @@ class ViewController extends BaseController {
 		return $this->getArticle($slug);
 	}
 
+	/* Articles List for Category */
+
 	public function getCategory($slug = null) {
 		if (is_null($slug))
 			return Redirect::to(Fractal::blogUrl())->with('messages', [
@@ -141,7 +147,6 @@ class ViewController extends BaseController {
 			->select('blog_articles.id')
 			->leftJoin('blog_article_categories', 'blog_articles.id', '=', 'blog_article_categories.article_id')
 			->leftJoin('blog_categories', 'blog_article_categories.category_id', '=', 'blog_categories.id')
-			->with('contentAreas')
 			->where('blog_categories.slug', $slug);
 
 		if (Auth::isNot('admin'))
@@ -173,7 +178,7 @@ class ViewController extends BaseController {
 
 		Site::addTrailItem($category->name, Request::url());
 
-		return View::make(Fractal::view('home'))
+		return View::make(Fractal::view('list'))
 			->with('articles', $articles)
 			->with('category', $category);
 	}

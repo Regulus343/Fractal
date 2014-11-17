@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
@@ -31,26 +32,30 @@ class ViewController extends BaseController {
 		Fractal::setViewsLocation('media.view');
 
 		Site::addTrailItems([
-			Fractal::lang('labels.home') => Site::rootUrl(),
+			Fractal::lang('labels.home')  => Site::rootUrl(),
 			Fractal::lang('labels.media') => Fractal::mediaUrl(),
 		]);
 	}
+
+	/* Items List */
 
 	public function getIndex()
 	{
 		Site::set('mediaList', true);
 		Site::set('contentColumnWidth', 9);
 
-		$media = Item::orderBy('published_at', 'desc');
+		$mediaItems = Item::orderBy('published_at', 'desc');
 
 		if (Auth::isNot('admin'))
-			$media->onlyPublished();
+			$mediaItems->onlyPublished();
 
-		$media = $media->get();
+		$mediaItems = $mediaItems->get();
 
-		return View::make(Fractal::view('home'))
-			->with('media', $media);
+		return View::make(Fractal::view('list'))
+			->with('mediaItems', $mediaItems);
 	}
+
+	/* Item */
 
 	public function getItem($slug = null)
 	{
@@ -120,6 +125,128 @@ class ViewController extends BaseController {
 
 	public function getI($slug = null) {
 		return $this->getItem($slug);
+	}
+
+	/* Items List for Set */
+
+	public function getSet($slug = null) {
+		if (is_null($slug))
+			return Redirect::to(Fractal::mediaUrl())->with('messages', [
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.mediaSet')])
+			]);
+
+		Site::set('mediaList', true);
+		Site::set('contentColumnWidth', 9);
+
+		$mediaSet = Set::findBySlug($slug);
+		if (empty($mediaSet))
+			return Redirect::to(Fractal::mediaUrl())->with('messages', [
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.mediaSet')])
+			]);
+
+		$mediaItems = Item::query()
+			->select(['media_items.id', 'media_items.published_at'])
+			->leftJoin('media_item_sets', 'media_items.id', '=', 'media_item_sets.item_id')
+			->leftJoin('media_sets', 'media_item_sets.set_id', '=', 'media_sets.id')
+			->where('media_sets.slug', $slug);
+
+		if (Auth::isNot('admin'))
+			$mediaItems->onlyPublished();
+
+		$mediaItems = $mediaItems->get();
+
+		$mediaItemIds = [];
+		foreach ($mediaItems as $mediaItem) {
+			if (!in_array($mediaItem->id, $mediaItemIds))
+				$mediaItemIds[] = $mediaItem->id;
+		}
+
+		if (empty($mediaItemIds))
+			return Redirect::to(Fractal::mediaUrl())->with('messages', [
+				'error' => Fractal::lang('messages.errorNoItems', [
+					'item'  => Fractal::langLower('labels.mediaSet'),
+					'items' => Fractal::langLower('labels.mediaItems'),
+				])
+			]);
+
+		$mediaItems = Item::query()
+			->select(['media_items.*'])
+			->leftJoin('media_item_sets', 'media_items.id', '=', 'media_item_sets.item_id')
+			->leftJoin('media_sets', 'media_item_sets.set_id', '=', 'media_sets.id')
+			->where('media_sets.slug', $slug)
+			->orderBy('media_item_sets.display_order');
+
+		if (Auth::isNot('admin'))
+			$mediaItems->onlyPublished();
+
+		$mediaItems = $mediaItems->get();
+
+		Site::addTrailItem($mediaSet->title, Request::url());
+
+		return View::make(Fractal::view('list'))
+			->with('mediaItems', $mediaItems)
+			->with('mediaSet', $mediaSet);
+	}
+
+	public function getS($slug = null) {
+		return $this->getSet($slug);
+	}
+
+	/* Items List for Type */
+
+	public function getType($slug = null) {
+		if (is_null($slug))
+			return Redirect::to(Fractal::mediaUrl())->with('messages', [
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.mediaType')])
+			]);
+
+		Site::set('mediaList', true);
+		Site::set('contentColumnWidth', 9);
+
+		$mediaType = Type::findBySlug($slug);
+		if (empty($mediaType))
+			return Redirect::to(Fractal::mediaUrl())->with('messages', [
+				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.mediaType')])
+			]);
+
+		$mediaItems = Item::where('media_items.media_type_id', $mediaType->id);
+
+		if (Auth::isNot('admin'))
+			$mediaItems->onlyPublished();
+
+		$mediaItems = $mediaItems->get();
+
+		$mediaItemIds = [];
+		foreach ($mediaItems as $mediaItem) {
+			if (!in_array($mediaItem->id, $mediaItemIds))
+				$mediaItemIds[] = $mediaItem->id;
+		}
+
+		if (empty($mediaItemIds))
+			return Redirect::to(Fractal::mediaUrl())->with('messages', [
+				'error' => Fractal::lang('messages.errorNoItems', [
+					'item'  => Fractal::langLower('labels.mediaType'),
+					'items' => Fractal::langLower('labels.mediaItems'),
+				])
+			]);
+
+		$mediaItems = Item::whereIn('id', $mediaItemIds)
+			->orderBy('published_at', 'desc');
+
+		if (Auth::isNot('admin'))
+			$mediaItems->onlyPublished();
+
+		$mediaItems = $mediaItems->get();
+
+		Site::addTrailItem($mediaType->name, Request::url());
+
+		return View::make(Fractal::view('list'))
+			->with('mediaItems', $mediaItems)
+			->with('mediaType', $mediaType);
+	}
+
+	public function getT($slug = null) {
+		return $this->getType($slug);
 	}
 
 }

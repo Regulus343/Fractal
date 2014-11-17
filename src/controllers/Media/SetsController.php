@@ -125,7 +125,7 @@ class SetsController extends BaseController {
 				'contentType' => 'Set',
 				'action'      => 'Create',
 				'description' => 'Created a Media Set',
-				'details'     => 'Name: '.$set->name,
+				'details'     => 'Name: '.$set->title,
 			]);
 
 			return Redirect::to(Fractal::uri('', true))
@@ -148,8 +148,8 @@ class SetsController extends BaseController {
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.set')])
 			]);
 
-		Site::set('title', $set->name.' ('.Fractal::lang('labels.set').')');
-		Site::set('titleHeading', Fractal::lang('labels.updateSet').': <strong>'.Format::entities($set->name).'</strong>');
+		Site::set('title', $set->title.' ('.Fractal::lang('labels.mediaSet').')');
+		Site::set('titleHeading', Fractal::lang('labels.updateSet').': <strong>'.Format::entities($set->title).'</strong>');
 		Site::set('wysiwyg', true);
 
 		Form::setDefaults($set);
@@ -194,7 +194,7 @@ class SetsController extends BaseController {
 				'contentType' => 'Set',
 				'action'      => 'Update',
 				'description' => 'Updated a Media Set',
-				'details'     => 'Name: '.$set->name,
+				'details'     => 'Name: '.$set->title,
 				'updated'     => true,
 			]);
 
@@ -221,30 +221,28 @@ class SetsController extends BaseController {
 		if (empty($set))
 			return $result;
 
-		if ($set->articles()->count())
-			return $result;
-
 		Activity::log([
 			'contentId'   => $set->id,
 			'contentType' => 'Set',
 			'action'      => 'Delete',
 			'description' => 'Deleted a Media Set',
-			'details'     => 'Name: '.$set->name,
+			'details'     => 'Name: '.$set->title,
 		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Fractal::lang('messages.successDeleted', ['item' => '<strong>'.$set->name.'</strong>']);
+		$result['message']    = Fractal::lang('messages.successDeleted', ['item' => '<strong>'.$set->title.'</strong>']);
+
+		$set->items()->sync([]);
 
 		$set->delete();
 
 		return $result;
 	}
 
-	public function addItem($id = null)
+	public function addItem()
 	{
 		$data = [
 			'title'              => Fractal::lang('labels.addMediaItem'),
-			'setId'              => $id,
 			'mediaItems'         => Item::orderBy('title')->get(),
 			'mediaItemsSelected' => !is_null(Input::get('items')) ? Input::get('items') : [],
 		];

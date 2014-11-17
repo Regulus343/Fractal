@@ -12,6 +12,8 @@ use \Form;
 use \Format;
 use \Site;
 
+use Regulus\Fractal\Traits\PublishingTrait;
+
 class Set extends BaseModel {
 
 	/**
@@ -111,6 +113,7 @@ class Set extends BaseModel {
 		return $this
 			->belongsToMany('Regulus\Fractal\Models\Media\Item', 'media_item_sets', 'set_id', 'item_id')
 			->withPivot('display_order')
+			->withTimestamps()
 			->orderBy('display_order');
 	}
 
@@ -131,7 +134,7 @@ class Set extends BaseModel {
 	 */
 	public function getUrl()
 	{
-		return Fractal::mediaUrl('set/'.$this->slug);
+		return Fractal::mediaUrl('s/'.$this->slug);
 	}
 
 	/**
@@ -147,6 +150,110 @@ class Set extends BaseModel {
 		}
 
 		$this->items()->sync($items);
+	}
+
+	/**
+	 * Get the rendered description.
+	 *
+	 * @return string
+	 */
+	public function getRenderedDescription()
+	{
+		return Fractal::renderContent($this->description, $this->description_type);
+	}
+
+	/**
+	 * Gets the published items.
+	 *
+	 * @return Collection
+	 */
+	public static function getPublished()
+	{
+		return static::onlyPublished()->orderBy('id')->get();
+	}
+
+	/**
+	 * Gets only the published items.
+	 *
+	 * @return Collection
+	 */
+	public function scopeOnlyPublished($query)
+	{
+		return $query->whereNotNull('published_at')->where('published_at', '<=', date('Y-m-d H:i:s'));
+	}
+
+	/**
+	 * Get the published status.
+	 *
+	 * @param  mixed    $dateFormat
+	 * @return string
+	 */
+	public function isPublished()
+	{
+		return !is_null($this->published_at) && strtotime($this->published_at) <= time();
+	}
+
+	/**
+	 * Check whether article is to be published in the future.
+	 *
+	 * @param  mixed    $dateFormat
+	 * @return string
+	 */
+	public function isPublishedFuture()
+	{
+		return !is_null($this->published_at) && strtotime($this->published_at) > time();
+	}
+
+	/**
+	 * Get the published status string.
+	 *
+	 * @param  mixed    $dateFormat
+	 * @return string
+	 */
+	public function getPublishedStatus($dateFormat = false)
+	{
+
+		$yesNo = [
+			'<span class="boolean-true">Yes</span>',
+			'<span class="boolean-false">No</span>',
+		];
+
+		$status = Format::boolToStr($this->isPublished(), $yesNo);
+
+		if ($this->isPublishedFuture())
+			$status .= '<div><small><em>'.Lang::get('fractal::labels.toBePublished', [
+				'dateTime' => $this->getPublishedDateTime()
+			]).'</em></small></div>';
+
+		return $status;
+	}
+
+	/**
+	 * Get the last updated date/time.
+	 *
+	 * @param  mixed    $dateFormat
+	 * @return string
+	 */
+	public function getPublishedDateTime($dateFormat = false)
+	{
+		if (!$dateFormat)
+			$dateFormat = Fractal::getDateTimeFormat();
+
+		return Fractal::dateTimeSet($this->published_at) ? date($dateFormat, strtotime($this->published_at)) : '';
+	}
+
+	/**
+	 * Get the last updated date/time.
+	 *
+	 * @param  mixed    $dateFormat
+	 * @return string
+	 */
+	public function getLastUpdatedDateTime($dateFormat = false)
+	{
+		if (!$dateFormat)
+			$dateFormat = Fractal::getDateTimeFormat();
+
+		return Fractal::dateTimeSet($this->updated_at) ? date($dateFormat, strtotime($this->updated_at)) : date($dateFormat, strtotime($this->created_at));
 	}
 
 	/**

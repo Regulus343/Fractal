@@ -180,7 +180,7 @@
 
 		@include(Fractal::view('media.sets.templates.item', true))
 
-		<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="media/sets/add-item{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="post" data-modal-ajax-data-variables="items" data-modal-callback-function="addSelectItemAction">
+		<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="media/sets/add-item" data-modal-ajax-action="post" data-modal-ajax-data-variables="items" data-modal-callback-function="addSelectItemAction">
 			<span class="glyphicon glyphicon-picture"></span>&nbsp; {{ Lang::get('fractal::labels.addMediaItem') }}
 		</a>
 

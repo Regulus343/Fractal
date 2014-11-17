@@ -313,6 +313,11 @@ return [
 				'sort'      => 'published_at',
 			],
 			[
+				'label'     => Fractal::lang('labels.mediaSets'),
+				'method'    => 'getNumberOfSets()',
+				'bodyClass' => 'text-align-right',
+			],
+			[
 				'label'     => (Fractal::getSetting('Display Unique Content Views') ? 'Unique ' : '').'Views',
 				'method'    => (Fractal::getSetting('Display Unique Content Views') ? 'getUniqueViews()' : 'getViews()'),
 				'bodyClass' => 'text-align-right',
@@ -451,6 +456,11 @@ return [
 			[
 				'label'     => Fractal::lang('labels.items'),
 				'method'    => 'getNumberOfItems()',
+			],
+			[
+				'attribute' => 'image_gallery',
+				'type'      => 'boolean',
+				'sort'      => true,
 			],
 			[
 				'label'     => 'Actions',
@@ -593,6 +603,7 @@ return [
 			[
 				'label'     => '# of Articles',
 				'method'    => 'getNumberOfArticles()',
+				'bodyClass' => 'text-align-right',
 			],
 			[
 				'label'     => 'Actions',

@@ -1,6 +1,6 @@
 @if (isset($categories) && !empty($categories))
 
-	<h3>Categories</h3>
+	<h3>{{ Fractal::lang('labels.categories') }}</h3>
 
 	<ul class="nav nav-pills nav-stacked nav-side">
 

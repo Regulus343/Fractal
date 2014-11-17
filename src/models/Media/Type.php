@@ -121,7 +121,7 @@ class Type extends BaseModel {
 	 */
 	public function getUrl()
 	{
-		return Fractal::mediaUrl('type/'.$this->slug);
+		return Fractal::mediaUrl('t/'.$this->slug);
 	}
 
 	/**

@@ -2,7 +2,7 @@
 
 return [
 
-	'version'                     => '0.6.7.1a',
+	'version'                     => '0.6.7.5a',
 
 	'home'                        => 'Home',
 	'returnToCms'                 => 'Return to CMS',
@@ -214,6 +214,8 @@ return [
 	'mediaReturnToHome'           => 'Return to Media Home Page',
 
 	'allCategories'               => 'All Categories',
+	'allMediaTypes'               => 'All Media Types',
+	'allMediaSets'                => 'All Media Sets',
 
 	'text'                        => 'Text',
 	'languageKey'                 => 'Language Key',
