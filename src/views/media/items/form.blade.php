@@ -126,7 +126,7 @@
 				{{ Form::field('thumbnail_image', 'file', [
 					'class-field'          => 'file-upload-button',
 					'label'                => 'Thumbnail Image',
-					'data-file-type-field' => 'Image'
+					'data-file-type-field' => 'Image',
 				]) }}
 			</div>
 			<div class="col-md-4">
@@ -145,7 +145,7 @@
 					'label'                  => 'Media Hosted Externally',
 					'data-checked-show'      => '.media-hosted-area',
 					'data-show-hide-type'    => 'display',
-					'data-callback-function' => 'publishedCheckedCallback'
+					'data-callback-function' => 'publishedCheckedCallback',
 				]) }}
 			</div>
 
@@ -215,7 +215,7 @@
 				{{ Form::field('published', 'checkbox', [
 					'data-checked-show'      => '.published-at-area',
 					'data-show-hide-type'    => 'visibility',
-					'data-callback-function' => 'publishedCheckedCallback'
+					'data-callback-function' => 'publishedCheckedCallback',
 				]) }}
 			</div>
 			<div class="col-md-3 published-at-area{{ HTML::invisibleArea(!Form::value('published', 'checkbox'), true) }}">

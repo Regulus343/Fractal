@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4.
 
 		created by Cody Jassman
-		version 0.6.7.5a
-		last updated on November 16, 2014
+		version 0.6.9a
+		last updated on November 19, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\URL;
@@ -174,6 +175,29 @@ class Fractal {
 			$fullUri = $uri;
 
 		return $fullUri;
+	}
+
+	/**
+	 * Modify the current URL by adding the specified page number for pagination links.
+	 *
+	 * @param  mixed    $page
+	 * @return string
+	 */
+	public function pageUrl($page = 1)
+	{
+		$urlSegments = explode('/', Request::url());
+
+		if (is_numeric(end($urlSegments)))
+		{
+			$urlSegments[(count($urlSegments) - 1)] = $page;
+		} else {
+			if (Site::get('paginationUrlSuffix'))
+				$urlSegments[] = Site::get('paginationUrlSuffix');
+
+			$urlSegments[] = $page;
+		}
+
+		return implode('/', $urlSegments);
 	}
 
 	/**
@@ -414,14 +438,18 @@ class Fractal {
 	 * Setup pagination.
 	 *
 	 * @param  array    $defaultSorting
+	 * @param  mixed    $page
 	 * @return array
 	 */
-	public function setupPagination($defaultSorting = [])
+	public function setupPagination($defaultSorting = [], $page = null)
 	{
 		$contentType = $this->getContentType();
 
 		if (empty($defaultSorting))
 			$defaultSorting = Site::get('defaultSorting');
+
+		if (is_null($page))
+			$page = !is_null(Input::get('page')) ? Input::get('page') : 1;
 
 		$terms = trim(Input::get('search'));
 		$this->pagination = [
@@ -430,7 +458,7 @@ class Fractal {
 			'likeTerms'    => '%'.$terms.'%',
 			'filters'      => Input::get('filters'),
 			'search'       => $_POST ? true : false,
-			'page'         => !is_null(Input::get('page')) ? Input::get('page') : 1,
+			'page'         => $page,
 			'changingPage' => (bool) Input::get('changing_page'),
 			'sortField'    => Input::get('sort_field'),
 			'sortOrder'    => (strtolower(Input::get('sort_order')) == 'desc' ? 'desc' : 'asc'),

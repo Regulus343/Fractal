@@ -35,7 +35,7 @@
 				{{ Form::field('file_type_id', 'select', [
 					'label'       => Fractal::lang('labels.fileType'),
 					'options'     => Form::prepOptions(\Regulus\Fractal\Models\Content\FileType::orderBy('name')->get(), ['id', 'name']),
-					'null-option' => 'Select a File Type'
+					'null-option' => 'Select a File Type',
 				]) }}
 			</div>
 		</div>

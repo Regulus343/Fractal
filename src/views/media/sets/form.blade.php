@@ -189,7 +189,7 @@
 				{{ Form::field('published', 'checkbox', [
 					'data-checked-show'      => '.published-at-area',
 					'data-show-hide-type'    => 'visibility',
-					'data-callback-function' => 'publishedCheckedCallback'
+					'data-callback-function' => 'publishedCheckedCallback',
 				]) }}
 			</div>
 			<div class="col-md-3 published-at-area{{ HTML::invisibleArea(!Form::value('published', 'checkbox'), true) }}">

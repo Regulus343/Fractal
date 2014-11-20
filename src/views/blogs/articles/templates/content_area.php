@@ -14,13 +14,14 @@
 			<div class="col-md-4">
 				<?=Form::field('content_areas.{{number}}.pivot.layout_tag', 'select', [
 					'options'     => Form::simpleOptions($layoutTagOptions),
-					'null-option' => 'Select a Layout Tag'
+					'null-option' => 'Select a Layout Tag',
 				])?>
 			</div>
 			<div class="col-md-4">
 				<?=Form::field('content_areas.{{number}}.content_type', 'select', [
-					'options' => Form::simpleOptions(['HTML', 'Markdown']),
-					'value'   => Fractal::getSetting('Default Content Area Type'),
+					'options'     => Form::simpleOptions(['HTML', 'Markdown']),
+					'null-option' => false,
+					'value'       => Fractal::getSetting('Default Content Area Type'),
 				])?>
 			</div>
 		</div>

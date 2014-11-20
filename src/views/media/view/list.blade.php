@@ -2,6 +2,8 @@
 
 @section(Config::get('fractal::section'))
 
+	@include(Fractal::view('public.partials.pagination', true))
+
 	@foreach ($mediaItems as $mediaItem)
 
 		<div class="media-item-preview">
@@ -11,6 +13,8 @@
 		</div>
 
 	@endforeach
+
+	@include(Fractal::view('public.partials.pagination', true))
 
 @stop
 

@@ -35,14 +35,14 @@
 				{{ Form::field('country', 'select', array(
 					'label'       => Lang::get('fractal::labels.country'),
 					'options'     => Form::countryOptions(),
-					'null-option' => Lang::get('fractal::messages.selectItem', array('item' => Format::a(strtolower(Lang::get('fractal::labels.country')))))
+					'null-option' => Lang::get('fractal::messages.selectItem', ['item' => Format::a(strtolower(Fractal::lang('labels.country')))]),
 				)) }}
 			</div>
 			<div class="col-md-4">
 				{{ Form::field('region', 'select', array(
 					'label'       => Fractal::getRegionLabel(Form::value('country')),
 					'options'     => Form::provinceOptions(),
-					'null-option' => Lang::get('fractal::messages.selectItem', array('item' => Format::a(strtolower(Fractal::getRegionLabel(Form::value('country'))))))
+					'null-option' => Lang::get('fractal::messages.selectItem', ['item' => Format::a(strtolower(Fractal::getRegionLabel(Form::value('country'))))]),
 				)) }}
 			</div>
 		</div>

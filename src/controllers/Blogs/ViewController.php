@@ -3,6 +3,7 @@
 use \BaseController;
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
@@ -40,15 +41,31 @@ class ViewController extends BaseController {
 
 	public function getIndex()
 	{
+		return $this->getArticles();
+	}
+
+	public function getPage($page = 1)
+	{
+		return $this->getArticles($page);
+	}
+
+	public function getArticles($page = 1)
+	{
 		Site::set('articleList', true);
 		Site::set('contentColumnWidth', 9);
+		Site::set('paginationUrlSuffix', 'page');
+		Site::set('currentPage', $page);
+
+		DB::getPaginator()->setCurrentPage($page);
 
 		$articles = Article::orderBy('published_at', 'desc');
 
 		if (Auth::isNot('admin'))
 			$articles->onlyPublished();
 
-		$articles = $articles->get();
+		$articles = $articles->paginate(5);
+
+		Site::set('lastPage', $articles->getLastPage());
 
 		return View::make(Fractal::view('list'))
 			->with('articles', $articles);

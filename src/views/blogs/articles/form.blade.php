@@ -256,7 +256,7 @@
 				{{ Form::field('layout_template_id', 'select', [
 					'label'       => 'Layout Template',
 					'options'     => Form::prepOptions(Regulus\Fractal\Models\Content\LayoutTemplate::orderBy('static', 'desc')->orderBy('name')->get(), ['id', 'name']),
-					'null-option' => 'Custom Layout'
+					'null-option' => 'Custom Layout',
 				]) }}
 			</div>
 		</div>
@@ -266,7 +266,7 @@
 				{{ Form::field('layout', 'textarea', [
 					'id-field-container'    => 'layout-area',
 					'class-field-container' => HTML::hiddenArea(Form::value('layout_template_id') != "", true),
-					'class-field'           => 'tab'
+					'class-field'           => 'tab',
 				]) }}
 			</div>
 		</div>
@@ -311,7 +311,7 @@
 				{{ Form::field('categories.pivot.', 'select', [
 					'label'    => Fractal::lang('labels.categories'),
 					'multiple' => 'multiple',
-					'options'  => Form::prepOptions(Regulus\Fractal\Models\Blogs\Category::orderBy('name')->get(), ['id', 'name'])
+					'options'  => Form::prepOptions(Regulus\Fractal\Models\Blogs\Category::orderBy('name')->get(), ['id', 'name']),
 				]) }}
 			</div>
 		</div>
@@ -321,7 +321,7 @@
 				{{ Form::field('published', 'checkbox', [
 					'data-checked-show'      => '.published-at-area',
 					'data-show-hide-type'    => 'visibility',
-					'data-callback-function' => 'publishedCheckedCallback'
+					'data-callback-function' => 'publishedCheckedCallback',
 				]) }}
 			</div>
 			<div class="col-md-3 published-at-area{{ HTML::invisibleArea(!Form::value('published', 'checkbox'), true) }}">

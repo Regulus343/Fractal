@@ -3,6 +3,7 @@
 use \BaseController;
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
@@ -29,6 +30,9 @@ class ViewController extends BaseController {
 	{
 		Site::setMulti(['section', 'title'], Fractal::lang('labels.media'));
 
+		//set content type and views location
+		Fractal::setContentType('media-item');
+
 		Fractal::setViewsLocation('media.view');
 
 		Site::addTrailItems([
@@ -41,15 +45,32 @@ class ViewController extends BaseController {
 
 	public function getIndex()
 	{
+		return $this->getItems();
+	}
+
+
+	public function getPage($page = 1)
+	{
+		return $this->getItems($page);
+	}
+
+	public function getItems($page = 1)
+	{
 		Site::set('mediaList', true);
 		Site::set('contentColumnWidth', 9);
+		Site::set('paginationUrlSuffix', 'page');
+		Site::set('currentPage', $page);
+
+		DB::getPaginator()->setCurrentPage($page);
 
 		$mediaItems = Item::orderBy('published_at', 'desc');
 
 		if (Auth::isNot('admin'))
 			$mediaItems->onlyPublished();
 
-		$mediaItems = $mediaItems->get();
+		$mediaItems = $mediaItems->paginate(5);
+
+		Site::set('lastPage', $mediaItems->getLastPage());
 
 		return View::make(Fractal::view('list'))
 			->with('mediaItems', $mediaItems);

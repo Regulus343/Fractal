@@ -20,7 +20,7 @@
 
 				<li{{ HTML::activeArea(isset($mediaSet) && $mediaSetListed->id == $mediaSet->id) }}>
 					<a href="{{ $mediaSetListed->getUrl() }}">
-						<span class="glyphicon glyphicon-tag"></span> {{ $mediaSetListed->title }}
+						<span class="glyphicon glyphicon-th"></span> {{ $mediaSetListed->title }}
 
 						<span class="badge primary">{{ $mediaSetListed->items()->count() }}</span>
 					</a>
