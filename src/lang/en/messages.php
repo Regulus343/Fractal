@@ -11,6 +11,7 @@ return [
 	'errorUnauthorized'            => 'You are not authorized to access the requested page.',
 	'errorDeleteItemsExist'        => 'The :item could not be deleted because it is assigned to <strong>:total</strong> existing :relatedItem.',
 	'errorResetPasswordInvalidUri' => 'To reset password, please click on the link that was sent to your email address.',
+	'errorHostedContentNotFound'   => 'The hosted content you specified was not found.',
 
 	'successCreated'               => 'You have successfully created :item.',
 	'successUpdated'               => 'You have successfully updated :item.',

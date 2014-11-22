@@ -105,9 +105,10 @@ class Article extends BaseModel {
 	 * Get the validation rules used by the model.
 	 *
 	 * @param  mixed    $id
-	 * @return string
+	 * @param  string   $type
+	 * @return array
 	 */
-	public static function validationRules($id = null)
+	public static function validationRules($id = null, $type = 'default')
 	{
 		$rules = [
 			'slug'  => ['required'],
@@ -314,28 +315,40 @@ class Article extends BaseModel {
 		$contentAreas = $this->contentAreas;
 		if ($previewOnly && Config::get('fractal::blogs.useStandardLayoutForArticleList'))
 		{
-			if ($this->contentAreas()->count() > 1)
-			{
-				$mainTags   = ['main', 'primary'];
-				foreach ($this->contentAreas as $contentArea) {
-					if (in_array($contentArea->pivot->layout_tag, $mainTags)) {
-						$contentArea->pivot->layout_tag = "main";
+			$mainTags       = ['main', 'primary'];
+			$previewDivider = Config::get('fractal::blogs.previewDivider');
 
-						$contentAreas = [$contentArea];
-					}
+			foreach ($this->contentAreas as $contentArea)
+			{
+				if (in_array($contentArea->pivot->layout_tag, $mainTags)) 
+				{
+					$contentArea->pivot->layout_tag = "main";
+
+					$readMoreButton = '<a href="'.$this->getUrl().'" class="btn btn-default btn-xs read-more">'.Fractal::lang('labels.readMore').'</a>';
+
+					$dividerPosition = strpos($contentArea->content, $previewDivider);
+					if ($dividerPosition)
+						$contentArea->content = substr($contentArea->content, 0, $dividerPosition).$readMoreButton;
+					else
+						$contentArea->content .= $readMoreButton;
+
+					$contentAreas = [$contentArea];
 				}
 			}
 
 			$content = '<div class="row"><div class="col-md-12">{{main}}</div></div>';
 
-			if ((boolean) Fractal::getSetting('Show Thumbnail Images on Article List', true) && ($this->hasThumbnailImage() || (boolean) Fractal::getSetting('Show Placeholder Thumbnail Images on Article List', true))) {
+			if ((boolean) Fractal::getSetting('Show Thumbnail Images on Article List', true)
+			&& ($this->hasThumbnailImage() || (boolean) Fractal::getSetting('Show Placeholder Thumbnail Images on Article List', true)))
+			{
 				$layoutTemplate = LayoutTemplate::find(4); //layout template: "Standard with Image"
-				if (!empty($layoutTemplate)) {
+				if (!empty($layoutTemplate))
+				{
 					$content = $layoutTemplate->layout;
 					$content = str_replace('{{image}}', $this->getThumbnailImage(), $content);
 				}
 			} else {
-				$layoutTemplate = LayoutTemplate::find(1); //layout template: "Standard with Image"
+				$layoutTemplate = LayoutTemplate::find(1); //layout template: "Standard"
 				if (!empty($layoutTemplate))
 					$content = $layoutTemplate->layout;
 			}
@@ -415,7 +428,7 @@ class Article extends BaseModel {
 	}
 
 	/**
-	 * Get the last updated date/time.
+	 * Get the published date/time.
 	 *
 	 * @param  mixed    $dateFormat
 	 * @return string
@@ -426,6 +439,20 @@ class Article extends BaseModel {
 			$dateFormat = Fractal::getDateTimeFormat();
 
 		return Fractal::dateTimeSet($this->published_at) ? date($dateFormat, strtotime($this->published_at)) : '';
+	}
+
+	/**
+	 * Get the published date.
+	 *
+	 * @param  mixed    $dateFormat
+	 * @return string
+	 */
+	public function getPublishedDate($dateFormat = false)
+	{
+		if (!$dateFormat)
+			$dateFormat = Fractal::getDateFormat();
+
+		return Fractal::dateSet($this->published_at) ? date($dateFormat, strtotime($this->published_at)) : '';
 	}
 
 	/**

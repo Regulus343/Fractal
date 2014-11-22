@@ -35,6 +35,13 @@ class FileMediaTypesTableSeeder extends Seeder {
 				'slug'        => 'videos',
 				'name'        => 'Video',
 				'extensions'  => 'avi, flv, mkv, mp4, mpg',
+
+				'media_types' => [
+					[
+						'slug' => 'videos',
+						'name' => 'Video',
+					],
+				],
 			],
 			[
 				'slug'        => 'audio',

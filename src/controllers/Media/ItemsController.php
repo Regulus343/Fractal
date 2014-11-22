@@ -141,7 +141,8 @@ class ItemsController extends MediaController {
 						$path = substr($path, 0, (strlen($path) - 1));
 				}
 
-				$item = new Item(Input::all());
+				$item = new Item();
+				$item->fillFormattedValues(Input::all());
 
 				$item->title             = ucfirst(trim(Input::get('title')));
 				$item->hosted_externally = $hostedExternally;
@@ -323,7 +324,7 @@ class ItemsController extends MediaController {
 				if ($hostedExternally && $item->isHostedLocally())
 					$item->deleteFiles();
 
-				$item->fill(Input::all());
+				$item->fillFormattedValues(Input::all());
 
 				$item->title             = ucfirst(trim(Input::get('title')));
 				$item->hosted_externally = $hostedExternally;

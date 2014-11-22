@@ -54,9 +54,10 @@ class Type extends BaseModel {
 	 * Get the validation rules used by the model.
 	 *
 	 * @param  mixed    $id
-	 * @return string
+	 * @param  string   $type
+	 * @return array
 	 */
-	public static function validationRules($id = null)
+	public static function validationRules($id = null, $type = 'default')
 	{
 		return [
 			'slug' => ['required'],

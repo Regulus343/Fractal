@@ -68,7 +68,7 @@ class ViewController extends BaseController {
 		if (Auth::isNot('admin'))
 			$mediaItems->onlyPublished();
 
-		$mediaItems = $mediaItems->paginate(5);
+		$mediaItems = $mediaItems->paginate(Fractal::getSetting('Media Items Listed Per Page', 10));
 
 		Site::set('lastPage', $mediaItems->getLastPage());
 

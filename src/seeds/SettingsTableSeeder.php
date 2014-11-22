@@ -151,8 +151,37 @@ class SettingsTableSeeder extends Seeder {
 				'developer'     => true,
 			],
 
+			/* Media */
+
+			[
+				'name'          => 'Media Items Listed Per Page',
+				'value'         => 10,
+				'type'          => 'Integer',
+				'category'      => 'Media',
+				'options'       => '4:300; +2',
+			],
+			[
+				'name'          => 'Display Media Sets Menu',
+				'value'         => true,
+				'type'          => 'Boolean',
+				'category'      => 'Media',
+			],
+			[
+				'name'          => 'Display Media Types Menu',
+				'value'         => true,
+				'type'          => 'Boolean',
+				'category'      => 'Media',
+			],
+
 			/* Blogs */
 
+			[
+				'name'          => 'Articles Listed Per Page',
+				'value'         => 10,
+				'type'          => 'Integer',
+				'category'      => 'Blogs',
+				'options'       => '4:300; +2',
+			],
 			[
 				'name'          => 'Show Thumbnail Images on Article List',
 				'value'         => true,

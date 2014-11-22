@@ -45,7 +45,7 @@
 
 {{-- CK Editor --}}
 @if (Site::get('wysiwyg'))
-	<script type="text/javascript" src="{{ Site::asset('plugins/ckeditor/ckeditor.js', false, 'regulus/fractal') }}"></script>
+	<script type="text/javascript" src="{{ Site::asset('libraries/ckeditor/ckeditor.js', false, 'regulus/fractal') }}"></script>
 @endif
 
 {{-- Handlebars --}}
@@ -63,6 +63,9 @@
 {{-- Gridster --}}
 <link type="text/css" rel="stylesheet" href="{{ Site::css('jquery.gridster', 'regulus/fractal') }}" />
 <script type="text/javascript" src="{{ Site::js('jquery.gridster', 'regulus/fractal') }}"></script>
+
+{{-- Audio JS --}}
+<script type="text/javascript" src="{{ Site::asset('libraries/audiojs/audio.min.js', false, 'regulus/fractal') }}"></script>
 
 {{-- Formation JS --}}
 @include('formation::load_js')

@@ -47,14 +47,16 @@ class Setting extends Eloquent {
 					$optionsAdditional = explode('; +', $options[1]);
 
 					$html = Form::field($name, 'select', [
-						'label'   => $this->getLabel(),
-						'options' => Form::numberOptions($options[0], $optionsAdditional[0], (isset($optionsAdditional[1]) ? $optionsAdditional[1] : 1)),
-						'value'   => $this->value,
+						'label'       => $this->getLabel(),
+						'options'     => Form::numberOptions($options[0], $optionsAdditional[0], (isset($optionsAdditional[1]) ? $optionsAdditional[1] : 1)),
+						'null-option' => false,
+						'value'       => $this->value,
 					]);
 				} else {
 					$html = Form::field($name, 'select', [
 						'label'   => $this->getLabel(),
 						'options' => Form::simpleOptions($options),
+						'null-option' => false,
 						'value'   => $this->value,
 					]);
 				}

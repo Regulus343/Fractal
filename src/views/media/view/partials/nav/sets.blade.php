@@ -1,4 +1,4 @@
-@if (isset($mediaSets) && !empty($mediaSets))
+@if (isset($mediaSets) && !empty($mediaSets) && Fractal::getSetting('Display Media Sets Menu', true))
 
 	<h3>{{ Fractal::lang('labels.mediaSets') }}</h3>
 

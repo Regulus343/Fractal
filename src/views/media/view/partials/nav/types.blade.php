@@ -1,4 +1,4 @@
-@if (isset($mediaTypes) && !empty($mediaTypes))
+@if (isset($mediaTypes) && !empty($mediaTypes) && Fractal::getSetting('Display Media Types Menu', true))
 
 	<h3>{{ Fractal::lang('labels.mediaTypes') }}</h3>
 

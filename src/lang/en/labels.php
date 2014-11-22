@@ -2,7 +2,7 @@
 
 return [
 
-	'version'                     => '0.6.9a',
+	'version'                     => '0.7.0a',
 
 	'home'                        => 'Home',
 	'returnToCms'                 => 'Return to CMS',
@@ -179,6 +179,8 @@ return [
 	'searchBox'                   => 'Search...',
 
 	'returnToTop'                 => 'Return to Top',
+
+	'readMore'                    => 'Read More...',
 
 	'timestamp'                   => 'Timestamp',
 	'toBePublished'               => 'To Be Published on :dateTime',

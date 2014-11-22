@@ -7,9 +7,9 @@
 			{{ Form::field('height', 'number', ['placeholder-field' => 'Current Height']) }}
 		</div>
 		<div class="col-md-4">
-			{{ Form::field(null, 'checkbox-set', array(
-				'options' => array('crop', 'create_thumbnail')
-			)) }}
+			{{ Form::field(null, 'checkbox-set', [
+				'options' => ['crop', 'create_thumbnail'],
+			]) }}
 		</div>
 	</div>
 

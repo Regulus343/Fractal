@@ -53,6 +53,7 @@ class Item extends BaseModel {
 		'hosted_externally',
 		'hosted_content_type',
 		'hosted_content_uri',
+		'hosted_content_thumbnail_url',
 		'filename',
 		'basename',
 		'extension',
@@ -74,6 +75,7 @@ class Item extends BaseModel {
 	 */
 	protected $types = [
 		'slug'         => 'unique-slug',
+		'date_created' => 'date',
 		'published_at' => 'date-time',
 	];
 
@@ -92,7 +94,9 @@ class Item extends BaseModel {
 	 * @var    array
 	 */
 	protected $formatsForDb = [
-		'published_at' => 'nullIfBlank',
+		'hosted_content_thumbnail_url' => 'nullIfBlank',
+		'date_created'                 => 'nullIfBlank',
+		'published_at'                 => 'nullIfBlank',
 	];
 
 	/**
@@ -115,9 +119,10 @@ class Item extends BaseModel {
 	 * Get the validation rules used by the model.
 	 *
 	 * @param  mixed    $id
-	 * @return string
+	 * @param  string   $type
+	 * @return array
 	 */
-	public static function validationRules($id = null)
+	public static function validationRules($id = null, $type = 'default')
 	{
 		$rules = [
 			'slug'  => ['required'],
@@ -283,8 +288,13 @@ class Item extends BaseModel {
 	{
 		if ($this->hostedExternally('YouTube') && (!$this->thumbnail || !$thumbnail))
 			return 'http://img.youtube.com/vi/'.$this->hosted_content_uri.'/0.jpg';
+
+		else if ($this->hostedExternally('Vimeo') && !$this->thumbnail && !is_null($this->hosted_content_thumbnail_url))
+			return $this->hosted_content_thumbnail_url;
+
 		else if ($this->getFileType() == "Image" || ($thumbnail && $this->thumbnail))
 			return $this->getFileUrl($thumbnail);
+
 		else
 			return Site::img('image-not-available', 'regulus/fractal');
 	}
@@ -419,7 +429,7 @@ class Item extends BaseModel {
 	}
 
 	/**
-	 * Get the last updated date/time.
+	 * Get the published date/time.
 	 *
 	 * @param  mixed    $dateFormat
 	 * @return string
@@ -430,6 +440,34 @@ class Item extends BaseModel {
 			$dateFormat = Fractal::getDateTimeFormat();
 
 		return Fractal::dateTimeSet($this->published_at) ? date($dateFormat, strtotime($this->published_at)) : '';
+	}
+
+	/**
+	 * Get the published date.
+	 *
+	 * @param  mixed    $dateFormat
+	 * @return string
+	 */
+	public function getPublishedDate($dateFormat = false)
+	{
+		if (!$dateFormat)
+			$dateFormat = Fractal::getDateFormat();
+
+		return Fractal::dateSet($this->published_at) ? date($dateFormat, strtotime($this->published_at)) : '';
+	}
+
+	/**
+	 * Get the date the item was created.
+	 *
+	 * @param  mixed    $dateFormat
+	 * @return string
+	 */
+	public function getCreatedDate($dateFormat = false)
+	{
+		if (!$dateFormat)
+			$dateFormat = Fractal::getDateFormat();
+
+		return Fractal::dateSet($this->date_created) ? date($dateFormat, strtotime($this->date_created)) : '';
 	}
 
 	/**

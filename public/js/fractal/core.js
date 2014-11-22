@@ -62,6 +62,11 @@ $(document).ready(function(){
 	/* Setup Select Fields */
 	$('select').select2();
 
+	/* Setup Embedded Audio */
+	audiojs.events.ready(function() {
+		audiojs.createAll();
+	});
+
 	/* Setup Search, Pagination, and Table Sorting */
 	$('#form-search').submit(function(e){
 		e.preventDefault();
@@ -197,6 +202,11 @@ $(document).ready(function(){
 	$('.date-time-picker').datetimepicker({
 		language:         'en',
 		pick12HourFormat: true,
+	});
+
+	$('.date-picker').datetimepicker({
+		language: 'en',
+		pickTime: false,
 	});
 
 	/* Set Up Checkbox Show / Hide Actions */
@@ -412,7 +422,7 @@ function createPaginationMenu(pages) {
 }
 
 function setupPagination() {
-	$('.pagination li a').off('click').on('click', function(e){
+	$('.pagination li a[href=""]').off('click').on('click', function(e){
 		e.preventDefault();
 		if (!$(this).hasClass('disabled') && !$(this).hasClass('active')) {
 			page = $(this).attr('data-page');

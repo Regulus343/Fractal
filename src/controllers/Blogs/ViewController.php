@@ -63,7 +63,7 @@ class ViewController extends BaseController {
 		if (Auth::isNot('admin'))
 			$articles->onlyPublished();
 
-		$articles = $articles->paginate(5);
+		$articles = $articles->paginate(Fractal::getSetting('Articles Listed Per Page', 10));
 
 		Site::set('lastPage', $articles->getLastPage());
 

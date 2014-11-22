@@ -92,9 +92,10 @@ class Set extends BaseModel {
 	 * Get the validation rules used by the model.
 	 *
 	 * @param  mixed    $id
-	 * @return string
+	 * @param  string   $type
+	 * @return array
 	 */
-	public static function validationRules($id = null)
+	public static function validationRules($id = null, $type = 'default')
 	{
 		return [
 			'slug'  => ['required'],
@@ -229,7 +230,7 @@ class Set extends BaseModel {
 	}
 
 	/**
-	 * Get the last updated date/time.
+	 * Get the published date/time.
 	 *
 	 * @param  mixed    $dateFormat
 	 * @return string
@@ -240,6 +241,20 @@ class Set extends BaseModel {
 			$dateFormat = Fractal::getDateTimeFormat();
 
 		return Fractal::dateTimeSet($this->published_at) ? date($dateFormat, strtotime($this->published_at)) : '';
+	}
+
+	/**
+	 * Get the published date.
+	 *
+	 * @param  mixed    $dateFormat
+	 * @return string
+	 */
+	public function getPublishedDate($dateFormat = false)
+	{
+		if (!$dateFormat)
+			$dateFormat = Fractal::getDateFormat();
+
+		return Fractal::dateSet($this->published_at) ? date($dateFormat, strtotime($this->published_at)) : '';
 	}
 
 	/**

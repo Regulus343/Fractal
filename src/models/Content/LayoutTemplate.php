@@ -30,9 +30,10 @@ class LayoutTemplate extends BaseModel {
 	 * Get the validation rules used by the model.
 	 *
 	 * @param  boolean  $id
-	 * @return string
+	 * @param  string   $type
+	 * @return array
 	 */
-	public static function validationRules($id = false)
+	public static function validationRules($id = false, $type = 'default')
 	{
 		return [
 			'name'   => ['required'],

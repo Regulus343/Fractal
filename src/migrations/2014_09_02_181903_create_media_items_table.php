@@ -26,7 +26,8 @@ class CreateMediaItemsTable extends Migration {
 
 			$table->boolean('hosted_externally');
 			$table->string('hosted_content_type', 32)->nullable();
-			$table->string('hosted_content_uri', 255)->nullable();
+			$table->string('hosted_content_uri')->nullable();
+			$table->string('hosted_content_thumbnail_url')->nullable();
 
 			$table->string('filename')->nullable();
 			$table->string('basename')->nullable();

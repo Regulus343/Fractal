@@ -11,8 +11,9 @@
 				$('#field-title').keyup(function(){
 					$('#field-title').val($('#field-title').val().replace(/  /g, ' '));
 
-					var slug = strToSlug($('#field-title').val());
-					$('#field-slug').val(slug);
+					setSlugForTitle();
+				}).change(function(){
+					setSlugForTitle();
 				});
 			@endif
 
@@ -31,6 +32,10 @@
 				checkHostedContentType();
 			});
 
+			$('#field-hosted-content-uri').change(function(){
+				checkHostedContentUri();
+			});
+
 			$('#field-description-type').change(function(){
 				if ($(this).val() == "HTML") {
 					$('.html-description-area').show().removeClass('hidden');
@@ -42,7 +47,7 @@
 			});
 
 			if ($('#field-description-type').val() == "HTML")
-				$('#field-description-html').val($('#description').val());
+				CKEDITOR.instances['field-description-html'].setData($('#description').val());
 			else
 				$('#field-description-markdown').val($('#description').val());
 
@@ -54,18 +59,29 @@
 			});
 		});
 
+		function setSlugForTitle() {
+			var slug = strToSlug($('#field-title').val());
+			$('#field-slug').val(slug);
+		}
+
 		function checkHostedContentType() {
 			if ($('#field-hosted-externally').prop('checked'))
 			{
-				if ($('#field-hosted-content-type').val() == "YouTube") {
+				if ($('#field-hosted-content-type').val() == "YouTube")
 					$('#field-hosted-content-uri').val($('#field-hosted-content-uri').val().substr(0, 11)).attr('maxlength', 11);
-					$('#field-hosted-content-uri-help-youtube').hide().removeClass('hidden').fadeIn('fast');
-				} else {
+				else
 					$('#field-hosted-content-uri').attr('maxlength', false);
-					$('.hosted-content-uri-help').fadeOut('fast');
+
+				$('.hosted-content-uri-help').fadeOut('fast');
+
+				if ($('#field-hosted-content-type').val() == "YouTube") {
+					$('#hosted-content-uri-help-youtube').hide().removeClass('hidden').fadeIn('fast');
+				} else if ($('#field-hosted-content-type').val() == "Vimeo") {
+					$('#hosted-content-uri-help-vimeo').hide().removeClass('hidden').fadeIn('fast');
 				}
 
-				if ($('#field-hosted-content-type').val() == "Vimeo" || $('#field-hosted-content-type').val() == "YouTube") {
+				if ($('#field-hosted-content-type').val() == "Vimeo" || $('#field-hosted-content-type').val() == "YouTube")
+				{
 					var fileTypeId = null;
 					$('#field-file-type-id option').each(function(){
 						if ($(this).text() == "Video")
@@ -74,7 +90,18 @@
 
 					if (fileTypeId)
 						$('#field-file-type-id').val(fileTypeId).trigger('change').select2('readonly', true);
-				} else if ($('#field-hosted-content-type').val() == "SoundCloud") {
+
+					var mediaTypeId = null;
+					$('#field-media-type-id option').each(function(){
+						if ($(this).text() == "Video")
+							mediaTypeId = $(this).attr('value');
+					});
+
+					if (mediaTypeId)
+						$('#field-media-type-id').val(mediaTypeId).trigger('change');
+
+				} else if ($('#field-hosted-content-type').val() == "SoundCloud")
+				{
 					var fileTypeId = null;
 					$('#field-file-type-id option').each(function(){
 						if ($(this).text() == "Audio")
@@ -83,11 +110,68 @@
 
 					if (fileTypeId)
 						$('#field-file-type-id').val(fileTypeId).trigger('change').select2('readonly', true);
+
 				} else {
 					$('#field-file-type-id').select2('readonly', false);
 				}
 			} else {
 				$('#field-file-type-id').select2('readonly', false);
+			}
+
+			checkHostedContentUri();
+		}
+
+		function checkHostedContentUri() {
+			if ($('#field-hosted-content-type').val() == "YouTube" && $('#field-hosted-content-uri').val().length == 11)
+			{
+				$.ajax({
+					url:      'http://gdata.youtube.com/feeds/api/videos/'+ $('#field-hosted-content-uri').val() +'?v=2&alt=jsonc',
+					dataType: 'json',
+					success:  function(result) {
+						$('#field-hosted-content-uri').parents('.form-group').removeClass('has-error');
+
+						$('#field-title').val(result.data.title);
+						setSlugForTitle();
+
+						if ($('#field-description-type').val() == "HTML")
+							CKEDITOR.instances['field-description-html'].setData(result.data.description);
+
+						if ($('#field-description-type').val() == "Markdown")
+							$('#field-description-markdown').val(result.data.description);
+					},
+					error: function() {
+						$('#field-hosted-content-uri').parents('.form-group').addClass('has-error');
+						setMainMessage(fractalMessages.errorHostedContentNotFound, 'error');
+					}
+				});
+			}
+
+			if ($('#field-hosted-content-type').val() == "Vimeo" && $('#field-hosted-content-uri').val() != "")
+			{
+				$.ajax({
+					url:      'http://vimeo.com/api/v2/video/'+ $('#field-hosted-content-uri').val() +'.json',
+					dataType: 'json',
+					success:  function(result) {
+						$('#field-hosted-content-uri').parents('.form-group').removeClass('has-error');
+
+						$('#field-title').val(result[0].title);
+						setSlugForTitle();
+
+						if ($('#field-description-type').val() == "HTML")
+							CKEDITOR.instances['field-description-html'].setData(result[0].description);
+
+						if ($('#field-description-type').val() == "Markdown")
+							$('#field-description-markdown').val(result[0].description.replace(/<br \/>/g, ''));
+
+						$('#field-hosted-content-thumbnail-url').val(result[0].thumbnail_medium);
+					},
+					error: function() {
+						$('#field-hosted-content-uri').parents('.form-group').addClass('has-error');
+						setMainMessage(fractalMessages.errorHostedContentNotFound, 'error');
+					}
+				});
+			} else {
+				$('#field-hosted-content-thumbnail-url').val('');
 			}
 		}
 
@@ -157,13 +241,25 @@
 				</div>
 				<div class="col-md-4">
 					{{ Form::openFieldContainer('hosted_content_uri') }}
+
 						{{ Form::label('hosted_content_uri', 'Hosted Content URI') }}
 						{{ Form::text('hosted_content_uri', null, ['label' => 'Hosted URI']) }}
 
 						<div id="hosted-content-uri-help-youtube" class="alert alert-info hosted-content-uri-help{{ HTML::hiddenArea(Form::value('hosted_type') != "YouTube", true) }}">
 							https://www.youtube.com/watch?v=<strong class="highlight">y0uTuB3-iDx</strong>&amp;list=xyz
 						</div>
+
+						<div id="hosted-content-uri-help-vimeo" class="alert alert-info hosted-content-uri-help{{ HTML::hiddenArea(Form::value('hosted_type') != "Vimeo", true) }}">
+							http://vimeo.com/<strong class="highlight">123456789</strong>
+						</div>
+
+						<div id="hosted-content-uri-help-soundcloud" class="alert alert-info hosted-content-uri-help{{ HTML::hiddenArea(Form::value('hosted_type') != "SoundCloud", true) }}">
+							https://api.soundcloud.com/tracks/<strong class="highlight">123456789</strong> <em>(found in &lt;iframe&gt; Embed URL)</em>
+						</div>
+
 					{{ Form::closeFieldContainer('hosted_content_uri') }}
+
+					{{ Form::hidden('hosted_content_thumbnail_url') }}
 				</div>
 			</div>
 		</div>
@@ -218,10 +314,24 @@
 					'data-callback-function' => 'publishedCheckedCallback',
 				]) }}
 			</div>
+
 			<div class="col-md-3 published-at-area{{ HTML::invisibleArea(!Form::value('published', 'checkbox'), true) }}">
 				<div class="form-group">
 					<div class="input-group date date-time-picker">
-						{{ Form::text('published_at', null, [
+						{{ Form::text('published_at', [
+							'class'       => 'date',
+							'placeholder' => 'Date/Time Published',
+						]) }}
+
+						<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-3 col-md-offset-4">
+				<div class="form-group">
+					<div class="input-group date date-picker">
+						{{ Form::text('date_created', null, [
 							'class'       => 'date',
 							'placeholder' => 'Date/Time Published',
 						]) }}
