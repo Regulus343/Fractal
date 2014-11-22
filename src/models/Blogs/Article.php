@@ -326,11 +326,16 @@ class Article extends BaseModel {
 
 					$readMoreButton = '<a href="'.$this->getUrl().'" class="btn btn-default btn-xs read-more">'.Fractal::lang('labels.readMore').'</a>';
 
-					$dividerPosition = strpos($contentArea->content, $previewDivider);
-					if ($dividerPosition)
+					$dividerPosition = strpos($contentArea->content, "\r\n".$previewDivider);
+					if ($dividerPosition) {
 						$contentArea->content = substr($contentArea->content, 0, $dividerPosition).$readMoreButton;
-					else
-						$contentArea->content .= $readMoreButton;
+					} else {
+						$dividerPosition = strpos($contentArea->content, $previewDivider);
+						if ($dividerPosition)
+							$contentArea->content = substr($contentArea->content, 0, $dividerPosition).$readMoreButton;
+						else
+							$contentArea->content .= $readMoreButton;
+					}
 
 					$contentAreas = [$contentArea];
 				}
