@@ -411,7 +411,7 @@ ul#select-content-area li div.info div.actions span.glyphicon-remove { color: #9
 ul#select-content-area li div.info div.actions span.glyphicon-remove:hover { color: #c00; }
 
 ul.image-list { margin-top: 12px; padding-left: 0; list-style: none; }
-ul.image-list li { float: left; margin: 0 6px 6px 0; padding: 3px; border: 1px solid #aaa; cursor: pointer; }
+ul.image-list li { float: left; position: relative; margin: 0 6px 6px 0; padding: 3px; border: 1px solid #aaa; cursor: pointer; }
 ul.image-list li img { width: 90px; height: 90px; border: none; opacity: 0.9; }
 ul.image-list li .remove {
 	z-index: 10;
@@ -426,6 +426,10 @@ ul.image-list li:hover .remove { display: block; }
 ul.image-list li .remove:hover { opacity: 1; }
 ul.image-list li:hover, ul.select-thumbnail-image li.selected { border-color: #2b669a; }
 ul.image-list li:hover img, ul.select-thumbnail-image li.selected img { opacity: 1; }
+
+ul.image-list-large li img { width: 120px; height: 120px; }
+
+ul.image-list h4 { position: absolute; top: 0; left: 0; padding: 4px; color: #fff; font-size: 12px; text-shadow: #000 0 0 3px; }
 
 .button-menu { margin-bottom: 16px; }
 .button-menu a.btn { margin-left: 6px; }
@@ -447,6 +451,9 @@ div.article-heading, div.media-item-heading { margin-bottom: 12px; border-bottom
 div.article-heading time, div.media-item-heading time { color: #555; font-style: italic; }
 div.article-body img, div.media-item-body img { max-width: 100%; }
 div.article-body p, div.media-item-body p { width: inherit; }
+div.article-body a.read-more { margin-left: 6px; }
+
+div.media-item-inserted { padding: 8px 0; border-top: 1px dotted #aaa; border-bottom: 1px dotted #aaa; }
 
 a.thumbnail-image { display: inline-block; margin: 0; padding: 3px; width: auto; border: 1px solid #aaa; }
 a.thumbnail-image:hover { border-color: #2b669a; }

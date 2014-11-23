@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\View;
 
 use \Form;
 use \Format;
@@ -240,7 +241,7 @@ class Item extends BaseModel {
 	 */
 	public function getUrl()
 	{
-		return Fractal::mediaUrl('item/'.$this->slug);
+		return Fractal::mediaUrl('i/'.$this->slug);
 	}
 
 	/**
@@ -350,6 +351,20 @@ class Item extends BaseModel {
 			return (boolean) $this->hosted_externally;
 		else
 			return (boolean) ($this->hosted_externally && $this->hosted_content_type == $type);
+	}
+
+	/**
+	 * Get the markup for the media item.
+	 *
+	 * @param  boolean  $contentInserted
+	 * @return string
+	 */
+	public function getContent($contentInserted = false)
+	{
+		return View::make(Fractal::view('media.view.partials.item_content', true), [
+			'mediaItem'       => $this,
+			'contentInserted' => $contentInserted,
+		])->render();
 	}
 
 	/**
@@ -632,7 +647,6 @@ class Item extends BaseModel {
 				if (isset($filters[$allowedFilter]) && $filters[$allowedFilter] && $filters[$allowedFilter] != "")
 					$media->where($allowedFilter, $filters['media_type_id']);
 			}
-			
 		}
 
 		return $media->paginate($searchData['itemsPerPage']);

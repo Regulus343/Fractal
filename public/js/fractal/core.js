@@ -8,6 +8,8 @@ var itemActionMessage;
 var itemActionUrl;
 var itemActionFunction;
 
+var activeActions = [];
+
 $(document).ready(function(){
 
 	/* Setup Tooltips */
@@ -53,7 +55,6 @@ $(document).ready(function(){
 
 	/* Setup Number Fields */
 	$('input[type="number"], input.number').keyup(function(){
-		console.log($(this).val());
 		if (isNaN($(this).val()) || $(this).val() == "") $(this).val('');
 	}).change(function(){
 		if (isNaN($(this).val()) || $(this).val() == "") $(this).val('');
@@ -736,26 +737,34 @@ var markdownContentUpdateTimer;
 
 function setupMarkdownField(field) {
 	if (field) {
-		field.on('focus', function(){
+		field.off('focus').on('focus', function()
+		{
 			renderMarkdownPreview($(this));
 			$('#markdown-preview').fadeIn();
-		}).on('keydown', function(e){
-			if (e.keyCode == 9) {
+
+		}).off('keydown').on('keydown', function(e)
+		{
+			if (e.keyCode == 9)
+			{
 				var myValue   = "\t";
 				var startPos  = this.selectionStart;
 				var endPos    = this.selectionEnd;
 				var scrollTop = this.scrollTop;
 				this.value    = this.value.substring(0, startPos) + myValue + this.value.substring(endPos,this.value.length);
 				this.focus();
+
 				this.selectionStart = startPos + myValue.length;
 				this.selectionEnd   = startPos + myValue.length;
 				this.scrollTop      = scrollTop;
 
 				e.preventDefault();
 			}
-		}).on('keyup', function(){
+		}).off('keyup').on('keyup', function()
+		{
 			renderMarkdownPreview($(this));
-		}).on('blur', function(){
+			checkForSelectFileMediaItem($(this));
+
+		}).off('blur').on('blur', function(){
 			$('#markdown-preview').fadeOut();
 		});
 
@@ -795,6 +804,118 @@ function incrementMarkdownContentUpdateTimer() {
 			markdownContentField.parents('.row').find('.markdown-preview-content').html(content);
 		}
 	});
+}
+
+function checkForSelectFileMediaItem(field) {
+	var wysiwyg = field.hasClass('field-content-html');
+
+	if (wysiwyg)
+		var text = CKEDITOR.instances[field.attr('id')].getData();
+	else
+		var text = field.val();
+
+	if (text.substr(-5) == "</p>\n")
+	{
+		text = text.substr(0, (text.length - 5));
+	}
+
+	if (text.substr(-5) == "file:")
+	{
+		var type = "File";
+		modalAjax(baseUrl + '/api/select-file-media-item', 'post', {type: type}, selectFileMediaItem(field, type));
+	} else {
+		if (activeActions['selectingFile'] === true)
+			$('#modal').modal('hide');
+	}
+
+	if (text.substr(-7) == "[image:")
+	{
+		var type = "File";
+		modalAjax(baseUrl + '/api/select-file-media-item', 'post', {type: type}, selectFileMediaItem(field, type, true));
+	} else {
+		if (activeActions['selectingFile'] === true)
+			$('#modal').modal('hide');
+	}
+
+	if (text.substr(-7) == "[media:")
+	{
+		var type = "Media Item";
+		modalAjax(baseUrl + '/api/select-file-media-item', 'post', {type: type}, selectFileMediaItem(field, type, true));
+	} else {
+		if (activeActions['selectingMediaItem'] === true)
+			$('#modal').modal('hide');
+	}
+}
+
+function selectFileMediaItem(field, type, addClosingBracket) {
+	var wysiwyg = field.hasClass('field-content-html');
+	var text    = wysiwyg ? CKEDITOR.instances[field.attr('id')].getData() : field.val();
+
+	if (wysiwyg && text.substr(-5) == "</p>\n")
+		text= text.substr(0, (text.length - 5));
+
+	if (type == "File") {
+		activeActions['selectingFile'] = true;
+
+		setTimeout(function(){
+			$('#select-file li').off('click').on('click', function()
+			{
+				text += $(this).attr('data-file-id') + (addClosingBracket === true ? ']' : '');
+
+				if (wysiwyg)
+					CKEDITOR.instances[field.attr('id')].setData(text);
+				else
+					field.val(text);
+
+				activeActions['selectingFile'] = false;
+				$('#modal').modal('hide');
+
+				if (wysiwyg)
+					setTimeout(function(){ focusWysiwyg(field); }, 100);
+				else
+					focusField(field);
+			});
+		}, 500);
+	} else {
+		activeActions['selectingMediaItem'] = true;
+
+		setTimeout(function(){
+			$('#select-media-item li').off('click').on('click', function()
+			{
+				text += $(this).attr('data-media-item-id') + (addClosingBracket === true ? ']' : '');
+
+				if (wysiwyg)
+					CKEDITOR.instances[field.attr('id')].setData(text);
+				else
+					field.val(text);
+
+				activeActions['selectingMediaItem'] = false;
+				$('#modal').modal('hide');
+
+				if (wysiwyg)
+					setTimeout(function(){ focusWysiwyg(field); }, 100);
+				else
+					focusField(field);
+			});
+		}, 500);
+	}
+}
+
+function focusField(field) {
+	field.focus();
+
+	var value = field.val();
+	field.val('');
+	field.val(value);
+}
+
+function focusWysiwyg(field) {
+	var editor = CKEDITOR.instances[field.attr('id')];
+	editor.focus();
+
+	var range = editor.createRange();
+	range.moveToElementEditEnd( range.root );
+	editor.getSelection().selectRanges([range]);
 }
 
 /* Formatting Functions */

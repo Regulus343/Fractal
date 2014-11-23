@@ -347,7 +347,7 @@ return [
 					[
 						'icon'       => 'file',
 						'class'      => 'btn btn-default',
-						'url'        => Fractal::mediaUrl(Config::get('fractal::blogs.baseUri') == false ? 'item/:slug' : Config::get('fractal::blogs.baseUri').'/article/:slug'),
+						'url'        => Fractal::mediaUrl(Config::get('fractal::media.baseUri') == false ? 'item/:slug' : Config::get('fractal::blogs.baseUri').'/article/:slug'),
 						'attributes' => [
 							'title'  => Fractal::lang('labels.viewItem'),
 						],

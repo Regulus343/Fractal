@@ -133,7 +133,15 @@
 			//set up WYSIWYG editor for HTML content field
 			var htmlField = item.find('.field-content-html');
 			if (htmlField)
-				CKEDITOR.replace(htmlField.attr('id'));
+				CKEDITOR.replace(htmlField.attr('id'), {
+					on: {
+						key: function() {
+							setTimeout(function(){
+								checkForSelectFileMediaItem(htmlField);
+							}, 50);
+						}
+					}
+				});
 
 			//set up Markdown content field action preview window
 			var markdownField = item.find('.field-content-markdown');

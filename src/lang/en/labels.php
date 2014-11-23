@@ -2,7 +2,7 @@
 
 return [
 
-	'version'                     => '0.7.0a',
+	'version'                     => '0.7.1a',
 
 	'home'                        => 'Home',
 	'returnToCms'                 => 'Return to CMS',
@@ -189,6 +189,9 @@ return [
 
 	'selectThumbnailImage'        => 'Select Thumbnail Image',
 	'removeThumbnailImage'        => 'Remove Thumbnail Image',
+
+	'selectFile'                  => 'Select File',
+	'selectMediaItem'             => 'Select Media Item',
 
 	'size'                        => 'Size',
 	'width'                       => 'Width',

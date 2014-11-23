@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4.
 
 		created by Cody Jassman
-		version 0.7.0a
-		last updated on November 22, 2014
+		version 0.7.1a
+		last updated on November 23, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -27,6 +27,7 @@ use Regulus\Fractal\Models\Content\File as ContentFile;
 use Regulus\Fractal\Models\Content\Menu;
 use Regulus\Fractal\Models\Content\MenuItem;
 use Regulus\Fractal\Models\General\Setting;
+use Regulus\Fractal\Models\Media\Item as MediaItem;
 
 use \Form;
 use \Format;
@@ -115,6 +116,11 @@ class Fractal {
 	{
 		$url = URL::to($this->blogUri($uri));
 
+		//remove media subdomain
+		$mediaSubdomain = Config::get('fractal::media.subdomain');
+		if ($mediaSubdomain != "" && $mediaSubdomain !== false && !is_null($mediaSubdomain))
+			$url = str_replace($mediaSubdomain.'.', '', $url);
+
 		$subdomain = Config::get('fractal::blogs.subdomain');
 		if ($subdomain != "" && $subdomain !== false && !is_null($subdomain)) {
 			$url = str_replace($subdomain.'.', '', $url);
@@ -149,7 +155,12 @@ class Fractal {
 	 */
 	public function mediaUrl($uri = '')
 	{
-		$url = URL::to($this->blogUri($uri));
+		$url = URL::to($this->mediaUri($uri));
+
+		//remove blog subdomain
+		$blogSubdomain = Config::get('fractal::blogs.subdomain');
+		if ($blogSubdomain != "" && $blogSubdomain !== false && !is_null($blogSubdomain))
+			$url = str_replace($blogSubdomain.'.', '', $url);
 
 		$subdomain = Config::get('fractal::media.subdomain');
 		if ($subdomain != "" && $subdomain !== false && !is_null($subdomain)) {
@@ -299,7 +310,7 @@ class Fractal {
 	 */
 	public function modalView($relativeLocation = '', $data = [], $root = false, $returnJson = true)
 	{
-		if (substr($relativeLocation, 0, 7) != "modals.")
+		if (substr($relativeLocation, 0, 7) != "modals." && !$root)
 			$relativeLocation = "modals.".$relativeLocation;
 
 		$response = [
@@ -750,11 +761,11 @@ class Fractal {
 		if (isset($pageSlugs[0]) && !empty($pageSlugs[0])) {
 			$pages = ContentPage::whereIn('slug', $pageSlugs[1])->get();
 
-			for ($f = 0; $f < count($pageSlugs[0]); $f++) {
+			for ($p = 0; $p < count($pageSlugs[0]); $p++) {
 				$title = "";
 				$url   = "";
 				foreach ($pages as $page) {
-					if ($page->slug == $pageSlugs[1][$f]) {
+					if ($page->slug == $pageSlugs[1][$p]) {
 						$title = $page->title;
 						$url   = $page->getUrl();
 					}
@@ -762,7 +773,7 @@ class Fractal {
 
 				if ($url != "") {
 					$link    = '<a href="'.$url.'">'.$title.'</a>';
-					$content = str_replace($pageSlugs[0][$f], $link, $content);
+					$content = str_replace($pageSlugs[0][$p], $link, $content);
 				}
 			}
 		}
@@ -772,15 +783,30 @@ class Fractal {
 		if (isset($pageSlugs[0]) && !empty($pageSlugs[0])) {
 			$pages = ContentPage::whereIn('slug', $pageSlugs[1])->get();
 
-			for ($f = 0; $f < count($pageSlugs[0]); $f++) {
+			for ($p = 0; $p < count($pageSlugs[0]); $p++) {
 				$url = "";
 				foreach ($pages as $page) {
-					if ($page->slug == $pageSlugs[1][$f])
+					if ($page->slug == $pageSlugs[1][$p])
 						$url = $page->getUrl();
 				}
 
 				if ($url != "")
-					$content = str_replace($pageSlugs[0][$f], $url, $content);
+					$content = str_replace($pageSlugs[0][$p], $url, $content);
+			}
+		}
+
+		//add media items to content
+		preg_match_all('/\[media:([0-9]*)\]/', $content, $mediaItemIds);
+		if (isset($mediaItemIds[0]) && !empty($mediaItemIds[0])) {
+			$mediaItems = MediaItem::whereIn('id', $mediaItemIds[1])->get();
+
+			for ($i = 0; $i < count($mediaItemIds[0]); $i++) {
+				$title = "";
+				$url   = "";
+				foreach ($mediaItems as $mediaItem) {
+					if ($mediaItem->id == $mediaItemIds[1][$i])
+						$content = str_replace($mediaItemIds[0][$i], $mediaItem->getContent(true), $content);
+				}
 			}
 		}
 
