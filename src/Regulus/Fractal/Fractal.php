@@ -5,7 +5,7 @@
 		A simple, versatile CMS base for Laravel 4.
 
 		created by Cody Jassman
-		version 0.7.1a
+		version 0.7.2a
 		last updated on November 23, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
@@ -722,7 +722,8 @@ class Fractal {
 				$name = "";
 				$url  = "";
 				foreach ($files as $file) {
-					if ((int) $file->id == (int) $fileIds[1][$f]) {
+					if ((int) $file->id == (int) $fileIds[1][$f])
+					{
 						$name = $file->name;
 						$url  = $file->getUrl();
 					}
@@ -746,7 +747,8 @@ class Fractal {
 
 			for ($f = 0; $f < count($fileIds[0]); $f++) {
 				$url = "";
-				foreach ($files as $file) {
+				foreach ($files as $file)
+				{
 					if ((int) $file->id == (int) $fileIds[1][$f])
 						$url = $file->getUrl();
 				}
@@ -765,7 +767,8 @@ class Fractal {
 				$title = "";
 				$url   = "";
 				foreach ($pages as $page) {
-					if ($page->slug == $pageSlugs[1][$p]) {
+					if ($page->slug == $pageSlugs[1][$p])
+					{
 						$title = $page->title;
 						$url   = $page->getUrl();
 					}
@@ -785,7 +788,8 @@ class Fractal {
 
 			for ($p = 0; $p < count($pageSlugs[0]); $p++) {
 				$url = "";
-				foreach ($pages as $page) {
+				foreach ($pages as $page)
+				{
 					if ($page->slug == $pageSlugs[1][$p])
 						$url = $page->getUrl();
 				}
@@ -803,7 +807,8 @@ class Fractal {
 			for ($i = 0; $i < count($mediaItemIds[0]); $i++) {
 				$title = "";
 				$url   = "";
-				foreach ($mediaItems as $mediaItem) {
+				foreach ($mediaItems as $mediaItem)
+				{
 					if ($mediaItem->id == $mediaItemIds[1][$i])
 						$content = str_replace($mediaItemIds[0][$i], $mediaItem->getContent(true), $content);
 				}
@@ -813,7 +818,8 @@ class Fractal {
 		//render views in content
 		preg_match_all('/\[view:\"([a-z\:\.\_\-]*)\"\]/', $content, $views);
 		if (isset($views[0]) && !empty($views[0])) {
-			for ($v = 0; $v < count($views[0]); $v++) {
+			for ($v = 0; $v < count($views[0]); $v++)
+			{
 				$view    = View::make($views[1][$v])->render();
 				$content = str_replace($views[0][$v], $view, $content);
 			}
@@ -822,9 +828,30 @@ class Fractal {
 		//embed YouTube videos in content
 		preg_match_all('/\[youtube:([A-Za-z0-9\_\-]{11})\]/', $content, $videos);
 		if (isset($videos[0]) && !empty($videos[0])) {
-			for ($v = 0; $v < count($videos[0]); $v++) {
-				$video   = '<iframe width="420" height="315" src="http://www.youtube.com/embed/'.$videos[1][$v].'" frameborder="0" allowfullscreen></iframe>';
+			for ($v = 0; $v < count($videos[0]); $v++)
+			{
+				$video   = $this->getEmbeddedContent('YouTube', $videos[1][$v]);
 				$content = str_replace($videos[0][$v], $video, $content);
+			}
+		}
+
+		//embed Vimeo videos in content
+		preg_match_all('/\[vimeo:([0-9]*)\]/', $content, $videos);
+		if (isset($videos[0]) && !empty($videos[0])) {
+			for ($v = 0; $v < count($videos[0]); $v++)
+			{
+				$video   = $this->getEmbeddedContent('Vimeo', $videos[1][$v]);
+				$content = str_replace($videos[0][$v], $video, $content);
+			}
+		}
+
+		//embed SoundCloud audio in content
+		preg_match_all('/\[soundcloud:([0-9]*)\]/', $content, $audioItems);
+		if (isset($audioItems[0]) && !empty($audioItems[0])) {
+			for ($a = 0; $a < count($audioItems[0]); $a++)
+			{
+				$audioItem = $this->getEmbeddedContent('SoundCloud', $audioItems[1][$a]);
+				$content   = str_replace($audioItems[0][$a], $audioItem, $content);
 			}
 		}
 
@@ -872,11 +899,14 @@ class Fractal {
 		if (isset($fileIds[0]) && !empty($fileIds[0])) {
 			$files = ContentFile::whereIn('id', $fileIds[1])->get();
 
-			for ($f = 0; $f < count($fileIds[0]); $f++) {
+			for ($f = 0; $f < count($fileIds[0]); $f++)
+			{
 				$name = "";
 				$url  = "";
+
 				foreach ($files as $file) {
-					if ((int) $file->id == (int) $fileIds[1][$f]) {
+					if ((int) $file->id == (int) $fileIds[1][$f])
+					{
 						$name = $file->name;
 						$url  = $file->getUrl();
 					}
@@ -887,16 +917,17 @@ class Fractal {
 				if (isset($fileIds[2][$f]) && !empty($fileIds[2][$f])) {
 					$idClasses = str_replace(';', '', explode(' ', $fileIds[2][$f]));
 
-					foreach ($idClasses as $idClass) {
-						if (substr($idClass, 0, 1) == "#") {
+					foreach ($idClasses as $idClass)
+					{
+						if (substr($idClass, 0, 1) == "#")
 							$id = str_replace('#', '', $idClass);
-						} else if (substr($idClass, 0, 1) == ".") {
+						else if (substr($idClass, 0, 1) == ".")
 							$classes[] = str_replace('.', '', $idClass);
-						}
 					}
 				}
 
-				if ($url != "") {
+				if ($url != "")
+				{
 					$image = '<img src="'.$url.'" alt="'.$name.'" title="'.$name.'" ';
 
 					if ($id != "")
@@ -913,6 +944,18 @@ class Fractal {
 		}
 
 		return $content;
+	}
+
+	/**
+	 * Get the markup for embedded content.
+	 *
+	 * @param  string   $type
+	 * @param  string   $uri
+	 * @return string
+	 */
+	public function getEmbeddedContent($type, $uri)
+	{
+		return View::make(Fractal::view('partials.embedded.'.strtolower($type), true))->with('uri', $uri)->render();
 	}
 
 	/**

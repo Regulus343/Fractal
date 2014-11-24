@@ -6,17 +6,9 @@
 
 	@endif
 
-	@if ($mediaItem->hostedExternally('YouTube'))
+	@if ($mediaItem->hostedExternally())
 
-		<iframe class="video youtube" src="http://www.youtube.com/embed/{{ $mediaItem->hosted_content_uri }}" frameborder="0" allowfullscreen></iframe>
-
-	@elseif ($mediaItem->hostedExternally('Vimeo'))
-
-		<iframe class="video vimeo" src="http://player.vimeo.com/video/{{ $mediaItem->hosted_content_uri }}?title=0&amp;byline=0&amp;portrait=0" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-	@elseif ($mediaItem->hostedExternally('SoundCloud'))
-
-		<iframe class="audio soundcloud" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ $mediaItem->hosted_content_uri }}&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+		{{ $mediaItem->getEmbeddedContent() }}
 
 	@elseif ($mediaItem->getFileType() == "Image")
 

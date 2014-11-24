@@ -1,0 +1,1 @@
+<iframe class="video vimeo" src="http://player.vimeo.com/video/{{ $uri }}?title=0&amp;byline=0&amp;portrait=0" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>

@@ -343,7 +343,7 @@ class Item extends BaseModel {
 	 * Check whether media item is hosted externally.
 	 *
 	 * @param  mixed    $type
-	 * @return string
+	 * @return boolean
 	 */
 	public function hostedExternally($type = null)
 	{
@@ -351,6 +351,23 @@ class Item extends BaseModel {
 			return (boolean) $this->hosted_externally;
 		else
 			return (boolean) ($this->hosted_externally && $this->hosted_content_type == $type);
+	}
+
+	/**
+	 * Get the markup for the embedded content of the media item.
+	 *
+	 * @param  mixed    $type
+	 * @return string
+	 */
+	public function getEmbeddedContent($type = null)
+	{
+		if (!$this->hostedExternally($type))
+			return "";
+
+		if (is_null($type))
+			$type = $this->hosted_content_type;
+
+		return Fractal::getEmbeddedContent($type, $this->hosted_content_uri);
 	}
 
 	/**
