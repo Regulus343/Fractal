@@ -16,7 +16,7 @@
 
 				<div class="row vertical-divider">
 					<div class="col-md-12">
-						<h3>{{{ ($setting->category != "" ? $setting->category : Lang::get('fractal::labels.general')) }}}</h3>
+						<h3>{{{ ($setting->category != "" ? $setting->category : Fractal::lang('labels.general')) }}}</h3>
 					</div>
 				</div>
 				<div class="row">
@@ -42,7 +42,7 @@
 
 		@endforeach
 
-		{{ Form::field(Form::submitResource(Lang::get('fractal::labels.settings'), true), 'button') }}
+		{{ Form::field(Form::submitResource(Fractal::lang('labels.settings'), true), 'button') }}
 
 	{{ Form::close() }}
 

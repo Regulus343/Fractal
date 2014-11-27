@@ -3,7 +3,7 @@
 		<a href="" data-page="1">&laquo;</a>
 	</li>
 
-	@for ($p = Fractal::getCurrentPage() - 2; $p <= Fractal::getCurrentPage() + 3; $p++)
+	@for ($p = Fractal::getCurrentPage() - 3; $p <= Fractal::getCurrentPage() + 3; $p++)
 		@if ($p > 0 && $p <= Fractal::getLastPage())
 			<li{{ HTML::dynamicArea(Fractal::getCurrentPage() == $p, 'active') }}>
 				<a href="" data-page="{{ $p }}">{{ $p }}</a>

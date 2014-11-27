@@ -121,7 +121,7 @@ class ContentArea extends BaseModel {
 			return $title;
 		}
 
-		return Lang::get('fractal::labels.untitled');
+		return Fractal::lang('labels.untitled');
 	}
 
 	/**

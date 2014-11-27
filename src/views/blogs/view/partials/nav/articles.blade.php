@@ -2,7 +2,7 @@
 
 	<li class="special">
 		<a href="{{ Fractal::blogUrl('') }}">
-			<span class="glyphicon glyphicon-chevron-left"></span> {{ Lang::get('fractal::labels.blogReturnToHome') }}
+			<span class="glyphicon glyphicon-chevron-left"></span> {{ Fractal::lang('labels.blogReturnToHome') }}
 		</a>
 	</li>
 

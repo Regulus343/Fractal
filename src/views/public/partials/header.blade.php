@@ -7,6 +7,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	@include(Fractal::view('partials.included_files', true))
+
+	<script type="text/javascript" src="{{ Site::js('fractal/public', 'regulus/fractal') }}"></script>
 </head>
 <body>
 	@include(Fractal::view('partials.modal', true))

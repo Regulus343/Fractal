@@ -33,16 +33,16 @@
 			</div>
 			<div class="col-md-4">
 				{{ Form::field('country', 'select', [
-					'label'       => Lang::get('fractal::labels.country'),
+					'label'       => Fractal::lang('labels.country'),
 					'options'     => Form::countryOptions(),
-					'null-option' => Lang::get('fractal::messages.selectItem', array('item' => Format::a(strtolower(Lang::get('fractal::labels.country')))))
+					'null-option' => Fractal::lang('messages.selectItem', array('item' => Format::a(strtolower(Fractal::lang('labels.country')))))
 				]) }}
 			</div>
 			<div class="col-md-4">
 				{{ Form::field('region', 'select', [
 					'label'       => Fractal::getRegionLabel(Form::value('country')),
 					'options'     => Form::provinceOptions(),
-					'null-option' => Lang::get('fractal::messages.selectItem', array('item' => Format::a(strtolower(Fractal::getRegionLabel(Form::value('country'))))))
+					'null-option' => Fractal::lang('messages.selectItem', array('item' => Format::a(strtolower(Fractal::getRegionLabel(Form::value('country'))))))
 				]) }}
 			</div>
 		</div>
@@ -69,7 +69,7 @@
 			<div class="col-md-12">
 				{{ Form::field('roles', 'checkbox-set', [
 					'options'        => Form::prepOptions(Regulus\Identify\Role::orderBy('display_order')->orderBy('name')->get(), array('id', 'name')),
-					'label'          => Lang::get('fractal::labels.roles'),
+					'label'          => Fractal::lang('labels.roles'),
 					'associative'    => true,
 					'name-values'    => true,
 				]) }}
@@ -95,7 +95,7 @@
 			<div class="col-md-12">
 				{{ Form::field(null, 'checkbox-set', [
 					'options'     => array('active' => 'Active', 'banned' => 'Banned'),
-					'label'       => Lang::get('fractal::labels.statuses'),
+					'label'       => Fractal::lang('labels.statuses'),
 					'associative' => true
 				]) }}
 			</div>

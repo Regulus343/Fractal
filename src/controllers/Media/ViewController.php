@@ -130,12 +130,12 @@ class ViewController extends BaseController {
 		$messages = [];
 		if (!$mediaItem->isPublished()) {
 			if ($mediaItem->isPublishedFuture())
-				$messages['info'] = Lang::get('fractal::messages.notPublishedUntil', [
-					'item'     => strtolower(Lang::get('fractal::labels.page')),
+				$messages['info'] = Fractal::lang('messages.notPublishedUntil', [
+					'item'     => strtolower(Fractal::lang('labels.page')),
 					'dateTime' => $mediaItem->getPublishedDateTime(),
 				]);
 			else
-				$messages['info'] = Lang::get('fractal::messages.notPublished', ['item' => Lang::get('fractal::labels.mediaItem')]);
+				$messages['info'] = Fractal::lang('messages.notPublished', ['item' => Fractal::lang('labels.mediaItem')]);
 		}
 
 		return View::make(Fractal::view('item'))
@@ -268,6 +268,18 @@ class ViewController extends BaseController {
 
 	public function getT($slug = null) {
 		return $this->getType($slug);
+	}
+
+	/* Log Download */
+
+	public function getLogDownload($id) {
+		$mediaItem = Item::where('id', $id)->onlyPublished()->first();
+
+		if (empty($mediaItem))
+			return 0;
+
+		$mediaItem->logDownload();
+		return 1;
 	}
 
 }

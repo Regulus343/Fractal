@@ -82,6 +82,9 @@
 	if (baseUrl === undefined)
 		var baseUrl = "{{ Fractal::url() }}";
 
+	var mediaUrl         = "{{ Fractal::mediaUrl() }}";
+	var blogUrl          = "{{ Fractal::blogUrl() }}";
+
 	var currentUrl       = "{{ Request::url() }}";
 
 	var csrfToken        = "{{ Session::token() }}";

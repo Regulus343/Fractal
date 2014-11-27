@@ -513,3 +513,23 @@ ul.nav-side li div time { font-size: 0.75em; }
 
 ul.nav-side li .badge, ul.nav-side li.active .badge { float: right; background-color: #105085; color: #fff; box-shadow: #000 0 0 5px; }
 ul.nav-side li.active .badge { background-color: #266ba3; }
+
+.monospace { font-family: Menlo, Monaco, Consolas, "Courier New", monospace !important; }
+
+pre.plain { margin: 0; padding: 0; background-color: none; border: none; line-height: inherit; }
+
+pre, .monospace { tab-size: 2; -moz-tab-size: 2; -o-tab-size: 2; }
+
+table.markdown-guide tr td { padding: 12px 5px; vertical-align: top; border-bottom: 1px solid #ccc; }
+table.markdown-guide tr td.monospace { width: 50%; font-size: 0.9em; }
+table.markdown-guide tr td h1, table.markdown-guide tr td h2, table.markdown-guide tr td h3 { margin: 0; line-height: 1em; }
+table.markdown-guide tr td.black { background-color: #000; color: #fff; }
+table.markdown-guide tr td.black * { color: #fff !important; }
+table.markdown-guide tr td img { width: 90px; }
+
+@media (min-width: 992px) {
+	.modal-dialog { width: 780px; }
+}
+@media (min-width: 1200px) {
+	.modal-dialog { width: 1000px; }
+}

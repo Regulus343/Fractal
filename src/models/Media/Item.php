@@ -453,7 +453,7 @@ class Item extends BaseModel {
 		$status = Format::boolToStr($this->isPublished(), $yesNo);
 
 		if ($this->isPublishedFuture())
-			$status .= '<div><small><em>'.Lang::get('fractal::labels.toBePublished', [
+			$status .= '<div><small><em>'.Fractal::lang('labels.toBePublished', [
 				'dateTime' => $this->getPublishedDateTime()
 			]).'</em></small></div>';
 

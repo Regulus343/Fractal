@@ -5,13 +5,13 @@
 	{{ Form::openResource() }}
 
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-md-12">
 				{{ Form::field('name') }}
 			</div>
 		</div>
 
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-md-12">
 				{{ Form::field('layout', 'textarea', ['class-field' => 'tab']) }}
 			</div>
 		</div>

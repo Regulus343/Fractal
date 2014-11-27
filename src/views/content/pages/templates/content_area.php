@@ -39,6 +39,10 @@
 					'label'       => 'Markdown Content',
 					'class-field' => 'tab',
 				])?>
+
+				<a href="" class="btn btn-default trigger-modal pull-right" data-modal-ajax-uri="api/view-markdown-guide" data-modal-ajax-action="get">
+					<span class="glyphicon glyphicon-file"></span>&nbsp; <?=Fractal::lang('labels.viewMarkdownGuide')?>
+				</a>
 			</div>
 
 			<div class="col-lg-6 col-markdown-preview-content">

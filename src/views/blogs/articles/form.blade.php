@@ -147,6 +147,9 @@
 			var markdownField = item.find('.field-content-markdown');
 			setupMarkdownField(markdownField);
 
+			//set up modal button triggers
+			setupModalTriggers();
+
 			if (addingContentArea) {
 				$('html, body').animate({
 					scrollTop: (item.offset().top - 30) + 'px'
@@ -287,7 +290,7 @@
 				{{ Form::hidden('thumbnail_image_media_item_id') }}
 
 				<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="blogs/articles/select-thumbnail-image{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="get" data-modal-callback-function="selectThumbnailImageActions">
-					<span class="glyphicon glyphicon-picture"></span>&nbsp; {{ Lang::get('fractal::labels.selectThumbnailImage') }}
+					<span class="glyphicon glyphicon-picture"></span>&nbsp; {{ Fractal::lang('labels.selectThumbnailImage') }}
 				</a>
 			</div>
 			<div class="col-md-8 text-align-right">
@@ -295,7 +298,7 @@
 					<img src="{{ (isset($article) ? $article->getThumbnailImageUrl() : '') }}" alt="Thumbnail Image" title="Thumbnail Image" class="thumbnail-image" />
 
 					<a href="" class="btn btn-danger vertical-align-top" id="remove-thumbnail-image">
-						<span class="glyphicon glyphicon-remove"></span>&nbsp; {{ Lang::get('fractal::labels.removeThumbnailImage') }}
+						<span class="glyphicon glyphicon-remove"></span>&nbsp; {{ Fractal::lang('labels.removeThumbnailImage') }}
 					</a>
 				</div>
 			</div>
@@ -309,7 +312,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="blogs/articles/add-content-area{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="get" data-modal-callback-function="selectContentAreaActions">
-					<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Lang::get('fractal::labels.addContentArea') }}
+					<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Fractal::lang('labels.addContentArea') }}
 				</a>
 			</div>
 		</div>

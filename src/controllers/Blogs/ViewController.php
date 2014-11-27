@@ -125,12 +125,12 @@ class ViewController extends BaseController {
 		$messages = [];
 		if (!$article->isPublished()) {
 			if ($article->isPublishedFuture())
-				$messages['info'] = Lang::get('fractal::messages.notPublishedUntil', [
-					'item'     => strtolower(Lang::get('fractal::labels.page')),
+				$messages['info'] = Fractal::lang('messages.notPublishedUntil', [
+					'item'     => strtolower(Fractal::lang('labels.page')),
 					'dateTime' => $article->getPublishedDateTime(),
 				]);
 			else
-				$messages['info'] = Lang::get('fractal::messages.notPublished', ['item' => Lang::get('fractal::labels.article')]);
+				$messages['info'] = Fractal::lang('messages.notPublished', ['item' => Fractal::lang('labels.article')]);
 		}
 
 		return View::make(Fractal::view('article'))

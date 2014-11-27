@@ -37,7 +37,7 @@ Route::filter('fractal-auth', function() use ($baseUri)
 			Session::set('returnUri', $path);
 
 			return Redirect::to($baseUri.'/login')
-				->with('messages', array('error' => Lang::get('fractal::messages.errorLogInRequired')));
+				->with('messages', array('error' => Fractal::lang('messages.errorLogInRequired')));
 		}
 
 		$cmsRoles = Fractal::getSetting('CMS Roles', 'admin');
@@ -63,7 +63,7 @@ Route::filter('roles', function() use ($baseUri, $authFilters)
 			if ($prefixUri == $filterUri || $prefixUri.'/'.$suffixUri == $filterUri) {
 				if (!Fractal::roles($allowedRoles))
 					return Redirect::to($baseUri.'/login')
-						->with('messages', array('error' => Lang::get('fractal::messages.errorUnauthorized')));
+						->with('messages', array('error' => Fractal::lang('messages.errorUnauthorized')));
 			}
 		}
 	}

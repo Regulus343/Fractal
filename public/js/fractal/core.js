@@ -71,7 +71,7 @@ $(document).ready(function(){
 	/* Setup Search, Pagination, and Table Sorting */
 	$('#form-search').submit(function(e){
 		e.preventDefault();
-		$('#changing-page').val(0);
+		$('#field-changing-page').val(0);
 		searchContent();
 	});
 
@@ -88,7 +88,7 @@ $(document).ready(function(){
 	});
 
 	$('#form-search input, #form-search select').change(function(){
-		$('#changing-page').val(0);
+		$('#field-changing-page').val(0);
 		searchContent();
 	});
 
@@ -237,26 +237,7 @@ $(document).ready(function(){
 	$('[data-toggle="tooltip"]').tooltip({html: true});
 
 	/* Set Up Ajax-Based Modal Windows */
-	$('.trigger-modal[data-modal-ajax-uri]').click(function(e){
-		e.preventDefault();
-
-		var url              = baseUrl + '/' + $(this).attr('data-modal-ajax-uri');
-		var type             = $(this).attr('data-modal-ajax-action') == "get" ? "get" : "post";
-		var dataVars         = $(this).attr('data-modal-ajax-data-variables') !== undefined ? $(this).attr('data-modal-ajax-data-variables').split(',') : [];
-		var callbackFunction = $(this).attr('data-modal-callback-function');
-
-		var data = {};
-		for (v in dataVars) {
-			dataVar = window[dataVars[v]];
-
-			if (dataVar === undefined)
-				dataVar = "";
-
-			data[dataVars[v]] = dataVar;
-		}
-
-		modalAjax(url, type, data, callbackFunction);
-	});
+	setupModalTriggers();
 
 	/* Set Up Return To Top */
 	$('a.return-to-top').click(function(e){
@@ -398,21 +379,19 @@ function searchContent() {
 
 function createPaginationMenu(pages) {
 	lastPage = pages;
-	if (lastPage > 1) {
-		if (lastPage != previousLastPage) {
-			$('.pagination').fadeOut('fast');
 
-			var pagination = '<li'+(page == 1 ? ' class="disabled"' : '')+'><a href="" data-page="1">&laquo;</a></li>' + "\n";
-			for (p = page- 2; p <= page + 3; p++) {
-				if (p > 0 && p <= lastPage)
-					pagination += '<li'+(page == p ? ' class="active"' : '')+'><a href="" data-page="'+p+'">'+p+'</a></li>' + "\n";
-			}
-			pagination += '<li'+(page == lastPage ? ' class="disabled"' : '')+'><a href="" data-page="'+lastPage+'">&raquo;</a></li>' + "\n";
-
-			$('.pagination').html(pagination);
-
-			setupPagination();
+	if (lastPage > 1)
+	{
+		var pagination = '<li'+(page == 1 ? ' class="disabled"' : '')+'><a href="" data-page="1">&laquo;</a></li>' + "\n";
+		for (p = (page - 3); p <= (page + 3); p++) {
+			if (p > 0 && p <= lastPage)
+				pagination += '<li'+(page == p ? ' class="active"' : '')+'><a href="" data-page="'+p+'">'+p+'</a></li>' + "\n";
 		}
+		pagination += '<li'+(page == lastPage ? ' class="disabled"' : '')+'><a href="" data-page="'+lastPage+'">&raquo;</a></li>' + "\n";
+
+		$('.pagination').html(pagination);
+
+		setupPagination();
 
 		$('.pagination').fadeIn('fast');
 	} else {
@@ -425,11 +404,13 @@ function createPaginationMenu(pages) {
 function setupPagination() {
 	$('.pagination li a[href=""]').off('click').on('click', function(e){
 		e.preventDefault();
-		if (!$(this).hasClass('disabled') && !$(this).hasClass('active')) {
-			page = $(this).attr('data-page');
 
-			$('#page').val(page);
-			$('#changing-page').val(1);
+		if (!$(this).hasClass('disabled') && !$(this).hasClass('active'))
+		{
+			page = parseInt($(this).attr('data-page'));
+
+			$('#field-page').val(page);
+			$('#field-changing-page').val(1);
 
 			$('.pagination li').removeClass('active');
 			$('.pagination li a').each(function(){
@@ -726,6 +707,29 @@ var actionDeleteUserRole = function(){
 		error: function(){
 			setMainMessage(fractalMessages.errorGeneral, 'error');
 		}
+	});
+}
+
+function setupModalTriggers() {
+	$('.trigger-modal[data-modal-ajax-uri]').off('click').on('click', function(e){
+		e.preventDefault();
+
+		var url              = baseUrl + '/' + $(this).attr('data-modal-ajax-uri');
+		var type             = $(this).attr('data-modal-ajax-action') == "get" ? "get" : "post";
+		var dataVars         = $(this).attr('data-modal-ajax-data-variables') !== undefined ? $(this).attr('data-modal-ajax-data-variables').split(',') : [];
+		var callbackFunction = $(this).attr('data-modal-callback-function');
+
+		var data = {};
+		for (v in dataVars) {
+			dataVar = window[dataVars[v]];
+
+			if (dataVar === undefined)
+				dataVar = "";
+
+			data[dataVars[v]] = dataVar;
+		}
+
+		modalAjax(url, type, data, callbackFunction);
 	});
 }
 

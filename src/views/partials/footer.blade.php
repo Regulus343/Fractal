@@ -4,7 +4,7 @@
 
 	<div id="footer">
 		<div class="pad">
-			<a href="" class="return-to-top pull-left show-tooltip" title="{{ Lang::get('fractal::labels.returnToTop') }}">
+			<a href="" class="return-to-top pull-left show-tooltip" title="{{ Fractal::lang('labels.returnToTop') }}">
 				<span class="glyphicon glyphicon-chevron-up"></span>
 			</a>
 
@@ -12,7 +12,7 @@
 
 			@if (Config::get('fractal::displayVersion'))
 				<p class="fractal">
-					powered by Fractal v{{ Lang::get('fractal::labels.version') }}
+					powered by Fractal v{{ Fractal::lang('labels.version') }}
 
 					@if (Site::developer())
 						<span class="developer-mode">/ <a href="{{ Fractal::url('developer/off') }}">Disable Developer Mode</a></span>

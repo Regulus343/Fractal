@@ -2,7 +2,7 @@
 
 return [
 
-	'version'                     => '0.7.2a',
+	'version'                     => '0.7.3a',
 
 	'home'                        => 'Home',
 	'returnToCms'                 => 'Return to CMS',
@@ -221,6 +221,9 @@ return [
 	'allCategories'               => 'All Categories',
 	'allMediaTypes'               => 'All Media Types',
 	'allMediaSets'                => 'All Media Sets',
+
+	'markdownGuide'               => 'Markdown Guide',
+	'viewMarkdownGuide'           => 'View Markdown Guide',
 
 	'text'                        => 'Text',
 	'languageKey'                 => 'Language Key',

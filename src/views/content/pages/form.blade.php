@@ -94,6 +94,9 @@
 			var markdownField = item.find('.field-content-markdown');
 			setupMarkdownField(markdownField);
 
+			//set up modal button triggers
+			setupModalTriggers();
+
 			if (addingContentArea) {
 				$('html, body').animate({
 					scrollTop: (item.offset().top - 30) + 'px'
@@ -232,7 +235,7 @@
 		@include(Fractal::view('content.pages.templates.content_area', true))
 
 		<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="pages/add-content-area{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="get" data-modal-callback-function="selectContentAreaActions">
-			<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Lang::get('fractal::labels.addContentArea') }}
+			<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Fractal::lang('labels.addContentArea') }}
 		</a>
 
 		<div class="row clear">
@@ -259,7 +262,7 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field(Form::submitResource(Lang::get('fractal::labels.page')), 'button') }}
+				{{ Form::field(Form::submitResource(Fractal::lang('labels.page')), 'button') }}
 			</div>
 		</div>
 

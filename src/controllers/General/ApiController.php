@@ -46,4 +46,9 @@ class ApiController extends BaseController {
 		return Fractal::modalView('partials.modals.select_file_media_item', $data, true);
 	}
 
+	public function getViewMarkdownGuide()
+	{
+		return Fractal::modalView('partials.modals.markdown_guide', ['title' => Fractal::lang('labels.markdownGuide')], true);
+	}
+
 }

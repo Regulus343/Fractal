@@ -8,7 +8,7 @@
 
 		<li class="special">
 			<a href="{{ Fractal::mediaUrl('') }}">
-				<span class="glyphicon glyphicon-chevron-left"></span> {{ Lang::get('fractal::labels.allMediaTypes') }}
+				<span class="glyphicon glyphicon-chevron-left"></span> {{ Fractal::lang('labels.allMediaTypes') }}
 			</a>
 		</li>
 

@@ -2,7 +2,7 @@
 
 	{{ Form::open(['url' => Request::url().'/search', 'id' => 'form-search']) }}
 
-		{{ Form::text('search', null, array('placeholder' => Lang::get('fractal::labels.searchBox'))) }}
+		{{ Form::text('search', null, array('placeholder' => Fractal::lang('labels.searchBox'))) }}
 
 		{{ Form::hidden('page', ['value' => (isset($page) ? $page : 1)]) }}
 		{{ Form::hidden('changing_page', ['value' => 0]) }}
