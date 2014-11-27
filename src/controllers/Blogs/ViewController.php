@@ -115,12 +115,15 @@ class ViewController extends BaseController {
 
 		$article->logView();
 
-		$articles = Article::orderBy('published_at', 'desc');
+		$articles = Article::query()
+			->where('id', '<=', ((int) $article->id + 3))
+			->orderBy('published_at', 'desc')
+			->take(8);
 
 		if (Auth::isNot('admin'))
 			$articles->onlyPublished();
 
-		$articles = $articles->take(5)->get();
+		$articles = $articles->get();
 
 		$messages = [];
 		if (!$article->isPublished()) {

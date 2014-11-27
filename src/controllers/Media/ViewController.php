@@ -120,12 +120,15 @@ class ViewController extends BaseController {
 
 		$mediaItem->logView();
 
-		$media = Item::orderBy('published_at', 'desc');
+		$mediaItems = Item::query()
+			->where('id', '<=', ((int) $mediaItem->id + 3))
+			->orderBy('published_at', 'desc')
+			->take(8);
 
 		if (Auth::isNot('admin'))
-			$media->onlyPublished();
+			$mediaItems->onlyPublished();
 
-		$media = $media->get();
+		$mediaItems = $mediaItems->get();
 
 		$messages = [];
 		if (!$mediaItem->isPublished()) {
@@ -140,7 +143,7 @@ class ViewController extends BaseController {
 
 		return View::make(Fractal::view('item'))
 			->with('mediaItem', $mediaItem)
-			->with('media', $media)
+			->with('mediaItems', $mediaItems)
 			->with('messages', $messages);
 	}
 

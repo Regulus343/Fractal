@@ -6,7 +6,7 @@
 		</a>
 	</li>
 
-	@foreach ($media as $mediaItemListed)
+	@foreach ($mediaItems as $mediaItemListed)
 
 		<li{{ HTML::activeArea(isset($mediaItem->id) && $mediaItemListed->id == $mediaItem->id) }}>
 			<a href="{{ $mediaItemListed->getUrl() }}">
