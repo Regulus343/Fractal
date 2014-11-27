@@ -4,20 +4,20 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f37e47cbd32431de0c04b7130ba1d232",
+    "hash": "098b13e70e78c778323e2545e81d1440",
     "packages": [
         {
             "name": "erusev/parsedown",
-            "version": "dev-master",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/erusev/parsedown.git",
-                "reference": "6df242bc97cef547b1a77d00c5114b3ac211750a"
+                "reference": "9816507a75b27b61035671cd2fc6f524a9b4c25c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erusev/parsedown/zipball/6df242bc97cef547b1a77d00c5114b3ac211750a",
-                "reference": "6df242bc97cef547b1a77d00c5114b3ac211750a",
+                "url": "https://api.github.com/repos/erusev/parsedown/zipball/9816507a75b27b61035671cd2fc6f524a9b4c25c",
+                "reference": "9816507a75b27b61035671cd2fc6f524a9b4c25c",
                 "shasum": ""
             },
             "type": "library",
@@ -43,20 +43,20 @@
                 "markdown",
                 "parser"
             ],
-            "time": "2014-11-12 01:37:36"
+            "time": "2014-11-19 18:18:56"
         },
         {
             "name": "ezyang/htmlpurifier",
-            "version": "dev-master",
+            "version": "v4.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "b307f3d9ef0960b74ea8bd8d5bbdef2049368947"
+                "reference": "6f389f0f25b90d0b495308efcfa073981177f0fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/b307f3d9ef0960b74ea8bd8d5bbdef2049368947",
-                "reference": "b307f3d9ef0960b74ea8bd8d5bbdef2049368947",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/6f389f0f25b90d0b495308efcfa073981177f0fd",
+                "reference": "6f389f0f25b90d0b495308efcfa073981177f0fd",
                 "shasum": ""
             },
             "require": {
@@ -79,7 +79,8 @@
                 {
                     "name": "Edward Z. Yang",
                     "email": "admin@htmlpurifier.org",
-                    "homepage": "http://ezyang.com"
+                    "homepage": "http://ezyang.com",
+                    "role": "Developer"
                 }
             ],
             "description": "Standards compliant HTML filter written in PHP",
@@ -87,28 +88,28 @@
             "keywords": [
                 "html"
             ],
-            "time": "2014-10-23 22:36:02"
+            "time": "2013-11-30 08:25:19"
         },
         {
             "name": "illuminate/support",
-            "version": "4.2.x-dev",
+            "version": "v4.2.9",
             "target-dir": "Illuminate/Support",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "4831699d6bcddd766e3cebbd8279976854d37027"
+                "reference": "b6716d34afce6e69523725f2534a5c3a54dba964"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/4831699d6bcddd766e3cebbd8279976854d37027",
-                "reference": "4831699d6bcddd766e3cebbd8279976854d37027",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/b6716d34afce6e69523725f2534a5c3a54dba964",
+                "reference": "b6716d34afce6e69523725f2534a5c3a54dba964",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.4.0"
             },
             "require-dev": {
-                "jeremeamia/superclosure": "~1.0.1",
+                "jeremeamia/superclosure": "~1.0",
                 "patchwork/utf8": "1.1.*"
             },
             "type": "library",
@@ -135,7 +136,7 @@
                     "email": "taylorotwell@gmail.com"
                 }
             ],
-            "time": "2014-09-27 01:17:10"
+            "time": "2014-09-12 21:42:43"
         },
         {
             "name": "julien-c/simple-resize",
@@ -217,16 +218,16 @@
         },
         {
             "name": "regulus/activity-log",
-            "version": "dev-master",
+            "version": "v0.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Regulus343/ActivityLog.git",
-                "reference": "d29e2cdbd38edff3d3e37daa21f7bc3e1dca1668"
+                "reference": "2c9d65a59345209a0196a98ab8e30c49d712ecd9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Regulus343/ActivityLog/zipball/d29e2cdbd38edff3d3e37daa21f7bc3e1dca1668",
-                "reference": "d29e2cdbd38edff3d3e37daa21f7bc3e1dca1668",
+                "url": "https://api.github.com/repos/Regulus343/ActivityLog/zipball/2c9d65a59345209a0196a98ab8e30c49d712ecd9",
+                "reference": "2c9d65a59345209a0196a98ab8e30c49d712ecd9",
                 "shasum": ""
             },
             "require": {
@@ -254,26 +255,26 @@
                 }
             ],
             "description": "A clean and simple Laravel 4 activity logger for monitoring user activity on a website or web application.",
-            "time": "2014-10-18 20:41:46"
+            "time": "2014-11-27 04:14:22"
         },
         {
             "name": "regulus/elemental",
-            "version": "dev-master",
+            "version": "v0.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Regulus343/Elemental.git",
-                "reference": "dcb17c85d8f8e8f49e692e2eb0f701a4d96cc7f7"
+                "reference": "a14d6539f58d425a50673f356f9abd9332026ef6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Regulus343/Elemental/zipball/dcb17c85d8f8e8f49e692e2eb0f701a4d96cc7f7",
-                "reference": "dcb17c85d8f8e8f49e692e2eb0f701a4d96cc7f7",
+                "url": "https://api.github.com/repos/Regulus343/Elemental/zipball/a14d6539f58d425a50673f356f9abd9332026ef6",
+                "reference": "a14d6539f58d425a50673f356f9abd9332026ef6",
                 "shasum": ""
             },
             "require": {
                 "illuminate/support": "4.x",
                 "php": ">=5.3.0",
-                "regulus/tetra-text": "dev-master"
+                "regulus/tetra-text": "0.4.*"
             },
             "type": "library",
             "autoload": {
@@ -295,7 +296,7 @@
                 }
             ],
             "description": "An HTML element building composer package that simplifies creation of active, selected, or hidden elements.",
-            "time": "2014-10-18 23:01:14"
+            "time": "2014-11-27 06:07:29"
         },
         {
             "name": "regulus/formation",
@@ -303,18 +304,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Regulus343/Formation.git",
-                "reference": "b60fb6626758614b69c10bce46ed3fad0451783c"
+                "reference": "9ce2d4ea1bc829fa0328d0c319e29125d1dd3fb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Regulus343/Formation/zipball/b60fb6626758614b69c10bce46ed3fad0451783c",
-                "reference": "b60fb6626758614b69c10bce46ed3fad0451783c",
+                "url": "https://api.github.com/repos/Regulus343/Formation/zipball/9ce2d4ea1bc829fa0328d0c319e29125d1dd3fb8",
+                "reference": "9ce2d4ea1bc829fa0328d0c319e29125d1dd3fb8",
                 "shasum": ""
             },
             "require": {
                 "illuminate/support": "4.x",
                 "php": ">=5.3.0",
-                "regulus/tetra-text": "dev-master"
+                "regulus/tetra-text": "0.4.*"
             },
             "type": "library",
             "autoload": {
@@ -337,20 +338,20 @@
                 }
             ],
             "description": "A powerful form creation composer package for Laravel 4.",
-            "time": "2014-11-12 07:25:33"
+            "time": "2014-11-27 06:29:22"
         },
         {
             "name": "regulus/solid-site",
-            "version": "dev-master",
+            "version": "v0.4.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Regulus343/SolidSite.git",
-                "reference": "9105a8a620df8e035b20bcdbcaa588ef0385707b"
+                "reference": "01f24b7c64cd8685d3f1dc40e9f3b2d8ac50a120"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Regulus343/SolidSite/zipball/9105a8a620df8e035b20bcdbcaa588ef0385707b",
-                "reference": "9105a8a620df8e035b20bcdbcaa588ef0385707b",
+                "url": "https://api.github.com/repos/Regulus343/SolidSite/zipball/01f24b7c64cd8685d3f1dc40e9f3b2d8ac50a120",
+                "reference": "01f24b7c64cd8685d3f1dc40e9f3b2d8ac50a120",
                 "shasum": ""
             },
             "require": {
@@ -377,24 +378,24 @@
                 }
             ],
             "description": "A composer package that assigns section names & titles to pages and simplifies creation of breadcrumb trails and is useful for other components that require page identifying information such as menus that highlight the current location.",
-            "time": "2014-10-29 02:10:34"
+            "time": "2014-11-27 06:16:18"
         },
         {
             "name": "regulus/tetra-text",
-            "version": "dev-master",
+            "version": "v0.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Regulus343/TetraText.git",
-                "reference": "bf7f99296d71351e798fb47604e2459fc1cecb07"
+                "reference": "a518dba10a08b3007d1aa5c820cb71ad9a2ed665"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Regulus343/TetraText/zipball/bf7f99296d71351e798fb47604e2459fc1cecb07",
-                "reference": "bf7f99296d71351e798fb47604e2459fc1cecb07",
+                "url": "https://api.github.com/repos/Regulus343/TetraText/zipball/a518dba10a08b3007d1aa5c820cb71ad9a2ed665",
+                "reference": "a518dba10a08b3007d1aa5c820cb71ad9a2ed665",
                 "shasum": ""
             },
             "require": {
-                "ezyang/htmlpurifier": "dev-master",
+                "ezyang/htmlpurifier": "4.6.*",
                 "illuminate/support": "4.x",
                 "php": ">=5.3.0"
             },
@@ -418,25 +419,25 @@
                 }
             ],
             "description": "A small text/string formatting composer package that formats phone numbers, numeric values, money values and more.",
-            "time": "2014-10-02 04:08:02"
+            "time": "2014-11-27 06:02:50"
         },
         {
             "name": "regulus/upstream",
-            "version": "dev-master",
+            "version": "v0.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Regulus343/Upstream.git",
-                "reference": "40dfd2e21bbc54e65534c0fd5d2e5e8b58d763a8"
+                "reference": "29579380c7d59a73d067ceec1be8b9e87fda52e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Regulus343/Upstream/zipball/40dfd2e21bbc54e65534c0fd5d2e5e8b58d763a8",
-                "reference": "40dfd2e21bbc54e65534c0fd5d2e5e8b58d763a8",
+                "url": "https://api.github.com/repos/Regulus343/Upstream/zipball/29579380c7d59a73d067ceec1be8b9e87fda52e7",
+                "reference": "29579380c7d59a73d067ceec1be8b9e87fda52e7",
                 "shasum": ""
             },
             "require": {
                 "illuminate/support": "4.2.*",
-                "julien-c/simple-resize": "dev-master",
+                "julien-c/simple-resize": "@dev",
                 "php": ">=5.4.0"
             },
             "type": "library",
@@ -459,20 +460,16 @@
                 }
             ],
             "description": "A simple composer package that assists in file uploads and image resizing/cropping.",
-            "time": "2014-10-21 01:52:20"
+            "time": "2014-11-27 06:38:18"
         }
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "stability-flags": {
-        "regulus/activity-log": 20,
-        "regulus/elemental": 20,
         "regulus/formation": 20,
-        "regulus/solid-site": 20,
-        "regulus/tetra-text": 20,
-        "regulus/upstream": 20,
-        "maxhoffmann/parsedown-laravel": 20
+        "maxhoffmann/parsedown-laravel": 20,
+        "julien-c/simple-resize": 20
     },
     "prefer-stable": false,
     "platform": {
