@@ -86,7 +86,7 @@ class Page extends BaseModel {
 			'published_at'       => date(Form::getDateTimeFormat()),
 		];
 
-		$defaults = array_merge($defaults, static::addPrefixToDefaults(ContentArea::defaults(), 'content_areas.1'));
+		$defaults = array_merge($defaults, static::addPrefixToDefaults(Area::defaults(), 'content_areas.1'));
 
 		return $defaults;
 	}
