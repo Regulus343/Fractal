@@ -146,7 +146,7 @@ table tr td.actions a.btn-default:hover { background: #222; }
 
 table tr.danger:hover td.actions, table tr.danger td.actions { border-left: 1px solid #999; }
 
-table tr td.id-attribute { border-right: 1px solid #999 !important; font-weight: bold; text-align: right; }
+table tr td.id-attribute { width: 54px; border-right: 1px solid #999 !important; font-weight: bold; text-align: right; }
 
 table.table-bordered tr td:hover { background-color: #e6e6e6; }
 

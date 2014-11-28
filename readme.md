@@ -122,7 +122,7 @@ And add this to the `aliases` array:
 
 You may use 'Identify', or another alias, but 'Auth' is recommended for the sake of simplicity.
 
-Lastly, change the `model` variable in `app/config/auth.php` to `Regulus\Identify\User`.
+Lastly, change the `model` variable in `app/config/auth.php` to `Regulus\Identify\User` and set the `domain` variable in `app/config/session.php` to `.website.com` (using your domain of course) to allow session data to be kept when the user is accessing a subdomain for the blog or media system.
 
 <a name="first-log-in"></a>
 ## First Log In

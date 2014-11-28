@@ -1,11 +1,19 @@
 @section('search-filters')
 
-	<div class="row padding-vertical-10px">
+	<div class="row padding-bottom-10px">
 		<div class="col-md-3">
-			{{ Form::select('filters.media_type_id', Form::prepOptions(Regulus\Fractal\Models\Media\Type::orderBy('name')->get(), ['id', 'name']), 'Select a Media Type', null, array('label' => 'Media Type')) }}
+			{{ Form::select('filters.media_type_id', Form::prepOptions(Regulus\Fractal\Models\Media\Type::orderBy('name')->get(), ['id', 'name']), [
+				'label'       => Fractal::lang('labels.mediaType'),
+				'null-option' => Fractal::lang('labels.selectItem', ['item' => Format::a(Fractal::lang('labels.mediaType'))]),
+				'class'       => 'search-filter',
+			]) }}
 		</div>
 		<div class="col-md-3">
-			{{ Form::select('filters.media_set_id', Form::prepOptions(Regulus\Fractal\Models\Media\Set::orderBy('title')->get(), ['id', 'title']), 'Select a Media Set', null, array('label' => 'Media Set')) }}
+			{{ Form::select('filters.media_set_id', Form::prepOptions(Regulus\Fractal\Models\Media\Set::orderBy('title')->get(), ['id', 'title']), [
+				'label'       => Fractal::lang('labels.mediaSet'),
+				'null-option' => Fractal::lang('labels.selectItem', ['item' => Format::a(Fractal::lang('labels.mediaSet'))]),
+				'class'       => 'search-filter',
+			]) }}
 		</div>
 	</div>
 

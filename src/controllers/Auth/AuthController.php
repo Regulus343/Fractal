@@ -49,7 +49,8 @@ class AuthController extends BaseController {
 		$messages = array();
 
 		//login form has been submitted
-		if (Auth::attempt(array('username' => trim(Input::get('username')), 'password' => Input::get('password')))) {
+		if (Auth::attempt(array('username' => trim(Input::get('username')), 'password' => Input::get('password'))))
+		{
 			$user = Auth::user();
 
 			Activity::log(array(
@@ -67,7 +68,8 @@ class AuthController extends BaseController {
 				'success' => Fractal::lang('messages.successLoggedIn', array('website' => Site::name(), 'user' => $user->getName()))
 			));
 		} else {
-			if ($_POST) {
+			if ($_POST)
+			{
 				$messages['error'] = Fractal::lang('messages.errorLogIn');
 
 				Activity::log(array(
@@ -86,20 +88,24 @@ class AuthController extends BaseController {
 
 		Auth::logout();
 
-		Activity::log(array(
-			'description' => 'Logged Out',
-			'details'     => 'Username: '.$user->username,
-		));
+		if (!empty($user))
+		{
+			Activity::log(array(
+				'description' => 'Logged Out',
+				'details'     => 'Username: '.$user->username,
+			));
 
-		//set username session variable for easy logging back in
-		Session::set('username', $user->username);
+			//set username session variable for easy logging back in
+			Session::set('username', $user->username);
+		}
 
 		return Redirect::to(Fractal::uri('login'))->with('messages', array('success' => Fractal::lang('messages.successLoggedOut')));
 	}
 
 	public function activate($userId = '', $code = '')
 	{
-		if (Auth::activate($userId, $code)) {
+		if (Auth::activate($userId, $code))
+		{
 			$user = User::find($userId);
 
 			Activity::log(array(
@@ -133,7 +139,8 @@ class AuthController extends BaseController {
 
 		$messages = array();
 
-		if (Form::validated()) {
+		if (Form::validated())
+		{
 			$username = trim(Input::get('username'));
 			$user = User::getByUsernameOrEmail($username);
 
@@ -190,7 +197,8 @@ class AuthController extends BaseController {
 
 		$messages = array();
 
-		if (Form::validated()) {
+		if (Form::validated())
+		{
 			$user->updateAccount('password');
 
 			$user->reset_password_code = "";

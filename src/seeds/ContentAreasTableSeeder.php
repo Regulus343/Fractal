@@ -57,7 +57,7 @@ class ContentAreasTableSeeder extends Seeder {
 			[
 				'title'        => 'Contact Us',
 				'content_type' => 'Markdown',
-				'content'      => 'You may contact us at **(403) 555-5555** or by filling out the following form:'."\n\n".'[view:"fractal::content.pages.inserts.form_contact"]',
+				'content'      => 'You may contact us at **(403) 555-5555** or by filling out the following form below:'."\n\n".'[view:"fractal::content.pages.inserts.form_contact"]',
 
 				'page_areas'   => [
 					[

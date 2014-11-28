@@ -87,7 +87,7 @@ $(document).ready(function(){
 		}
 	});
 
-	$('#form-search input, #form-search select').change(function(){
+	$('#form-search input, #form-search select, input.search-filter, select.search-filter').change(function(){
 		$('#field-changing-page').val(0);
 		searchContent();
 	});
@@ -244,7 +244,7 @@ $(document).ready(function(){
 		e.preventDefault();
 
 		$('html, body').animate({
-			scrollTop: 0
+			scrollTop: '0px'
 		}, 500);
 	});
 
@@ -346,7 +346,11 @@ function searchContent() {
 	if (!searching) {
 		searching = true;
 
-		var postData = $('#form-search').serialize();
+		var postData = $('#form-search').add('.search-filter').serialize();
+
+		$('.search-filter').each(function(){
+			postData[$(this).attr('name')] = $(this).val();
+		});
 
 		$('.alert-dismissable').addClass('hidden');
 

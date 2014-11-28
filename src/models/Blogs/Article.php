@@ -512,7 +512,10 @@ class Article extends BaseModel {
 	 */
 	public static function getSearchResults($searchData)
 	{
-		$articles = static::orderBy($searchData['sortField'], $searchData['sortOrder']);
+		$articles = static::select(['blog_articles.*'])
+			->leftJoin('blog_article_categories', 'blog_articles.id', '=', 'blog_article_categories.article_id')
+			->groupBy('blog_articles.id')
+			->orderBy($searchData['sortField'], $searchData['sortOrder']);
 
 		if ($searchData['sortField'] != "id")
 			$articles->orderBy('id', 'asc');
@@ -523,6 +526,20 @@ class Article extends BaseModel {
 					->where('title', 'like', $searchData['likeTerms'])
 					->orWhere('slug', 'like', $searchData['likeTerms']);
 			});
+
+		$filters = $searchData['filters'];
+		if (!empty($filters))
+		{
+			$allowedFilters = [
+				'category_id' => 'blog_article_categories.category_id',
+			];
+
+			foreach ($allowedFilters as $allowedFilter => $filterField)
+			{
+				if (isset($filters[$allowedFilter]) && $filters[$allowedFilter] && $filters[$allowedFilter] != "")
+					$articles->where($filterField, $filters[$allowedFilter]);
+			}
+		}
 
 		return $articles->paginate($searchData['itemsPerPage']);
 	}

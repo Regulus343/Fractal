@@ -643,7 +643,10 @@ class Item extends BaseModel {
 	 */
 	public static function getSearchResults($searchData)
 	{
-		$media = static::orderBy($searchData['sortField'], $searchData['sortOrder']);
+		$media = static::select(['media_items.*'])
+			->leftJoin('media_item_sets', 'media_items.id', '=', 'media_item_sets.item_id')
+			->groupBy('media_items.id')
+			->orderBy($searchData['sortField'], $searchData['sortOrder']);
 
 		if ($searchData['sortField'] != "id")
 			$media->orderBy('id', 'asc');
@@ -654,15 +657,17 @@ class Item extends BaseModel {
 				->orWhere('description', 'like', $searchData['likeTerms']);
 
 		$filters = $searchData['filters'];
-		if (!empty($filters)) {
+		if (!empty($filters))
+		{
 			$allowedFilters = [
-				'media_type_id',
-				'media_set_id',
+				'media_type_id' => 'media_items.media_type_id',
+				'media_set_id'  => 'media_item_sets.set_id',
 			];
 
-			foreach ($allowedFilters as $allowedFilter) {
+			foreach ($allowedFilters as $allowedFilter => $filterField)
+			{
 				if (isset($filters[$allowedFilter]) && $filters[$allowedFilter] && $filters[$allowedFilter] != "")
-					$media->where($allowedFilter, $filters['media_type_id']);
+					$media->where($filterField, $filters[$allowedFilter]);
 			}
 		}
 

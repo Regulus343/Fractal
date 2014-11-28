@@ -218,6 +218,8 @@ return [
 	'blogReturnToHome'            => 'Return to Blog Home Page',
 	'mediaReturnToHome'           => 'Return to Media Home Page',
 
+	'selectItem'                  => 'Select :item',
+
 	'allCategories'               => 'All Categories',
 	'allMediaTypes'               => 'All Media Types',
 	'allMediaSets'                => 'All Media Sets',

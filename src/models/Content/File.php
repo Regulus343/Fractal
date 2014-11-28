@@ -219,6 +219,20 @@ class File extends BaseModel {
 					->orWhere('filename', 'like', $searchData['likeTerms']);
 			});
 
+		$filters = $searchData['filters'];
+		if (!empty($filters))
+		{
+			$allowedFilters = [
+				'type_id',
+			];
+
+			foreach ($allowedFilters as $allowedFilter)
+			{
+				if (isset($filters[$allowedFilter]) && $filters[$allowedFilter] && $filters[$allowedFilter] != "")
+					$files->where($allowedFilter, $filters[$allowedFilter]);
+			}
+		}
+
 		return $files->paginate($searchData['itemsPerPage']);
 	}
 
