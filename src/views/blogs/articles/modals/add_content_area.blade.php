@@ -1,6 +1,6 @@
 <ul id="select-content-area">
 	<li class="new">
-		<h3>{{ Lang::get('fractal::labels.createNewContentArea') }}</h3>
+		<h3>{{ Fractal::lang('labels.createNewContentArea') }}</h3>
 	</li>
 
 	@foreach ($contentAreas as $contentArea)

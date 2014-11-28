@@ -118,6 +118,8 @@ class ViewController extends BaseController {
 
 		Site::addTrailItem($mediaItem->title, $mediaItem->getUrl());
 
+		Site::set('pageIdentifier', 'media-item/'.$mediaItem->slug);
+
 		$mediaItem->logView();
 
 		$mediaItems = Item::query()

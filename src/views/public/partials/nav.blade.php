@@ -1,5 +1,5 @@
 <nav class="navbar navbar-inverse" role="navigation">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 				<span class="icon-bar"></span>
@@ -14,10 +14,6 @@
 			@else
 				<a class="navbar-brand" href="{{ URL::to('') }}">{{{ Site::get('name') }}}</a>
 			@endif
-		</div>
-
-		<div id="top-buttons">
-			{{ Site::getButtonListMarkup() }}
 		</div>
 
 		<div class="navbar-collapse collapse">

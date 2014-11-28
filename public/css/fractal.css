@@ -74,6 +74,7 @@ a#logo img { height: 30px; border: none; }
 #container-content.sidebar-offset { margin-left: 16%; }
 #container-content .container-pad { padding: 72px 28px 28px 20px; }
 #container-content .container-pad-vertical { padding: 18px 0; }
+#container-content .container-pad-fluid { padding: 18px 14px 0 14px; }
 
 @media (min-width: 768px) {
 	#nav-side { width: 22%; }
@@ -255,6 +256,13 @@ fieldset.indent-level-3 { margin-left: 96px; }
 #footer ul.menu li { display: inline-block; margin: 0 12px 0 0; }
 
 #footer p { float: right; }
+
+#footer a.return-to-top {
+	z-index: 100;
+	position: relative;
+	display: inline-block;
+	line-height: 1em;
+}
 
 @media (min-width: 768px) {
 	#footer { width: 720px; }
@@ -457,13 +465,9 @@ div.media-item-inserted { padding: 8px 0; border-top: 1px dotted #aaa; border-bo
 
 a.thumbnail-image { display: inline-block; margin: 0; padding: 3px; width: auto; border: 1px solid #aaa; }
 a.thumbnail-image:hover { border-color: #2b669a; }
-a.thumbnail-image img { max-width: 180px; border: none; }
+a.thumbnail-image img { max-width: 120px; border: none; }
 
 time.date-created { margin-left: 12px; }
-
-@media (min-width: 768px) {
-	a.thumbnail-image img { max-width: 100%; }
-}
 
 img.thumbnail-image { padding: 3px; max-width: 120px; border: 1px solid #aaa; }
 

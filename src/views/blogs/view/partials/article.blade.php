@@ -16,4 +16,10 @@
 
 	</div>
 
+	@if (!Site::get('articleList') && Fractal::getSetting('Enable Article Comments', false))
+
+		@include(Fractal::view('public.partials.comments', true))
+
+	@endif
+
 </div>

@@ -20,4 +20,10 @@
 
 	{{ $mediaItem->getContent() }}
 
+	@if (!Site::get('mediaList') && Fractal::getSetting('Enable Media Item Comments', false))
+
+		@include(Fractal::view('public.partials.comments', true))
+
+	@endif
+
 </div>

@@ -20,7 +20,7 @@
 		@include(Fractal::view('partials.messages', true))
 
 		<div id="container-content">
-			<div class="container-pad-vertical">
+			<div class="container-pad-fluid">
 
 				<div class="row">
 

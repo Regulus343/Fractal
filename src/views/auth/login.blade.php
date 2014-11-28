@@ -20,7 +20,7 @@
 
 		{{ Form::field('password') }}
 
-		<a href="{{ Fractal::url('forgot-password') }}" class="pull-right">{{ Lang::get('fractal::labels.forgotYourPassword') }}</a>
+		<a href="{{ Fractal::url('forgot-password') }}" class="pull-right">{{ Fractal::lang('labels.forgotYourPassword') }}</a>
 
 		{{ Form::field('[ICON: share-alt]'.Fractal::lang('labels.logIn'), 'button') }}
 	{{ Form::close() }}

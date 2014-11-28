@@ -8,7 +8,7 @@
 
 		<li class="special">
 			<a href="{{ Fractal::blogUrl('') }}">
-				<span class="glyphicon glyphicon-chevron-left"></span> {{ Lang::get('fractal::labels.allCategories') }}
+				<span class="glyphicon glyphicon-chevron-left"></span> {{ Fractal::lang('labels.allCategories') }}
 			</a>
 		</li>
 

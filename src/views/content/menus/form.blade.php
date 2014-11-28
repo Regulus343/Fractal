@@ -179,12 +179,12 @@
 		@include(Fractal::view('content.menus.templates.menu_item', true))
 
 		<a href="" class="btn btn-primary add-menu-item pull-right">
-			<span class="glyphicon glyphicon-plus"></span>&nbsp; {{ Lang::get('fractal::labels.addMenuItem') }}
+			<span class="glyphicon glyphicon-plus"></span>&nbsp; {{ Fractal::lang('labels.addMenuItem') }}
 		</a>
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field(Form::submitResource(Lang::get('fractal::labels.menu')), 'button') }}
+				{{ Form::field(Form::submitResource(Fractal::lang('labels.menu')), 'button') }}
 			</div>
 		</div>
 

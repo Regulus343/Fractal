@@ -15,7 +15,7 @@
 
 		{{ Form::field('username') }}
 
-		<a href="{{ Fractal::url('login') }}" class="pull-right">{{ Lang::get('fractal::labels.returnToLogIn') }}</a>
+		<a href="{{ Fractal::url('login') }}" class="pull-right">{{ Fractal::lang('labels.returnToLogIn') }}</a>
 
 		{{ Form::field('[ICON: share-alt]'.Fractal::lang('labels.resetPassword'), 'button') }}
 	{{ Form::close() }}

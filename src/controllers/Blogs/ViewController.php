@@ -113,6 +113,8 @@ class ViewController extends BaseController {
 
 		Site::addTrailItem($article->title, $article->getUrl());
 
+		Site::set('pageIdentifier', 'article/'.$article->slug);
+
 		$article->logView();
 
 		$articles = Article::query()

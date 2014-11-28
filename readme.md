@@ -19,7 +19,7 @@ Some of the things you can do with Fractal:
 - Manage website settings
 - Manage all menus via database, for both front-end website and admin/CMS area
 - Manage content pages for website
-	- Create as many separate content areas as you like
+	- Create as many separate content areas as you like and create content in Markdown or an HTML WYSIWYG editor
 	- Use the layout template system to re-use standardized and custom layouts across pages
 	- Re-use content areas across multiple pages
 - Manage files

@@ -172,6 +172,13 @@ class SettingsTableSeeder extends Seeder {
 				'type'          => 'Boolean',
 				'category'      => 'Media',
 			],
+			[
+				'name'          => 'Enable Media Item Comments',
+				'value'         => true,
+				'type'          => 'Boolean',
+				'category'      => 'Media',
+				'developer'     => false,
+			],
 
 			/* Blogs */
 
@@ -183,18 +190,25 @@ class SettingsTableSeeder extends Seeder {
 				'options'       => '4:300; +2',
 			],
 			[
-				'name'          => 'Show Thumbnail Images on Article List',
+				'name'          => 'Display Thumbnail Images on Article List',
 				'value'         => true,
 				'type'          => 'Boolean',
 				'category'      => 'Blogs',
 				'developer'     => true,
 			],
 			[
-				'name'          => 'Show Placeholder Thumbnail Images on Article List',
+				'name'          => 'Display Placeholder Thumbnail Images on Article List',
 				'value'         => true,
 				'type'          => 'Boolean',
 				'category'      => 'Blogs',
 				'developer'     => true,
+			],
+			[
+				'name'          => 'Enable Article Comments',
+				'value'         => true,
+				'type'          => 'Boolean',
+				'category'      => 'Blogs',
+				'developer'     => false,
 			],
 		];
 

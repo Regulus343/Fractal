@@ -343,8 +343,8 @@ class Article extends BaseModel {
 
 			$content = '<div class="row"><div class="col-md-12">{{main}}</div></div>';
 
-			if ((boolean) Fractal::getSetting('Show Thumbnail Images on Article List', true)
-			&& ($this->hasThumbnailImage() || (boolean) Fractal::getSetting('Show Placeholder Thumbnail Images on Article List', true)))
+			if ((boolean) Fractal::getSetting('Display Thumbnail Images on Article List', true)
+			&& ($this->hasThumbnailImage() || (boolean) Fractal::getSetting('Display Placeholder Thumbnail Images on Article List', true)))
 			{
 				$layoutTemplate = LayoutTemplate::find(4); //layout template: "Standard with Image"
 				if (!empty($layoutTemplate))
