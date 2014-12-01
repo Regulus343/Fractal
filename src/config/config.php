@@ -97,7 +97,7 @@ return [
 	| Layouts
 	|--------------------------------------------------------------------------
 	|
-	| The location of your forum view layout. It is defaulted to
+	| The location of your view layout. It is defaulted to
 	| "fractal::layouts.master" to use Fractal's built-in view layout,
 	| but you may point it towards a directory of your own for full layout
 	| customization.
@@ -111,9 +111,9 @@ return [
 	| Views Location
 	|--------------------------------------------------------------------------
 	|
-	| The location of your forum views. It is defaulted to "fractal::" to
-	| use Fractal's built-in views, but you may point it towards a views
-	| directory of your own for full view customization.
+	| The location of your views. It is defaulted to "fractal::" to use
+	| Fractal's built-in views, but you may point it towards a views directory
+	| of your own for full view customization.
 	|
 	*/
 	'viewsLocation' => 'fractal::',

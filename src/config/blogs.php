@@ -50,6 +50,18 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
+	| Views Location
+	|--------------------------------------------------------------------------
+	|
+	| The location of your blog views. It is defaulted to "fractal::" to use
+	| Fractal's built-in views, but you may point it towards a views directory
+	| of your own for full view customization.
+	|
+	*/
+	'viewsLocation' => 'fractal::blogs.view',
+
+	/*
+	|--------------------------------------------------------------------------
 	| Multiple Blogs
 	|--------------------------------------------------------------------------
 	|

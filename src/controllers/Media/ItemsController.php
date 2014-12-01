@@ -299,7 +299,7 @@ class ItemsController extends MediaController {
 						File::delete('uploads/'.$file->getPath(true));
 				}
 
-				if (!$result['files']['thumbnail_image']['error']) {
+				if (isset($result['files']['thumbnail_image']) && !$result['files']['thumbnail_image']['error']) {
 					$uploadedThumbnail = true;
 					$thumbnailResult   = $result['files']['thumbnail_image'];
 				}

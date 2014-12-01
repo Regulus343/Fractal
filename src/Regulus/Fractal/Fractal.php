@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4.
 
 		created by Cody Jassman
-		version 0.7.4a
-		last updated on November 27, 2014
+		version 0.7.5a
+		last updated on November 30, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -252,14 +252,23 @@ class Fractal {
 	 * Set the views location for a controller.
 	 *
 	 * @param  mixed    $directory
+	 * @param  boolean  $root
 	 * @return string
 	 */
-	public function setViewsLocation($directory = null)
+	public function setViewsLocation($directory = null, $root = false)
 	{
 		if (is_null($directory))
 			$directory = Str::plural($this->getContentType());
 
-		$this->viewsLocation = Config::get('fractal::viewsLocation').$directory.'.';
+		$viewsLocationPrefix = !$root ? Config::get('fractal::viewsLocation') : null;
+
+		$this->viewsLocation = $directory;
+
+		if (!is_null($viewsLocationPrefix))
+			$this->viewsLocation = $viewsLocationPrefix.'.'.$this->viewsLocation;
+
+		if (substr($this->viewsLocation, -1) != ".")
+			$this->viewsLocation .= ".";
 	}
 
 	/**

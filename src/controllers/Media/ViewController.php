@@ -33,7 +33,7 @@ class ViewController extends BaseController {
 		//set content type and views location
 		Fractal::setContentType('media-item');
 
-		Fractal::setViewsLocation('media.view');
+		Fractal::setViewsLocation(Config::get('fractal::media.viewsLocation'), true);
 
 		Site::addTrailItems([
 			Fractal::lang('labels.home')  => Site::rootUrl(),

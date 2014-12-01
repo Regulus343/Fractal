@@ -29,7 +29,7 @@ class ViewController extends BaseController {
 	{
 		Site::setMulti(['section', 'title'], Fractal::lang('labels.blog'));
 
-		Fractal::setViewsLocation('blogs.view');
+		Fractal::setViewsLocation(Config::get('fractal::blogs.viewsLocation'), true);
 
 		Site::addTrailItems([
 			Fractal::lang('labels.home') => Site::rootUrl(),

@@ -48,4 +48,16 @@ return [
 	*/
 	'viewController' => 'Regulus\Fractal\Controllers\Media\ViewController',
 
+	/*
+	|--------------------------------------------------------------------------
+	| Views Location
+	|--------------------------------------------------------------------------
+	|
+	| The location of your media views. It is defaulted to "fractal::" to use
+	| Fractal's built-in views, but you may point it towards a views directory
+	| of your own for full view customization.
+	|
+	*/
+	'viewsLocation' => 'fractal::media.view',
+
 ];
