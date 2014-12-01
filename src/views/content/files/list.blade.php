@@ -1,6 +1,6 @@
 @extends(Config::get('fractal::layout'))
 
-@section(Config::get('fractal::section'))
+@section(Config::get('fractal::contentSection'))
 
 	{{-- Search Filters --}}
 	@include(Fractal::view('partials.search_filters'))

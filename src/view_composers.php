@@ -36,7 +36,7 @@ View::composer($viewsLocation.'partials.messages', function($view)
 
 View::composer($viewsLocation.'content.menus.form', function($view)
 {
-	$typeOptions = Form::simpleOptions(array('URI', 'Content Page'));
+	$typeOptions = Form::simpleOptions(['URI', 'Content Page']);
 	$pageOptions = Form::prepOptions(Page::select('id', 'title')->orderBy('title')->get(), array('id', 'title'));
 
 	$view
@@ -44,7 +44,7 @@ View::composer($viewsLocation.'content.menus.form', function($view)
 		->with('pageOptions', $pageOptions);
 });
 
-View::composer(array($viewsLocation.'content.files.form', $viewsLocation.'media.items.form'), function($view)
+View::composer([$viewsLocation.'content.files.form', $viewsLocation.'media.items.form'], function($view)
 {
 	$view->with('fileTypeExtensions', FileType::getExtensionsForIds());
 });
@@ -56,7 +56,7 @@ View::composer($viewsLocation.'media.items.form', function($view)
 	if (Form::value('file_type_id') != "")
 		$mediaTypes->where('file_type_id', Form::value('file_type_id'));
 
-	$mediaTypeOptions = Form::prepOptions($mediaTypes->get(), array('id', 'name'));
+	$mediaTypeOptions = Form::prepOptions($mediaTypes->get(), ['id', 'name']);
 
 	$view->with('mediaTypeOptions', $mediaTypeOptions);
 });

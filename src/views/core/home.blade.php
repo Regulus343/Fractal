@@ -1,6 +1,6 @@
 @extends(Config::get('fractal::layout'))
 
-@section(Config::get('fractal::section'))
+@section(Config::get('fractal::contentSection'))
 
 	@if (Config::get('fractal::logo') && is_string(Config::get('fractal::logo')))
 		<div class="jumbotron black-bg">

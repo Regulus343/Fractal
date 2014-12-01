@@ -1,5 +1,5 @@
 @include('fractal::public.partials.header')
 
-@yield(Config::get('fractal::section'))
+@yield(Config::get('fractal::contentSection'))
 
 @include('fractal::public.partials.footer')

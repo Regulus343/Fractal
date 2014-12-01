@@ -264,8 +264,12 @@ class Fractal {
 
 		$this->viewsLocation = $directory;
 
-		if (!is_null($viewsLocationPrefix))
-			$this->viewsLocation = $viewsLocationPrefix.'.'.$this->viewsLocation;
+		if (!is_null($viewsLocationPrefix)) {
+			if (substr($viewsLocationPrefix, -2) != "::")
+				$viewsLocation .= ".";
+
+			$this->viewsLocation = $viewsLocationPrefix.$this->viewsLocation;
+		}
 
 		if (substr($this->viewsLocation, -1) != ".")
 			$this->viewsLocation .= ".";

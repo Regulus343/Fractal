@@ -1,6 +1,6 @@
 @extends(Config::get('fractal::layout'))
 
-@section(Config::get('fractal::section'))
+@section(Config::get('fractal::contentSection'))
 
 	<script type="text/javascript">
 		$(document).ready(function(){
