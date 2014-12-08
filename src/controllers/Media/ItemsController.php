@@ -188,6 +188,9 @@ class ItemsController extends MediaController {
 
 				$item->save();
 
+				//re-export routes to config array in case slug or published status for media item has changed
+				Fractal::exportRoutes();
+
 				Activity::log([
 					'contentId'   => $item->id,
 					'contentType' => 'Item',
@@ -381,6 +384,9 @@ class ItemsController extends MediaController {
 
 				$item->save();
 
+				//re-export routes to config array in case slug or published status for media item has changed
+				Fractal::exportRoutes();
+
 				Activity::log([
 					'contentId'   => $item->id,
 					'contentType' => 'Item',
@@ -388,9 +394,6 @@ class ItemsController extends MediaController {
 					'description' => 'Updated a Media Item',
 					'details'     => 'Title: '.$item->title,
 				]);
-
-				/*return Redirect::to(Fractal::uri('media/items'))
-					->with('messages', $messages);*/
 			} else {
 				$error = true;
 				foreach ($result['files'] as $file) {

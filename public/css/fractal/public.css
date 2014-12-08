@@ -1,0 +1,72 @@
+div.article-preview, div.media-item-preview {
+	margin: 0 0 20px 0;
+	padding: 0 0 16px 0;
+	border-bottom: 1px solid #888;
+}
+
+div.article-preview:last-child, div.media-item-preview:last-child { border: none; }
+
+div.article-heading, div.media-item-heading { margin-bottom: 12px; border-bottom: 1px solid #ccc; }
+div.article-heading time, div.media-item-heading time { color: #555; font-style: italic; }
+div.article-body img, div.media-item-body img { max-width: 100%; }
+div.article-body p, div.media-item-body p { width: inherit; }
+div.article-body a.read-more { margin-left: 6px; }
+
+div.media-item-inserted { padding: 8px 0; border-top: 1px dotted #aaa; border-bottom: 1px dotted #aaa; }
+
+a.thumbnail-image { display: inline-block; margin: 0; padding: 3px; width: auto; border: 1px solid #aaa; }
+a.thumbnail-image:hover { border-color: #2b669a; }
+a.thumbnail-image img { max-width: 120px; border: none; }
+
+time.date-created { margin-left: 12px; }
+
+img.thumbnail-image { padding: 3px; max-width: 120px; border: 1px solid #aaa; }
+
+div.media-item-body img.thumbnail-image { float: left; margin: 0 12px 12px 0; }
+
+img.media-image { max-width: 100%; }
+
+iframe.video { margin: 0 auto 10px 0; width: 450px; height: 254px; }
+
+@media (min-width: 768px) {
+	iframe.video { width: 672px; height: 378px; }
+}
+@media (min-width: 992px) {
+	iframe.video { width: 662px; height: 374px; }
+}
+@media (min-width: 1200px) {
+	iframe.video { width: 662px; height: 374px; }
+}
+
+iframe.audio { width: 100%; height: 166px; }
+
+div.media-item-area { display: inline-block; }
+div.media-item-area .audiojs { margin: 0 0 6px 0; }
+.audiojs .play-pause { padding-left: 0; padding-right: 0; }
+
+div.media-item-description { padding: 12px; }
+
+ul.nav-side { margin: 0 0 18px 0; }
+
+ul.nav-side li a {
+	display: block;
+	padding: 6px;
+	width: 100%;
+	background-color: #444;
+	color: #fff;
+	font-size: 0.9em;
+}
+
+ul.nav-side li.active a { background-color: #222; }
+
+ul.nav-side li a:hover, ul.nav-side li.active a:hover { background-color: #282828; }
+
+ul.nav-side li.special a { background-color: #105085; }
+ul.nav-side li.special a:hover { background-color: #266ba3; }
+
+ul.nav-side li div time { font-size: 0.75em; }
+
+ul.nav-side li .badge, ul.nav-side li.active .badge { float: right; background-color: #105085; color: #fff; box-shadow: #000 0 0 5px; }
+ul.nav-side li.active .badge { background-color: #266ba3; }
+
+div#comments { margin-top: 32px; border-top: 1px solid #ddd; }

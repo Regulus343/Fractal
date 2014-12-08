@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 
+use \Auth;
 use \Form;
 use \Format;
 use \Site;
@@ -101,6 +102,23 @@ class Item extends BaseModel {
 	];
 
 	/**
+	 * The restricted slugs for the model.
+	 *
+	 * @var    array
+	 */
+	protected static $restrictedSlugs = [
+		'admin',
+		'i',
+		'item',
+		's',
+		'set',
+		't',
+		'type',
+		'p',
+		'page',
+	];
+
+	/**
 	 * The default values for the model.
 	 *
 	 * @return array
@@ -126,7 +144,7 @@ class Item extends BaseModel {
 	public static function validationRules($id = null, $type = 'default')
 	{
 		$rules = [
-			'slug'  => ['required'],
+			'slug'  => ['required', 'lowercase_not_in:'.implode(',', static::$restrictedSlugs)],
 			'title' => ['required'],
 		];
 
@@ -241,7 +259,7 @@ class Item extends BaseModel {
 	 */
 	public function getUrl()
 	{
-		return Fractal::mediaUrl('i/'.$this->slug);
+		return Fractal::mediaUrl((!Config::get('fractal::media.shortRoutes') ? 'i/' : '').$this->slug);
 	}
 
 	/**
@@ -407,10 +425,14 @@ class Item extends BaseModel {
 	/**
 	 * Gets only the published items.
 	 *
+	 * @param  boolean  $allowAdmin
 	 * @return Collection
 	 */
-	public function scopeOnlyPublished($query)
+	public function scopeOnlyPublished($query, $allowAdmin = false)
 	{
+		if ($allowAdmin && Auth::is('admin'))
+			return $query;
+
 		return $query->whereNotNull('media_items.published_at')->where('media_items.published_at', '<=', date('Y-m-d H:i:s'));
 	}
 

@@ -39,6 +39,21 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
+	| Short Routes
+	|--------------------------------------------------------------------------
+	|
+	| Whether to turn on short routes for article URLs. If short routes is
+	| turned on, blog.website.com/example-item will work along with the
+	| blog.website.com/item/example-item and blog.website.com/i/example-item
+	| routes that are automatically set. The ID routes will work as well, such
+	| as blog.website.com/1. The example URLs are assuming default subdomain
+	| and base URI settings.
+	|
+	*/
+	'shortRoutes' => true,
+
+	/*
+	|--------------------------------------------------------------------------
 	| Blog View Controller
 	|--------------------------------------------------------------------------
 	|

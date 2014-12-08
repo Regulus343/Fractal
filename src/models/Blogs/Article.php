@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
 
+use \Auth;
 use \Form;
 use \Format;
 use \Site;
@@ -84,6 +85,21 @@ class Article extends BaseModel {
 	];
 
 	/**
+	 * The restricted slugs for the model.
+	 *
+	 * @var    array
+	 */
+	protected static $restrictedSlugs = [
+		'a',
+		'admin',
+		'article',
+		'c',
+		'category',
+		'p',
+		'page',
+	];
+
+	/**
 	 * The default values for the model.
 	 *
 	 * @return array
@@ -111,7 +127,7 @@ class Article extends BaseModel {
 	public static function validationRules($id = null, $type = 'default')
 	{
 		$rules = [
-			'slug'  => ['required'],
+			'slug'  => ['required', 'lowercase_not_in:'.implode(',', static::$restrictedSlugs)],
 			'title' => ['required'],
 		];
 
@@ -217,7 +233,7 @@ class Article extends BaseModel {
 	 */
 	public function getUrl()
 	{
-		return Fractal::blogUrl('a/'.$this->slug);
+		return Fractal::blogUrl((!Config::get('fractal::blogs.shortRoutes') ? 'a/' : '').$this->slug);
 	}
 
 	/**
@@ -367,7 +383,7 @@ class Article extends BaseModel {
 	}
 
 	/**
-	 * Gets the published pages.
+	 * Gets the published articles.
 	 *
 	 * @return Collection
 	 */
@@ -377,12 +393,16 @@ class Article extends BaseModel {
 	}
 
 	/**
-	 * Gets only the published pages.
+	 * Gets only the published articles.
 	 *
+	 * @param  boolean  $allowAdmin
 	 * @return Collection
 	 */
-	public function scopeOnlyPublished($query)
+	public function scopeOnlyPublished($query, $allowAdmin = false)
 	{
+		if ($allowAdmin && Auth::is('admin'))
+			return $query;
+
 		return $query->whereNotNull('published_at')->where('published_at', '<=', date('Y-m-d H:i:s'));
 	}
 

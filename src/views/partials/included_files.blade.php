@@ -75,7 +75,13 @@
 <script type="text/javascript" src="{{ Site::js('markdown.sanitizer', 'regulus/fractal') }}"></script>
 
 {{-- Fractal CSS --}}
-<link type="text/css" rel="stylesheet" href="{{ Site::css('fractal', 'regulus/fractal') }}" />
+<link type="text/css" rel="stylesheet" href="{{ Site::css('fractal/cms', 'regulus/fractal') }}" />
+
+@if (Site::get('public'))
+
+	<link type="text/css" rel="stylesheet" href="{{ Site::css('fractal/public', 'regulus/fractal') }}" />
+
+@endif
 
 {{-- Fractal JS --}}
 <script type="text/javascript">

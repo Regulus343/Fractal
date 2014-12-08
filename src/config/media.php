@@ -39,6 +39,21 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
+	| Short Routes
+	|--------------------------------------------------------------------------
+	|
+	| Whether to turn on short routes for media item URLs. If short routes is
+	| turned on, media.website.com/example-item will work along with the
+	| media.website.com/item/example-item and media.website.com/i/example-item
+	| routes that are automatically set. The ID routes will work as well, such
+	| as media.website.com/1. The example URLs are assuming default subdomain
+	| and base URI settings.
+	|
+	*/
+	'shortRoutes' => true,
+
+	/*
+	|--------------------------------------------------------------------------
 	| Media View Controller
 	|--------------------------------------------------------------------------
 	|

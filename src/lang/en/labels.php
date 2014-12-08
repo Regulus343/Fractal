@@ -2,7 +2,7 @@
 
 return [
 
-	'version'                     => '0.7.5a',
+	'version'                     => '0.7.6a',
 
 	'home'                        => 'Home',
 	'returnToCms'                 => 'Return to CMS',

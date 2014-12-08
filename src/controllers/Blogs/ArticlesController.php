@@ -119,8 +119,8 @@ class ArticlesController extends BlogsController {
 
 			$article = Article::createNew($input);
 
-			//re-export menus to config array in case published status for article has changed
-			Fractal::exportMenus();
+			//re-export routes to config array in case slug or published status for article has changed
+			Fractal::exportRoutes();
 
 			Activity::log([
 				'contentId'   => $article->id,
@@ -201,6 +201,9 @@ class ArticlesController extends BlogsController {
 
 			$article->saveData();
 
+			//re-export routes to config array in case slug or published status for article has changed
+			Fractal::exportRoutes();
+
 			Activity::log([
 				'contentId'   => $article->id,
 				'contentType' => 'Article',
@@ -209,17 +212,14 @@ class ArticlesController extends BlogsController {
 				'details'     => 'Title: '.$article->title,
 				'updated'     => true,
 			]);
-
-			return Redirect::to(Fractal::uri($slug.'/edit', true))
-				->with('messages', $messages);
 		} else {
 			$messages['error'] = Fractal::lang('messages.errorGeneral');
-
-			return Redirect::to(Fractal::uri($slug.'/edit', true))
-				->with('messages', $messages)
-				->with('errors', Form::getErrors())
-				->withInput();
 		}
+
+		return Redirect::to(Fractal::uri($slug.'/edit', true))
+			->with('messages', $messages)
+			->with('errors', Form::getErrors())
+			->withInput();
 	}
 
 	public function destroy($id)

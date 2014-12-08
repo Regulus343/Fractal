@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
 
+use \Auth;
 use \Form;
 use \Format;
+use \Site;
 
 use Regulus\Fractal\Models\Content\View as ContentView;
 
@@ -74,6 +76,15 @@ class Page extends BaseModel {
 	];
 
 	/**
+	 * The restricted slugs for the model.
+	 *
+	 * @var    array
+	 */
+	protected static $restrictedSlugs = [
+		'admin',
+	];
+
+	/**
 	 * The default values for the model.
 	 *
 	 * @return array
@@ -101,7 +112,7 @@ class Page extends BaseModel {
 	public static function validationRules($id = null, $type = 'default')
 	{
 		$rules = [
-			'slug'  => ['required'],
+			'slug'  => ['required', 'lowercase_not_in:'.implode(',', static::$restrictedSlugs)],
 			'title' => ['required'],
 		];
 
@@ -165,7 +176,7 @@ class Page extends BaseModel {
 	 */
 	public function getUrl()
 	{
-		return URL::to(Config::get('fractal::pageUri').'/'.$this->slug);
+		return Site::url(Config::get('fractal::pageUri').'/'.$this->slug);
 	}
 
 	/**
@@ -240,10 +251,14 @@ class Page extends BaseModel {
 	/**
 	 * Gets only the published pages.
 	 *
+	 * @param  boolean  $allowAdmin
 	 * @return Collection
 	 */
-	public function scopeOnlyPublished($query)
+	public function scopeOnlyPublished($query, $allowAdmin = false)
 	{
+		if ($allowAdmin && Auth::is('admin'))
+			return $query;
+
 		return $query->whereNotNull('published_at')->where('published_at', '<=', date('Y-m-d H:i:s'));
 	}
 

@@ -321,7 +321,7 @@
 			<div class="col-md-6">
 				{{ Form::field('categories.pivot.', 'select', [
 					'label'    => Fractal::lang('labels.categories'),
-					'multiple' => 'multiple',
+					'multiple' => true,
 					'options'  => Form::prepOptions(Regulus\Fractal\Models\Blogs\Category::orderBy('name')->get(), ['id', 'name']),
 				]) }}
 			</div>

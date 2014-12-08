@@ -27,6 +27,8 @@ class ViewController extends BaseController {
 
 	public function __construct()
 	{
+		Site::set('public', true);
+
 		Site::setMulti(['section', 'title'], Fractal::lang('labels.blog'));
 
 		Fractal::setViewsLocation(Config::get('fractal::blogs.viewsLocation'), true);
@@ -45,6 +47,11 @@ class ViewController extends BaseController {
 	}
 
 	public function getPage($page = 1)
+	{
+		return $this->getArticles($page);
+	}
+
+	public function getP($page = 1)
 	{
 		return $this->getArticles($page);
 	}
@@ -85,24 +92,24 @@ class ViewController extends BaseController {
 		//allow article selection by ID for to allow shorter URLs
 		if (is_numeric($slug))
 		{
-			$article = Article::where('id', $slug);
-
-			if (Auth::isNot('admin'))
-				$article->onlyPublished();
-
-			$article = $article->first();
+			$article = Article::where('id', $slug)->onlyPublished(true)->first();
 
 			//if article is found by ID, redirect to URL with slug
 			if (!empty($article))
 				return Redirect::to($article->getUrl());
 		}
 
-		$article = Article::where('slug', $slug);
+		$article = Article::findBySlug($slug, true)->onlyPublished(true)->first();
 
-		if (Auth::isNot('admin'))
-			$article->onlyPublished();
+		//if article is not found, check slug without dashes
+		if (empty($article))
+		{
+			$article = Article::findByDashlessSlug($slug, true)->onlyPublished(true)->first();
 
-		$article = $article->first();
+			//if article is found by dashless slug, redirect to URL with proper slug
+			if (!empty($article))
+				return Redirect::to($article->getUrl());
+		}
 
 		if (empty($article))
 			return Redirect::to(Fractal::blogUrl())->with('messages', [

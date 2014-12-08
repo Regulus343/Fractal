@@ -83,10 +83,8 @@ class Setting extends Eloquent {
 					'value'   => $this->getValue(),
 				];
 
-				if ($this->type == "List") {
-					$name .= ".";
-					$attributes['multiple'] = "multiple";
-				}
+				if ($this->type == "List")
+					$attributes['multiple'] = true;
 
 				$html = Form::field($name, 'select', $attributes);
 			} else {

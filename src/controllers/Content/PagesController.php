@@ -1,6 +1,7 @@
 <?php namespace Regulus\Fractal\Controllers\Content;
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
@@ -122,6 +123,9 @@ class PagesController extends BaseController {
 			//re-export menus to config array in case published status for page has changed
 			Fractal::exportMenus();
 
+			//re-export routes to config array in case slug or published status for page has changed
+			Fractal::exportRoutes();
+
 			Activity::log([
 				'contentId'   => $page->id,
 				'contentType' => 'Page',
@@ -199,6 +203,9 @@ class PagesController extends BaseController {
 			//re-export menus to config array in case published status for page has changed
 			Fractal::exportMenus();
 
+			//re-export routes to config array in case slug or published status for page has changed
+			Fractal::exportRoutes();
+
 			Activity::log([
 				'contentId'   => $page->id,
 				'contentType' => 'Page',
@@ -250,12 +257,19 @@ class PagesController extends BaseController {
 
 	public function view($slug = 'home')
 	{
-		$page = Page::where('slug', $slug);
+		Site::set('public', true);
 
-		if (Auth::isNot('admin'))
-			$page->onlyPublished();
+		$page = Page::findBySlug($slug, true)->onlyPublished(true)->first();
 
-		$page = $page->first();
+		//if page is not found, check slug without dashes
+		if (empty($page))
+		{
+			$page = Page::findByDashlessSlug($slug, true)->onlyPublished(true)->first();
+
+			//if page is found by dashless slug, redirect to URL with proper slug
+			if (!empty($page))
+				return Redirect::to($page->getUrl());
+		}
 
 		if (empty($page))
 			return Redirect::to('');

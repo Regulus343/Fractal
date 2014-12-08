@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Config;
 use \Site as Site;
 
 //ensure DB tables have been migrated first
-if (Config::get('fractal::migrated')) {
+if (Config::get('fractal::migrated'))
+{
 	$websiteName = Fractal::getSetting('Website Name');
 	if ($websiteName)
 		Site::set('name', $websiteName);

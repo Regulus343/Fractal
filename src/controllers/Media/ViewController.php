@@ -28,6 +28,8 @@ class ViewController extends BaseController {
 
 	public function __construct()
 	{
+		Site::set('public', true);
+
 		Site::setMulti(['section', 'title'], Fractal::lang('labels.media'));
 
 		//set content type and views location
@@ -48,8 +50,12 @@ class ViewController extends BaseController {
 		return $this->getItems();
 	}
 
-
 	public function getPage($page = 1)
+	{
+		return $this->getItems($page);
+	}
+
+	public function getP($page = 1)
 	{
 		return $this->getItems($page);
 	}
@@ -60,6 +66,8 @@ class ViewController extends BaseController {
 		Site::set('contentColumnWidth', 9);
 		Site::set('paginationUrlSuffix', 'page');
 		Site::set('currentPage', $page);
+
+		Site::set('subSection', 'All');
 
 		DB::getPaginator()->setCurrentPage($page);
 
@@ -90,31 +98,34 @@ class ViewController extends BaseController {
 		//allow item selection by ID for to allow shorter URLs
 		if (is_numeric($slug))
 		{
-			$mediaItem = Item::where('id', $slug);
-
-			if (Auth::isNot('admin'))
-				$mediaItem->onlyPublished();
-
-			$mediaItem = $mediaItem->first();
+			$mediaItem = Item::where('id', $slug)->onlyPublished(true)->first();
 
 			//if item is found by ID, redirect to URL with slug
 			if (!empty($mediaItem))
 				return Redirect::to($mediaItem->getUrl());
 		}
 
-		$mediaItem = Item::where('slug', $slug);
+		$mediaItem = Item::findBySlug($slug, true)->first();
 
-		if (Auth::isNot('admin'))
-			$mediaItem->onlyPublished();
+		//if item is not found, check slug without dashes
+		if (empty($mediaItem))
+		{
+			$mediaItem = Item::findByDashlessSlug($slug, true)->onlyPublished(true)->first();
 
-		$mediaItem = $mediaItem->first();
+			//if item is found by dashless slug, redirect to URL with proper slug
+			if (!empty($mediaItem))
+				return Redirect::to($mediaItem->getUrl());
+		}
 
 		if (empty($mediaItem))
 			return Redirect::to(Fractal::mediaUrl())->with('messages', [
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.mediaItem')])
 			]);
 
-		Site::setMulti(['subSection', 'title', 'mediaItemTitle'], $mediaItem->title);
+		if ($mediaItem->type)
+			Site::setMulti(['subSection', 'mediaType'], $mediaItem->type);
+
+		Site::setMulti(['title', 'mediaItemTitle'], $mediaItem->title);
 
 		Site::addTrailItem($mediaItem->title, $mediaItem->getUrl());
 
@@ -169,6 +180,8 @@ class ViewController extends BaseController {
 			return Redirect::to(Fractal::mediaUrl())->with('messages', [
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.mediaSet')])
 			]);
+
+		Site::setMulti(['subSection', 'mediaSet'], $mediaSet->title);
 
 		$mediaItems = Item::query()
 			->select(['media_items.id', 'media_items.published_at'])
@@ -234,6 +247,8 @@ class ViewController extends BaseController {
 			return Redirect::to(Fractal::mediaUrl())->with('messages', [
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.mediaType')])
 			]);
+
+		Site::setMulti(['subSection', 'mediaType'], $mediaType->name);
 
 		$mediaItems = Item::where('media_items.media_type_id', $mediaType->id);
 

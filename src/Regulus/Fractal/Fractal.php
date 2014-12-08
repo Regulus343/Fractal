@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4.
 
 		created by Cody Jassman
-		version 0.7.5a
-		last updated on November 30, 2014
+		version 0.7.6a
+		last updated on December 3, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -28,7 +28,9 @@ use Regulus\Fractal\Models\Content\Menu;
 use Regulus\Fractal\Models\Content\MenuItem;
 use Regulus\Fractal\Models\General\Setting;
 use Regulus\Fractal\Models\Media\Item as MediaItem;
+use Regulus\Fractal\Models\Blogs\Article as BlogArticle;
 
+use \Auth;
 use \Form;
 use \Format;
 use \HTML as HTML;
@@ -78,11 +80,12 @@ class Fractal {
 	 *
 	 * @param  string   $uri
 	 * @param  boolean  $controller
+	 * @param  mixed    $subdomain
 	 * @return string
 	 */
-	public function url($uri = '', $controller = false)
+	public function url($uri = '', $controller = false, $subdomain = null)
 	{
-		return URL::to($this->uri($uri, $controller));
+		return Site::url($this->uri($uri, $controller), $subdomain);
 	}
 
 	/**
@@ -114,20 +117,7 @@ class Fractal {
 	 */
 	public function blogUrl($uri = '')
 	{
-		$url = URL::to($this->blogUri($uri));
-
-		//remove media subdomain
-		$mediaSubdomain = Config::get('fractal::media.subdomain');
-		if ($mediaSubdomain != "" && $mediaSubdomain !== false && !is_null($mediaSubdomain))
-			$url = str_replace($mediaSubdomain.'.', '', $url);
-
-		$subdomain = Config::get('fractal::blogs.subdomain');
-		if ($subdomain != "" && $subdomain !== false && !is_null($subdomain)) {
-			$url = str_replace($subdomain.'.', '', $url);
-			$url = str_replace('http://', 'http://'.$subdomain.'.', str_replace('https://', 'https://'.$subdomain.'.', $url));
-		}
-
-		return $url;
+		return Site::url($this->blogUri($uri), Config::get('fractal::blogs.subdomain'));
 	}
 
 	/**
@@ -155,20 +145,7 @@ class Fractal {
 	 */
 	public function mediaUrl($uri = '')
 	{
-		$url = URL::to($this->mediaUri($uri));
-
-		//remove blog subdomain
-		$blogSubdomain = Config::get('fractal::blogs.subdomain');
-		if ($blogSubdomain != "" && $blogSubdomain !== false && !is_null($blogSubdomain))
-			$url = str_replace($blogSubdomain.'.', '', $url);
-
-		$subdomain = Config::get('fractal::media.subdomain');
-		if ($subdomain != "" && $subdomain !== false && !is_null($subdomain)) {
-			$url = str_replace($subdomain.'.', '', $url);
-			$url = str_replace('http://', 'http://'.$subdomain.'.', str_replace('https://', 'https://'.$subdomain.'.', $url));
-		}
-
-		return $url;
+		return Site::url($this->mediaUri($uri), Config::get('fractal::media.subdomain'));
 	}
 
 	/**
@@ -774,7 +751,7 @@ class Fractal {
 		//add page links to content
 		preg_match_all('/\[page:([a-z\-]*)\]/', $content, $pageSlugs);
 		if (isset($pageSlugs[0]) && !empty($pageSlugs[0])) {
-			$pages = ContentPage::whereIn('slug', $pageSlugs[1])->get();
+			$pages = Page::whereIn('slug', $pageSlugs[1])->get();
 
 			for ($p = 0; $p < count($pageSlugs[0]); $p++) {
 				$title = "";
@@ -797,7 +774,7 @@ class Fractal {
 		//add page links to content
 		preg_match_all('/page:([a-z\-]*)/', $content, $pageSlugs);
 		if (isset($pageSlugs[0]) && !empty($pageSlugs[0])) {
-			$pages = ContentPage::whereIn('slug', $pageSlugs[1])->get();
+			$pages = Page::whereIn('slug', $pageSlugs[1])->get();
 
 			for ($p = 0; $p < count($pageSlugs[0]); $p++) {
 				$url = "";
@@ -1180,6 +1157,92 @@ class Fractal {
 		}
 
 		$path  = "app/config/packages/regulus/fractal/menus.php";
+
+		if (!$fromCli)
+			$path = "../".$path;
+
+		ArrayFile::save($path, $array);
+	}
+
+	/**
+	 * Export the routes for content pages, media items, and blog articles to a PHP array config file.
+	 *
+	 * @param  boolean  $fromCli
+	 * @return void
+	 */
+	public function exportRoutes($fromCli = false)
+	{
+		$array = [];
+
+		if (Config::get('fractal::migrated'))
+		{
+			//export page routes
+			$pageUri = Config::get('fractal::pageUri');
+			if (is_null($pageUri) || !$pageUri || $pageUri == "")
+			{
+				$pages = Page::select(['id', 'slug', 'published_at']);
+
+				if (Auth::isNot('admin'))
+					$pages->onlyPublished();
+
+				$pages = $pages->get();
+
+				foreach ($pages as $page)
+				{
+					if (Config::get('fractal::useHomePageForRoot') && $page->slug == "home")
+						$array['pages'][] = 'x';
+
+					$array['pages'][] = $page->id;
+					$array['pages'][] = $page->slug;
+				}
+			}
+
+			//export media item
+			if (Config::get('fractal::media.shortRoutes'))
+			{
+				$mediaItems = MediaItem::select(['id', 'slug', 'published_at']);
+
+				if (Auth::isNot('admin'))
+					$mediaItems->onlyPublished();
+
+				$mediaItems = $mediaItems->get();
+
+				$mediaSubdomain = Config::get('fractal::media.subdomain');
+				$mediaSubdomain = is_string($mediaSubdomain) && $mediaSubdomain != "";
+
+				foreach ($mediaItems as $mediaItem)
+				{
+					if ($mediaSubdomain)
+						$array['mediaItems'][] = $mediaItem->id;
+
+					$array['mediaItems'][] = $mediaItem->slug;
+				}
+			}
+
+			//export blog articles
+			if (Config::get('fractal::blogs.shortRoutes'))
+			{
+				$blogArticles = BlogArticle::select(['id', 'slug', 'published_at']);
+
+				if (Auth::isNot('admin'))
+					$blogArticles->onlyPublished();
+
+				$blogArticles = $blogArticles->get();
+
+				$blogSubdomain = Config::get('fractal::blogs.subdomain');
+				$blogSubdomain = is_string($blogSubdomain) && $blogSubdomain != "";
+
+				foreach ($blogArticles as $blogArticle)
+				{
+					if ($blogSubdomain)
+						$array['blogArticles'][] = $blogArticle->id;
+
+					$array['blogArticles'][] = $blogArticle->slug;
+				}
+			}
+		}
+
+		$path  = "app/config/packages/regulus/fractal/routes.php";
 
 		if (!$fromCli)
 			$path = "../".$path;

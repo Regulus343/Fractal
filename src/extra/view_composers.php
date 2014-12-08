@@ -5,7 +5,7 @@
 | View Composers
 |--------------------------------------------------------------------------
 |
-| The view composers for the CMS.
+| View composers for the CMS.
 |
 */
 
