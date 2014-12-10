@@ -1,4 +1,4 @@
-@if (isset($categories) && !empty($categories))
+@if (isset($categories) && Regulus\Fractal\Models\Blogs\Category::publishedArticleInCategories($categories))
 
 	<h3>{{ Fractal::lang('labels.categories') }}</h3>
 
@@ -16,13 +16,13 @@
 
 		@foreach ($categories as $categoryListed)
 
-			@if ($categoryListed->articles()->count())
+			@if ($categoryListed->articles()->onlyPublished()->count())
 
 				<li{{ HTML::activeArea(isset($category) && $categoryListed->id == $category->id) }}>
 					<a href="{{ $categoryListed->getUrl() }}">
 						<span class="glyphicon glyphicon-tag"></span> {{ $categoryListed->name }}
 
-						<span class="badge primary">{{ $categoryListed->articles()->count() }}</span>
+						<span class="badge primary">{{ $categoryListed->articles()->onlyPublished()->count() }}</span>
 					</a>
 				</li>
 

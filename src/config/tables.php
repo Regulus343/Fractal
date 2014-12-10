@@ -303,9 +303,10 @@ return [
 				'sort'      => 'media_type_id',
 			],
 			[
-				'attribute' => 'title',
+				'label'     => 'Title',
+				'method'    => 'getTitle()',
 				'class'     => 'title',
-				'sort'      => true,
+				'sort'      => 'title',
 			],
 			[
 				'label'     => 'Published',
@@ -506,9 +507,10 @@ return [
 				'sort'      => true,
 			],
 			[
-				'attribute' => 'title',
+				'label'     => 'Title',
+				'method'    => 'getTitle()',
 				'class'     => 'title',
-				'sort'      => true,
+				'sort'      => 'title',
 			],
 			[
 				'attribute' => 'slug',

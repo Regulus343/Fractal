@@ -62,6 +62,23 @@ class Category extends BaseModel {
 	}
 
 	/**
+	 * Check whether collection of categories have any published articles.
+	 *
+	 * @param  Collection $categories
+	 * @return boolean
+	 */
+	public static function publishedArticleInCategories($categories)
+	{
+		foreach ($categories as $category)
+		{
+			if ($category->articles()->onlyPublished()->count())
+				return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Get category search results.
 	 *
 	 * @param  array    $searchData

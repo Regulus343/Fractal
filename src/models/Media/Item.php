@@ -23,6 +23,8 @@ use Regulus\Fractal\Models\Content\Download as ContentDownload;
 
 use Regulus\Fractal\Traits\PublishingTrait;
 
+use MaxHoffmann\Parsedown\ParsedownFacade as Markdown;
+
 class Item extends BaseModel {
 
 	/**
@@ -250,6 +252,16 @@ class Item extends BaseModel {
 			return $this->type->name;
 
 		return "General (".$this->getFileType().")";
+	}
+
+	/**
+	 * Get the Markdown-formatted title of the media item.
+	 *
+	 * @return string
+	 */
+	public function getTitle()
+	{
+		return Markdown::line($this->title);
 	}
 
 	/**

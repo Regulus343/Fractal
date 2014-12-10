@@ -4,20 +4,20 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "098b13e70e78c778323e2545e81d1440",
+    "hash": "10266ec42bf64ea8d370f46fd0b6203a",
     "packages": [
         {
             "name": "erusev/parsedown",
-            "version": "1.1.2",
+            "version": "1.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/erusev/parsedown.git",
-                "reference": "9816507a75b27b61035671cd2fc6f524a9b4c25c"
+                "reference": "495e7ac73bb5fde6b857b88ff2bb1b5e79a4263a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erusev/parsedown/zipball/9816507a75b27b61035671cd2fc6f524a9b4c25c",
-                "reference": "9816507a75b27b61035671cd2fc6f524a9b4c25c",
+                "url": "https://api.github.com/repos/erusev/parsedown/zipball/495e7ac73bb5fde6b857b88ff2bb1b5e79a4263a",
+                "reference": "495e7ac73bb5fde6b857b88ff2bb1b5e79a4263a",
                 "shasum": ""
             },
             "type": "library",
@@ -43,7 +43,7 @@
                 "markdown",
                 "parser"
             ],
-            "time": "2014-11-19 18:18:56"
+            "time": "2014-11-29 02:29:14"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -259,22 +259,22 @@
         },
         {
             "name": "regulus/elemental",
-            "version": "v0.3.1",
+            "version": "v0.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Regulus343/Elemental.git",
-                "reference": "a14d6539f58d425a50673f356f9abd9332026ef6"
+                "reference": "012af4bfc994a14297efbe8191b0b43b0dcce7a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Regulus343/Elemental/zipball/a14d6539f58d425a50673f356f9abd9332026ef6",
-                "reference": "a14d6539f58d425a50673f356f9abd9332026ef6",
+                "url": "https://api.github.com/repos/Regulus343/Elemental/zipball/012af4bfc994a14297efbe8191b0b43b0dcce7a6",
+                "reference": "012af4bfc994a14297efbe8191b0b43b0dcce7a6",
                 "shasum": ""
             },
             "require": {
                 "illuminate/support": "4.x",
                 "php": ">=5.3.0",
-                "regulus/tetra-text": "0.4.*"
+                "regulus/tetra-text": "0.4.4"
             },
             "type": "library",
             "autoload": {
@@ -296,7 +296,7 @@
                 }
             ],
             "description": "An HTML element building composer package that simplifies creation of active, selected, or hidden elements.",
-            "time": "2014-11-27 06:07:29"
+            "time": "2014-12-09 04:33:55"
         },
         {
             "name": "regulus/formation",
@@ -304,18 +304,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Regulus343/Formation.git",
-                "reference": "9ce2d4ea1bc829fa0328d0c319e29125d1dd3fb8"
+                "reference": "a105c8bd85961c3d52c4f75a73f8ca57e48bbbf9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Regulus343/Formation/zipball/9ce2d4ea1bc829fa0328d0c319e29125d1dd3fb8",
-                "reference": "9ce2d4ea1bc829fa0328d0c319e29125d1dd3fb8",
+                "url": "https://api.github.com/repos/Regulus343/Formation/zipball/a105c8bd85961c3d52c4f75a73f8ca57e48bbbf9",
+                "reference": "a105c8bd85961c3d52c4f75a73f8ca57e48bbbf9",
                 "shasum": ""
             },
             "require": {
                 "illuminate/support": "4.x",
                 "php": ">=5.3.0",
-                "regulus/tetra-text": "0.4.*"
+                "regulus/tetra-text": "0.4.4"
             },
             "type": "library",
             "autoload": {
@@ -338,7 +338,7 @@
                 }
             ],
             "description": "A powerful form creation composer package for Laravel 4.",
-            "time": "2014-11-27 06:29:22"
+            "time": "2014-12-09 04:31:12"
         },
         {
             "name": "regulus/solid-site",
@@ -382,16 +382,16 @@
         },
         {
             "name": "regulus/tetra-text",
-            "version": "v0.4.2",
+            "version": "v0.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Regulus343/TetraText.git",
-                "reference": "a518dba10a08b3007d1aa5c820cb71ad9a2ed665"
+                "reference": "1df6af78ab2daeb300298fc82be681907f1dbf05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Regulus343/TetraText/zipball/a518dba10a08b3007d1aa5c820cb71ad9a2ed665",
-                "reference": "a518dba10a08b3007d1aa5c820cb71ad9a2ed665",
+                "url": "https://api.github.com/repos/Regulus343/TetraText/zipball/1df6af78ab2daeb300298fc82be681907f1dbf05",
+                "reference": "1df6af78ab2daeb300298fc82be681907f1dbf05",
                 "shasum": ""
             },
             "require": {
@@ -419,7 +419,7 @@
                 }
             ],
             "description": "A small text/string formatting composer package that formats phone numbers, numeric values, money values and more.",
-            "time": "2014-11-27 06:02:50"
+            "time": "2014-12-09 04:27:28"
         },
         {
             "name": "regulus/upstream",

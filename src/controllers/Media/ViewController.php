@@ -125,9 +125,9 @@ class ViewController extends BaseController {
 		if ($mediaItem->type)
 			Site::setMulti(['subSection', 'mediaType'], $mediaItem->type);
 
-		Site::setMulti(['title', 'mediaItemTitle'], $mediaItem->title);
+		Site::setMulti(['title', 'mediaItemTitle'], $mediaItem->getTitle());
 
-		Site::addTrailItem($mediaItem->title, $mediaItem->getUrl());
+		Site::addTrailItem(strip_tags($mediaItem->getTitle()), $mediaItem->getUrl());
 
 		Site::set('pageIdentifier', 'media-item/'.$mediaItem->slug);
 

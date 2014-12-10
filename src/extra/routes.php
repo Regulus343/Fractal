@@ -85,22 +85,10 @@ if (Config::get('fractal::blogs.enabled'))
 	if ($blogUri != false && is_null($blogUri) && $blogUri != "")
 		$group['prefix'] = $blogUri;
 
-	Route::group($group, function() use ($blogController, $exportedRoutes)
+	Route::group($group, function() use ($blogController)
 	{
-		/* Exported Blog Articles Routes */
-		if (is_array($exportedRoutes) && isset($exportedRoutes['blogArticles']) && is_array($exportedRoutes['blogArticles']))
-		{
-			$blogArticleMethod = $blogController.'@getArticle';
-
-			foreach ($exportedRoutes['blogArticles'] as $blogArticle)
-			{
-				Route::get('{'.$blogArticle.'}', $blogArticleMethod);
-
-				//allow routes to exclude dashes to make it easy to verbally communicate URLs
-				if (strpos($blogArticle, '-'))
-					Route::get('{'.str_replace('-', '', $blogArticle).'}', $blogArticleMethod);
-			}
-		}
+		/* Short Article Routes */
+		Route::get('{slug}', $blogController.'@getArticle');
 
 		/* Blog Controller Routes */
 		Route::controller('', $blogController);
@@ -121,49 +109,26 @@ if (Config::get('fractal::media.enabled'))
 	if ($mediaUri != false && is_null($mediaUri) && $mediaUri != "")
 		$group['prefix'] = $mediaUri;
 
-	Route::group($group, function() use ($mediaController, $exportedRoutes)
+	Route::group($group, function() use ($mediaController)
 	{
-		/* Exported Media Items Routes */
-		if (is_array($exportedRoutes) && isset($exportedRoutes['mediaItems']) && is_array($exportedRoutes['mediaItems']))
-		{
-			$mediaItemMethod = $mediaController.'@getItem';
-
-			foreach ($exportedRoutes['mediaItems'] as $mediaItem)
-			{
-				Route::get('{'.$mediaItem.'}', $mediaItemMethod);
-
-				//allow routes to exclude dashes to make it easy to verbally communicate URLs
-				if (strpos($mediaItem, '-'))
-					Route::get('{'.str_replace('-', '', $mediaItem).'}', $mediaItemMethod);
-			}
-		}
+		/* Short Media Items Routes */
+		Route::get('{slug}', $mediaController.'@getItem');
 
 		/* Media Controller Routes */
 		Route::controller('', $mediaController);
 	});
 }
 
-/* Exported Content Pages Routes */
+/* Content Pages Routes */
 $pageUri    = Config::get('fractal::pageUri');
 $pageMethod = Config::get('fractal::pageMethod');
 
-if (is_array($exportedRoutes) && isset($exportedRoutes['pages']) && is_array($exportedRoutes['pages']))
-{
-	foreach ($exportedRoutes['pages'] as $page)
-	{
-		Route::get(($page != 'x' ? '{'.$page.'}' : ''), $pageMethod);
-
-		//allow routes to exclude dashes to make it easy to verbally communicate URLs
-		if (strpos($page, '-'))
-			Route::get('{'.str_replace('-', '', $page).'}', $pageMethod);
-	}
-}
-
-/* Content Pages Routes */
 if (!is_null($pageUri) && $pageUri != false && $pageUri == "")
 {
 	Route::get($pageUri.'/{slug}', $pageMethod);
-
-	if (Config::get('fractal::useHomePageForRoot'))
-		Route::get('', $pageMethod);
+} else {
+	Route::get('{slug}', $pageMethod);
 }
+
+if (Config::get('fractal::useHomePageForRoot'))
+	Route::get('', $pageMethod);

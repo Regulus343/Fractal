@@ -18,6 +18,8 @@ use Regulus\Fractal\Models\Content\View as ContentView;
 
 use Regulus\Fractal\Traits\PublishingTrait;
 
+use MaxHoffmann\Parsedown\ParsedownFacade as Markdown;
+
 class Article extends BaseModel {
 
 	/**
@@ -224,6 +226,16 @@ class Article extends BaseModel {
 		return $this
 			->belongsToMany('Regulus\Fractal\Models\Blogs\Category', 'blog_article_categories', 'article_id', 'category_id')
 			->orderBy('name');
+	}
+
+	/**
+	 * Get the Markdown-formatted title of the article.
+	 *
+	 * @return string
+	 */
+	public function getTitle()
+	{
+		return Markdown::line($this->title);
 	}
 
 	/**

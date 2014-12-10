@@ -272,6 +272,23 @@ class Set extends BaseModel {
 	}
 
 	/**
+	 * Check whether collection of media sets have any published items.
+	 *
+	 * @param  Collection $mediaSets
+	 * @return boolean
+	 */
+	public static function publishedItemInSets($mediaSets)
+	{
+		foreach ($mediaSets as $mediaSet)
+		{
+			if ($mediaSet->items()->onlyPublished()->count())
+				return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Get media set search results.
 	 *
 	 * @param  array    $searchData

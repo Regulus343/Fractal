@@ -126,6 +126,23 @@ class Type extends BaseModel {
 	}
 
 	/**
+	 * Check whether collection of media types have any published items.
+	 *
+	 * @param  Collection $mediaTypes
+	 * @return boolean
+	 */
+	public static function publishedItemInTypes($mediaTypes)
+	{
+		foreach ($mediaTypes as $mediaType)
+		{
+			if ($mediaType->items()->onlyPublished()->count())
+				return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Get media type search results.
 	 *
 	 * @param  array    $searchData

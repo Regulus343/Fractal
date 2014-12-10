@@ -150,8 +150,8 @@ class ArticlesController extends BlogsController {
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.article')])
 			]);
 
-		Site::set('title', $article->title.' ('.Fractal::lang('labels.article').')');
-		Site::set('titleHeading', Fractal::lang('labels.updateArticle').': <strong>'.Format::entities($article->title).'</strong>');
+		Site::set('title', $article->getTitle().' ('.Fractal::lang('labels.article').')');
+		Site::set('titleHeading', Fractal::lang('labels.updateArticle').': <strong>'.$article->getTitle().'</strong>');
 		Site::set('wysiwyg', true);
 
 		$article->setDefaults([
@@ -242,7 +242,7 @@ class ArticlesController extends BlogsController {
 		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Fractal::lang('messages.successDeleted', ['item' => '<strong>'.$article->title.'</strong>']);
+		$result['message']    = Fractal::lang('messages.successDeleted', ['item' => '<strong>'.$article->getTitle().'</strong>']);
 
 		$article->contentAreas()->sync([]);
 		$article->delete();

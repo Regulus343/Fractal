@@ -847,7 +847,7 @@ class Fractal {
 
 		//render to Markdown
 		if (strtolower($contentType) == "markdown")
-			$content = Markdown::parse($content);
+			$content = Markdown::text($content);
 
 		//cut off content after the preview divider for blog articles if preview only option is set
 		$previewDivider = Config::get('fractal::blogs.previewDivider');

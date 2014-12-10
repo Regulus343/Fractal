@@ -116,9 +116,9 @@ class ViewController extends BaseController {
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.article')])
 			]);
 
-		Site::setMulti(['subSection', 'title', 'articleTitle'], $article->title);
+		Site::setMulti(['subSection', 'title', 'articleTitle'], $article->getTitle());
 
-		Site::addTrailItem($article->title, $article->getUrl());
+		Site::addTrailItem(strip_tags($article->getTitle()), $article->getUrl());
 
 		Site::set('pageIdentifier', 'article/'.$article->slug);
 

@@ -10,7 +10,7 @@
 
 		<li{{ HTML::activeArea(isset($article->id) && $articleListed->id == $article->id) }}>
 			<a href="{{ $articleListed->getUrl() }}">
-				<span class="glyphicon glyphicon-file"></span> {{ $articleListed->title }}
+				<span class="glyphicon glyphicon-file"></span> {{ $articleListed->getTitle() }}
 
 				<div>
 					<time datetime="{{ $articleListed->published_at }}">{{ $articleListed->getPublishedDateTime() }}</time>

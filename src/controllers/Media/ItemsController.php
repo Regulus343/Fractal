@@ -222,8 +222,8 @@ class ItemsController extends MediaController {
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.mediaItem')])
 			]);
 
-		Site::set('title', $item->title.' ('.Fractal::lang('labels.mediaItem').')');
-		Site::set('titleHeading', Fractal::lang('labels.updateItem').': <strong>'.Format::entities($item->title).'</strong>');
+		Site::set('title', $item->getTitle().' ('.Fractal::lang('labels.mediaItem').')');
+		Site::set('titleHeading', Fractal::lang('labels.updateItem').': <strong>'.$item->getTitle().'</strong>');
 		Site::set('wysiwyg', true);
 
 		$item->setDefaults();
@@ -436,7 +436,7 @@ class ItemsController extends MediaController {
 		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Fractal::lang('messages.successDeleted', ['item' => '<strong>'.$item->title.'</strong>']);
+		$result['message']    = Fractal::lang('messages.successDeleted', ['item' => '<strong>'.$item->getTitle().'</strong>']);
 
 		$item->deleteFiles();
 

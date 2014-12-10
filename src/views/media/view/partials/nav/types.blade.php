@@ -1,4 +1,4 @@
-@if (isset($mediaTypes) && !empty($mediaTypes) && Fractal::getSetting('Display Media Types Menu', true))
+@if (isset($mediaTypes) && Regulus\Fractal\Models\Media\Type::publishedItemInTypes($mediaTypes) && Fractal::getSetting('Display Media Types Menu', true))
 
 	<h3>{{ Fractal::lang('labels.mediaTypes') }}</h3>
 
@@ -16,13 +16,13 @@
 
 		@foreach ($mediaTypes as $mediaTypeListed)
 
-			@if ($mediaTypeListed->items()->count())
+			@if ($mediaTypeListed->items()->onlyPublished()->count())
 
 				<li{{ HTML::activeArea(isset($mediaType) && $mediaTypeListed->id == $mediaType->id) }}>
 					<a href="{{ $mediaTypeListed->getUrl() }}">
 						<span class="glyphicon glyphicon-tag"></span> {{ $mediaTypeListed->name }}
 
-						<span class="badge primary">{{ $mediaTypeListed->items()->count() }}</span>
+						<span class="badge primary">{{ $mediaTypeListed->items()->onlyPublished()->count() }}</span>
 					</a>
 				</li>
 
