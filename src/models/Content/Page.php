@@ -17,6 +17,8 @@ use Regulus\Fractal\Models\Content\View as ContentView;
 
 use Regulus\Fractal\Traits\PublishingTrait;
 
+use MaxHoffmann\Parsedown\ParsedownFacade as Markdown;
+
 class Page extends BaseModel {
 
 	/**
@@ -167,6 +169,16 @@ class Page extends BaseModel {
 			->belongsToMany('Regulus\Fractal\Models\Content\Area', 'content_page_areas', 'page_id', 'area_id')
 			->withPivot('layout_tag')
 			->orderBy('title');
+	}
+
+	/**
+	 * Get the Markdown-formatted title of the page.
+	 *
+	 * @return string
+	 */
+	public function getTitle()
+	{
+		return Markdown::line($this->title);
 	}
 
 	/**

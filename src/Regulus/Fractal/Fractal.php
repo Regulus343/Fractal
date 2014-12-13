@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4.
 
 		created by Cody Jassman
-		version 0.7.6a
-		last updated on December 3, 2014
+		version 0.7.8a
+		last updated on December 12, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -433,6 +433,17 @@ class Fractal {
 	{
 		$string = $this->toUpperCase($string);
 		return strtolower(substr($string, 0, 1)).substr($string, 1);
+	}
+
+	/**
+	 * Turn a camelcased string to dashed format.
+	 *
+	 * @param  string   $string
+	 * @return string
+	 */
+	public function toDashed($string)
+	{
+		return strtolower(preg_replace('/([a-zA-Z])(?=[A-Z])/', '$1-', $string));
 	}
 
 	/**

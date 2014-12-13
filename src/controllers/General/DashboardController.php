@@ -16,6 +16,8 @@ use \Site;
 
 use Regulus\Fractal\Controllers\BaseController;
 
+use Regulus\Fractal\Libraries\Reports;
+
 class DashboardController extends BaseController {
 
 	public function __construct()
@@ -23,7 +25,7 @@ class DashboardController extends BaseController {
 		parent::__construct();
 
 		Site::setMulti(['section', 'subSection'], 'Home');
-		Site::set('title', Fractal::lang('labels.home'));
+		Site::set('title', Fractal::lang('labels.dashboard'));
 
 		Fractal::setViewsLocation('core');
 	}
@@ -31,7 +33,20 @@ class DashboardController extends BaseController {
 	public function getIndex()
 	{
 		Site::set('hideTitle', true);
-		return View::make(Fractal::view('home'));
+
+		$reports = [
+			'totalViewsMonth'     => Reports::totalViews('month'),
+			'totalViewsYear'      => Reports::totalViews('year'),
+
+			'uniqueViewsMonth'    => Reports::uniqueViews('month'),
+			'uniqueViewsYear'     => Reports::uniqueViews('year'),
+
+			'popularContentMonth' => Reports::popularContent('month'),
+			'popularContentYear'  => Reports::popularContent('year'),
+		];
+
+		return View::make(Fractal::view('dashboard'))
+			->with('reports', $reports);
 	}
 
 	public function getDeveloper($off = false)

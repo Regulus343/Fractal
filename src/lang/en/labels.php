@@ -2,9 +2,10 @@
 
 return [
 
-	'version'                     => '0.7.6a',
+	'version'                     => '0.7.8a',
 
 	'home'                        => 'Home',
+	'dashboard'                   => 'Dashboard',
 	'returnToCms'                 => 'Return to CMS',
 
 	'create'                      => 'Create',
@@ -229,5 +230,19 @@ return [
 
 	'text'                        => 'Text',
 	'languageKey'                 => 'Language Key',
+
+	'contentTypes'                => [
+		'singular' => [
+			'Page'    => 'Page',
+			'Article' => 'Article',
+			'Item'    => 'Media Item',
+		],
+
+		'plural' => [
+			'Page'    => 'Pages',
+			'Article' => 'Articles',
+			'Item'    => 'Media Items',
+		],
+	],
 
 ];

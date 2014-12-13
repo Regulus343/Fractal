@@ -54,14 +54,14 @@ class SettingsTableSeeder extends Seeder {
 			],
 			[
 				'name'          => 'Content View Logging Type',
-				'value'         => 'Unique',
+				'value'         => 'All',
 				'type'          => 'Text',
 				'options'       => 'None, Unique, All',
 				'developer'     => true,
 			],
 			[
 				'name'          => 'Content Download Logging Type',
-				'value'         => 'Unique',
+				'value'         => 'All',
 				'type'          => 'Text',
 				'options'       => 'None, Unique, All',
 				'developer'     => true,
