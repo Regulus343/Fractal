@@ -2,7 +2,7 @@
 
 return [
 
-	'version'                     => '0.7.8a',
+	'version'                     => '0.7.9a',
 
 	'home'                        => 'Home',
 	'dashboard'                   => 'Dashboard',

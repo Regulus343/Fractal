@@ -1,6 +1,6 @@
 {
 	"name": "regulus/fractal",
-	"description": "A simple, versatile CMS base for Laravel 4.",
+	"description": "A simple, versatile CMS base for Laravel.",
 	"license": "MIT",
 	"authors": [
 		{
@@ -9,12 +9,12 @@
 		}
 	],
 	"require": {
-		"php": ">=5.3.0",
-		"illuminate/support": "4.2.x",
+		"php": ">=5.4.0",
+		"illuminate/support": "4.2.*|5.*",
 		"regulus/activity-log": "0.3.1",
 		"regulus/elemental": "0.3.3",
 		"regulus/formation": "@dev",
-		"regulus/solid-site": "0.4.7",
+		"regulus/solid-site": "0.5.0",
 		"regulus/tetra-text": "0.4.4",
 		"regulus/upstream": "0.4.4",
 		"maxhoffmann/parsedown-laravel": "@dev",

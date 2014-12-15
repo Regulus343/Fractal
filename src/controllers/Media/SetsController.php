@@ -258,7 +258,10 @@ class SetsController extends BaseController {
 		{
 			foreach ($set->items as $item)
 			{
-				$items[] = array_merge($item->toArray(), ['imageUrl' => $item->getImageUrl(true)]);
+				$items[] = array_merge($item->toArray(), [
+					'fileTypeId' => $item->file_type_id,
+					'imageUrl'   => $item->getImageUrl(true),
+				]);
 			}
 		} else {
 			$itemIds = explode(',', Input::old('items'));
@@ -268,7 +271,10 @@ class SetsController extends BaseController {
 				$item = Item::find($itemId);
 
 				if (!empty($item))
-					$items[] = array_merge($item->toArray(), ['imageUrl' => $item->getImageUrl(true)]);
+					$items[] = array_merge($item->toArray(), [
+						'fileTypeId' => $item->file_type_id,
+						'imageUrl'   => $item->getImageUrl(true),
+					]);
 			}
 		}
 

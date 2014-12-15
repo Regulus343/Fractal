@@ -93,8 +93,6 @@ class ViewController extends BaseController {
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.mediaItem')])
 			]);
 
-		Site::set('contentColumnWidth', 9);
-
 		//allow item selection by ID for to allow shorter URLs
 		if (is_numeric($slug))
 		{
@@ -126,10 +124,14 @@ class ViewController extends BaseController {
 			Site::setMulti(['subSection', 'mediaType'], $mediaItem->type);
 
 		Site::setMulti(['title', 'mediaItemTitle'], $mediaItem->getTitle());
+		Site::set('contentColumnWidth', 9);
+		Site::set('pageIdentifier', 'media-item/'.$mediaItem->slug);
+
+		Site::set('contentUrl', $mediaItem->getUrl());
+		Site::set('contentImage', $mediaItem->getThumbnailImageUrl());
+		Site::set('contentDescription', strip_tags($mediaItem->getRenderedDescription()));
 
 		Site::addTrailItem(strip_tags($mediaItem->getTitle()), $mediaItem->getUrl());
-
-		Site::set('pageIdentifier', 'media-item/'.$mediaItem->slug);
 
 		$mediaItem->logView();
 
@@ -181,7 +183,7 @@ class ViewController extends BaseController {
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.mediaSet')])
 			]);
 
-		Site::setMulti(['subSection', 'mediaSet'], $mediaSet->title);
+		Site::setMulti(['title', 'subSection', 'mediaSet'], $mediaSet->title);
 
 		$mediaItems = Item::query()
 			->select(['media_items.id', 'media_items.published_at'])
@@ -220,6 +222,8 @@ class ViewController extends BaseController {
 
 		$mediaItems = $mediaItems->get();
 
+		Site::set('imageGallery', $mediaSet->image_gallery);
+
 		Site::addTrailItem($mediaSet->title, Request::url());
 
 		return View::make(Fractal::view('list'))
@@ -250,6 +254,8 @@ class ViewController extends BaseController {
 
 		Site::setMulti(['subSection', 'mediaType'], $mediaType->name);
 
+		Site::set('title', Fractal::lang('labels.mediaType').': '.$mediaType->name);
+
 		$mediaItems = Item::where('media_items.media_type_id', $mediaType->id);
 
 		if (Auth::isNot('admin'))
@@ -263,12 +269,12 @@ class ViewController extends BaseController {
 				$mediaItemIds[] = $mediaItem->id;
 		}
 
+		$messages = [];
+
 		if (empty($mediaItemIds))
-			return Redirect::to(Fractal::mediaUrl())->with('messages', [
-				'error' => Fractal::lang('messages.errorNoItems', [
-					'item'  => Fractal::langLower('labels.mediaType'),
-					'items' => Fractal::langLower('labels.mediaItems'),
-				])
+			$messages['error'] = Fractal::lang('messages.errorNoItems', [
+				'item'  => Fractal::langLower('labels.mediaType'),
+				'items' => Fractal::langLower('labels.mediaItems'),
 			]);
 
 		$mediaItems = Item::whereIn('id', $mediaItemIds)
@@ -283,7 +289,8 @@ class ViewController extends BaseController {
 
 		return View::make(Fractal::view('list'))
 			->with('mediaItems', $mediaItems)
-			->with('mediaType', $mediaType);
+			->with('mediaType', $mediaType)
+			->with('messages', $messages);
 	}
 
 	public function getT($slug = null) {

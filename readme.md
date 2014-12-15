@@ -1,7 +1,9 @@
 Fractal
 =======
 
-**A simple, versatile CMS base for Laravel 4.**
+**A simple, versatile CMS base for Laravel.**
+
+[![Latest Stable Version](https://poser.pugx.org/regulus/fractal/v/stable.svg)](https://packagist.org/packages/regulus/fractal) [![License](https://poser.pugx.org/regulus/fractal/license.svg)](https://packagist.org/packages/regulus/fractal)
 
 Fractal is a simple yet versative Admin/CMS base for Laravel 4. The core philosophy behind Fractal is:
 
@@ -30,9 +32,7 @@ Some of the things you can do with Fractal:
 	- Make use of the same versatile content area system as content pages uses
 - Manage media items (images, video, audio, and more...)
 - Extra website settings management for developers
-- Build Twitter Bootstrap-enabled menu markup for views
-- Build an array of a menu which you can build custom markup for
-- Easily change base URI which defaults to `website.com/admin`
+- Easily change base URI for CMS which defaults to `website.com/admin`
 - Easily add or remove controllers
 - Easily use custom views
 - Easily build forms (due to use of Formation package)

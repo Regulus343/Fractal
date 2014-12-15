@@ -1,9 +1,9 @@
-@if (Config::get('fractal::comments.enabled') && Config::get('fractal::comments.type') == "Disqus" && !is_null(Config::get('fractal::comments.disqusShortname')))
+@if (Config::get('fractal::social.commentsEnabled') && Config::get('fractal::social.commentsType') == "Disqus" && !is_null(Config::get('fractal::social.disqusShortname')))
 
 	<div id="disqus_thread"></div>
 
 	<script type="text/javascript">
-		var disqus_shortname  = "{{ Config::get('fractal::comments.disqusShortname') }}";
+		var disqus_shortname  = "{{ Config::get('fractal::social.disqusShortname') }}";
 
 		@if (Site::get('pageIdentifier', false))
 

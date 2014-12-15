@@ -116,15 +116,10 @@ class PagesController extends BaseController {
 			$messages['success'] = Fractal::lang('messages.successCreated', ['item' => Fractal::langLowerA('labels.page')]);
 
 			$input = Input::all();
-			$input['user_id'] = Auth::user()->id;
-
-			$page = Page::createNew($input);
+			$page  = Page::createNew($input);
 
 			//re-export menus to config array in case published status for page has changed
 			Fractal::exportMenus();
-
-			//re-export routes to config array in case slug or published status for page has changed
-			Fractal::exportRoutes();
 
 			Activity::log([
 				'contentId'   => $page->id,
@@ -203,9 +198,6 @@ class PagesController extends BaseController {
 			//re-export menus to config array in case published status for page has changed
 			Fractal::exportMenus();
 
-			//re-export routes to config array in case slug or published status for page has changed
-			Fractal::exportRoutes();
-
 			Activity::log([
 				'contentId'   => $page->id,
 				'contentType' => 'Page',
@@ -214,17 +206,14 @@ class PagesController extends BaseController {
 				'details'     => 'Title: '.$page->title,
 				'updated'     => true,
 			]);
-
-			return Redirect::to(Fractal::uri($slug.'/edit', true))
-				->with('messages', $messages);
 		} else {
 			$messages['error'] = Fractal::lang('messages.errorGeneral');
-
-			return Redirect::to(Fractal::uri($slug.'/edit', true))
-				->with('messages', $messages)
-				->with('errors', Form::getErrors())
-				->withInput();
 		}
+
+		return Redirect::to(Fractal::uri($slug.'/edit', true))
+			->with('messages', $messages)
+			->with('errors', Form::getErrors())
+			->withInput();
 	}
 
 	public function destroy($id)

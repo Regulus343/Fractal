@@ -87,8 +87,6 @@ class ViewController extends BaseController {
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.article')])
 			]);
 
-		Site::set('contentColumnWidth', 9);
-
 		//allow article selection by ID for to allow shorter URLs
 		if (is_numeric($slug))
 		{
@@ -117,10 +115,14 @@ class ViewController extends BaseController {
 			]);
 
 		Site::setMulti(['subSection', 'title', 'articleTitle'], $article->getTitle());
+		Site::set('contentColumnWidth', 9);
+		Site::set('pageIdentifier', 'article/'.$article->slug);
+
+		Site::set('contentUrl', $article->getUrl());
+		Site::set('contentImage', $article->getThumbnailImageUrl());
+		Site::set('contentDescription', strip_tags($article->getRenderedContent(true, false)));
 
 		Site::addTrailItem(strip_tags($article->getTitle()), $article->getUrl());
-
-		Site::set('pageIdentifier', 'article/'.$article->slug);
 
 		$article->logView();
 
@@ -163,14 +165,15 @@ class ViewController extends BaseController {
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.category')])
 			]);
 
-		Site::set('articleList', true);
-		Site::set('contentColumnWidth', 9);
-
 		$category = Category::findBySlug($slug);
 		if (empty($category))
 			return Redirect::to(Fractal::blogUrl())->with('messages', [
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.category')])
 			]);
+
+		Site::set('title', Fractal::lang('labels.blog').': '.$category->name);
+		Site::set('articleList', true);
+		Site::set('contentColumnWidth', 9);
 
 		$articles = Article::query()
 			->select('blog_articles.id')

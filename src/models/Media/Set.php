@@ -41,6 +41,7 @@ class Set extends BaseModel {
 		'title',
 		'description_type',
 		'description',
+		'image_gallery',
 		'published_at',
 	];
 

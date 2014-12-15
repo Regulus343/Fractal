@@ -310,7 +310,7 @@ class Item extends BaseModel {
 	}
 
 	/**
-	 * Get the image URL or a placeholder image URL for the file.
+	 * Get the image URL or a placeholder image URL for the media item.
 	 *
 	 * @param  boolean  $thumbnail
 	 * @return string
@@ -328,6 +328,16 @@ class Item extends BaseModel {
 
 		else
 			return Site::img('image-not-available', 'regulus/fractal');
+	}
+
+	/**
+	 * Get the thumbnail image URL or a placeholder image URL for the media item.
+	 *
+	 * @return string
+	 */
+	public function getThumbnailImageUrl()
+	{
+		return $this->getImageUrl(true);
 	}
 
 	/**

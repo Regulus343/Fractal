@@ -4,15 +4,15 @@
 
 	@include(Fractal::view('public.partials.pagination', true))
 
-	@foreach ($mediaItems as $mediaItem)
+	@if (Site::get('imageGallery'))
 
-		<div class="media-item-preview">
+		@include(Fractal::mediaView('partials.image_gallery', true))
 
-			@include(Fractal::mediaView('partials.item', true))
+	@else
 
-		</div>
+		@include(Fractal::mediaView('partials.list', true))
 
-	@endforeach
+	@endif
 
 	@include(Fractal::view('public.partials.pagination', true))
 

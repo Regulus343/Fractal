@@ -213,21 +213,25 @@ return [
 	|--------------------------------------------------------------------------
 	|
 	| The path and filename of the logo. Set this to false to use text instead
-	| of a logo image. If no extension is given, PNG will be assumed.
+	| of a logo image. If no extension is given, PNG will be assumed. You may
+	| use a composer package path by preceding the file path with,
+	| for example, "regulus/fractal::".
 	|
 	*/
-	'logo' => 'logo',
+	'logo' => 'regulus/fractal::logo',
 
 	/*
 	|--------------------------------------------------------------------------
-	| Logo in Fractal Assets Directory
+	| Favicon
 	|--------------------------------------------------------------------------
 	|
-	| Set this to false if your logo lies in your regular images directory.
-	| If true, the logo path will be "public/packages/regulus/fractal/images".
+	| The path and filename of the logo. Set this to false to use text instead
+	| of a logo image. If no extension is given, PNG will be assumed. You may
+	| use a composer package path by preceding the file path with,
+	| for example, "regulus/fractal::".
 	|
 	*/
-	'logoFractal' => true,
+	'favicon' => 'regulus/fractal::favicon.ico',
 
 	/*
 	|--------------------------------------------------------------------------

@@ -39,6 +39,8 @@ class ItemsController extends MediaController {
 		Fractal::setViewsLocation('media.items');
 
 		Fractal::addTrailItem(Fractal::lang('labels.items'), Fractal::getControllerPath());
+
+		Site::set('defaultSorting', ['order' => 'desc']);
 	}
 
 	public function index()
@@ -187,9 +189,6 @@ class ItemsController extends MediaController {
 				$item->published_at = Input::get('published') ? date('Y-m-d H:i:s', strtotime(Input::get('published_at'))) : null;
 
 				$item->save();
-
-				//re-export routes to config array in case slug or published status for media item has changed
-				Fractal::exportRoutes();
 
 				Activity::log([
 					'contentId'   => $item->id,
@@ -383,9 +382,6 @@ class ItemsController extends MediaController {
 				$item->published_at = Input::get('published') ? date('Y-m-d H:i:s', strtotime(Input::get('published_at'))) : null;
 
 				$item->save();
-
-				//re-export routes to config array in case slug or published status for media item has changed
-				Fractal::exportRoutes();
 
 				Activity::log([
 					'contentId'   => $item->id,

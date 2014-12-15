@@ -43,6 +43,7 @@ class Article extends BaseModel {
 	 */
 	protected $fillable = [
 		'blog_id',
+		'user_id',
 		'slug',
 		'title',
 		'layout_template_id',
@@ -50,7 +51,7 @@ class Article extends BaseModel {
 		'thumbnail_image_type',
 		'thumbnail_image_file_id',
 		'thumbnail_image_media_item_id',
-		'user_id',
+		'audio_file_id',
 		'published_at',
 	];
 
@@ -333,9 +334,10 @@ class Article extends BaseModel {
 	 * Get the rendered content for the article.
 	 *
 	 * @param  boolean  $previewOnly
+	 * @param  boolean  $includeReadMoreButton
 	 * @return string
 	 */
-	public function getRenderedContent($previewOnly = false)
+	public function getRenderedContent($previewOnly = false, $includeReadMoreButton = true)
 	{
 		$content = $this->getLayout();
 
@@ -348,11 +350,14 @@ class Article extends BaseModel {
 
 			foreach ($this->contentAreas as $contentArea)
 			{
-				if (in_array($contentArea->pivot->layout_tag, $mainTags)) 
+				if (in_array($contentArea->pivot->layout_tag, $mainTags))
 				{
 					$contentArea->pivot->layout_tag = "main";
 
-					$readMoreButton = '<a href="'.$this->getUrl().'" class="btn btn-default btn-xs read-more">'.Fractal::lang('labels.readMore').'</a>';
+					$readMoreButton = "";
+
+					if ($includeReadMoreButton)
+						$readMoreButton = '<a href="'.$this->getUrl().'" class="btn btn-default btn-xs read-more">'.Fractal::lang('labels.readMore').'</a>';
 
 					$dividerPosition = strpos($contentArea->content, "\r\n".$previewDivider);
 					if ($dividerPosition) {

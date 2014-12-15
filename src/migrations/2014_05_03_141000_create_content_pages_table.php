@@ -22,8 +22,6 @@ class CreateContentPagesTable extends Migration {
 			$table->integer('layout_template_id');
 			$table->text('layout');
 
-			$table->integer('user_id');
-
 			$table->timestamps();
 			$table->timestamp('published_at')->nullable();
 			$table->softDeletes();

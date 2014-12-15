@@ -9,8 +9,6 @@
 
 			@if (!isset($update) || !$update)
 				$('#field-title').keyup(function(){
-					$('#field-title').val($('#field-title').val().replace(/  /g, ' '));
-
 					setSlugForTitle();
 				}).change(function(){
 					setSlugForTitle();
@@ -308,11 +306,13 @@
 
 		<div class="row clear">
 			<div class="col-md-2">
-				{{ Form::field('published', 'checkbox', [
-					'data-checked-show'      => '.published-at-area',
-					'data-show-hide-type'    => 'visibility',
-					'data-callback-function' => 'publishedCheckedCallback',
-				]) }}
+				<div class="form-group">
+					{{ Form::field('published', 'checkbox', [
+						'data-checked-show'      => '.published-at-area',
+						'data-show-hide-type'    => 'visibility',
+						'data-callback-function' => 'publishedCheckedCallback',
+					]) }}
+				</div>
 			</div>
 
 			<div class="col-md-3 published-at-area{{ HTML::invisibleArea(!Form::value('published', 'checkbox'), true) }}">

@@ -45,7 +45,6 @@ class Page extends BaseModel {
 		'title',
 		'layout_template_id',
 		'layout',
-		'user_id',
 		'published_at',
 	];
 

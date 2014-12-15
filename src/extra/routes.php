@@ -21,10 +21,9 @@ use \Auth as Auth;
 use Regulus\Fractal\Models\Content\Page;
 use Regulus\Fractal\Models\Blogs\Article;
 
-$baseUri        = Config::get('fractal::baseUri');
-$controllers    = Config::get('fractal::controllers');
-$methods        = Config::get('fractal::controllerMethods');
-$exportedRoutes = Config::get('fractal::routes');
+$baseUri     = Config::get('fractal::baseUri');
+$controllers = Config::get('fractal::controllers');
+$methods     = Config::get('fractal::controllerMethods');
 
 /* Additional Routes for Defined Controller Methods */
 foreach (array('get', 'post') as $type) {

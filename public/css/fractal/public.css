@@ -70,3 +70,11 @@ ul.nav-side li .badge, ul.nav-side li.active .badge { float: right; background-c
 ul.nav-side li.active .badge { background-color: #266ba3; }
 
 div#comments { margin-top: 32px; border-top: 1px solid #ddd; }
+
+div.social-media-share { margin: 0 0 12px 0; }
+div.social-media-share div.share-item { float: left; margin-right: 10px; }
+
+ul.image-gallery { margin: 0; padding: 0; list-style: none; }
+ul.image-gallery li { float: left; margin: 0 6px 6px 0; height: 100px; overflow-y: hidden; }
+ul.image-gallery li a img { width: 120px; border: 1px solid #999; }
+ul.image-gallery li a:hover img { border-color: #555; }

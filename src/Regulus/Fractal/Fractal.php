@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4.
 
 		created by Cody Jassman
-		version 0.7.8a
-		last updated on December 12, 2014
+		version 0.7.9a
+		last updated on December 14, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -33,7 +33,7 @@ use Regulus\Fractal\Models\Blogs\Article as BlogArticle;
 use \Auth;
 use \Form;
 use \Format;
-use \HTML as HTML;
+use \HTML;
 use \Site;
 
 use MaxHoffmann\Parsedown\ParsedownFacade as Markdown;
@@ -1176,92 +1176,6 @@ class Fractal {
 	}
 
 	/**
-	 * Export the routes for content pages, media items, and blog articles to a PHP array config file.
-	 *
-	 * @param  boolean  $fromCli
-	 * @return void
-	 */
-	public function exportRoutes($fromCli = false)
-	{
-		$array = [];
-
-		if (Config::get('fractal::migrated'))
-		{
-			//export page routes
-			$pageUri = Config::get('fractal::pageUri');
-			if (is_null($pageUri) || !$pageUri || $pageUri == "")
-			{
-				$pages = Page::select(['id', 'slug', 'published_at']);
-
-				if (Auth::isNot('admin'))
-					$pages->onlyPublished();
-
-				$pages = $pages->get();
-
-				foreach ($pages as $page)
-				{
-					if (Config::get('fractal::useHomePageForRoot') && $page->slug == "home")
-						$array['pages'][] = 'x';
-
-					$array['pages'][] = $page->id;
-					$array['pages'][] = $page->slug;
-				}
-			}
-
-			//export media item
-			if (Config::get('fractal::media.shortRoutes'))
-			{
-				$mediaItems = MediaItem::select(['id', 'slug', 'published_at']);
-
-				if (Auth::isNot('admin'))
-					$mediaItems->onlyPublished();
-
-				$mediaItems = $mediaItems->get();
-
-				$mediaSubdomain = Config::get('fractal::media.subdomain');
-				$mediaSubdomain = is_string($mediaSubdomain) && $mediaSubdomain != "";
-
-				foreach ($mediaItems as $mediaItem)
-				{
-					if ($mediaSubdomain)
-						$array['mediaItems'][] = $mediaItem->id;
-
-					$array['mediaItems'][] = $mediaItem->slug;
-				}
-			}
-
-			//export blog articles
-			if (Config::get('fractal::blogs.shortRoutes'))
-			{
-				$blogArticles = BlogArticle::select(['id', 'slug', 'published_at']);
-
-				if (Auth::isNot('admin'))
-					$blogArticles->onlyPublished();
-
-				$blogArticles = $blogArticles->get();
-
-				$blogSubdomain = Config::get('fractal::blogs.subdomain');
-				$blogSubdomain = is_string($blogSubdomain) && $blogSubdomain != "";
-
-				foreach ($blogArticles as $blogArticle)
-				{
-					if ($blogSubdomain)
-						$array['blogArticles'][] = $blogArticle->id;
-
-					$array['blogArticles'][] = $blogArticle->slug;
-				}
-			}
-		}
-
-		$path  = "app/config/packages/regulus/fractal/routes.php";
-
-		if (!$fromCli)
-			$path = "../".$path;
-
-		ArrayFile::save($path, $array);
-	}
-
-	/**
 	 * Get a menu array.
 	 *
 	 * @return array
@@ -1404,6 +1318,47 @@ class Fractal {
 		foreach ($buttons as $button) {
 			static::addButton($button);
 		}
+	}
+
+	/**
+	 * Get an image path from a config item.
+	 *
+	 * @param  string   $item
+	 * @return void
+	 */
+	public function getImagePathFromConfig($item)
+	{
+		$path = Config::get('fractal::'.$item);
+		if (!is_string($path))
+			return null;
+
+		$path = explode('::', $path);
+		if (count($path) == 2)
+			return Site::img($path[1], $path[0]);
+
+		return Site::img($path[0]);
+	}
+
+	/**
+	 * Get the URL for the Twitter share button.
+	 *
+	 * @return string
+	 */
+	public function getTwitterShareUrl()
+	{
+		$url  = 'https://twitter.com/share?counturl='.urlencode(Site::get('contentUrl', Request::url()));
+		$url .= '&text='.urlencode(Site::titleHeading());
+
+		$relatedAccounts = Config::get('fractal::social.twitterRelatedAccounts');
+		if (!is_null($relatedAccounts))
+		{
+			if (is_array($relatedAccounts))
+				$relatedAccounts = implode(',', $relatedAccounts);
+
+			$url .= '&related='.$relatedAccounts;
+		}
+
+		return $url;
 	}
 
 	/**

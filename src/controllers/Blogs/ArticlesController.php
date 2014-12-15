@@ -40,6 +40,8 @@ class ArticlesController extends BlogsController {
 		Fractal::setViewsLocation('blogs.articles');
 
 		Fractal::addTrailItem(Fractal::lang('labels.articles'), Fractal::getControllerPath());
+
+		Site::set('defaultSorting', ['order' => 'desc']);
 	}
 
 	public function index()
@@ -119,9 +121,6 @@ class ArticlesController extends BlogsController {
 
 			$article = Article::createNew($input);
 
-			//re-export routes to config array in case slug or published status for article has changed
-			Fractal::exportRoutes();
-
 			Activity::log([
 				'contentId'   => $article->id,
 				'contentType' => 'Article',
@@ -200,9 +199,6 @@ class ArticlesController extends BlogsController {
 			$messages['success'] = Fractal::lang('messages.successUpdated', ['item' => Fractal::langLowerA('labels.article')]);
 
 			$article->saveData();
-
-			//re-export routes to config array in case slug or published status for article has changed
-			Fractal::exportRoutes();
 
 			Activity::log([
 				'contentId'   => $article->id,

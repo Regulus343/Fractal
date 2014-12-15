@@ -6,6 +6,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
+	<link rel="shortcut icon" type="image/x-icon" href="{{ Fractal::getImagePathFromConfig('favicon') }}" />
+
 	@include(Fractal::view('partials.included_files', true))
 </head>
 <body>

@@ -86,14 +86,17 @@
 			setItemsOrder();
 
 			addItemRemoveAction();
+
+			checkImageGalleryOption();
 		}
 
 		function addSelectItemAction() {
 			$('#select-item li').off('click').on('click', function(e){
 				var item = {
-					'id':       $(this).attr('data-item-id'),
-					'title':    $(this).attr('data-title'),
-					'imageUrl': $(this).attr('data-image-url')
+					'id':         $(this).attr('data-item-id'),
+					'fileTypeId': $(this).attr('data-file-type-id'),
+					'title':      $(this).attr('data-title'),
+					'imageUrl':   $(this).attr('data-image-url')
 				};
 
 				var itemHtml = Formation.getTemplateHtml('#items', item);
@@ -104,6 +107,8 @@
 
 				addItemRemoveAction();
 
+				checkImageGalleryOption();
+
 				$('#modal').modal('hide');
 			});
 		}
@@ -113,6 +118,10 @@
 				gridster.remove_widget($(this).parent('li'));
 
 				setItemsOrder();
+
+				setTimeout(function(){
+					checkImageGalleryOption();
+				}, 500);
 			});
 		}
 
@@ -128,6 +137,25 @@
 
 		function updateItemsField() {
 			$('#field-items').val(items.join(','));
+		}
+
+		function checkImageGalleryOption() {
+			var itemsExist = false;
+			var imagesOnly = true;
+
+			$('#items li').each(function(){
+				itemsExist = true;
+
+				if ($(this).attr('data-item-file-type-id') != 1)
+					imagesOnly = false;
+			});
+
+			if (itemsExist && imagesOnly) {
+				$('.image-gallery-area').hide().removeClass('hidden').fadeIn('fast');
+			} else {
+				$('.image-gallery-area').fadeOut('fast');
+				$('#field-image-gallery').prop('checked', false);
+			}
 		}
 
 		function publishedCheckedCallback(checked) {
@@ -184,13 +212,23 @@
 			<span class="glyphicon glyphicon-picture"></span>&nbsp; {{ Fractal::lang('labels.addMediaItem') }}
 		</a>
 
+		<div class="row image-gallery-area hidden">
+			<div class="col-md-6">
+				<div class="form-group">
+					{{ Form::field('image_gallery', 'checkbox') }}
+				</div>
+			</div>
+		</div>
+
 		<div class="row clear">
 			<div class="col-md-2">
-				{{ Form::field('published', 'checkbox', [
-					'data-checked-show'      => '.published-at-area',
-					'data-show-hide-type'    => 'visibility',
-					'data-callback-function' => 'publishedCheckedCallback',
-				]) }}
+				<div class="form-group">
+					{{ Form::field('published', 'checkbox', [
+						'data-checked-show'      => '.published-at-area',
+						'data-show-hide-type'    => 'visibility',
+						'data-callback-function' => 'publishedCheckedCallback',
+					]) }}
+				</div>
 			</div>
 			<div class="col-md-3 published-at-area{{ HTML::invisibleArea(!Form::value('published', 'checkbox'), true) }}">
 				<div class="form-group">

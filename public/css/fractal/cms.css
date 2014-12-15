@@ -464,3 +464,7 @@ table.markdown-guide tr td img { width: 90px; }
 @media (min-width: 1200px) {
 	.modal-dialog { width: 1000px; }
 }
+
+.legend ul { padding-left: 0; list-style: none; }
+.legend ul li { margin-right: 18px; display: inline-block; }
+.legend ul li span { display: inline-block; margin-right: 5px; width: 12px; height: 12px; }

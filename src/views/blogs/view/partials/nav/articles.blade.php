@@ -13,7 +13,7 @@
 				<span class="glyphicon glyphicon-file"></span> {{ $articleListed->getTitle() }}
 
 				<div>
-					<time datetime="{{ $articleListed->published_at }}">{{ $articleListed->getPublishedDateTime() }}</time>
+					<time datetime="{{ $articleListed->published_at }}">{{ $articleListed->getPublishedDate() }}</time>
 				</div>
 			</a>
 		</li>
