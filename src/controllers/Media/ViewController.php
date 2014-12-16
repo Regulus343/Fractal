@@ -222,6 +222,12 @@ class ViewController extends BaseController {
 
 		$mediaItems = $mediaItems->get();
 
+		Site::set('contentUrl', $mediaSet->getUrl());
+		Site::set('contentDescription', strip_tags($mediaSet->getRenderedDescription()));
+
+		if (!empty($mediaItems))
+			Site::set('contentImage', $mediaItems[0]->getThumbnailImageUrl());
+
 		Site::set('imageGallery', $mediaSet->image_gallery);
 
 		Site::addTrailItem($mediaSet->title, Request::url());

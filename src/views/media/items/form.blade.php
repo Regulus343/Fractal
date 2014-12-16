@@ -49,6 +49,8 @@
 			else
 				$('#field-description-markdown').val($('#description').val());
 
+			$('#field-create-thumbnail').prop('checked', true).attr('readonly', 'readonly');
+
 			$('form').submit(function(e){
 				if ($('#field-description-type').val() == "HTML")
 					$('#field-description').val(CKEDITOR.instances[$('#field-description-html').attr('id')].getData());

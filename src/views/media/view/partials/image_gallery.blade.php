@@ -2,9 +2,9 @@
 
 	@foreach ($mediaItems as $mediaItem)
 
-		<li>
+		<li data-src="{{ $mediaItem->getImageUrl() }}" data-sub-html="{{ $mediaItem->getRenderedDescription(true) }}">
 
-			{{ $mediaItem->getThumbnailImage() }}
+			<img src="{{ $mediaItem->getThumbnailImageUrl() }}" alt="{{ strip_tags($mediaItem->getTitle()) }}" title="{{ strip_tags($mediaItem->getTitle()) }}" />
 
 		</li>
 

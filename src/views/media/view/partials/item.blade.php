@@ -20,6 +20,12 @@
 		@endif
 	</div>
 
+	@if (!Site::get('mediaList'))
+
+		@include(Fractal::view('public.partials.share', true))
+
+	@endif
+
 	{{ $mediaItem->getContent() }}
 
 	@if (!Site::get('mediaList') && Fractal::getSetting('Enable Media Item Comments', false))

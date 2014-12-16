@@ -165,7 +165,7 @@ class ItemsController extends MediaController {
 
 						if (!$uploadedThumbnail) {
 							$item->thumbnail           = Form::value('create_thumbnail', 'checkbox');
-							$item->thumbnail_extension = null;
+							$item->thumbnail_extension = $fileResult['extension'];
 							$item->thumbnail_width     = $fileResult['imageDimensions']['tw'];
 							$item->thumbnail_height    = $fileResult['imageDimensions']['th'];
 						}
@@ -357,7 +357,7 @@ class ItemsController extends MediaController {
 
 							if (!$uploadedThumbnail) {
 								$item->thumbnail           = Form::value('create_thumbnail', 'checkbox');
-								$item->thumbnail_extension = null;
+								$item->thumbnail_extension = $fileResult['extension'];
 								$item->thumbnail_width     = $fileResult['imageDimensions']['tw'];
 								$item->thumbnail_height    = $fileResult['imageDimensions']['th'];
 							}
@@ -390,6 +390,9 @@ class ItemsController extends MediaController {
 					'description' => 'Updated a Media Item',
 					'details'     => 'Title: '.$item->title,
 				]);
+
+				return Redirect::to(Fractal::uri('', true))
+					->with('messages', $messages);
 			} else {
 				$error = true;
 				foreach ($result['files'] as $file) {

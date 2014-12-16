@@ -20,7 +20,7 @@
 
 	<div class="article-body">
 
-		{{ $article->getRenderedContent(Site::get('articleList')) }}
+		{{ $article->getRenderedContent(Site::get('articleList', false)) }}
 
 	</div>
 

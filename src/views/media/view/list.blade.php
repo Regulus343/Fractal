@@ -2,6 +2,16 @@
 
 @section(Config::get('fractal::contentSection'))
 
+	@if (isset($mediaSet))
+
+		<div class="media-set-description page-description">
+			{{ $mediaSet->getRenderedDescription() }}
+		</div>
+
+		@include(Fractal::view('public.partials.share', true))
+
+	@endif
+
 	@include(Fractal::view('public.partials.pagination', true))
 
 	@if (Site::get('imageGallery'))

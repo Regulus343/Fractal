@@ -9,6 +9,8 @@
 
 	@include(Fractal::view('partials.included_files', true))
 
+	<link type="text/css" rel="stylesheet" href="{{ Site::css('fractal/public', 'regulus/fractal') }}" />
+
 	<script type="text/javascript" src="{{ Site::js('fractal/public', 'regulus/fractal') }}"></script>
 </head>
 <body>

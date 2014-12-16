@@ -354,21 +354,8 @@ class Article extends BaseModel {
 				{
 					$contentArea->pivot->layout_tag = "main";
 
-					$readMoreButton = "";
-
 					if ($includeReadMoreButton)
-						$readMoreButton = '<a href="'.$this->getUrl().'" class="btn btn-default btn-xs read-more">'.Fractal::lang('labels.readMore').'</a>';
-
-					$dividerPosition = strpos($contentArea->content, "\r\n".$previewDivider);
-					if ($dividerPosition) {
-						$contentArea->content = substr($contentArea->content, 0, $dividerPosition).$readMoreButton;
-					} else {
-						$dividerPosition = strpos($contentArea->content, $previewDivider);
-						if ($dividerPosition)
-							$contentArea->content = substr($contentArea->content, 0, $dividerPosition).$readMoreButton;
-						else
-							$contentArea->content .= $readMoreButton;
-					}
+						$contentArea->content .= '<a href="'.$this->getUrl().'" class="btn btn-default btn-xs read-more">'.Fractal::lang('labels.readMore').'</a>';
 
 					$contentAreas = [$contentArea];
 				}

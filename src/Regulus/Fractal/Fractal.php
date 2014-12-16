@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4.
 
 		created by Cody Jassman
-		version 0.7.9a
-		last updated on December 14, 2014
+		version 0.7.10a
+		last updated on December 15, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -710,6 +710,16 @@ class Fractal {
 		//replace HTML special character quotation marks with actual quotation marks
 		$content = str_replace('&quot;', '"', $content);
 
+		//cut off content after the preview divider for blog articles if preview only option is set
+		$previewDivider = Config::get('fractal::blogs.previewDivider');
+		if ($previewOnly) {
+			$dividerPosition = strpos($content, $previewDivider);
+			if ($dividerPosition)
+				$content = substr($content, 0, $dividerPosition);
+		} else {
+			$content = str_replace($previewDivider, '', str_replace("\n".$previewDivider."\n", '', $content));
+		}
+
 		//add file images to content
 		$content = $this->renderContentImages($content, '/\!\[file:([0-9]*)([\;A-Za-z0-9\-\.\#\ ]*)\]/'); //Markdown style image replacement
 		$content = $this->renderContentImages($content, '/\[image:([0-9]*)([\;A-Za-z0-9\-\.\#\ ]*)\]/'); //custom "image" replacement tag to match others
@@ -859,16 +869,6 @@ class Fractal {
 		//render to Markdown
 		if (strtolower($contentType) == "markdown")
 			$content = Markdown::text($content);
-
-		//cut off content after the preview divider for blog articles if preview only option is set
-		$previewDivider = Config::get('fractal::blogs.previewDivider');
-		if ($previewOnly) {
-			$dividerPosition = strpos($content, $previewDivider);
-			if ($dividerPosition)
-				$content = substr($content, 0, $dividerPosition);
-		} else {
-			$content = str_replace($previewDivider, '', str_replace("\n".$previewDivider."\n", '', $content));
-		}
 
 		//convert lone ampersands to HTML special characters
 		$content = str_replace(' & ', ' &amp; ', $content);

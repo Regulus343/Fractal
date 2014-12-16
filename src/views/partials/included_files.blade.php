@@ -77,14 +77,12 @@
 {{-- Chart JS --}}
 <script type="text/javascript" src="{{ Site::js('chart.min', 'regulus/fractal') }}"></script>
 
+{{-- lightGallery --}}
+<link type="text/css" rel="stylesheet" href="{{ Site::css('light-gallery', 'regulus/fractal') }}" />
+<script type="text/javascript" src="{{ Site::js('light-gallery.min', 'regulus/fractal') }}"></script>
+
 {{-- Fractal CSS --}}
 <link type="text/css" rel="stylesheet" href="{{ Site::css('fractal/cms', 'regulus/fractal') }}" />
-
-@if (Site::get('public'))
-
-	<link type="text/css" rel="stylesheet" href="{{ Site::css('fractal/public', 'regulus/fractal') }}" />
-
-@endif
 
 {{-- Fractal JS --}}
 <script type="text/javascript">

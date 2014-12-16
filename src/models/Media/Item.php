@@ -427,11 +427,22 @@ class Item extends BaseModel {
 	/**
 	 * Get the rendered description.
 	 *
+	 * @param  boolean  $sanitized
 	 * @return string
 	 */
-	public function getRenderedDescription()
+	public function getRenderedDescription($sanitized = false)
 	{
-		return Fractal::renderContent($this->description, $this->description_type);
+		$description = Fractal::renderContent($this->description, $this->description_type);
+
+		if ($sanitized && $description != "")
+		{
+			$description = '<div class="item-description">'.$description.'</div>';
+			$description = str_replace('<', '&lt;', $description);
+			$description = str_replace('>', '&gt;', $description);
+			$description = str_replace('"', "'", $description);
+		}
+
+		return $description;
 	}
 
 	/**

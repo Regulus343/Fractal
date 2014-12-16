@@ -316,8 +316,8 @@ class Reports {
 				{
 					$reportData[$i]->content = $contentItem;
 
-					$itemTitle = Fractal::lang('labels.contentTypes.singular.'.$item->content_type).': '.$contentItem->getTitle();
-					$itemTitle = '<a href="'.$item->content->getUrl().'">'.$itemTitle.'</a>';
+					$itemTitle = Fractal::lang('labels.contentTypes.singular.'.$item->content_type).': '.str_replace("'", "\'", $contentItem->getTitle());
+					$itemTitle = '<a href="'.$item->content->getUrl().'" target="_blank">'.$itemTitle.'</a>';
 
 					if (!in_array($itemTitle, $itemTitles))
 						$itemTitles[] = $itemTitle;
@@ -351,8 +351,8 @@ class Reports {
 			if ($interval == "day" && ($itemInterval == 1 || $itemInterval == $maxDay))
 				$itemInterval = date('M').' '.$itemInterval;
 
-			$itemTitle = Fractal::lang('labels.contentTypes.singular.'.$item->content_type).': '.$item->content->getTitle();
-			$itemTitle = '<a href="'.$item->content->getUrl().'">'.$itemTitle.'</a>';
+			$itemTitle = Fractal::lang('labels.contentTypes.singular.'.$item->content_type).': '.str_replace("'", "\'", $item->content->getTitle());
+			$itemTitle = '<a href="'.$item->content->getUrl().'" target="_blank">'.$itemTitle.'</a>';
 
 			if (isset($item->content) && !empty($item->content))
 				$results['values'][$itemTitle][$itemInterval] += $item->views;

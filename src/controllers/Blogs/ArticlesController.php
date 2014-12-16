@@ -116,7 +116,7 @@ class ArticlesController extends BlogsController {
 		if (Form::validated()) {
 			$messages['success'] = Fractal::lang('messages.successCreated', ['item' => Fractal::langLowerA('labels.article')]);
 
-			$input = Input::all();
+			$input            = Input::all();
 			$input['user_id'] = Auth::user()->id;
 
 			$article = Article::createNew($input);
