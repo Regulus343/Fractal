@@ -51,7 +51,7 @@ class Article extends BaseModel {
 		'thumbnail_image_type',
 		'thumbnail_image_file_id',
 		'thumbnail_image_media_item_id',
-		'audio_file_id',
+		'audio_file',
 		'published_at',
 	];
 
