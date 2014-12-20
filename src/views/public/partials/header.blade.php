@@ -20,8 +20,6 @@
 
 		@include(Fractal::view('public.partials.nav', true))
 
-		@include(Fractal::view('partials.messages', true))
-
 		<div id="container-content">
 			<div class="container-pad-fluid">
 
@@ -36,3 +34,5 @@
 
 							{{ Site::getBreadcrumbTrailMarkup() }}
 						@endif
+
+						@include(Fractal::view('public.partials.messages', true))

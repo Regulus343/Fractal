@@ -74,11 +74,13 @@
 			if (item.find('.field-content-type').val() != "HTML") {
 				item.find('.html-content-area').addClass('hidden');
 				item.find('.markdown-content-area').removeClass('hidden');
+				item.find('.col-markdown-preview-content').removeClass('hidden');
 
 				if (data !== null)
 					item.find('.field-content-markdown').val(data.content);
 			} else {
 				item.find('.markdown-content-area').addClass('hidden');
+				item.find('.col-markdown-preview-content').addClass('hidden');
 				item.find('.html-content-area').removeClass('hidden');
 
 				if (data !== null)
@@ -157,11 +159,13 @@
 			$('.field-content-type').off('change').on('change', function(){
 				if ($(this).val() == "HTML") {
 					$(this).parents('fieldset').find('.markdown-content-area').addClass('hidden');
+					$(this).parents('fieldset').find('.col-markdown-preview-content').addClass('hidden');
 					$(this).parents('fieldset').find('.html-content-area').removeClass('hidden');
 					$(this).parents('fieldset').find('.field-content').val($(this).parents('fieldset').find('.field-content-html').val());
 				} else {
 					$(this).parents('fieldset').find('.html-content-area').addClass('hidden');
 					$(this).parents('fieldset').find('.markdown-content-area').removeClass('hidden');
+					$(this).parents('fieldset').find('.col-markdown-preview-content').removeClass('hidden');
 					$(this).parents('fieldset').find('.field-content').val($(this).parents('fieldset').find('.field-content-markdown').val());
 				}
 			});

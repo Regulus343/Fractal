@@ -277,19 +277,23 @@ class ViewController extends BaseController {
 
 		$messages = [];
 
-		if (empty($mediaItemIds))
+		if (!empty($mediaItemIds))
+		{
+			$mediaItems = Item::whereIn('id', $mediaItemIds)
+				->orderBy('published_at', 'desc');
+
+			if (Auth::isNot('admin'))
+				$mediaItems->onlyPublished();
+
+			$mediaItems = $mediaItems->get();
+		} else {
+			$mediaItems = [];
+
 			$messages['error'] = Fractal::lang('messages.errorNoItems', [
 				'item'  => Fractal::langLower('labels.mediaType'),
 				'items' => Fractal::langLower('labels.mediaItems'),
 			]);
-
-		$mediaItems = Item::whereIn('id', $mediaItemIds)
-			->orderBy('published_at', 'desc');
-
-		if (Auth::isNot('admin'))
-			$mediaItems->onlyPublished();
-
-		$mediaItems = $mediaItems->get();
+		}
 
 		Site::addTrailItem($mediaType->name, Request::url());
 

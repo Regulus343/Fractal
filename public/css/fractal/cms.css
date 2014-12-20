@@ -304,7 +304,7 @@ textarea {
 	min-height: 120px;
 }
 
-textarea.field-content-markdown {
+textarea.field-content-markdown, textarea.field-description-markdown {
 	min-height: 280px;
 }
 
@@ -381,6 +381,7 @@ div.col-markdown-preview-content {
 }
 
 div.markdown-preview-content {
+	margin-bottom: 12px;
 	padding: 6px 12px;
 	min-height: 280px;
 	max-height: 420px;
@@ -389,7 +390,7 @@ div.markdown-preview-content {
 	overflow-y: auto;
 }
 
-div#markdown-preview-content img, div.markdown-preview-content img { max-width: 100%; }
+div#markdown-preview-content img, div.markdown-preview-content img { max-width: 100%; max-height: 240px; }
 
 ul#select-content-area {
 	padding: 0;

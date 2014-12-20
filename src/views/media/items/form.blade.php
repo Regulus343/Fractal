@@ -38,8 +38,10 @@
 				if ($(this).val() == "HTML") {
 					$('.html-description-area').show().removeClass('hidden');
 					$('.markdown-description-area').hide();
+					$('.col-markdown-preview-content').hide();
 				} else {
 					$('.markdown-description-area').show().removeClass('hidden');
+					$('.col-markdown-preview-content').show().removeClass('hidden');
 					$('.html-description-area').hide();
 				}
 			});
@@ -285,22 +287,32 @@
 			</div>
 		</div>
 
-		<div class="row">
-			<div class="col-md-12">
+		<div class="row padding-bottom-20px">
+			<div class="col-md-12 html-description-area{{ HTML::hiddenArea(Form::value('description_type') != "HTML", true) }}">
 				{{ Form::field('description_html', 'textarea', [
-					'label'                 => 'Description',
-					'class-field-container' => 'html-description-area'.(Form::value('description_type') != "HTML" ? ' hidden' : ''),
-					'class-field'           => 'ckeditor',
+					'label'       => 'Description',
+					'class-field' => 'ckeditor',
 				]) }}
-
-				{{ Form::field('description_markdown', 'textarea', [
-					'label'                 => 'Description',
-					'class-field-container' => 'markdown-description-area'.(Form::value('description_type') != "Markdown" ? ' hidden' : ''),
-					'class-field'           => 'tab',
-				]) }}
-
-				{{ Form::hidden('description') }}
 			</div>
+
+			<div class="col-md-12 col-lg-6 markdown-description-area{{ HTML::hiddenArea(Form::value('description_type') != "Markdown", true) }}">
+				{{ Form::field('description_markdown', 'textarea', [
+					'label'       => 'Description',
+					'class-field' => 'tab markdown',
+				]) }}
+
+				<a href="" class="btn btn-default trigger-modal pull-right" data-modal-ajax-uri="api/view-markdown-guide" data-modal-ajax-action="get">
+					<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Fractal::lang('labels.viewMarkdownGuide') }}
+				</a>
+			</div>
+
+			<div class="col-lg-6 col-markdown-preview-content{{ HTML::hiddenArea(Form::value('description_type') != "Markdown", true) }}">
+				<?=Form::label('')?>
+
+				<div class="markdown-preview-content"></div>
+			</div>
+
+			{{ Form::hidden('description') }}
 		</div>
 
 		{{-- Image Settings --}}

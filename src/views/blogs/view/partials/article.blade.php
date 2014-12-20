@@ -14,6 +14,16 @@
 
 	@if (!Site::get('articleList'))
 
+		@if (Auth::is('admin'))
+
+			<a href="{{ Fractal::url('blogs/articles/'.$article->slug.'/edit') }}" class="btn btn-primary btn-xs pull-right">
+				<span class="glyphicon glyphicon-edit"></span>
+
+				{{ Fractal::lang('labels.editArticle') }}
+			</a>
+
+		@endif
+
 		@include(Fractal::view('public.partials.share', true))
 
 	@endif

@@ -22,6 +22,16 @@
 
 	@if (!Site::get('mediaList'))
 
+		@if (Auth::is('admin'))
+
+			<a href="{{ Fractal::url('media/items/'.$mediaItem->slug.'/edit') }}" class="btn btn-primary btn-xs pull-right">
+				<span class="glyphicon glyphicon-edit"></span>
+
+				{{ Fractal::lang('labels.editItem') }}
+			</a>
+
+		@endif
+
 		@include(Fractal::view('public.partials.share', true))
 
 	@endif

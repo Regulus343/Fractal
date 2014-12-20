@@ -192,27 +192,32 @@ class ViewController extends BaseController {
 				$articleIds[] = $article->id;
 		}
 
-		if (empty($articleIds))
-			return Redirect::to(Fractal::blogUrl())->with('messages', [
-				'error' => Fractal::lang('messages.errorNoItems', [
-					'item'  => Fractal::langLower('labels.category'),
-					'items' => Fractal::langLower('labels.articles'),
-				])
+		$messages = [];
+
+		if (!empty($articleIds))
+		{
+			$articles = Article::whereIn('id', $articleIds)
+				->orderBy('published_at', 'desc');
+
+			if (Auth::isNot('admin'))
+				$articles->onlyPublished();
+
+			$articles = $articles->get();
+		} else {
+			$articles = [];
+
+			$messages['error'] = Fractal::lang('messages.errorNoItems', [
+				'item'  => Fractal::langLower('labels.category'),
+				'items' => Fractal::langLower('labels.articles'),
 			]);
-
-		$articles = Article::whereIn('id', $articleIds)
-			->orderBy('published_at', 'desc');
-
-		if (Auth::isNot('admin'))
-			$articles->onlyPublished();
-
-		$articles = $articles->get();
+		}
 
 		Site::addTrailItem($category->name, Request::url());
 
 		return View::make(Fractal::view('list'))
 			->with('articles', $articles)
-			->with('category', $category);
+			->with('category', $category)
+			->with('messages', $messages);
 	}
 
 	public function getC($slug = null) {
