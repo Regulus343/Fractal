@@ -48,7 +48,7 @@ class AccountController extends BaseController {
 		Form::setDefaults($user);
 
 		$rules = [
-			'username' => ['required', 'alpha_dash', 'min:3', 'unique:auth_users,username,'.$user->id],
+			'username' => ['required', 'alpha_dash', 'min:2', 'unique:auth_users,username,'.$user->id],
 			'email'    => ['required', 'email'],
 		];
 

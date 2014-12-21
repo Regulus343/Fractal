@@ -111,7 +111,7 @@ class UsersController extends BaseController {
 		Site::set('wysiwyg', true);
 
 		$rules = [
-			'username' => ['required', 'alpha_dash', 'min:3', 'unique:auth_users,username'],
+			'username' => ['required', 'alpha_dash', 'min:2', 'unique:auth_users,username'],
 			'email'    => ['required', 'email'],
 			'roles'    => ['required'],
 			'password' => ['required', 'confirmed'],
@@ -198,7 +198,7 @@ class UsersController extends BaseController {
 		Site::set('wysiwyg', true);
 
 		$rules = [
-			'username' => ['required', 'alpha_dash', 'min:3', 'unique:auth_users,username,'.$user->id],
+			'username' => ['required', 'alpha_dash', 'min:2', 'unique:auth_users,username,'.$user->id],
 			'email'    => ['required', 'email'],
 			'roles'    => ['required'],
 		];
