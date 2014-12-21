@@ -6,7 +6,7 @@ use Fractal;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\View as LaravelView;
 
 use \Form;
 
@@ -141,7 +141,7 @@ class Menu extends BaseModel {
 
 		$menu = $this->createArray();
 
-		return View::make(Config::get('fractal::viewsLocation').'partials.menu')
+		return LaravelView::make(Config::get('fractal::viewsLocation').'partials.menu')
 			->with('menu', $menu)
 			->with('listItemsOnly', $options['listItemsOnly'])
 			->with('class', $options['class'])
@@ -180,7 +180,7 @@ class Menu extends BaseModel {
 		$menu    = (object) static::getArray($name);
 		$options = array_merge(static::$markupOptions, $options);
 
-		return View::make(Config::get('fractal::viewsLocation').'partials.menu')
+		return LaravelView::make(Config::get('fractal::viewsLocation').'partials.menu')
 			->with('menu', $menu)
 			->with('listItemsOnly', $options['listItemsOnly'])
 			->with('class', $options['class'])

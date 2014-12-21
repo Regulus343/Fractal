@@ -7,7 +7,6 @@ use Fractal;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Facades\View;
 
 class Area extends BaseModel {
 

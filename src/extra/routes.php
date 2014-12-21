@@ -122,12 +122,10 @@ if (Config::get('fractal::media.enabled'))
 $pageUri    = Config::get('fractal::pageUri');
 $pageMethod = Config::get('fractal::pageMethod');
 
-if (!is_null($pageUri) && $pageUri != false && $pageUri == "")
-{
+if (!is_null($pageUri) && $pageUri != false && $pageUri != "")
 	Route::get($pageUri.'/{slug}', $pageMethod);
-} else {
+else
 	Route::get('{slug}', $pageMethod);
-}
 
 if (Config::get('fractal::useHomePageForRoot'))
 	Route::get('', $pageMethod);

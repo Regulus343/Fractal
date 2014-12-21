@@ -23,17 +23,12 @@ class FractalServiceProvider extends ServiceProvider {
 	{
 		$this->package('regulus/fractal');
 
-		$workbench    = Config::get('fractal::workbench');
 		$exterminator = Config::get('fractal::exterminator');
 
 		//load config for dependent packages
-		if ($workbench)
-			$pathPrefix = __DIR__.'/../../../vendor/';
-		else
-			$pathPrefix = __DIR__.'/../../../../../';
+		$vendorPath = base_path().'/vendor/';
 
 		$configPackages = [
-			'regulus/fractal',
 			'regulus/activity-log',
 			'regulus/identify',
 			'regulus/elemental',
@@ -47,11 +42,13 @@ class FractalServiceProvider extends ServiceProvider {
 			$configPackages[] = "regulus/exterminator";
 
 		foreach ($configPackages as $configPackage) {
-			$this->package($configPackage, null, $pathPrefix.$configPackage.'/src');
+			$this->package($configPackage, null, $vendorPath.$configPackage.'/src');
+
+			$this->app['config']->package($configPackage, null);
 		}
 
 		//add view namespace for Elemental
-		View::addNamespace('elemental', $pathPrefix.'regulus/elemental/src/views');
+		View::addNamespace('elemental', $vendorPath.'regulus/elemental/src/views');
 
 		//add aliases for dependent classes
 		$loader = \Illuminate\Foundation\AliasLoader::getInstance();
@@ -76,17 +73,19 @@ class FractalServiceProvider extends ServiceProvider {
 
 		//load routes, filters, view composers, and settings files
 		if (Config::get('fractal::preload.filters'))
-			include __DIR__.'/../../../../../../app/filters.php';
+			include app_path().'/filters.php';
 
 		if (Config::get('fractal::preload.routes'))
-			include __DIR__.'/../../../../../../app/routes.php';
+			include app_path().'/routes.php';
 
-		include __DIR__.'/../../extra/filters.php';
-		include __DIR__.'/../../extra/helpers.php';
-		include __DIR__.'/../../extra/validation_rules.php';
-		include __DIR__.'/../../extra/view_composers.php';
-		include __DIR__.'/../../extra/routes.php';
-		include __DIR__.'/../../extra/settings.php';
+		$extraPath = __DIR__.'/../../extra/';
+
+		include $extraPath.'filters.php';
+		include $extraPath.'helpers.php';
+		include $extraPath.'validation_rules.php';
+		include $extraPath.'view_composers.php';
+		include $extraPath.'routes.php';
+		include $extraPath.'settings.php';
 	}
 
 	/**

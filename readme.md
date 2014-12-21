@@ -67,7 +67,7 @@ Now, all you have to do is register the service provider, set up Fractal's alias
 
 And add this to the `aliases` array:
 
-	'Fractal' => 'Regulus\Fractal\Fractal',
+	'Fractal' => 'Regulus\Fractal\Facade',
 
 **Run the install command:**
 
