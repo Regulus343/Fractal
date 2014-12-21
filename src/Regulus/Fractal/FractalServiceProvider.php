@@ -43,8 +43,6 @@ class FractalServiceProvider extends ServiceProvider {
 
 		foreach ($configPackages as $configPackage) {
 			$this->package($configPackage, null, $vendorPath.$configPackage.'/src');
-
-			$this->app['config']->package($configPackage, null);
 		}
 
 		//add view namespace for Elemental
