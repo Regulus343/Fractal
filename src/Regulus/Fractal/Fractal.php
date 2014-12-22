@@ -5,7 +5,7 @@
 		A simple, versatile CMS base for Laravel 4.
 
 		created by Cody Jassman
-		version 0.7.12a
+		version 0.7.13a
 		last updated on December 21, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
@@ -703,9 +703,10 @@ class Fractal {
 	 * @param  string   $content
 	 * @param  string   $contentType
 	 * @param  boolean  $previewOnly
+	 * @param  array    $data
 	 * @return string
 	 */
-	public function renderContent($content, $contentType = 'HTML', $previewOnly = false)
+	public function renderContent($content, $contentType = 'HTML', $previewOnly = false, $data = [])
 	{
 		//replace HTML special character quotation marks with actual quotation marks
 		$content = str_replace('&quot;', '"', $content);
@@ -718,6 +719,28 @@ class Fractal {
 				$content = substr($content, 0, $dividerPosition);
 		} else {
 			$content = str_replace($previewDivider, '', str_replace("\n".$previewDivider."\n", '', $content));
+		}
+
+		//add thumbnail image to content
+		if (isset($data['thumbnailImageFileId']) && !is_null($data['thumbnailImageFileId']))
+		{
+			preg_match_all('/(\[thumbnail\-image)([\;A-Za-z0-9\-\.\#\ ]*)\]/', $content, $thumbnailImages);
+			if (isset($thumbnailImages[0]) && !empty($thumbnailImages[0]))
+			{
+				$thumbnailImageText = $thumbnailImages[1][0];
+
+				if (isset($thumbnailImages[2][0]) && $thumbnailImages[2][0] != "")
+				{
+					$idClasses  = $thumbnailImages[2][0];
+					$idClasses  = str_replace('.primary', '', $idClasses);
+					$idClasses .= " .primary";
+
+					$content = str_replace($thumbnailImageText, '[image:'.$data['thumbnailImageFileId'], $content);
+					$content = str_replace($thumbnailImages[2][0], $idClasses, $content);
+				} else {
+					$content = str_replace($thumbnailImageText, '[image:'.$data['thumbnailImageFileId'].'; .primary', $content);
+				}
+			}
 		}
 
 		//add file images to content

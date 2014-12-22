@@ -3,6 +3,7 @@
 @section(Config::get('fractal::contentSection'))
 
 	<script type="text/javascript">
+		var update             = {{ (isset($update) && $update ? 'true' : 'false') }};
 		var fileTypeExtensions = {{ json_encode($fileTypeExtensions) }};
 	</script>
 	<script type="text/javascript" src="{{ Site::js('fractal/forms/file-upload', 'regulus/fractal') }}"></script>
@@ -19,7 +20,7 @@
 			<div class="col-md-4">
 				{{ Form::field('type_id', 'select', array(
 					'label'          => 'Type',
-					'options'        => Form::prepOptions(Regulus\Fractal\Models\Content\FileType::orderBy('name')->get(), array('id', 'name')),
+					'options'        => Form::prepOptions(Regulus\Fractal\Models\Content\FileType::orderBy('name')->get(), ['id', 'name']),
 					'null-option'    => 'None',
 					'readonly-field' => 'readonly',
 				)) }}

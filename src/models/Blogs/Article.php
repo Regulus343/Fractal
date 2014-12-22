@@ -348,14 +348,22 @@ class Article extends BaseModel {
 			$mainTags       = ['main', 'primary'];
 			$previewDivider = Config::get('fractal::blogs.previewDivider');
 
-			foreach ($this->contentAreas as $contentArea)
+			foreach ($contentAreas as $contentArea)
 			{
 				if (in_array($contentArea->pivot->layout_tag, $mainTags))
 				{
 					$contentArea->pivot->layout_tag = "main";
 
+					$contentArea->content_modified = $contentArea->content;
+
+					//remove thumbnail image reference
+					preg_match_all('/\[thumbnail\-image[\;A-Za-z0-9\-\.\#\ ]*\]/', $contentArea->content_modified, $thumbnailImages);
+					if (isset($thumbnailImages[0]) && !empty($thumbnailImages[0]))
+						$contentArea->content_modified = str_replace($thumbnailImages[0][0], '', $contentArea->content_modified);
+
+					//add a "Read More" button
 					if ($includeReadMoreButton)
-						$contentArea->content .= '<a href="'.$this->getUrl().'" class="btn btn-default btn-xs read-more">'.Fractal::lang('labels.readMore').'</a>';
+						$contentArea->content_modified .= '<a href="'.$this->getUrl().'" class="btn btn-default btn-xs read-more">'.Fractal::lang('labels.readMore').'</a>';
 
 					$contentAreas = [$contentArea];
 				}
@@ -380,7 +388,7 @@ class Article extends BaseModel {
 		}
 
 		foreach ($contentAreas as $contentArea) {
-			$content = $contentArea->renderContentToLayout($content, $previewOnly);
+			$content = $contentArea->renderContentToLayout($content, $previewOnly, $this->thumbnail_image_file_id);
 		}
 
 		return $content;

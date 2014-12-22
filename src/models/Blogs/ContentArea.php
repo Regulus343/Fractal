@@ -128,22 +128,26 @@ class ContentArea extends BaseModel {
 	 * Get the rendered content.
 	 *
 	 * @param  boolean  $previewOnly
+	 * @param  mixed    $thumbnailImageFileId
 	 * @return string
 	 */
-	public function getRenderedContent($previewOnly = false)
+	public function getRenderedContent($previewOnly = false, $thumbnailImageFileId = null)
 	{
-		return Fractal::renderContent($this->content, $this->content_type, $previewOnly);
+		$content = ($previewOnly && $this->content_modified != "") ? $this->content_modified : $this->content;
+
+		return Fractal::renderContent($content, $this->content_type, $previewOnly, ['thumbnailImageFileId' => $thumbnailImageFileId]);
 	}
 
 	/**
 	 * Apply rendered content to layout.
 	 *
 	 * @param  boolean  $previewOnly
+	 * @param  mixed    $thumbnailImageFileId
 	 * @return string
 	 */
-	public function renderContentToLayout($content, $previewOnly = false)
+	public function renderContentToLayout($content, $previewOnly = false, $thumbnailImageFileId = null)
 	{
-		return str_replace('{{'.$this->pivot->layout_tag.'}}', $this->getRenderedContent($previewOnly), $content);
+		return str_replace('{{'.$this->pivot->layout_tag.'}}', $this->getRenderedContent($previewOnly, $thumbnailImageFileId), $content);
 	}
 
 	/**

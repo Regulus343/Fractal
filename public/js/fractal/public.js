@@ -6,4 +6,8 @@ $(document).ready(function(){
 
 	$('.image-gallery').lightGallery();
 
+	audiojs.events.ready(function() {
+		audiojs.createAll();
+	});
+
 });

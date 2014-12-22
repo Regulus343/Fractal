@@ -251,7 +251,7 @@
 		<div class="row button-menu">
 			<div class="col-md-12">
 				@if (isset($update) && $update)
-					<a href="{{ $articleUrl }}" target="_blank" class="btn btn-default right-padded pull-right">
+					<a href="{{ $articleUrl }}" class="btn btn-default right-padded pull-right">
 						<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Fractal::lang('labels.viewArticle') }}
 					</a>
 				@endif

@@ -3,6 +3,7 @@
 @section(Config::get('fractal::contentSection'))
 
 	<script type="text/javascript">
+		var update             = {{ (isset($update) && $update ? 'true' : 'false') }};
 		var fileTypeExtensions = {{ json_encode($fileTypeExtensions) }};
 
 		$(document).ready(function(){
@@ -13,6 +14,8 @@
 				}).change(function(){
 					setSlugForTitle();
 				});
+			@else
+				$('#field-file').off('change');
 			@endif
 
 			$('#field-slug').keyup(function(){
@@ -47,9 +50,9 @@
 			});
 
 			if ($('#field-description-type').val() == "HTML")
-				CKEDITOR.instances['field-description-html'].setData($('#description').val());
+				CKEDITOR.instances['field-description-html'].setData($('#field-description').val());
 			else
-				$('#field-description-markdown').val($('#description').val());
+				$('#field-description-markdown').val($('#field-description').val());
 
 			$('#field-create-thumbnail').prop('checked', true).attr('readonly', 'readonly');
 
@@ -193,7 +196,7 @@
 		<div class="row button-menu">
 			<div class="col-md-12">
 				@if (isset($update) && $update)
-					<a href="{{ $itemUrl }}" target="_blank" class="btn btn-default right-padded pull-right">
+					<a href="{{ $itemUrl }}" class="btn btn-default right-padded pull-right">
 						<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Fractal::lang('labels.viewItem') }}
 					</a>
 				@endif

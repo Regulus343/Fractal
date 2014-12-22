@@ -3,6 +3,12 @@ $(document).ready(function(){
 	if (fileTypeExtensions === undefined)
 		fileTypeExtensions = {};
 
+	$('input[file]').change(function(){
+		var path     = $(this).val().split('\\');
+		var filename = path[(path.length - 1)].split('.');
+		var basename = filename[0];
+	});
+
 	$('#field-file').change(function(){
 		var path      = $(this).val().split('\\');
 		var filename  = path[(path.length - 1)].split('.');
@@ -10,8 +16,7 @@ $(document).ready(function(){
 		var extension = filename[(filename.length - 1)].toLowerCase();
 		var name      = upperCaseWords(basename.replace(/_/g, ' ').replace(/-/g, ' '));
 
-		$('#field-name').val(name);
-		$('#field-title').val(name);
+		$(this).parents('div').find('.file-dummy').val(basename);
 
 		var fileTypeId = false;
 		for (var fileTypeIdListed in fileTypeExtensions) {
@@ -53,10 +58,15 @@ $(document).ready(function(){
 			$('#thumbnail-image-area button').attr('disabled', false);
 		}
 
-		$('#field-title').val($('#field-title').val().replace(/  /g, ' '));
+		if (update !== true)
+		{
+			name = name.replace(/  /g, ' ');
+			$('#field-name').val(name);
+			$('#field-title').val(name);
 
-		var slug = strToSlug($('#field-title').val());
-		$('#field-slug').val(slug);
+			var slug = strToSlug($('#field-title').val());
+			$('#field-slug').val(slug);
+		}
 	});
 
 	$('#field-create-thumbnail').click(function(){

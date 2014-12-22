@@ -263,13 +263,18 @@ class PagesController extends BaseController {
 		if (empty($page))
 			return Redirect::to('');
 
-		Site::setMulti(['section', 'subSection', 'title'], $page->title);
+		Site::setMulti(['section', 'subSection'], $page->title);
 
 		Site::resetTrailItems();
 		Site::addTrailItem(Fractal::lang('labels.home'), '');
 
 		if ($page->slug != "home")
+		{
+			Site::set('title', $page->title);
 			Site::addTrailItem($page->title, $page->slug);
+		} else {
+			Site::set('title', null);
+		}
 
 		$page->logView();
 
@@ -283,6 +288,8 @@ class PagesController extends BaseController {
 			else
 				$messages['info'] = Fractal::lang('messages.notPublished', ['item' => Fractal::lang('labels.page')]);
 		}
+
+		Form::setErrors();
 
 		return View::make(Config::get('fractal::pageView'))
 			->with('page', $page)

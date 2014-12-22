@@ -28,7 +28,7 @@
 
 			@endif
 
-			<a href="{{ $mediaItem->getFileUrl() }}" class="btn btn-primary download-media-item" target="_blank" data-media-item-id="{{ $mediaItem->id }}">Download {{ $mediaItem->title }}</a>
+			<a href="{{ $mediaItem->getFileUrl() }}" class="btn btn-primary btn-xs download-media-item" target="_blank" data-media-item-id="{{ $mediaItem->id }}">Download {{ $mediaItem->title }}</a>
 
 		</div>
 

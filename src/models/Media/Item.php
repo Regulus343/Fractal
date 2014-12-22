@@ -552,7 +552,7 @@ class Item extends BaseModel {
 	public function getCreatedDate($dateFormat = false)
 	{
 		if (!$dateFormat)
-			$dateFormat = Fractal::getDateFormat();
+			$dateFormat = 'F Y';
 
 		return Fractal::dateSet($this->date_created) ? date($dateFormat, strtotime($this->date_created)) : '';
 	}

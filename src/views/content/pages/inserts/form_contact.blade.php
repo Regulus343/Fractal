@@ -1,13 +1,19 @@
-<div class="row">
-	<div class="col-md-6">
-		{{ Form::open() }}
-			{{ Form::field('name') }}
+@unless(Session::get('messageSent'))
 
-			{{ Form::field('email') }}
+	<div class="row">
+		<div class="col-md-12">
 
-			{{ Form::field('message', 'textarea') }}
+			{{ Form::open() }}
+				{{ Form::field('name') }}
 
-			{{ Form::field('[ICON: share-alt]Send Message', 'button') }}
-		{{ Form::close() }}
+				{{ Form::field('email') }}
+
+				{{ Form::field('message', 'textarea') }}
+
+				{{ Form::field('[ICON: share-alt]Send Message', 'button') }}
+			{{ Form::close() }}
+
+		</div>
 	</div>
-</div>
+
+@endunless
