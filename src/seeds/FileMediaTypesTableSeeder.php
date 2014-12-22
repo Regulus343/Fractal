@@ -102,9 +102,10 @@ class FileMediaTypesTableSeeder extends Seeder {
 			$id = DB::table('file_types')->insertGetId($fileType);
 
 			foreach ($mediaTypes as $mediaType) {
-				$mediaType['file_type_id'] = $id;
-				$mediaType['created_at']   = $timestamp;
-				$mediaType['updated_at']   = $timestamp;
+				$mediaType['file_type_id']          = $id;
+				$mediaType['media_source_required'] = true;
+				$mediaType['created_at']            = $timestamp;
+				$mediaType['updated_at']            = $timestamp;
 
 				DB::table('media_types')->insert($mediaType);
 			}

@@ -20,17 +20,21 @@
 			<img src="{{ $mediaItem->getImageUrl(true) }}" alt="{{ $mediaItem->title }}" title="{{ $mediaItem->title }}" class="thumbnail-image" />
 		@endif
 
-		<div class="media-item-area">
+		@if ($mediaItem->hasFile())
 
-			@if ($mediaItem->getFileType() == "Audio")
+			<div class="media-item-area">
 
-				<audio src="{{ $mediaItem->getFileUrl() }}"{{ (!Site::get('mediaList') && !Site::get('articleList') ? ' preload="auto"' : '') }}></audio>
+				@if ($mediaItem->getFileType() == "Audio")
 
-			@endif
+					<audio src="{{ $mediaItem->getFileUrl() }}"{{ (!Site::get('mediaList') && !Site::get('articleList') ? ' preload="auto"' : '') }}></audio>
 
-			<a href="{{ $mediaItem->getFileUrl() }}" class="btn btn-primary btn-xs download-media-item" target="_blank" data-media-item-id="{{ $mediaItem->id }}">Download {{ $mediaItem->title }}</a>
+				@endif
 
-		</div>
+				<a href="{{ $mediaItem->getFileUrl() }}" class="btn btn-primary btn-xs download-media-item" target="_blank" data-media-item-id="{{ $mediaItem->id }}">Download {{ $mediaItem->title }}</a>
+
+			</div>
+
+		@endif
 
 	@endif
 

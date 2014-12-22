@@ -42,6 +42,14 @@
 
 		<div class="row">
 			<div class="col-md-12">
+				<div class="form-group">
+					{{ Form::field('media_source_required', 'checkbox') }}
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
 				{{ Form::field(Form::submitResource(Fractal::lang('labels.mediaType')), 'button') }}
 			</div>
 		</div>

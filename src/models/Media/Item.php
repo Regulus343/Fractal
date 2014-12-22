@@ -310,6 +310,16 @@ class Item extends BaseModel {
 	}
 
 	/**
+	 * Check if a media item has a file.
+	 *
+	 * @return boolean
+	 */
+	public function hasFile()
+	{
+		return !is_null($this->filename);
+	}
+
+	/**
 	 * Get the image URL or a placeholder image URL for the media item.
 	 *
 	 * @param  boolean  $thumbnail

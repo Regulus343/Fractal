@@ -20,7 +20,9 @@ class CreateMediaTypesTable extends Migration {
 
 			$table->string('slug', 120);
 			$table->string('name');
+
 			$table->text('extensions');
+			$table->boolean('media_source_required');
 
 			$table->timestamps();
 			$table->softDeletes();

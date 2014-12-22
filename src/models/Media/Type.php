@@ -39,6 +39,7 @@ class Type extends BaseModel {
 		'slug',
 		'name',
 		'extensions',
+		'media_source_required',
 	];
 
 	/**
@@ -49,6 +50,20 @@ class Type extends BaseModel {
 	protected $types = [
 		'slug' => 'unique-slug',
 	];
+
+	/**
+	 * The default values for the model.
+	 *
+	 * @return array
+	 */
+	public static function defaults()
+	{
+		$defaults = [
+			'media_source_required' => true,
+		];
+
+		return $defaults;
+	}
 
 	/**
 	 * Get the validation rules used by the model.

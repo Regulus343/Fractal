@@ -120,13 +120,21 @@ class ItemsController extends MediaController {
 			else
 				$result = Item::uploadFile();
 
-			if (!$result['error']) {
+			$mediaSourceRequired = true;
+			if (Input::get('media_type_id') != "")
+			{
+				$mediaType = Type::find(Input::get('media_type_id'));
+				if (!empty($mediaType) && !$mediaType->media_source_required)
+					$mediaSourceRequired = false;
+			}
+
+			if (!$result['error'] || !$mediaSourceRequired) {
 				$messages['success'] = Fractal::lang('messages.successCreated', ['item' => Fractal::langLowerA('labels.mediaItem')]);
 
 				$path = null;
 				$uploadedThumbnail = false;
 
-				if (isset($result['files'])) {
+				if (!$result['error'] && isset($result['files'])) {
 					$fileResult = $result['files']['file'];
 
 					if (isset($result['files']['thumbnail_image']) && !$result['files']['thumbnail_image']['error']) {
@@ -154,28 +162,31 @@ class ItemsController extends MediaController {
 				} else {
 					$item->hosted_content_type = null;
 					$item->hosted_content_uri  = null;
-					$item->filename            = $fileResult['filename'];
-					$item->basename            = $fileResult['basename'];
-					$item->extension           = $fileResult['extension'];
-					$item->path                = $path;
 
-					if ($fileResult['isImage']) {
-						$item->width  = $fileResult['imageDimensions']['w'];
-						$item->height = $fileResult['imageDimensions']['h'];
+					if (!$result['error']) {
+						$item->filename            = $fileResult['filename'];
+						$item->basename            = $fileResult['basename'];
+						$item->extension           = $fileResult['extension'];
+						$item->path                = $path;
 
-						if (!$uploadedThumbnail) {
-							$item->thumbnail           = Form::value('create_thumbnail', 'checkbox');
-							$item->thumbnail_extension = $fileResult['extension'];
-							$item->thumbnail_width     = $fileResult['imageDimensions']['tw'];
-							$item->thumbnail_height    = $fileResult['imageDimensions']['th'];
+						if ($fileResult['isImage']) {
+							$item->width  = $fileResult['imageDimensions']['w'];
+							$item->height = $fileResult['imageDimensions']['h'];
+
+							if (!$uploadedThumbnail) {
+								$item->thumbnail           = Form::value('create_thumbnail', 'checkbox');
+								$item->thumbnail_extension = $fileResult['extension'];
+								$item->thumbnail_width     = $fileResult['imageDimensions']['tw'];
+								$item->thumbnail_height    = $fileResult['imageDimensions']['th'];
+							}
+						} else {
+							$item->width               = null;
+							$item->height              = null;
+							$item->thumbnail           = false;
+							$item->thumbnail_extension = null;
+							$item->thumbnail_width     = null;
+							$item->thumbnail_height    = null;
 						}
-					} else {
-						$item->width               = null;
-						$item->height              = null;
-						$item->thumbnail           = false;
-						$item->thumbnail_extension = null;
-						$item->thumbnail_width     = null;
-						$item->thumbnail_height    = null;
 					}
 				}
 
