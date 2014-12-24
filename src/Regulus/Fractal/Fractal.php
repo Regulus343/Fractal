@@ -5,7 +5,7 @@
 		A simple, versatile CMS base for Laravel 4.
 
 		created by Cody Jassman
-		version 0.7.14a
+		version 0.7.15a
 		last updated on December 24, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
@@ -701,13 +701,14 @@ class Fractal {
 	 * Render content for a content area.
 	 *
 	 * @param  string   $content
-	 * @param  string   $contentType
-	 * @param  boolean  $previewOnly
-	 * @param  array    $data
+	 * @param  array    $config
 	 * @return string
 	 */
-	public function renderContent($content, $contentType = 'HTML', $previewOnly = false, $data = [])
+	public function renderContent($content, $config = [])
 	{
+		$contentType = isset($config['contentType']) ? $config['contentType'] : "HTML";
+		$previewOnly = isset($config['previewOnly']) ? $config['previewOnly'] : false;
+
 		//replace HTML special character quotation marks with actual quotation marks
 		$content = str_replace('&quot;', '"', $content);
 
@@ -722,7 +723,7 @@ class Fractal {
 		}
 
 		//add thumbnail image to content
-		if (isset($data['thumbnailImageFileId']) && !is_null($data['thumbnailImageFileId']))
+		if (isset($config['thumbnailImageFileId']) && !is_null($config['thumbnailImageFileId']))
 		{
 			preg_match_all('/(\[thumbnail\-image)([\;A-Za-z0-9\-\.\#\ ]*)\]/', $content, $thumbnailImages);
 			if (isset($thumbnailImages[0]) && !empty($thumbnailImages[0]))
@@ -735,10 +736,10 @@ class Fractal {
 					$idClasses  = str_replace('.primary', '', $idClasses);
 					$idClasses .= " .primary";
 
-					$content = str_replace($thumbnailImageText, '[image:'.$data['thumbnailImageFileId'], $content);
+					$content = str_replace($thumbnailImageText, '[image:'.$config['thumbnailImageFileId'], $content);
 					$content = str_replace($thumbnailImages[2][0], $idClasses, $content);
 				} else {
-					$content = str_replace($thumbnailImageText, '[image:'.$data['thumbnailImageFileId'].'; .primary', $content);
+					$content = str_replace($thumbnailImageText, '[image:'.$config['thumbnailImageFileId'].'; .primary', $content);
 				}
 			}
 		}
@@ -886,7 +887,7 @@ class Fractal {
 		//render views in content
 		preg_match_all('/\<p\>\[view:\&quot\;([a-z\:\.\_\-]*)\&quot\;\]\<\/p\>/', $content, $views);
 		if (isset($views[0]) && !empty($views[0])) {
-			if (!$previewOnly)
+			if (!$previewOnly && (!isset($config['insertViews']) || $config['insertViews'] != false))
 			{
 				for ($v = 0; $v < count($views[0]); $v++)
 				{
@@ -908,11 +909,14 @@ class Fractal {
 	 * Render Markdown content for a content area.
 	 *
 	 * @param  string   $content
+	 * @param  array    $config
 	 * @return string
 	 */
-	public function renderMarkdownContent($content)
+	public function renderMarkdownContent($content, $config = [])
 	{
-		return $this->renderContent($content, 'Markdown');
+		$config = array_merge($config, ['contentType' => 'Markdown']);
+
+		return $this->renderContent($content, $config);
 	}
 
 	/**
@@ -1417,7 +1421,7 @@ class Fractal {
 	 */
 	public function dateSet($date)
 	{
-		return $date != "0000-00-00";
+		return $date != "0000-00-00" && !is_null($date);
 	}
 
 	/**
@@ -1428,7 +1432,7 @@ class Fractal {
 	 */
 	public function dateTimeSet($dateTime)
 	{
-		return $dateTime != "0000-00-00 00:00:00";
+		return $dateTime != "0000-00-00 00:00:00" && !is_null($dateTime);
 	}
 
 	/**

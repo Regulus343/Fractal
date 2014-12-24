@@ -330,7 +330,7 @@ class PagesController extends BaseController {
 
 	public function renderMarkdownContent()
 	{
-		return Fractal::renderMarkdownContent(Input::get('content'));
+		return Fractal::renderMarkdownContent(Input::get('content'), ['insertViews' => false]);
 	}
 
 	public function addContentArea($id = null)

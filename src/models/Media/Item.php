@@ -291,9 +291,13 @@ class Item extends BaseModel {
 			$path .= "thumbnails/";
 
 		if ($thumbnail && !is_null($this->thumbnail_extension))
-			$path .= str_replace($this->extension, $this->thumbnail_extension, $this->filename);
-		else
+		{
+			$filename = !is_null($this->filename) ? $this->filename : $this->slug.'.'.$this->thumbnail_extension;
+
+			$path .= str_replace($this->extension, $this->thumbnail_extension, $filename);
+		} else {
 			$path .= $this->filename;
+		}
 
 		return $path;
 	}
@@ -443,7 +447,12 @@ class Item extends BaseModel {
 	 */
 	public function getRenderedDescription($previewOnly = false, $sanitized = false)
 	{
-		$description = Fractal::renderContent($this->description, $this->description_type, $previewOnly);
+		$config = [
+			'contentType' => $this->description_type,
+			'previewOnly' => $previewOnly,
+		];
+
+		$description = Fractal::renderContent($this->description, $config);
 
 		if ($sanitized && $description != "")
 		{
@@ -510,7 +519,6 @@ class Item extends BaseModel {
 	 */
 	public function getPublishedStatus($dateFormat = false)
 	{
-
 		$yesNo = [
 			'<span class="boolean-true">Yes</span>',
 			'<span class="boolean-false">No</span>',
@@ -537,7 +545,7 @@ class Item extends BaseModel {
 		if (!$dateFormat)
 			$dateFormat = Fractal::getDateTimeFormat();
 
-		return Fractal::dateTimeSet($this->published_at) ? date($dateFormat, strtotime($this->published_at)) : '';
+		return Fractal::dateTimeSet($this->published_at) ? date($dateFormat, strtotime($this->published_at)) : null;
 	}
 
 	/**
@@ -551,7 +559,7 @@ class Item extends BaseModel {
 		if (!$dateFormat)
 			$dateFormat = Fractal::getDateFormat();
 
-		return Fractal::dateSet($this->published_at) ? date($dateFormat, strtotime($this->published_at)) : '';
+		return Fractal::dateSet($this->published_at) ? date($dateFormat, strtotime($this->published_at)) : null;
 	}
 
 	/**
@@ -565,7 +573,7 @@ class Item extends BaseModel {
 		if (!$dateFormat)
 			$dateFormat = 'F Y';
 
-		return Fractal::dateSet($this->date_created) ? date($dateFormat, strtotime($this->date_created)) : '';
+		return Fractal::dateSet($this->date_created) ? date($dateFormat, strtotime($this->date_created)) : null;
 	}
 
 	/**

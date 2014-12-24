@@ -46,7 +46,7 @@ div.media-item-area { display: inline-block; }
 div.media-item-area .audiojs { margin: 0 0 6px 0; }
 .audiojs .play-pause { padding-left: 0; padding-right: 0; }
 
-div.media-item-description { padding: 12px; }
+div.media-item-description { padding: 12px 0; }
 
 ul.nav-side { margin: 0 0 18px 0; }
 

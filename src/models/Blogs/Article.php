@@ -475,7 +475,7 @@ class Article extends BaseModel {
 		if (!$dateFormat)
 			$dateFormat = Fractal::getDateTimeFormat();
 
-		return Fractal::dateTimeSet($this->published_at) ? date($dateFormat, strtotime($this->published_at)) : '';
+		return Fractal::dateTimeSet($this->published_at) ? date($dateFormat, strtotime($this->published_at)) : null;
 	}
 
 	/**
@@ -489,7 +489,7 @@ class Article extends BaseModel {
 		if (!$dateFormat)
 			$dateFormat = Fractal::getDateFormat();
 
-		return Fractal::dateSet($this->published_at) ? date($dateFormat, strtotime($this->published_at)) : '';
+		return Fractal::dateSet($this->published_at) ? date($dateFormat, strtotime($this->published_at)) : null;
 	}
 
 	/**

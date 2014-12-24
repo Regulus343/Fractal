@@ -135,7 +135,13 @@ class ContentArea extends BaseModel {
 	{
 		$content = ($previewOnly && $this->content_modified != "") ? $this->content_modified : $this->content;
 
-		return Fractal::renderContent($content, $this->content_type, $previewOnly, ['thumbnailImageFileId' => $thumbnailImageFileId]);
+		$config  = [
+			'contentType'          => $this->content_type,
+			'previewOnly'          => $previewOnly,
+			'thumbnailImageFileId' => $thumbnailImageFileId,
+		];
+
+		return Fractal::renderContent($content, $config);
 	}
 
 	/**

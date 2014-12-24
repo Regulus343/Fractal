@@ -130,7 +130,7 @@ class Area extends BaseModel {
 	 */
 	public function getRenderedContent()
 	{
-		return Fractal::renderContent($this->content, $this->content_type);
+		return Fractal::renderContent($this->content, ['contentType' => $this->content_type]);
 	}
 
 	/**
