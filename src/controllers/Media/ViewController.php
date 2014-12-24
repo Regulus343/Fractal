@@ -115,7 +115,7 @@ class ViewController extends BaseController {
 				return Redirect::to($mediaItem->getUrl());
 		}
 
-		if (empty($mediaItem))
+		if (empty($mediaItem) || (!Auth::is('admin') && !$mediaItem->isPublished()))
 			return Redirect::to(Fractal::mediaUrl())->with('messages', [
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.mediaItem')])
 			]);
@@ -129,7 +129,7 @@ class ViewController extends BaseController {
 
 		Site::set('contentUrl', $mediaItem->getUrl());
 		Site::set('contentImage', $mediaItem->getThumbnailImageUrl());
-		Site::set('contentDescription', strip_tags($mediaItem->getRenderedDescription()));
+		Site::set('contentDescription', strip_tags($mediaItem->getRenderedDescription(true)));
 
 		Site::addTrailItem(strip_tags($mediaItem->getTitle()), $mediaItem->getUrl());
 
@@ -223,7 +223,7 @@ class ViewController extends BaseController {
 		$mediaItems = $mediaItems->get();
 
 		Site::set('contentUrl', $mediaSet->getUrl());
-		Site::set('contentDescription', strip_tags($mediaSet->getRenderedDescription()));
+		Site::set('contentDescription', strip_tags($mediaSet->getRenderedDescription(true)));
 
 		if (!empty($mediaItems))
 			Site::set('contentImage', $mediaItems[0]->getThumbnailImageUrl());

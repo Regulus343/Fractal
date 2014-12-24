@@ -5,8 +5,8 @@
 		A simple, versatile CMS base for Laravel 4.
 
 		created by Cody Jassman
-		version 0.7.13a
-		last updated on December 21, 2014
+		version 0.7.14a
+		last updated on December 24, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -849,16 +849,6 @@ class Fractal {
 			}
 		}
 
-		//render views in content
-		preg_match_all('/\[view:\"([a-z\:\.\_\-]*)\"\]/', $content, $views);
-		if (isset($views[0]) && !empty($views[0])) {
-			for ($v = 0; $v < count($views[0]); $v++)
-			{
-				$view    = View::make($views[1][$v])->render();
-				$content = str_replace($views[0][$v], $view, $content);
-			}
-		}
-
 		//embed YouTube videos in content
 		preg_match_all('/\[youtube:([A-Za-z0-9\_\-]{11})\]/', $content, $videos);
 		if (isset($videos[0]) && !empty($videos[0])) {
@@ -892,6 +882,21 @@ class Fractal {
 		//render to Markdown
 		if (strtolower($contentType) == "markdown")
 			$content = Markdown::text($content);
+
+		//render views in content
+		preg_match_all('/\<p\>\[view:\&quot\;([a-z\:\.\_\-]*)\&quot\;\]\<\/p\>/', $content, $views);
+		if (isset($views[0]) && !empty($views[0])) {
+			if (!$previewOnly)
+			{
+				for ($v = 0; $v < count($views[0]); $v++)
+				{
+					$view    = View::make($views[1][$v])->render();
+					$content = str_replace($views[0][$v], $view, $content);
+				}
+			} else {
+				$content = str_replace($views[0][0], '', $content);
+			}
+		}
 
 		//convert lone ampersands to HTML special characters
 		$content = str_replace(' & ', ' &amp; ', $content);

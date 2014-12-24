@@ -12,9 +12,11 @@
 			<a href="{{ $articleListed->getUrl() }}">
 				<span class="glyphicon glyphicon-file"></span> {{ $articleListed->getTitle() }}
 
-				<div>
-					<time datetime="{{ $articleListed->published_at }}">{{ $articleListed->getPublishedDate() }}</time>
-				</div>
+				@if ($articleListed->published_at)
+					<div>
+						<time datetime="{{ $articleListed->published_at }}">{{ $articleListed->getPublishedDate() }}</time>
+					</div>
+				@endif
 			</a>
 		</li>
 

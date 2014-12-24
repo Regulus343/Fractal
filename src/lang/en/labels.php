@@ -2,7 +2,7 @@
 
 return [
 
-	'version'                     => '0.7.13a',
+	'version'                     => '0.7.14a',
 
 	'home'                        => 'Home',
 	'dashboard'                   => 'Dashboard',
@@ -220,6 +220,8 @@ return [
 	'mediaReturnToHome'           => 'Return to Media Home Page',
 
 	'selectItem'                  => 'Select :item',
+
+	'notPublished'                => 'Not Published',
 
 	'allCategories'               => 'All Categories',
 	'allMediaTypes'               => 'All Media Types',

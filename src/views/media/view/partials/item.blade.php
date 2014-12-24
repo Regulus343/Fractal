@@ -8,7 +8,15 @@
 		@endif
 
 		<time datetime="{{ $mediaItem->published_at }}" class="date-time-published">
-			Published {{ $mediaItem->getPublishedDate() }}
+			@if ($mediaItem->published_at)
+
+				Published {{ $mediaItem->getPublishedDate() }}
+
+			@else
+
+				<span class="not-published">{{ Fractal::lang('labels.notPublished') }}</span>
+
+			@endif
 		</time>
 
 		@if ($mediaItem->date_created)

@@ -109,7 +109,7 @@ class ViewController extends BaseController {
 				return Redirect::to($article->getUrl());
 		}
 
-		if (empty($article))
+		if (empty($article) || (!Auth::is('admin') && !$article->isPublished()))
 			return Redirect::to(Fractal::blogUrl())->with('messages', [
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.article')])
 			]);

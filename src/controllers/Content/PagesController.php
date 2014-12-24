@@ -260,7 +260,7 @@ class PagesController extends BaseController {
 				return Redirect::to($page->getUrl());
 		}
 
-		if (empty($page))
+		if (empty($page) || (!Auth::is('admin') && !$page->isPublished()))
 			return Redirect::to('');
 
 		Site::setMulti(['section', 'subSection'], $page->title);

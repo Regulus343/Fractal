@@ -8,7 +8,15 @@
 		@endif
 
 		<time datetime="{{ $article->published_at }}" class="date-time-published">
-			Published {{ $article->getPublishedDate() }}
+			@if ($article->published_at)
+
+				Published {{ $article->getPublishedDate() }}
+
+			@else
+
+				<span class="not-published">{{ Fractal::lang('labels.notPublished') }}</span>
+
+			@endif
 		</time>
 	</div>
 

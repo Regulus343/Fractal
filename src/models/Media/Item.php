@@ -437,12 +437,13 @@ class Item extends BaseModel {
 	/**
 	 * Get the rendered description.
 	 *
+	 * @param  boolean  $previewOnly
 	 * @param  boolean  $sanitized
 	 * @return string
 	 */
-	public function getRenderedDescription($sanitized = false)
+	public function getRenderedDescription($previewOnly = false, $sanitized = false)
 	{
-		$description = Fractal::renderContent($this->description, $this->description_type);
+		$description = Fractal::renderContent($this->description, $this->description_type, $previewOnly);
 
 		if ($sanitized && $description != "")
 		{

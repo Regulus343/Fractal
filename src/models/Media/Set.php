@@ -157,11 +157,12 @@ class Set extends BaseModel {
 	/**
 	 * Get the rendered description.
 	 *
+	 * @param  boolean  $previewOnly
 	 * @return string
 	 */
-	public function getRenderedDescription()
+	public function getRenderedDescription($previewOnly = false)
 	{
-		return Fractal::renderContent($this->description, $this->description_type);
+		return Fractal::renderContent($this->description, $this->description_type, $previewOnly);
 	}
 
 	/**
