@@ -127,19 +127,20 @@ class ContentArea extends BaseModel {
 	/**
 	 * Get the rendered content.
 	 *
-	 * @param  boolean  $previewOnly
-	 * @param  mixed    $thumbnailImageFileId
+	 * @param  array    $config
 	 * @return string
 	 */
-	public function getRenderedContent($previewOnly = false, $thumbnailImageFileId = null)
+	public function getRenderedContent($config = [])
 	{
-		$content = ($previewOnly && $this->content_modified != "") ? $this->content_modified : $this->content;
-
 		$config  = [
 			'contentType'          => $this->content_type,
-			'previewOnly'          => $previewOnly,
-			'thumbnailImageFileId' => $thumbnailImageFileId,
+			'contentUrl'           => isset($config['contentUrl'])           ? $config['contentUrl']           : null,
+			'previewOnly'          => isset($config['previewOnly'])          ? $config['previewOnly']          : false,
+			'addReadMoreButton'    => isset($config['addReadMoreButton'])    ? $config['addReadMoreButton']    : false,
+			'thumbnailImageFileId' => isset($config['thumbnailImageFileId']) ? $config['thumbnailImageFileId'] : null,
 		];
+
+		$content = ($config['previewOnly'] && $this->content_modified != "") ? $this->content_modified : $this->content;
 
 		return Fractal::renderContent($content, $config);
 	}
@@ -147,13 +148,13 @@ class ContentArea extends BaseModel {
 	/**
 	 * Apply rendered content to layout.
 	 *
-	 * @param  boolean  $previewOnly
-	 * @param  mixed    $thumbnailImageFileId
+	 * @param  string   $content
+	 * @param  array    $config
 	 * @return string
 	 */
-	public function renderContentToLayout($content, $previewOnly = false, $thumbnailImageFileId = null)
+	public function renderContentToLayout($content, $config = [])
 	{
-		return str_replace('{{'.$this->pivot->layout_tag.'}}', $this->getRenderedContent($previewOnly, $thumbnailImageFileId), $content);
+		return str_replace('{{'.$this->pivot->layout_tag.'}}', $this->getRenderedContent($config), $content);
 	}
 
 	/**

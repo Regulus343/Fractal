@@ -333,13 +333,15 @@ class Article extends BaseModel {
 	/**
 	 * Get the rendered content for the article.
 	 *
-	 * @param  boolean  $previewOnly
-	 * @param  boolean  $includeReadMoreButton
+	 * @param  array    $config
 	 * @return string
 	 */
-	public function getRenderedContent($previewOnly = false, $includeReadMoreButton = true)
+	public function getRenderedContent($config = [])
 	{
 		$content = $this->getLayout();
+
+		$previewOnly       = isset($config['previewOnly'])       ? $config['previewOnly']       : false;
+		$addReadMoreButton = isset($config['addReadMoreButton']) ? $config['addReadMoreButton'] : true;
 
 		//if preview only is set, select only the main or primary content area for display
 		$contentAreas = $this->contentAreas;
@@ -360,10 +362,6 @@ class Article extends BaseModel {
 					preg_match_all('/\[thumbnail\-image[\;A-Za-z0-9\-\.\#\ ]*\]/', $contentArea->content_modified, $thumbnailImages);
 					if (isset($thumbnailImages[0]) && !empty($thumbnailImages[0]))
 						$contentArea->content_modified = str_replace($thumbnailImages[0][0], '', $contentArea->content_modified);
-
-					//add a "Read More" button
-					if ($includeReadMoreButton)
-						$contentArea->content_modified .= '<a href="'.$this->getUrl().'" class="btn btn-default btn-xs read-more">'.Fractal::lang('labels.readMore').'</a>';
 
 					$contentAreas = [$contentArea];
 				}
@@ -387,8 +385,15 @@ class Article extends BaseModel {
 			}
 		}
 
+		$config  = [
+			'contentUrl'           => $this->getUrl(),
+			'previewOnly'          => $previewOnly,
+			'addReadMoreButton'    => $addReadMoreButton,
+			'thumbnailImageFileId' => $this->thumbnail_image_file_id,
+		];
+
 		foreach ($contentAreas as $contentArea) {
-			$content = $contentArea->renderContentToLayout($content, $previewOnly, $this->thumbnail_image_file_id);
+			$content = $contentArea->renderContentToLayout($content, $config);
 		}
 
 		return $content;

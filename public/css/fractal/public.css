@@ -10,7 +10,7 @@ div.article-heading, div.media-item-heading { margin-bottom: 12px; border-bottom
 div.article-heading time, div.media-item-heading time { color: #555; font-style: italic; }
 div.article-body img, div.media-item-body img { max-width: 100%; }
 div.article-body p, div.media-item-body p { width: inherit; }
-div.article-body a.read-more { margin-left: 6px; }
+div.article-body a.btn-read-more { margin-left: 6px; }
 
 div.article-body img.primary { float: left; margin: 0 12px 12px 0; width: 30%; max-width: 300px; }
 

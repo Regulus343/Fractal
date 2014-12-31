@@ -5,7 +5,7 @@
 		A simple, versatile CMS base for Laravel 4.
 
 		created by Cody Jassman
-		version 0.7.16a
+		version 0.7.17a
 		last updated on December 31, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
@@ -706,8 +706,10 @@ class Fractal {
 	 */
 	public function renderContent($content, $config = [])
 	{
-		$contentType = isset($config['contentType']) ? $config['contentType'] : "HTML";
-		$previewOnly = isset($config['previewOnly']) ? $config['previewOnly'] : false;
+		$contentType       = isset($config['contentType'])       ? $config['contentType']       : "HTML";
+		$contentUrl        = isset($config['contentUrl'])        ? $config['contentUrl']        : null;
+		$previewOnly       = isset($config['previewOnly'])       ? $config['previewOnly']       : false;
+		$addReadMoreButton = isset($config['addReadMoreButton']) ? $config['addReadMoreButton'] : false;
 
 		//replace HTML special character quotation marks with actual quotation marks
 		$content = str_replace('&quot;', '"', $content);
@@ -898,6 +900,10 @@ class Fractal {
 				$content = str_replace($views[0][0], '', $content);
 			}
 		}
+
+		//add a "Read More" button
+		if ($previewOnly && $addReadMoreButton && $contentUrl)
+			$content .= '<a href="'.$contentUrl.'" class="btn btn-default btn-xs btn-read-more">'.Fractal::lang('labels.readMore').'</a>';
 
 		//convert lone ampersands to HTML special characters
 		$content = str_replace(' & ', ' &amp; ', $content);

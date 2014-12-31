@@ -38,7 +38,7 @@
 
 	<div class="article-body">
 
-		{{ $article->getRenderedContent(Site::get('articleList', false)) }}
+		{{ $article->getRenderedContent(['previewOnly' => Site::get('articleList', false)]) }}
 
 	</div>
 
