@@ -53,6 +53,12 @@ class SettingsTableSeeder extends Seeder {
 				'options'       => '5:300; +5',
 			],
 			[
+				'name'          => 'Latest Content Items Listed',
+				'value'         => 5,
+				'type'          => 'Integer',
+				'options'       => '5:20',
+			],
+			[
 				'name'          => 'Content View Logging Type',
 				'value'         => 'All',
 				'type'          => 'Text',

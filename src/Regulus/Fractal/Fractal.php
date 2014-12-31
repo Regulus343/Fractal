@@ -1302,11 +1302,11 @@ class Fractal {
 	 */
 	public function getLatestContent()
 	{
-		$latestContentLimit = 5;
+		$latestContentItemsListed = $this->getSetting('Latest Content Items Listed', 5);
 
 		$content = [];
 
-		$articles = BlogArticle::onlyPublished()->orderBy('published_at', 'desc')->take(5)->get();
+		$articles = BlogArticle::onlyPublished()->orderBy('published_at', 'desc')->take($latestContentItemsListed)->get();
 		foreach ($articles as $article)
 		{
 			$content[$article->published_at.' - A'] = (object) [
@@ -1321,7 +1321,7 @@ class Fractal {
 			];
 		}
 
-		$mediaItems = MediaItem::onlyPublished()->orderBy('published_at', 'desc')->take(5)->get();
+		$mediaItems = MediaItem::onlyPublished()->orderBy('published_at', 'desc')->take($latestContentItemsListed)->get();
 		foreach ($mediaItems as $mediaItem)
 		{
 			$content[$mediaItem->published_at.' - I'] = (object) [
@@ -1330,7 +1330,7 @@ class Fractal {
 				'title'               => $mediaItem->getTitle(),
 				'url'                 => $mediaItem->getUrl(),
 				'thumbnail_image_url' => $mediaItem->getImageUrl(true),
-				'content'             => $mediaItem->getRenderedDescription(),
+				'content'             => $mediaItem->getRenderedDescription(['previewOnly' => true, 'insertViews' => false]),
 				'published_at'        => $mediaItem->published_at,
 				'date_created'        => $mediaItem->date_created,
 			];
@@ -1340,7 +1340,7 @@ class Fractal {
 		krsort($content);
 
 		//limit number of content items
-		$content = array_slice($content, 0, $latestContentLimit);
+		$content = array_slice($content, 0, $latestContentItemsListed);
 
 		return $content;
 	}
