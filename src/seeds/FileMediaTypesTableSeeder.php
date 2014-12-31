@@ -26,8 +26,9 @@ class FileMediaTypesTableSeeder extends Seeder {
 						'name' => 'Photo',
 					],
 					[
-						'slug' => 'artwork',
-						'name' => 'Artwork',
+						'slug'        => 'artwork',
+						'name'        => 'Artwork',
+						'name_plural' => 'Artwork',
 					],
 				],
 			],
@@ -50,8 +51,9 @@ class FileMediaTypesTableSeeder extends Seeder {
 
 				'media_types' => [
 					[
-						'slug' => 'music',
-						'name' => 'Music',
+						'slug'        => 'music',
+						'name'        => 'Music',
+						'name_plural' => 'Music',
 					],
 
 					[

@@ -6,6 +6,7 @@ use Fractal;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\URL;
 
 use \Form;
@@ -38,6 +39,7 @@ class Type extends BaseModel {
 		'parent_id',
 		'slug',
 		'name',
+		'name_plural',
 		'extensions',
 		'media_source_required',
 	];
@@ -49,6 +51,15 @@ class Type extends BaseModel {
 	 */
 	protected $types = [
 		'slug' => 'unique-slug',
+	];
+
+	/**
+	 * The special formatted fields for the model for saving to the database.
+	 *
+	 * @var    array
+	 */
+	protected $formatsForDb = [
+		'name_plural' => 'nullIfBlank',
 	];
 
 	/**
@@ -121,7 +132,21 @@ class Type extends BaseModel {
 	}
 
 	/**
-	 * The number of items that belong to the media type.
+	 * Get the name of a media type.
+	 *
+	 * @param  boolean  $plural
+	 * @return string
+	 */
+	public function getName($plural = false)
+	{
+		if ($plural)
+			return !is_null($this->name_plural) ? $this->name_plural : Str::plural($this->name);
+		else
+			return $this->name;
+	}
+
+	/**
+	 * Get the number of items that belong to the media type.
 	 *
 	 * @return integer
 	 */

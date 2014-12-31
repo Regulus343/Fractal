@@ -20,6 +20,7 @@ class CreateMediaTypesTable extends Migration {
 
 			$table->string('slug', 120);
 			$table->string('name');
+			$table->string('name_plural')->nullable();
 
 			$table->text('extensions');
 			$table->boolean('media_source_required');

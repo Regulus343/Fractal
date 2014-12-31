@@ -258,9 +258,7 @@ class ViewController extends BaseController {
 				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.mediaType')])
 			]);
 
-		Site::setMulti(['subSection', 'mediaType'], $mediaType->name);
-
-		Site::set('title', Fractal::lang('labels.mediaType').': '.$mediaType->name);
+		Site::setMulti(['title', 'subSection', 'mediaType'], $mediaType->getName(true));
 
 		$mediaItems = Item::where('media_items.media_type_id', $mediaType->id);
 
