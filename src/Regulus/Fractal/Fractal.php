@@ -5,7 +5,7 @@
 		A simple, versatile CMS base for Laravel 4.
 
 		created by Cody Jassman
-		version 0.7.17a
+		version 0.7.18a
 		last updated on December 31, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
@@ -1295,6 +1295,57 @@ class Fractal {
 	}
 
 	/**
+	 * Get the latest blog article and media item content and organize it into a common array.
+	 *
+	 * @param  string   $layout
+	 * @return array
+	 */
+	public function getLatestContent()
+	{
+		$latestContentLimit = 5;
+
+		$content = [];
+
+		$articles = BlogArticle::onlyPublished()->orderBy('published_at', 'desc')->take(5)->get();
+		foreach ($articles as $article)
+		{
+			$content[$article->published_at.' - A'] = (object) [
+				'type'                => 'Article',
+				'type_label'          => Fractal::lang('labels.article'),
+				'title'               => $article->getTitle(),
+				'url'                 => $article->getUrl(),
+				'thumbnail_image_url' => null,
+				'content'             => $article->getRenderedContent(['previewOnly' => true]),
+				'published_at'        => $article->published_at,
+				'date_created'        => null,
+			];
+		}
+
+		$mediaItems = MediaItem::onlyPublished()->orderBy('published_at', 'desc')->take(5)->get();
+		foreach ($mediaItems as $mediaItem)
+		{
+			$content[$mediaItem->published_at.' - I'] = (object) [
+				'type'                => 'Media Item',
+				'type_label'          => Fractal::lang('labels.mediaItem'),
+				'title'               => $mediaItem->getTitle(),
+				'url'                 => $mediaItem->getUrl(),
+				'thumbnail_image_url' => $mediaItem->getImageUrl(true),
+				'content'             => $mediaItem->getRenderedDescription(),
+				'published_at'        => $mediaItem->published_at,
+				'date_created'        => $mediaItem->date_created,
+			];
+		}
+
+		//sort by descending keys
+		krsort($content);
+
+		//limit number of content items
+		$content = array_slice($content, 0, $latestContentLimit);
+
+		return $content;
+	}
+
+	/**
 	 * Add an item to the breadcrumb trail.
 	 *
 	 * @param  string   $title
@@ -1495,7 +1546,8 @@ class Fractal {
 	 */
 	function lang($key, array $replace = [], $locale = null)
 	{
-		$key = 'fractal::'.$key;
+		if (!Config::get('fractal::externalLanguage'))
+			$key = 'fractal::'.$key;
 
 		return \Illuminate\Support\Facades\Lang::get($key, $replace, $locale);
 	}
@@ -1510,7 +1562,7 @@ class Fractal {
 	 */
 	function langLower($key, array $replace = [], $locale = null)
 	{
-		return strtolower(static::lang($key, $replace, $locale));
+		return strtolower($this->lang($key, $replace, $locale));
 	}
 
 	/**
@@ -1523,7 +1575,7 @@ class Fractal {
 	 */
 	function langA($key, array $replace = [], $locale = null)
 	{
-		return \Regulus\TetraText\Facade::a(static::lang($key, $replace, $locale));
+		return \Regulus\TetraText\Facade::a($this->lang($key, $replace, $locale));
 	}
 
 	/**
@@ -1536,7 +1588,7 @@ class Fractal {
 	 */
 	function langLowerA($key, array $replace = [], $locale = null)
 	{
-		return \Regulus\TetraText\Facade::a(static::langLower($key, $replace, $locale));
+		return \Regulus\TetraText\Facade::a($this->langLower($key, $replace, $locale));
 	}
 
 	/**
@@ -1549,7 +1601,7 @@ class Fractal {
 	 */
 	function langPlural($key, array $replace = [], $locale = null)
 	{
-		return Str::plural(static::lang($key, $replace, $locale));
+		return Str::plural($this->lang($key, $replace, $locale));
 	}
 
 	/**

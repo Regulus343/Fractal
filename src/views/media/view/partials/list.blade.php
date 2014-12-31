@@ -1,6 +1,6 @@
 @foreach ($mediaItems as $mediaItem)
 
-	<div class="media-item-preview">
+	<div class="content-item-preview media-item-preview">
 
 		@include(Fractal::mediaView('partials.item', true))
 

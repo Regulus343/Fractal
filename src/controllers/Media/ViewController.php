@@ -129,7 +129,7 @@ class ViewController extends BaseController {
 
 		Site::set('contentUrl', $mediaItem->getUrl());
 		Site::set('contentImage', $mediaItem->getThumbnailImageUrl());
-		Site::set('contentDescription', strip_tags($mediaItem->getRenderedDescription(true)));
+		Site::set('contentDescription', strip_tags($mediaItem->getRenderedDescription(['previewOnly' => true])));
 
 		Site::addTrailItem(strip_tags($mediaItem->getTitle()), $mediaItem->getUrl());
 

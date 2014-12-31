@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
+use \Fractal;
+
 use \Auth;
 use \Form;
 use \Site;
@@ -85,4 +87,11 @@ View::composer($viewsLocation.'blogs.view.partials.nav.categories', function($vi
 	$categories = BlogCategory::orderBy('name')->get();
 
 	$view->with('categories', $categories);
+});
+
+View::composer($viewsLocation.'public.partials.latest_content', function($view)
+{
+	$latestContent = Fractal::getLatestContent();
+
+	$view->with('latestContent', $latestContent);
 });

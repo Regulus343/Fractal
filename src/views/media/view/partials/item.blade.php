@@ -1,6 +1,6 @@
-<div class="media-item">
+<div class="content-item media-item">
 
-	<div class="media-item-heading">
+	<div class="content-item-heading media-item-heading">
 		@if (Site::get('mediaList'))
 
 			<h3><a href="{{ $mediaItem->getUrl() }}">{{ $mediaItem->getTitle() }}</a></h3>

@@ -235,6 +235,18 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
+	| External Language Files
+	|--------------------------------------------------------------------------
+	|
+	| Set this to true to use language files external to Fractal. You may copy
+	| Fractal's language files to your application / website's language files
+	| directory to use as a starting point.
+	|
+	*/
+	'externalLanguage' => false,
+
+	/*
+	|--------------------------------------------------------------------------
 	| Authorization Class
 	|--------------------------------------------------------------------------
 	|

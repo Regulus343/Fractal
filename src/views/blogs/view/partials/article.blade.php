@@ -1,6 +1,6 @@
-<div class="article">
+<div class="content-item article">
 
-	<div class="article-heading">
+	<div class="content-item-heading article-heading">
 		@if (Site::get('articleList'))
 
 			<h3><a href="{{ $article->getUrl() }}">{{ $article->getTitle() }}</a></h3>
@@ -36,7 +36,7 @@
 
 	@endif
 
-	<div class="article-body">
+	<div class="content-item-body article-body">
 
 		{{ $article->getRenderedContent(['previewOnly' => Site::get('articleList', false)]) }}
 

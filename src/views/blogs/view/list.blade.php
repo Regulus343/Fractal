@@ -6,7 +6,7 @@
 
 	@foreach ($articles as $article)
 
-		<div class="article-preview">
+		<div class="content-item-preview article-preview">
 
 			@include(Fractal::blogView('partials.article', true))
 

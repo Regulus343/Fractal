@@ -1,4 +1,4 @@
-<div class="media-item-body{{ (isset($contentInserted) && $contentInserted ? ' media-item-inserted' : '') }}">
+<div class="content-item-body media-item-body{{ (isset($contentInserted) && $contentInserted ? ' media-item-inserted' : '') }}">
 
 	@if (isset($contentInserted) && $contentInserted)
 
