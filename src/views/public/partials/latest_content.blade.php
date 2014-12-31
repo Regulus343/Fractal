@@ -4,7 +4,7 @@
 
 		@foreach ($latestContent as $contentItem)
 
-			<div class="content-preview">
+			<div class="content-item-preview">
 
 				<div class="content-item">
 
@@ -43,13 +43,13 @@
 						@else
 
 							<div class="row">
-								<div class="col-md-3">
+								<div class="col-sm-2">
 									@if ($contentItem->thumbnail_image_url)
 										<img src="{{ $contentItem->thumbnail_image_url }}" alt="{{ $contentItem->title }}" title="{{ $contentItem->title }}" class="thumbnail-image" />
 									@endif
 								</div>
 
-								<div class="col-md-9">
+								<div class="col-sm-10">
 									{{ $contentItem->content }}
 
 									<a href="{{ $contentItem->url }}" class="btn btn-default btn-xs btn-read-more">
