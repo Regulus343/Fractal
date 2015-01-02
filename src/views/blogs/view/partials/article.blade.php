@@ -42,7 +42,7 @@
 
 	</div>
 
-	@if (!Site::get('articleList') && Fractal::getSetting('Enable Article Comments', false))
+	@if (!Site::get('articleList') && $article->commentsEnabled())
 
 		@include(Fractal::view('public.partials.comments', true))
 

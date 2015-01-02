@@ -29,6 +29,7 @@ class CreateBlogArticlesTable extends Migration {
 			$table->integer('thumbnail_image_media_item_id')->nullable();
 
 			$table->boolean('audio_file');
+			$table->boolean('comments_enabled');
 
 			$table->timestamps();
 			$table->timestamp('published_at')->nullable();

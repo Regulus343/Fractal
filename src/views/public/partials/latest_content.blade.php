@@ -45,7 +45,9 @@
 							<div class="row">
 								<div class="col-sm-2">
 									@if ($contentItem->thumbnail_image_url)
-										<img src="{{ $contentItem->thumbnail_image_url }}" alt="{{ $contentItem->title }}" title="{{ $contentItem->title }}" class="thumbnail-image" />
+										<a href="{{ $contentItem->url }}" class="thumbnail-image">
+											<img src="{{ $contentItem->thumbnail_image_url }}" alt="{{ $contentItem->title }}" title="{{ $contentItem->title }}" />
+										</a>
 									@endif
 								</div>
 

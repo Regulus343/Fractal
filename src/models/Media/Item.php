@@ -68,6 +68,7 @@ class Item extends BaseModel {
 		'thumbnail_extension',
 		'thumbnail_width',
 		'thumbnail_height',
+		'comments_enabled',
 		'date_created',
 		'published_at',
 	];
@@ -78,9 +79,10 @@ class Item extends BaseModel {
 	 * @var    array
 	 */
 	protected $types = [
-		'slug'         => 'unique-slug',
-		'date_created' => 'date',
-		'published_at' => 'date-time',
+		'slug'             => 'unique-slug',
+		'comments_enabled' => 'checkbox',
+		'date_created'     => 'date',
+		'published_at'     => 'date-time',
 	];
 
 	/**
@@ -129,6 +131,7 @@ class Item extends BaseModel {
 	{
 		$defaults = [
 			'description_type' => Fractal::getSetting('Default Content Area Type'),
+			'comments_enabled' => Fractal::getSetting('Enable Media Item Comments', true),
 			'published'        => true,
 			'published_at'     => date(Form::getDateTimeFormat()),
 		];
@@ -462,6 +465,16 @@ class Item extends BaseModel {
 		}
 
 		return $description;
+	}
+
+	/**
+	 * Check whether comments are enabled for item.
+	 *
+	 * @return boolean
+	 */
+	public function commentsEnabled()
+	{
+		return Fractal::getSetting('Enable Media Item Comments', true) && $this->comments_enabled;
 	}
 
 	/**

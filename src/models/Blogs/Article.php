@@ -52,6 +52,7 @@ class Article extends BaseModel {
 		'thumbnail_image_file_id',
 		'thumbnail_image_media_item_id',
 		'audio_file',
+		'comments_enabled',
 		'published_at',
 	];
 
@@ -61,8 +62,9 @@ class Article extends BaseModel {
 	 * @var    array
 	 */
 	protected $types = [
-		'slug'         => 'unique-slug',
-		'published_at' => 'date-time',
+		'slug'             => 'unique-slug',
+		'comments_enabled' => 'checkbox',
+		'published_at'     => 'date-time',
 	];
 
 	/**
@@ -111,6 +113,7 @@ class Article extends BaseModel {
 	{
 		$defaults = [
 			'layout_template_id' => 1,
+			'comments_enabled'   => Fractal::getSetting('Enable Article Comments', true),
 			'published'          => true,
 			'published_at'       => date(Form::getDateTimeFormat()),
 		];
@@ -397,6 +400,16 @@ class Article extends BaseModel {
 		}
 
 		return $content;
+	}
+
+	/**
+	 * Check whether comments are enabled for article.
+	 *
+	 * @return boolean
+	 */
+	public function commentsEnabled()
+	{
+		return Fractal::getSetting('Enable Article Comments', true) && $this->comments_enabled;
 	}
 
 	/**

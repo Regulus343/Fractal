@@ -42,6 +42,8 @@ class CreateMediaItemsTable extends Migration {
 			$table->integer('thumbnail_width')->nullable();
 			$table->integer('thumbnail_height')->nullable();
 
+			$table->boolean('comments_enabled');
+
 			$table->date('date_created')->nullable();
 
 			$table->timestamps();
