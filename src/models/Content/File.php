@@ -134,7 +134,7 @@ class File extends BaseModel {
 		if ($this->getType() == "Image")
 			return $this->getUrl($thumbnail);
 		else
-			return Site::img('image-not-available', 'regulus/fractal');
+			return Fractal::getImageUrlFromConfig('placeholderImage');
 	}
 
 	/**

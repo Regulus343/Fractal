@@ -5,7 +5,7 @@
 
 	@include(Fractal::view('public.partials.meta', true))
 
-	<link rel="shortcut icon" type="image/x-icon" href="{{ Fractal::getImagePathFromConfig('favicon') }}" />
+	<link rel="shortcut icon" type="image/x-icon" href="{{ Fractal::getImageUrlFromConfig('favicon') }}" />
 
 	@include(Fractal::view('partials.included_files', true))
 

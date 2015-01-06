@@ -16,8 +16,8 @@ class CreateSettingsTable extends Migration {
 		{
 			$table->increments('id');
 
-			$table->string('name', 120);
-			$table->string('label', 120);
+			$table->string('name', 255);
+			$table->string('label', 255)->nullable();
 			$table->string('value');
 			$table->string('type', 24);
 			$table->string('category', 120)->nullable();

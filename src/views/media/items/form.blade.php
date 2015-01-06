@@ -23,6 +23,20 @@
 				$('#field-slug').val(slug);
 			});
 
+			$('#remove-file').click(function(e){
+				e.preventDefault();
+
+				$('#field-remove-file').val('1');
+				$('#file-area').fadeOut('fast');
+			});
+
+			$('#remove-thumbnail-image').click(function(e){
+				e.preventDefault();
+
+				$('#field-remove-thumbnail-image').val('1');
+				$('#thumbnail-image-area').fadeOut('fast');
+			});
+
 			checkHostedContentType();
 
 			$('#field-hosted-externally').click(function(){
@@ -210,13 +224,65 @@
 		<div class="row">
 			<div class="col-md-4">
 				{{ Form::field('file', 'file', array('class-field' => 'file-upload-button')) }}
+
+				@if (isset($item) && $item->hasFile())
+					<div id="file-area">
+
+						@if ($item->file_type_id == 1)
+
+							<a href="{{ $item->getFileUrl() }}" target="_blank" class="thumbnail-image">
+								<img src="{{ $item->getFileUrl() }}" alt="{{ $item->title }}" title="{{ $item->title }}" />
+							</a>
+
+						@else
+
+							<div class="file-link">
+								<label>Current File:</label>
+
+								<a href="{{ $item->getFileUrl() }}" target="_blank" class="file-link">{{ $item->filename }}</a>
+							</div>
+
+						@endif
+
+						@if (!$item->mediaSourceRequired())
+
+							<a href="" class="btn btn-danger vertical-align-top" id="remove-file">
+								<span class="glyphicon glyphicon-remove"></span>&nbsp; {{ Fractal::lang('labels.removeFile') }}
+							</a>
+
+						@endif
+
+					</div><!-- /#file-area -->
+				@endif
+
+				{{ Form::hidden('remove_file') }}
 			</div>
-			<div class="col-md-4" id="thumbnail-image-area">
+			<div class="col-md-4">
 				{{ Form::field('thumbnail_image', 'file', [
 					'class-field'          => 'file-upload-button',
 					'label'                => 'Thumbnail Image',
 					'data-file-type-field' => 'Image',
 				]) }}
+
+				@if (isset($item) && $item->hasThumbnailImage())
+					<div id="thumbnail-image-area">
+
+						<a href="{{ $item->getFileUrl(true) }}" target="_blank" class="thumbnail-image">
+							<img src="{{ $item->getFileUrl(true) }}" alt="{{ $item->title }}" title="{{ $item->title }}" />
+						</a>
+
+						@if ($item->file_type_id != 1)
+
+							<a href="" class="btn btn-danger vertical-align-top" id="remove-thumbnail-image">
+								<span class="glyphicon glyphicon-remove"></span>&nbsp; {{ Fractal::lang('labels.removeThumbnailImage') }}
+							</a>
+
+						@endif
+
+					</div><!-- /#thumbnail-image-area -->
+				@endif
+
+				{{ Form::hidden('remove_thumbnail_image') }}
 			</div>
 			<div class="col-md-4">
 				{{ Form::field('file_type_id', 'select', [

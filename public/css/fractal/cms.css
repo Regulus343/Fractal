@@ -440,7 +440,16 @@ ul.image-list-large li img { width: 120px; height: 120px; }
 
 ul.image-list h4 { position: absolute; top: 0; left: 0; padding: 4px; color: #fff; font-size: 12px; text-shadow: #000 0 0 3px; }
 
-#thumbnail-image-area img { max-width: 180px; }
+div.file-link { display: inline-block; margin: -6px 5px 8px 5px; }
+div.file-link label { display: inline-block; }
+
+#thumbnail-image-area img, img.thumbnail-image, a.thumbnail-image img {
+	display: inline-block;
+	margin-bottom: 6px;
+	max-height: 90px;
+	border: 1px solid #777;
+}
+a.thumbnail-image:hover img { border-color: #555; }
 
 .button-menu { margin-bottom: 16px; }
 .button-menu a.btn { margin-left: 6px; }

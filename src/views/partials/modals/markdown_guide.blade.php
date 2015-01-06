@@ -110,7 +110,7 @@ will place them in a "code" block.</code></pre>
 		<td class="monospace">
 			#### Embed an image:<br /><br />
 
-			![{{ URL::to('...') }}]
+			![Image]({{ URL::to('...') }})
 		</td>
 		<td class="black">
 			<h4>Embed an image:</h4>

@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f572538f7e751d664e04af190652d42f",
+    "hash": "f172b666dc2a4f958eb94e18055c0d1e",
     "packages": [
         {
             "name": "erusev/parsedown",
@@ -92,17 +92,17 @@
         },
         {
             "name": "illuminate/support",
-            "version": "v4.2.12",
+            "version": "v4.2.16",
             "target-dir": "Illuminate/Support",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "888e81e77a675e4848d5b8375a9e68d1b9de3de9"
+                "reference": "015f51f4d8cb3d9a29e7fe7932843acf15232941"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/888e81e77a675e4848d5b8375a9e68d1b9de3de9",
-                "reference": "888e81e77a675e4848d5b8375a9e68d1b9de3de9",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/015f51f4d8cb3d9a29e7fe7932843acf15232941",
+                "reference": "015f51f4d8cb3d9a29e7fe7932843acf15232941",
                 "shasum": ""
             },
             "require": {
@@ -136,7 +136,7 @@
                     "email": "taylorotwell@gmail.com"
                 }
             ],
-            "time": "2014-11-23 23:01:17"
+            "time": "2014-12-19 18:02:33"
         },
         {
             "name": "julien-c/simple-resize",
@@ -300,16 +300,16 @@
         },
         {
             "name": "regulus/formation",
-            "version": "dev-master",
+            "version": "v0.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Regulus343/Formation.git",
-                "reference": "a105c8bd85961c3d52c4f75a73f8ca57e48bbbf9"
+                "reference": "7eb65f02981cecd7f2adcfeb2e49d6f29da1ff1a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Regulus343/Formation/zipball/a105c8bd85961c3d52c4f75a73f8ca57e48bbbf9",
-                "reference": "a105c8bd85961c3d52c4f75a73f8ca57e48bbbf9",
+                "url": "https://api.github.com/repos/Regulus343/Formation/zipball/7eb65f02981cecd7f2adcfeb2e49d6f29da1ff1a",
+                "reference": "7eb65f02981cecd7f2adcfeb2e49d6f29da1ff1a",
                 "shasum": ""
             },
             "require": {
@@ -338,7 +338,7 @@
                 }
             ],
             "description": "A powerful form creation composer package for Laravel 4.",
-            "time": "2014-12-09 04:31:12"
+            "time": "2015-01-06 04:20:53"
         },
         {
             "name": "regulus/solid-site",
@@ -467,11 +467,11 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "regulus/formation": 20,
         "maxhoffmann/parsedown-laravel": 20,
         "julien-c/simple-resize": 20
     },
     "prefer-stable": false,
+    "prefer-lowest": false,
     "platform": {
         "php": ">=5.4.0"
     },

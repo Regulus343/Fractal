@@ -225,13 +225,23 @@ return [
 	| Favicon
 	|--------------------------------------------------------------------------
 	|
-	| The path and filename of the logo. Set this to false to use text instead
-	| of a logo image. If no extension is given, PNG will be assumed. You may
-	| use a composer package path by preceding the file path with,
-	| for example, "regulus/fractal::".
+	| The path and filename of the favicon. You may use a composer package path
+	| by preceding the file path with, for example, "regulus/fractal::".
 	|
 	*/
 	'favicon' => 'regulus/fractal::favicon.ico',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Placeholder Image
+	|--------------------------------------------------------------------------
+	|
+	| The path and filename of the logo. If no extension is given, PNG will be
+	| assumed. You may use a composer package path by preceding the file path
+	| with, for example, "regulus/fractal::".
+	|
+	*/
+	'placeholderImage' => 'regulus/fractal::image-not-available',
 
 	/*
 	|--------------------------------------------------------------------------

@@ -13,6 +13,28 @@
 		<div class="row">
 			<div class="col-md-4">
 				{{ Form::field('file', 'file', array('class-field' => 'file-upload-button')) }}
+
+				@if (isset($file))
+					<div id="file-area">
+
+						@if ($file->type_id == 1)
+
+							<a href="{{ $file->getUrl() }}" target="_blank" class="thumbnail-image">
+								<img src="{{ $file->getUrl() }}" alt="{{ $file->name }}" title="{{ $file->name }}" />
+							</a>
+
+						@else
+
+							<div class="file-link">
+								<label>Current File:</label>
+
+								<a href="{{ $file->getUrl() }}" target="_blank" class="file-link">{{ $file->filename }}</a>
+							</div>
+
+						@endif
+
+					</div><!-- /#file-area -->
+				@endif
 			</div>
 			<div class="col-md-4">
 				{{ Form::field('name') }}

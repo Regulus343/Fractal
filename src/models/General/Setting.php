@@ -112,7 +112,7 @@ class Setting extends Eloquent {
 	 */
 	public function getLabel()
 	{
-		if ($this->label == "")
+		if (is_null($this->label) || $this->label == "")
 			return $this->name;
 
 		return $this->label;

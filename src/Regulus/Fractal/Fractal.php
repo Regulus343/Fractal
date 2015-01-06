@@ -2,11 +2,11 @@
 
 /*----------------------------------------------------------------------------------------------------------
 	Fractal
-		A simple, versatile CMS base for Laravel 4.
+		A versatile CMS for Laravel.
 
 		created by Cody Jassman
-		version 0.7.19a
-		last updated on January 1, 2014
+		version 0.8.0
+		last updated on January 5, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -1410,12 +1410,12 @@ class Fractal {
 	}
 
 	/**
-	 * Get an image path from a config item.
+	 * Get an image URL from a config item.
 	 *
 	 * @param  string   $item
 	 * @return void
 	 */
-	public function getImagePathFromConfig($item)
+	public function getImageUrlFromConfig($item)
 	{
 		$path = Config::get('fractal::'.$item);
 		if (!is_string($path))

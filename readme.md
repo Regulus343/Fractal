@@ -1,25 +1,14 @@
 Fractal
 =======
 
-**A simple, versatile CMS base for Laravel.**
+**A versatile CMS for Laravel.**
 
 [![Latest Stable Version](https://poser.pugx.org/regulus/fractal/v/stable.svg)](https://packagist.org/packages/regulus/fractal) [![License](https://poser.pugx.org/regulus/fractal/license.svg)](https://packagist.org/packages/regulus/fractal)
 
-Fractal is a simple yet versative Admin/CMS base for Laravel 4. The core philosophy behind Fractal is:
+![Screenshot](screenshot.png)
 
-**Maintain simplicity while ensuring the developer is free to customize and modify as they please.**
+Fractal is a content management system for Laravel which maintains freedom and easy access to customization, to a range of different degrees. You can do all of this out of the box:
 
-Fractal attempts not to lock you into a specific way of doing things whenever possible. You may define controllers additional to the core controllers, remove core controllers, or point the URI paths of core controllers to your own custom controllers. You may adjust the views location for all Fractal view files so you can completely customize the views, or you may simple edit `config/tables.php` to adjust the setup of the content display tables.
-
-Fractal uses the "Identify" authorization/authentication package and uses Twitter Bootstrap 3 as its CSS framework.
-
-Some of the things you can do with Fractal:
-
-- Log in / log out
-- Manage account
-- Manage users
-- Manage website settings
-- Manage all menus via database, for both front-end website and admin/CMS area
 - Manage content pages for website
 	- Create as many separate content areas as you like and create content in Markdown or an HTML WYSIWYG editor
 	- Use the layout template system to re-use standardized and custom layouts across pages
@@ -31,13 +20,18 @@ Some of the things you can do with Fractal:
 - Manage blog articles
 	- Make use of the same versatile content area system as content pages uses
 - Manage media items (images, video, audio, and more...)
-- Extra website settings management for developers
-- Easily change base URI for CMS which defaults to `website.com/admin`
-- Easily add or remove controllers
-- Easily use custom views
-- Easily build forms (due to use of Formation package)
+- Manage website / web application settings
+- Manage all menus via database, for both front-end website (optional of course) and admin/CMS area
+- Manage users
+- Customize routes, controllers, and subdomains (by default, "blog" and "media" subdomains are used)
+- Use built-in front-end views and Blade layouts or use your own
 
-**Please note that Fractal is still considered Alpha software.**
+Please keep in mind though that there are a variety of different levels of customization available from using all or a partial set of custom controllers (Fractal's controller and method routes are set in `config.php` for easy modification), using custom views, or even just customizing any of the many available config settings or database-stored settings in the CMS' Settings page. The level of control of your website or web application that you wish to externalize from Fractal is entirely up to you.
+
+A few more things that should be mentioned before we get started with the Table of Contents:
+
+- Fractal uses the [Identify](https://github.com/Regulus343/Identify) authorization / authentication package and uses Twitter Bootstrap 3 as its CSS framework.
+- Fractal is still considered beta software and moved into beta as of version 0.8.0.
 
 ## Table of Contents
 
@@ -54,7 +48,7 @@ Some of the things you can do with Fractal:
 To install Fractal, make sure "regulus/fractal" has been added to Laravel 4's `composer.json` file.
 
 	"require": {
-		"regulus/fractal": "dev-master"
+		"regulus/fractal": "0.8.0"
 	},
 
 Then run `php composer.phar update` from the command line. Composer will install the Fractal package.
@@ -108,7 +102,7 @@ Next, change the `model` variable in `app/config/auth.php` to `Regulus\Identify\
 
 Identify will now be installed. This includes all necessary DB migrations, DB seeding, and config publishing.
 
-You should now have 4 users, `Admin`, `TestUser`, `TestUser2`, and `TestUser3`. All of the passwords are `password` and the usernames are case insensitive, so you may simply type `admin` and `password` to log in. The 3 initial roles are `Administrator`, `Moderator`, and `Member`. `Admin` has the `Administrator` role, `TestUser` has the `Moderator` role, the final 2 users have the `Member` role.
+You should now have 4 users, `Admin`, `TestUser`, `TestUser2`, and `TestUser3`. All of the passwords are `password` and the usernames are case insensitive, so you may simply type `admin` and `password` to log in. The 3 initial roles are `Administrator`, `Moderator`, and `Member`. `Admin` has the `Administrator` role, `TestUser` has the `Moderator` role, and the final 2 users have the `Member` role.
 
 **Register service provider and set up alias:**
 
@@ -142,11 +136,15 @@ To set a `developer` session variable to `true`, go to `website.com/admin/develo
 
 **Adjusting Fractal's base URI:**
 
-By default, Fractal's base URI is "admin" making your URLs like `website.com/admin/pages/home/edit`. You may adjust this in the `baseUri` variable in `config.php`.
+By default, Fractal's base URI is `admin` making your URLs like `website.com/admin/pages/home/edit`. You may adjust this in the `baseUri` variable in `config.php`.
 
 **Adding additional controllers:**
 
-You may add additional controllers in the `controllers` array in `config.php`. Use `standard` for standard Laravel controllers and `resource` for resource controllers.
+You may add additional controllers or point existing defined controllers to alternates in the `controllers` array in `config.php`. Use `standard` for standard Laravel controllers and `resource` for resource controllers.
+
+**Other configuration options:**
+
+Look around in the various config files such as `config`, `blogs`, `media`, `tables`, and `social` to see what other configuration options can easily be customized as well. Most config variables have detailed descriptions that should help you to understand how different things can be customized. The config files `menus` and `settings`, however, are exported from the database automatically to minimize a Fractal-driven website's need to make certain database queries on each page load.
 
 **Get Bootstrap-ready menu markup for a view:**
 
@@ -161,3 +159,18 @@ You may add additional controllers in the `controllers` array in `config.php`. U
 	$menu = Fractal::getMenuArray(); //get "Main" menu array
 
 	$menu = Fractal::getMenuArray('Footer'); //get "Footer" menu array
+
+**Setting a page title:**
+
+Fractal already uses [SolidSite](https::/github.com/Regulus343/SolidSite) to handle page titles, breadcrumb trails, and some other things which means that if you are using Fractal's public layout for your website, you may set page titles using the following code.
+
+	//title HTML tag may look like "A Page Title :: Website.com" depending on config
+	Site::set('title', 'A Page Title');
+
+	//this can be used to differentiate the title that actually appears on the page from the primary title
+	Site::set('titleHeading', 'Alternate Title in Content');
+
+	//you may show the title using these
+	echo Site::title();
+
+	echo Site::titleHeading(); //will use "titleHeading" if it is set and if not will default to "title"

@@ -113,12 +113,16 @@ class ItemsController extends MediaController {
 
 		$messages = [];
 		if (Form::validated()) {
-			$hostedExternally = (bool) Input::get('hosted_externally');
+			$uploaded          = false;
+			$uploadedThumbnail = false;
+			$hostedExternally  = (bool) Input::get('hosted_externally');
 
 			if ($hostedExternally)
 				$result = ['error' => false];
 			else
 				$result = Item::uploadFile();
+
+			$uploaded = isset($result['files']['file']) && !$result['files']['file']['error'];
 
 			$mediaSourceRequired = true;
 			if (Input::get('media_type_id') != "")
@@ -142,13 +146,7 @@ class ItemsController extends MediaController {
 						$thumbnailResult   = $result['files']['thumbnail_image'];
 					}
 
-					$path = str_replace('uploads/media', '', $fileResult['path']);
-
-					if (substr($path, 0, 1) == "/")
-						$path = substr($path, 1);
-
-					if (substr($path, -1) == "/")
-						$path = substr($path, 0, (strlen($path) - 1));
+					$path = $this->getPathFromUploadResult($fileResult);
 				}
 
 				$item = new Item();
@@ -163,7 +161,7 @@ class ItemsController extends MediaController {
 					$item->hosted_content_type = null;
 					$item->hosted_content_uri  = null;
 
-					if (!$result['error']) {
+					if (!$result['error'] && $uploaded) {
 						$item->filename            = $fileResult['filename'];
 						$item->basename            = $fileResult['basename'];
 						$item->extension           = $fileResult['extension'];
@@ -190,7 +188,12 @@ class ItemsController extends MediaController {
 					}
 				}
 
-				if ($uploadedThumbnail) {
+				//upload thumbnail image only instead of resizing uploaded image file
+				if ($uploadedThumbnail)
+				{
+					$path = $this->getPathFromUploadResult($thumbnailResult);
+					$item->path = $path;
+
 					$item->thumbnail           = true;
 					$item->thumbnail_extension = $thumbnailResult['extension'];
 					$item->thumbnail_width     = $thumbnailResult['imageDimensions']['tw'];
@@ -293,11 +296,19 @@ class ItemsController extends MediaController {
 				$basename = null;
 			}
 
+			$mediaSourceRequired = true;
+			if (Input::get('media_type_id') != "")
+			{
+				$mediaType = Type::find(Input::get('media_type_id'));
+				if (!empty($mediaType) && !$mediaType->media_source_required)
+					$mediaSourceRequired = false;
+			}
+
 			$thumbnail = Form::value('create_thumbnail', 'checkbox');
 
 			if ((isset($_FILES['file']['name']) && $_FILES['file']['name'] != "") || (isset($_FILES['thumbnail_image']['name']) && $_FILES['thumbnail_image']['name']))
 			{
-				$result = Item::uploadFile();
+				$result = Item::uploadFile($item->id);
 
 				if (!$result['files']['file']['error']) {
 					$uploaded = true;
@@ -349,13 +360,7 @@ class ItemsController extends MediaController {
 					$item->hosted_content_uri  = null;
 
 					if ($uploaded) {
-						$path = str_replace('uploads/media', '', $fileResult['path']);
-
-						if (substr($path, 0, 1) == "/")
-							$path = substr($path, 1);
-
-						if (substr($path, -1) == "/")
-							$path = substr($path, 0, (strlen($path) - 1));
+						$path = $this->getPathFromUploadResult($fileResult);
 
 						$item->filename  = $fileResult['filename'];
 						$item->basename  = $fileResult['basename'];
@@ -373,20 +378,47 @@ class ItemsController extends MediaController {
 								$item->thumbnail_height    = $fileResult['imageDimensions']['th'];
 							}
 						} else {
-							$item->width               = null;
-							$item->height              = null;
-							$item->thumbnail           = false;
-							$item->thumbnail_extension = null;
-							$item->thumbnail_width     = null;
-							$item->thumbnail_height    = null;
+							$item->width  = null;
+							$item->height = null;
 						}
 					}
 
-					if ($uploadedThumbnail) {
+					//upload thumbnail image only instead of resizing uploaded image file
+					if ($uploadedThumbnail)
+					{
+						$path = $this->getPathFromUploadResult($thumbnailResult);
+						$item->path = $path;
+
 						$item->thumbnail           = true;
 						$item->thumbnail_extension = $thumbnailResult['extension'];
 						$item->thumbnail_width     = $thumbnailResult['imageDimensions']['tw'];
 						$item->thumbnail_height    = $thumbnailResult['imageDimensions']['th'];
+					}
+
+					//remove file
+					if (Input::get('remove_file') && !$mediaSourceRequired)
+					{
+						if (File::exists('uploads/'.$item->getFilePath()))
+							File::delete('uploads/'.$item->getFilePath());
+
+						$item->filename  = null;
+						$item->basename  = null;
+						$item->extension = null;
+						$item->path      = null;
+						$item->width     = null;
+						$item->height    = null;
+					}
+
+					//remove thumbnail image
+					if (Input::get('remove_thumbnail_image') && Input::get('file_type_id') != 1)
+					{
+						if (File::exists('uploads/'.$item->getFilePath(true)))
+							File::delete('uploads/'.$item->getFilePath(true));
+
+						$item->thumbnail           = false;
+						$item->thumbnail_extension = null;
+						$item->thumbnail_width     = null;
+						$item->thumbnail_height    = null;
 					}
 				}
 
@@ -484,6 +516,22 @@ class ItemsController extends MediaController {
 			'thumbnail_height' => $thumbnailImageSize,
 		];
 		Form::setDefaults($defaults);
+	}
+
+	private function getPathFromUploadResult($fileResult)
+	{
+		if (!isset($fileResult['path']))
+			return "";
+
+		$path = str_replace('uploads/media', '', $fileResult['path']);
+
+		if (substr($path, 0, 1) == "/")
+			$path = substr($path, 1);
+
+		if (substr($path, -1) == "/")
+			$path = substr($path, 0, (strlen($path) - 1));
+
+		return str_replace('/thumbnails', '', $path);
 	}
 
 }

@@ -293,7 +293,7 @@ class Article extends BaseModel {
 	public function getThumbnailImageUrl()
 	{
 		$image            = null;
-		$imagePlaceholder = $image = Site::img(Config::get('fractal::blogs.placeholderThumbnailImage'), (Config::get('fractal::blogs.placeholderThumbnailImageFractal') ? 'regulus/fractal' : false));
+		$imagePlaceholder = Fractal::getImageUrlFromConfig('blogs.placeholderThumbnailImage');
 
 		if ($this->thumbnail_image_type == "File" && $this->thumbnailImageFile)
 			$image = $this->thumbnailImageFile->getImageUrl(true);
@@ -301,7 +301,7 @@ class Article extends BaseModel {
 		if ($this->thumbnail_image_type == "Media Item" && $this->thumbnailImageMediaItem)
 			$image = $this->thumbnailImageMediaItem->getImageUrl(true);
 
-		if (is_null($image) || $image == Site::img('image-not-available', 'regulus/fractal'))
+		if (is_null($image) || $image == Fractal::getImageUrlFromConfig('placeholderImage'))
 			$image = $imagePlaceholder;
 
 		return $image;

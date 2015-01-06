@@ -2,7 +2,7 @@
 
 return [
 
-	'version'                     => '0.7.19a',
+	'version'                     => '0.8.0',
 
 	'home'                        => 'Home',
 	'dashboard'                   => 'Dashboard',
@@ -192,6 +192,7 @@ return [
 	'removeThumbnailImage'        => 'Remove Thumbnail Image',
 
 	'selectFile'                  => 'Select File',
+	'removeFile'                  => 'Remove File',
 	'selectMediaItem'             => 'Select Media Item',
 
 	'size'                        => 'Size',

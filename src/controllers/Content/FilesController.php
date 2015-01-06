@@ -188,7 +188,9 @@ class FilesController extends BaseController {
 
 		Fractal::addTrailItem(Fractal::lang('labels.update'), Request::url());
 
-		return View::make(Fractal::view('form'))->with('update', true);
+		return View::make(Fractal::view('form'))
+			->with('update', true)
+			->with('file', $file);
 	}
 
 	public function update($id)

@@ -31,9 +31,9 @@
 			$('#remove-thumbnail-image').click(function(e){
 				e.preventDefault();
 
-				$('#thumbnail-image-type').val('');
-				$('#thumbnail-image-file-id').val('');
-				$('#thumbnail-image-media-item-id').val('');
+				$('#field-thumbnail-image-type').val('');
+				$('#field-thumbnail-image-file-id').val('');
+				$('#field-thumbnail-image-media-item-id').val('');
 
 				$('#thumbnail-image-area').fadeOut('fast');
 			});
@@ -299,14 +299,14 @@
 					<span class="glyphicon glyphicon-picture"></span>&nbsp; {{ Fractal::lang('labels.selectThumbnailImage') }}
 				</a>
 			</div>
-			<div class="col-md-8 text-align-right">
+			<div class="col-md-8">
 				<div id="thumbnail-image-area"{{ HTML::hiddenArea(!isset($article) || !$article->hasThumbnailImage()) }}>
 					<img src="{{ (isset($article) ? $article->getThumbnailImageUrl() : '') }}" alt="Thumbnail Image" title="Thumbnail Image" class="thumbnail-image" />
 
 					<a href="" class="btn btn-danger vertical-align-top" id="remove-thumbnail-image">
 						<span class="glyphicon glyphicon-remove"></span>&nbsp; {{ Fractal::lang('labels.removeThumbnailImage') }}
 					</a>
-				</div>
+				</div><!-- /#thumbnail-image-area -->
 			</div>
 		</div>
 

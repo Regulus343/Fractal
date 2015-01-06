@@ -38,6 +38,8 @@ $(document).ready(function(){
 		$('#field-type-id').select2();
 		$('#field-file-type-id').select2();
 
+		$('#field-remove-file').val('');
+
 		Formation.ajaxForSelect({
 			type:                 'get',
 			url:                  baseUrl + '/media/items/get-types-for-file-type/' + (fileTypeId ? fileTypeId : 0),
@@ -67,6 +69,10 @@ $(document).ready(function(){
 			var slug = strToSlug($('#field-title').val());
 			$('#field-slug').val(slug);
 		}
+	});
+
+	$('#field-thumbnail-image').change(function(){
+		$('#field-remove-thumbnail-image').val('');
 	});
 
 	$('#field-create-thumbnail').click(function(){

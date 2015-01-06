@@ -9,7 +9,7 @@
 
 			@if (Config::get('fractal::logo') && is_string(Config::get('fractal::logo')))
 				<a class="navbar-brand" id="logo" href="{{ URL::to('') }}">
-					<img src="{{ Fractal::getImagePathFromConfig('logo') }}" alt="{{{ Site::get('name') }}}" title="{{{ Site::get('name') }}}" id="logo" />
+					<img src="{{ Fractal::getImageUrlFromConfig('logo') }}" alt="{{{ Site::get('name') }}}" title="{{{ Site::get('name') }}}" id="logo" />
 				</a>
 			@else
 				<a class="navbar-brand" href="{{ URL::to('') }}">{{{ Site::get('name') }}}</a>

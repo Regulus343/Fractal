@@ -288,7 +288,7 @@ class Item extends BaseModel {
 		$path = 'media/';
 
 		if ($this->path != "")
-			$path = $path.$this->path.'/';
+			$path .= $this->path.'/';
 
 		if ($thumbnail && $this->thumbnail)
 			$path .= "thumbnails/";
@@ -327,6 +327,16 @@ class Item extends BaseModel {
 	}
 
 	/**
+	 * Check if a media item has a thumbnail image.
+	 *
+	 * @return boolean
+	 */
+	public function hasThumbnailImage()
+	{
+		return $this->thumbnail;
+	}
+
+	/**
 	 * Get the image URL or a placeholder image URL for the media item.
 	 *
 	 * @param  boolean  $thumbnail
@@ -337,14 +347,13 @@ class Item extends BaseModel {
 		if ($this->hostedExternally('YouTube') && (!$this->thumbnail || !$thumbnail))
 			return 'http://img.youtube.com/vi/'.$this->hosted_content_uri.'/0.jpg';
 
-		else if ($this->hostedExternally('Vimeo') && !$this->thumbnail && !is_null($this->hosted_content_thumbnail_url))
+		elseif ($this->hostedExternally('Vimeo') && !$this->thumbnail && !is_null($this->hosted_content_thumbnail_url))
 			return $this->hosted_content_thumbnail_url;
 
-		else if ($this->getFileType() == "Image" || ($thumbnail && $this->thumbnail))
+		elseif ($this->getFileType() == "Image" || ($thumbnail && $this->thumbnail))
 			return $this->getFileUrl($thumbnail);
 
-		else
-			return Site::img('image-not-available', 'regulus/fractal');
+		return Fractal::getImageUrlFromConfig('placeholderImage');
 	}
 
 	/**
@@ -408,6 +417,22 @@ class Item extends BaseModel {
 			return (boolean) $this->hosted_externally;
 		else
 			return (boolean) ($this->hosted_externally && $this->hosted_content_type == $type);
+	}
+
+	/**
+	 * Check if a media item requires a media source.
+	 *
+	 * @return boolean
+	 */
+	public function mediaSourceRequired()
+	{
+		if ($this->hosted_externally)
+			return false;
+
+		if ($this->type && !$this->type->media_source_required)
+			return false;
+
+		return true;
 	}
 
 	/**
@@ -780,6 +805,8 @@ class Item extends BaseModel {
 		$fileType = FileType::find(Input::get('file_type_id'));
 		if (!empty($fileType))
 			$path .= '/'.$fileType->slug;
+		else
+			$path .= '/other';
 
 		$config = [
 			'path'            => $path,
