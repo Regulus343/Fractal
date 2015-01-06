@@ -162,7 +162,7 @@ Look around in the various config files such as `config`, `blogs`, `media`, `tab
 
 **Setting a page title:**
 
-Fractal already uses [SolidSite](https::/github.com/Regulus343/SolidSite) to handle page titles, breadcrumb trails, and some other things which means that if you are using Fractal's public layout for your website, you may set page titles using the following code.
+Fractal already uses [SolidSite](https://github.com/Regulus343/SolidSite) to handle page titles, breadcrumb trails, and some other things which means that if you are using Fractal's public layout for your website, you may set page titles using the following code.
 
 	//title HTML tag may look like "A Page Title :: Website.com" depending on config
 	Site::set('title', 'A Page Title');
