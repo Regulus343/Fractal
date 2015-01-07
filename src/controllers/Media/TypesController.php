@@ -91,7 +91,7 @@ class TypesController extends BaseController {
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.returnToCategoriesList'),
+			'label' => Fractal::lang('labels.returnToTypesList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
@@ -149,7 +149,7 @@ class TypesController extends BaseController {
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.returnToCategoriesList'),
+			'label' => Fractal::lang('labels.returnToTypesList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
