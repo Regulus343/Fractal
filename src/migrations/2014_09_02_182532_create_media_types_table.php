@@ -15,7 +15,7 @@ class CreateMediaTypesTable extends Migration {
 		Schema::create('media_types', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('file_type_id');
+			$table->integer('file_type_id')->nullable();
 			$table->integer('parent_id')->nullable();
 
 			$table->string('slug', 120);

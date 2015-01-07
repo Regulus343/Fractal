@@ -303,10 +303,9 @@ return [
 				'sort'      => 'media_type_id',
 			],
 			[
-				'label'     => 'Title',
-				'method'    => 'getTitle()',
+				'attribute' => 'title',
 				'class'     => 'title',
-				'sort'      => 'title',
+				'sort'      => true,
 			],
 			[
 				'label'     => 'Published',
@@ -396,6 +395,17 @@ return [
 			],
 			[
 				'attribute' => 'slug',
+				'sort'      => true,
+			],
+			[
+				'label'     => 'File Type',
+				'method'    => 'getFileType()',
+				'sort'      => 'file_type_id',
+			],
+			[
+				'label'     => 'Media Source Required',
+				'attribute' => 'media_source_required',
+				'type'      => 'boolean',
 				'sort'      => true,
 			],
 			[
@@ -507,10 +517,9 @@ return [
 				'sort'      => true,
 			],
 			[
-				'label'     => 'Title',
-				'method'    => 'getTitle()',
+				'attribute' => 'title',
 				'class'     => 'title',
-				'sort'      => 'title',
+				'sort'      => true,
 			],
 			[
 				'attribute' => 'slug',

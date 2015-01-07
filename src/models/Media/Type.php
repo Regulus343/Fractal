@@ -35,7 +35,7 @@ class Type extends BaseModel {
 	 * @var    array
 	 */
 	protected $fillable = [
-		'type_id',
+		'file_type_id',
 		'parent_id',
 		'slug',
 		'name',
@@ -50,7 +50,8 @@ class Type extends BaseModel {
 	 * @var    array
 	 */
 	protected $types = [
-		'slug' => 'unique-slug',
+		'slug'                  => 'unique-slug',
+		'media_source_required' => 'checkbox',
 	];
 
 	/**
@@ -59,7 +60,8 @@ class Type extends BaseModel {
 	 * @var    array
 	 */
 	protected $formatsForDb = [
-		'name_plural' => 'nullIfBlank',
+		'file_type_id' => 'nullIfBlank',
+		'name_plural'  => 'nullIfBlank',
 	];
 
 	/**
@@ -163,6 +165,19 @@ class Type extends BaseModel {
 	public function getUrl()
 	{
 		return Fractal::mediaUrl('t/'.$this->slug);
+	}
+
+	/**
+	 * Get the file type for the media type.
+	 *
+	 * @return string
+	 */
+	public function getFileType()
+	{
+		if ($this->fileType)
+			return $this->fileType->name;
+
+		return null;
 	}
 
 	/**

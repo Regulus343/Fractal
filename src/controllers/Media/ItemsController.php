@@ -492,7 +492,9 @@ class ItemsController extends MediaController {
 		$mediaTypes = Type::select('id', 'name')->orderBy('name');
 
 		if ($fileTypeId)
-			$mediaTypes->where('file_type_id', $fileTypeId);
+			$mediaTypes
+				->where('file_type_id', $fileTypeId)
+				->orWhereNull('file_type_id');
 
 		return json_encode($mediaTypes->get());
 	}

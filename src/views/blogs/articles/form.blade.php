@@ -333,6 +333,14 @@
 			</div>
 		</div>
 
+		<div class="row clear{{ HTML::hiddenArea(!Fractal::getSetting('Enable Article Comments', true), true) }}">
+			<div class="col-md-2">
+				<div class="form-group">
+					{{ Form::field('comments_enabled', 'checkbox') }}
+				</div>
+			</div>
+		</div>
+
 		<div class="row clear">
 			<div class="col-md-2">
 				<div class="form-group">

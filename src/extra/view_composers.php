@@ -56,7 +56,9 @@ View::composer($viewsLocation.'media.items.form', function($view)
 	$mediaTypes = MediaType::orderBy('name');
 
 	if (Form::value('file_type_id') != "")
-		$mediaTypes->where('file_type_id', Form::value('file_type_id'));
+		$mediaTypes
+			->where('file_type_id', Form::value('file_type_id'))
+			->orWhereNull('file_type_id');
 
 	$mediaTypeOptions = Form::prepOptions($mediaTypes->get(), ['id', 'name']);
 
