@@ -25,7 +25,10 @@ div.content-item-body img.primary { float: left; margin: 0 12px 12px 0; width: 3
 
 div.media-item-inserted { padding: 8px 0; border-top: 1px dotted #aaa; border-bottom: 1px dotted #aaa; }
 
-a.thumbnail-image { display: inline-block; margin: 0; padding: 3px; width: auto; max-width: 100%; border: 1px solid #aaa; }
+a.thumbnail-image { display: none; margin: 0; padding: 3px; width: auto; max-width: 100%; border: 1px solid #aaa; }
+@media (min-width: 768px) {
+	a.thumbnail-image { display: inline-block; }
+}
 a.thumbnail-image:hover { border-color: #2b669a; }
 a.thumbnail-image img { max-width: 100%; border: none; }
 

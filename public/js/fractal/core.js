@@ -252,6 +252,23 @@ $(document).ready(function(){
 	//set up Markdown content field action preview window
 	setupMarkdownFields();
 
+	(function ($, undefined) {
+		$.fn.getCursorPosition = function() {
+			var el = $(this).get(0);
+			var pos = 0;
+			if('selectionStart' in el) {
+				pos = el.selectionStart;
+			} else if('selection' in document) {
+				el.focus();
+				var Sel = document.selection.createRange();
+				var SelLength = document.selection.createRange().text.length;
+				Sel.moveStart('character', -el.value.length);
+				pos = Sel.text.length - SelLength;
+			}
+			return pos;
+		}
+	})(jQuery);
+
 });
 
 var messageTimer;
@@ -742,6 +759,7 @@ function setupModalTriggers() {
 var converter = Markdown.getSanitizingConverter();
 
 var markdownContentField;
+var markdownPreviewField;
 var markdownContentUpdateTimer;
 
 function setupMarkdownField(field) {
@@ -795,7 +813,13 @@ function renderMarkdownPreview(field) {
 
 	field.parents('.row').find('.markdown-preview-content').html(markdownContent);
 
-	markdownContentField       = field;
+	markdownContentField = field;
+	markdownPreviewField = markdownContentField.parents('.row').find('.markdown-preview-content');
+
+	if (field.getCursorPosition() >= field.val().length - 10)
+		markdownPreviewField.scrollTop(markdownPreviewField.height() * 3);
+
+	clearTimeout(markdownContentUpdateTimer);
 	markdownContentUpdateTimer = setTimeout(incrementMarkdownContentUpdateTimer, 3000);
 }
 

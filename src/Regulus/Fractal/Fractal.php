@@ -5,8 +5,8 @@
 		A versatile CMS for Laravel.
 
 		created by Cody Jassman
-		version 0.8.1
-		last updated on January 6, 2014
+		version 0.8.2
+		last updated on January 19, 2014
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
