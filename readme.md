@@ -48,7 +48,7 @@ A few more things that should be mentioned before we get started with the Table 
 To install Fractal, make sure "regulus/fractal" has been added to Laravel 4's `composer.json` file.
 
 	"require": {
-		"regulus/fractal": "0.8.0"
+		"regulus/fractal": "0.8.2"
 	},
 
 Then run `php composer.phar update` from the command line. Composer will install the Fractal package.
