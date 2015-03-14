@@ -29,6 +29,7 @@ return [
 		'forgot_password_emailed' => 'An email has been sent to your email address with further instructions on resetting your password.',
 		'reset_password'          => 'You have successfully reset your password.',
 		'account_activated'       => 'Your account has been successfully activated. You may now log in.',
+		'auto_saved'              => 'Your form content has been auto-saved.',
 	],
 
 	'info' => [

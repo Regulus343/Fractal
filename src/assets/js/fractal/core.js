@@ -44,7 +44,7 @@ var Fractal = {
 	markdownPreviewField:       null,
 	markdownContentUpdateTimer: null,
 
-	autoSaveRate:               (2 * 1000 * 1), // every minute
+	autoSaveRate:               (1000 * 60), // auto-save every every minute
 
 	init: function()
 	{
@@ -317,13 +317,16 @@ var Fractal = {
 
 	setMainMessage: function(message, type)
 	{
-		clearTimeout(messageTimer);
+		clearTimeout(this.messageTimer);
 
 		$('#message-'+type+' div').html(message);
 		$('#message-'+type).hide().removeClass('hidden').css('z-index', 10000).slideDown('medium');
 
 		this.messageTimer = setTimeout(function(){
-			$('.alert-dismissable-hide').slideUp('fast').css('z-index', 1000);
+			$('.alert-dismissable-hide').slideUp('fast', function()
+			{
+				$(this).css('z-index', 1000);
+			});
 		}, this.messageShowTime);
 	},
 
@@ -588,9 +591,9 @@ var Fractal = {
 				if (result.resultType == "Success") {
 					$('#'+contentType+'-'+contentId).addClass('hidden');
 
-					setMainMessage(result.message, 'success');
+					Fractal.setMainMessage(result.message, 'success');
 				} else {
-					setMainMessage(result.message, 'error');
+					Fractal.setMainMessage(result.message, 'error');
 				}
 			},
 
@@ -629,9 +632,9 @@ var Fractal = {
 				{
 					$('#page-'+contentId).addClass('hidden');
 
-					setMainMessage(result.message, 'success');
+					Fractal.setMainMessage(result.message, 'success');
 				} else {
-					setMainMessage(result.message, 'error');
+					Fractal.setMainMessage(result.message, 'error');
 				}
 			},
 
@@ -669,15 +672,15 @@ var Fractal = {
 				{
 					$('#file-'+contentId).addClass('hidden');
 
-					setMainMessage(result.message, 'success');
+					Fractal.setMainMessage(result.message, 'success');
 				} else {
-					setMainMessage(result.message, 'error');
+					Fractal.setMainMessage(result.message, 'error');
 				}
 			},
 
 			error: function()
 			{
-				setMainMessage(fractalMessages.errorGeneral, 'error');
+				Fractal.setMainMessage(fractalMessages.errorGeneral, 'error');
 			}
 		});
 	},
@@ -729,15 +732,15 @@ var Fractal = {
 
 					$('#user-'+contentId+' td.banned').html('<span class="boolean-true">Yes</span>');
 
-					setMainMessage(result.message, 'success');
+					Fractal.setMainMessage(result.message, 'success');
 				} else {
-					setMainMessage(result.message, 'error');
+					Fractal.setMainMessage(result.message, 'error');
 				}
 			},
 
 			error: function()
 			{
-				setMainMessage(fractalMessages.errorGeneral, 'error');
+				Fractal.setMainMessage(fractalMessages.errorGeneral, 'error');
 			}
 		});
 	},
@@ -759,15 +762,15 @@ var Fractal = {
 
 					$('#user-'+contentId+' td.banned').html('<span class="boolean-false">No</span>');
 
-					setMainMessage(result.message, 'success');
+					Fractal.setMainMessage(result.message, 'success');
 				} else {
-					setMainMessage(result.message, 'error');
+					Fractal.setMainMessage(result.message, 'error');
 				}
 			},
 
 			error: function()
 			{
-				setMainMessage(fractalMessages.errorGeneral, 'error');
+				Fractal.setMainMessage(fractalMessages.errors.general, 'error');
 			}
 		});
 	},
@@ -786,15 +789,15 @@ var Fractal = {
 				{
 					$('#user-'+contentId).addClass('hidden');
 
-					setMainMessage(result.message, 'success');
+					Fractal.setMainMessage(result.message, 'success');
 				} else {
-					setMainMessage(result.message, 'error');
+					Fractal.setMainMessage(result.message, 'error');
 				}
 			},
 
 			error: function()
 			{
-				setMainMessage(fractalMessages.errorGeneral, 'error');
+				Fractal.setMainMessage(fractalMessages.errors.general, 'error');
 			}
 		});
 	},
@@ -827,15 +830,15 @@ var Fractal = {
 				{
 					$('#role-'+contentId).addClass('hidden');
 
-					setMainMessage(result.message, 'success');
+					Fractal.setMainMessage(result.message, 'success');
 				} else {
-					setMainMessage(result.message, 'error');
+					Fractal.setMainMessage(result.message, 'error');
 				}
 			},
 
 			error: function()
 			{
-				setMainMessage(fractalMessages.errorGeneral, 'error');
+				Fractal.setMainMessage(fractalMessages.errors.general, 'error');
 			}
 		});
 	},
@@ -1069,9 +1072,12 @@ var Fractal = {
 			value: this.contentType,
 		});
 
-		SolidSite.post(Fractal.createUrl('api/auto-save'), data, function()
+		SolidSite.post(Fractal.createUrl('api/auto-save'), data, function(result)
 		{
-			console.log('success!');
+			if (result)
+			{
+				Fractal.setMainMessage(Fractal.messages.success.auto_saved, 'success');
+			}
 		});
 	},
 
