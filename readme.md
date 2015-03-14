@@ -5,8 +5,6 @@ Fractal
 
 [![Latest Stable Version](https://poser.pugx.org/regulus/fractal/v/stable.svg)](https://packagist.org/packages/regulus/fractal) [![License](https://poser.pugx.org/regulus/fractal/license.svg)](https://packagist.org/packages/regulus/fractal)
 
- - Fractal is in transition from Laravel 4 (0.8.x) to Laravel 5 (0.9.x)
-
 > **Note:** Fractal is in transition from Laravel 4 (0.8.x) to Laravel 5 (0.9.x). Expect things to be broken for now. Version will be 0.9.0a until it is once again stable and fully transitioned. For Laravel 4, you may use <a href="https://github.com/Regulus343/Fractal/tree/v0.8.2">version 0.8.2</a>.
 
 ![Screenshot](resources/screenshot.png)
