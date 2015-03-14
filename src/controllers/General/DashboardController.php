@@ -57,7 +57,7 @@ class DashboardController extends BaseController {
 			Site::setDeveloper();
 
 		return Redirect::to(Fractal::url())->with('messages', [
-			'info' => Fractal::trans('messages.developer_mode_'.($off == "off" ? 'disabled' : 'enabled'),
+			'info' => Fractal::trans('messages.developer_mode_'.($off == "off" ? 'disabled' : 'enabled')),
 		]);
 	}
 
