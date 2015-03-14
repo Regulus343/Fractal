@@ -33,7 +33,8 @@ Please keep in mind though that there are a variety of different levels of custo
 A few more things that should be mentioned before we get started with the Table of Contents:
 
 - Fractal uses the [Identify](https://github.com/Regulus343/Identify) authorization / authentication package and uses Twitter Bootstrap 3 as its CSS framework.
-- Fractal is still considered beta software and moved into beta as of version 0.8.0.
+- Fractal is still considered beta software and moved into beta as of version 0.8.0, though with the advent of Laravel 5 / Fractal 0.9.0, it is essentially "alpha" again while it gets fully migrated to Laravel 5. Things are going to be broken, probably until the end of March.
+- You may view [Fractal on Trello](https://trello.com/b/ZaGw8Jly/fractal) to see what's on the bug fixing and feature implementation roadmap.
 
 ## Table of Contents
 

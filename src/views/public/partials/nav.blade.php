@@ -26,7 +26,7 @@
 					<li>
 						<a href="{{ Fractal::url() }}">
 							<span class="glyphicon glyphicon-log-in"></span>&nbsp; 
-							<span class="menu-item-label">{{ Fractal::trans('labels.returnToCms') }}</span>
+							<span class="menu-item-label">{{ Fractal::trans('labels.return_to_cms') }}</span>
 						</a>
 					</li>
 				</ul>
