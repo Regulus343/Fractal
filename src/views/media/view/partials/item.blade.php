@@ -3,7 +3,7 @@
 	<div class="content-item-heading media-item-heading">
 		@if (Site::get('mediaList'))
 
-			<h3><a href="{{ $mediaItem->getUrl() }}">{{ $mediaItem->getTitle() }}</a></h3>
+			<h3><a href="{{ $mediaItem->getUrl() }}">{!! $mediaItem->getTitle() !!}</a></h3>
 
 		@endif
 
@@ -35,7 +35,7 @@
 			<a href="{{ Fractal::url('media/items/'.$mediaItem->slug.'/edit') }}" class="btn btn-primary btn-xs pull-right">
 				<span class="glyphicon glyphicon-edit"></span>
 
-				{{ Fractal::trans('labels.editItem') }}
+				{{ Fractal::trans('labels.edit_item', ['item' => Fractal::transChoice('labels.media_item')]) }}
 			</a>
 
 		@endif
@@ -44,7 +44,7 @@
 
 	@endif
 
-	{{ $mediaItem->getContent() }}
+	{!! $mediaItem->getContent() !!}
 
 	@if (!Site::get('mediaList') && $mediaItem->commentsEnabled())
 

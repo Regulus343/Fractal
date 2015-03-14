@@ -13,11 +13,11 @@ use Fractal;
 use Regulus\Fractal\Models\Media\Set;
 use Regulus\Fractal\Models\Media\Item;
 
-use Regulus\ActivityLog\Activity;
-use \Auth;
-use \Form;
-use \Format;
-use \Site;
+use Regulus\ActivityLog\Models\Activity;
+use Auth;
+use Form;
+use Format;
+use Site;
 
 use Regulus\Fractal\Controllers\BaseController;
 

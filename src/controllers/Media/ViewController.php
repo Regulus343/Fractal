@@ -18,11 +18,11 @@ use Regulus\Fractal\Models\Media\Item;
 use Regulus\Fractal\Models\Media\Type;
 use Regulus\Fractal\Models\Media\Set;
 
-use Regulus\ActivityLog\Activity;
-use \Auth;
-use \Form;
-use \Format;
-use \Site;
+use Regulus\ActivityLog\Models\Activity;
+use Auth;
+use Form;
+use Format;
+use Site;
 
 class ViewController extends Controller {
 
@@ -35,7 +35,7 @@ class ViewController extends Controller {
 		// set content type and views location
 		Fractal::setContentType('media-item');
 
-		Fractal::setViewsLocation(Config::get('fractal::media.viewsLocation'), true);
+		Fractal::setViewsLocation(config('media.views_location'), true);
 
 		Site::addTrailItems([
 			Fractal::trans('labels.home')  => Site::rootUrl(),
@@ -90,7 +90,7 @@ class ViewController extends Controller {
 	{
 		if (is_null($slug))
 			return Redirect::to(Fractal::mediaUrl())->with('messages', [
-				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.mediaItem')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.media_item')])
 			]);
 
 		// allow item selection by ID for to allow shorter URLs
@@ -117,7 +117,7 @@ class ViewController extends Controller {
 
 		if (empty($mediaItem) || (!Auth::is('admin') && !$mediaItem->isPublished()))
 			return Redirect::to(Fractal::mediaUrl())->with('messages', [
-				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.mediaItem')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.media_item')])
 			]);
 
 		if ($mediaItem->type)
@@ -148,12 +148,12 @@ class ViewController extends Controller {
 		$messages = [];
 		if (!$mediaItem->isPublished()) {
 			if ($mediaItem->isPublishedFuture())
-				$messages['info'] = Fractal::trans('messages.notPublishedUntil', [
+				$messages['info'] = Fractal::trans('messages.not_published_until', [
 					'item'     => strtolower(Fractal::trans('labels.page')),
 					'dateTime' => $mediaItem->getPublishedDateTime(),
 				]);
 			else
-				$messages['info'] = Fractal::trans('messages.notPublished', ['item' => Fractal::trans('labels.mediaItem')]);
+				$messages['info'] = Fractal::trans('messages.not_published', ['item' => Fractal::transChoiceLower('labels.media_item')]);
 		}
 
 		return View::make(Fractal::view('item'))
@@ -171,7 +171,7 @@ class ViewController extends Controller {
 	public function getSet($slug = null) {
 		if (is_null($slug))
 			return Redirect::to(Fractal::mediaUrl())->with('messages', [
-				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.mediaSet')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.media_set')])
 			]);
 
 		Site::set('mediaList', true);
@@ -180,7 +180,7 @@ class ViewController extends Controller {
 		$mediaSet = Set::findBySlug($slug);
 		if (empty($mediaSet))
 			return Redirect::to(Fractal::mediaUrl())->with('messages', [
-				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.mediaSet')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.media_set')])
 			]);
 
 		Site::setMulti(['title', 'subSection', 'mediaSet'], $mediaSet->title);
@@ -204,9 +204,9 @@ class ViewController extends Controller {
 
 		if (empty($mediaItemIds))
 			return Redirect::to(Fractal::mediaUrl())->with('messages', [
-				'error' => Fractal::trans('messages.errorNoItems', [
-					'item'  => Fractal::transLower('labels.mediaSet'),
-					'items' => Fractal::transLower('labels.mediaItems'),
+				'error' => Fractal::trans('messages.errors.no_items', [
+					'item'  => Fractal::transLower('labels.media_set'),
+					'items' => Fractal::transChoiceLower('labels.media_item', 2),
 				])
 			]);
 
@@ -246,7 +246,7 @@ class ViewController extends Controller {
 	public function getType($slug = null) {
 		if (is_null($slug))
 			return Redirect::to(Fractal::mediaUrl())->with('messages', [
-				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.mediaType')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.media_type')])
 			]);
 
 		Site::set('mediaList', true);
@@ -255,7 +255,7 @@ class ViewController extends Controller {
 		$mediaType = Type::findBySlug($slug);
 		if (empty($mediaType))
 			return Redirect::to(Fractal::mediaUrl())->with('messages', [
-				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.mediaType')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.media_type')])
 			]);
 
 		Site::setMulti(['title', 'subSection', 'mediaType'], $mediaType->getName(true));
@@ -287,9 +287,9 @@ class ViewController extends Controller {
 		} else {
 			$mediaItems = [];
 
-			$messages['error'] = Fractal::trans('messages.errorNoItems', [
-				'item'  => Fractal::transLower('labels.mediaType'),
-				'items' => Fractal::transLower('labels.mediaItems'),
+			$messages['error'] = Fractal::trans('messages.errors.no_items', [
+				'item'  => Fractal::transChoiceLower('labels.media_type'),
+				'items' => Fractal::transChoiceLower('labels.media_item', 2),
 			]);
 		}
 

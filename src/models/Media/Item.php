@@ -22,7 +22,7 @@ use Regulus\Fractal\Models\Content\Download as ContentDownload;
 
 use Regulus\Fractal\Traits\Publishable;
 
-use MaxHoffmann\Parsedown\ParsedownFacade as Markdown;
+use AlfredoRamos\ParsedownExtra\Facades\ParsedownExtra as Markdown;
 
 class Item extends Base {
 

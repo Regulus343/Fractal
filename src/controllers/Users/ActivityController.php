@@ -11,9 +11,9 @@ use Fractal;
 
 use Regulus\Fractal\Models\Users\Activity;
 
-use \Form;
-use \Format;
-use \Site;
+use Form;
+use Format;
+use Site;
 
 class ActivityController extends UsersController {
 

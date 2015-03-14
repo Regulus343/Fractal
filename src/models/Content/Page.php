@@ -17,7 +17,7 @@ use Regulus\Fractal\Models\Content\View as ContentView;
 
 use Regulus\Fractal\Traits\Publishable;
 
-use MaxHoffmann\Parsedown\ParsedownFacade as Markdown;
+use AlfredoRamos\ParsedownExtra\Facades\ParsedownExtra as Markdown;
 
 class Page extends Base {
 

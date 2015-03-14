@@ -2,13 +2,13 @@
 
 	<li class="special">
 		<a href="{{ Fractal::blogUrl('') }}">
-			<span class="glyphicon glyphicon-chevron-left"></span> {{ Fractal::trans('labels.blogReturnToHome') }}
+			<span class="glyphicon glyphicon-chevron-left"></span> {{ Fractal::trans('labels.blog_return_to_home') }}
 		</a>
 	</li>
 
 	@foreach ($articles as $articleListed)
 
-		<li{{ HTML::activeArea(isset($article->id) && $articleListed->id == $article->id) }}>
+		<li{!! HTML::activeArea(isset($article->id) && $articleListed->id == $article->id) !!}>
 			<a href="{{ $articleListed->getUrl() }}">
 				<span class="glyphicon glyphicon-file"></span> {{ $articleListed->getTitle() }}
 

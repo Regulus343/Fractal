@@ -2,13 +2,13 @@
 
 	@if (isset($contentInserted) && $contentInserted)
 
-		<h3><a href="{{ $mediaItem->getUrl() }}">{{ $mediaItem->title }}</a></h3>
+		<h3><a href="{{ $mediaItem->getUrl() }}">{!! $mediaItem->title !!}</a></h3>
 
 	@endif
 
 	@if ($mediaItem->hostedExternally())
 
-		{{ $mediaItem->getEmbeddedContent() }}
+		{!! $mediaItem->getEmbeddedContent() !!}
 
 	@elseif ($mediaItem->getFileType() == "Image")
 
@@ -41,7 +41,7 @@
 	@if ($mediaItem->description)
 
 		<div class="media-item-description">
-			{{ $mediaItem->getRenderedDescription() }}
+			{!! $mediaItem->getRenderedDescription() !!}
 		</div>
 
 	@endif

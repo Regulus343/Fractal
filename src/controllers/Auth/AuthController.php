@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use \Activity;
-use \Auth;
-use \Form;
-use \Site;
-use \User;
+use Regulus\ActivityLog\Models\Activity;
+use Auth;
+use Form;
+use Site;
+use User;
 
 use Regulus\Fractal\Controllers\BaseController;
 

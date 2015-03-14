@@ -15,7 +15,7 @@ use Regulus\Fractal\Models\Media\Item;
 use Regulus\Fractal\Models\Media\Type;
 use Regulus\Fractal\Models\Content\FileType;
 
-use Regulus\ActivityLog\Activity;
+use Regulus\ActivityLog\Models\Activity;
 use Auth;
 use Form;
 use Format;

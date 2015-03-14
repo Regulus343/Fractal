@@ -30,7 +30,7 @@
 					<div class="col-md-{{ Site::get('contentColumnWidth', 12) }}">
 
 						@if (!Site::get('hideTitle'))
-							<h1 id="main-heading">{{ Site::heading() }}</h1>
+							<h1 id="main-heading">{!! Site::heading() !!}</h1>
 
 							{!! Site::getBreadcrumbTrailMarkup() !!}
 						@endif

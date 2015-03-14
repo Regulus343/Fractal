@@ -2,8 +2,8 @@
 
 use Fractal;
 
-use \Auth;
-use \Site;
+use Auth;
+use Site;
 
 class BaseController extends \Regulus\Fractal\Controllers\BaseController {
 

@@ -12,10 +12,10 @@ use Fractal;
 
 use Regulus\Fractal\Models\Users\Permission;
 
-use Regulus\ActivityLog\Activity;
-use \Form;
-use \Format;
-use \Site;
+use Regulus\ActivityLog\Models\Activity;
+use Form;
+use Format;
+use Site;
 
 class PermissionsController extends UsersController {
 

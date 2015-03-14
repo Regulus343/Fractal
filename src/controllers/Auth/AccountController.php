@@ -11,10 +11,10 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use Regulus\ActivityLog\Activity;
-use \Form;
-use \Format;
-use \Site;
+use Regulus\ActivityLog\Models\Activity;
+use Form;
+use Format;
+use Site;
 
 use Regulus\Fractal\Controllers\BaseController;
 

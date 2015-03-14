@@ -1,4 +1,4 @@
-@extends(Config::get('fractal::layoutPublic'))
+@extends(config('cms.layout_public'))
 
 @section(config('cms.content_section'))
 
@@ -9,13 +9,13 @@
 				<a href="{{ Fractal::url('pages/'.$page->slug.'/edit') }}" class="btn btn-primary btn-xs pull-right">
 					<span class="glyphicon glyphicon-edit"></span>
 
-					{{ Fractal::trans('labels.editPage') }}
+					{{ Fractal::trans('labels.edit_item', ['item' => Fractal::transChoice('labels.page')]) }}
 				</a>
 			</div>
 		</div>
 
 	@endif
 
-	{{ $page->getRenderedContent() }}
+	{!! $page->getRenderedContent() !!}
 
 @stop

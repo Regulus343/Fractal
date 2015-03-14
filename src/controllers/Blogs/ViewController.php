@@ -17,11 +17,11 @@ use Fractal;
 use Regulus\Fractal\Models\Blogs\Article;
 use Regulus\Fractal\Models\Blogs\Category;
 
-use Regulus\ActivityLog\Activity;
-use \Auth;
-use \Form;
-use \Format;
-use \Site;
+use Regulus\ActivityLog\Models\Activity;
+use Auth;
+use Form;
+use Format;
+use Site;
 
 class ViewController extends Controller {
 
@@ -29,13 +29,13 @@ class ViewController extends Controller {
 	{
 		Site::set('public', true);
 
-		Site::setMulti(['section', 'title'], Fractal::trans('labels.blog'));
+		Site::setMulti(['section', 'title'], Fractal::transChoice('labels.blog'));
 
-		Fractal::setViewsLocation(Config::get('fractal::blogs.viewsLocation'), true);
+		Fractal::setViewsLocation(config('blogs.views_location'), true);
 
 		Site::addTrailItems([
-			Fractal::trans('labels.home') => Site::rootUrl(),
-			Fractal::trans('labels.blog') => Fractal::blogUrl(),
+			Fractal::trans('labels.home')       => Site::rootUrl(),
+			Fractal::transChoice('labels.blog') => Fractal::blogUrl(),
 		]);
 	}
 
@@ -84,7 +84,7 @@ class ViewController extends Controller {
 	{
 		if (is_null($slug))
 			return Redirect::to(Fractal::blogUrl())->with('messages', [
-				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.article')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.article')])
 			]);
 
 		//allow article selection by ID for to allow shorter URLs
@@ -111,7 +111,7 @@ class ViewController extends Controller {
 
 		if (empty($article) || (!Auth::is('admin') && !$article->isPublished()))
 			return Redirect::to(Fractal::blogUrl())->with('messages', [
-				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.article')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.article')])
 			]);
 
 		Site::setMulti(['subSection', 'title', 'articleTitle'], $article->getTitle());
@@ -139,12 +139,12 @@ class ViewController extends Controller {
 		$messages = [];
 		if (!$article->isPublished()) {
 			if ($article->isPublishedFuture())
-				$messages['info'] = Fractal::trans('messages.notPublishedUntil', [
+				$messages['info'] = Fractal::trans('messages.not_published_until', [
 					'item'     => strtolower(Fractal::trans('labels.page')),
 					'dateTime' => $article->getPublishedDateTime(),
 				]);
 			else
-				$messages['info'] = Fractal::trans('messages.notPublished', ['item' => Fractal::trans('labels.article')]);
+				$messages['info'] = Fractal::trans('messages.not_published', ['item' => Fractal::transChoiceLower('labels.article')]);
 		}
 
 		return View::make(Fractal::view('article'))
@@ -162,13 +162,13 @@ class ViewController extends Controller {
 	public function getCategory($slug = null) {
 		if (is_null($slug))
 			return Redirect::to(Fractal::blogUrl())->with('messages', [
-				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.category')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.category')])
 			]);
 
 		$category = Category::findBySlug($slug);
 		if (empty($category))
 			return Redirect::to(Fractal::blogUrl())->with('messages', [
-				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.category')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.category')])
 			]);
 
 		Site::setTitle(Fractal::trans('labels.blog').': '.$category->name);
@@ -206,9 +206,9 @@ class ViewController extends Controller {
 		} else {
 			$articles = [];
 
-			$messages['error'] = Fractal::trans('messages.errorNoItems', [
+			$messages['error'] = Fractal::trans('messages.errors.no_items', [
 				'item'  => Fractal::transLower('labels.category'),
-				'items' => Fractal::transLower('labels.articles'),
+				'items' => Fractal::transChoiceLower('labels.article', 2),
 			]);
 		}
 

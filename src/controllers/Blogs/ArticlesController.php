@@ -16,11 +16,11 @@ use Regulus\Fractal\Models\Content\LayoutTemplate;
 use Regulus\Fractal\Models\Content\File as ContentFile;
 use Regulus\Fractal\Models\Media\Item as MediaItem;
 
-use Regulus\ActivityLog\Activity;
-use \Auth;
-use \Form;
-use \Format;
-use \Site;
+use Regulus\ActivityLog\Models\Activity;
+use Auth;
+use Form;
+use Format;
+use Site;
 
 class ArticlesController extends BlogsController {
 
@@ -156,7 +156,7 @@ class ArticlesController extends BlogsController {
 			]);
 
 		Site::setTitle($article->getTitle().' ('.Fractal::transChoice('labels.article').')');
-		Site::setHeading(Fractal::trans('labels.update_article').': <strong>'.$article->getTitle().'</strong>');
+		Site::setHeading(Fractal::trans('labels.update_item', ['item' => Fractal::transChoice('labels.article')]).': <strong>'.$article->getTitle().'</strong>');
 		Site::set('wysiwyg', true);
 
 		$article->setDefaults([
@@ -169,12 +169,12 @@ class ArticlesController extends BlogsController {
 
 		Fractal::addButtons([
 			[
-				'label' => Fractal::trans('labels.return_to_articles_list'),
+				'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.article', 2)]),
 				'icon'  => 'glyphicon glyphicon-list',
 				'uri'   => Fractal::uri('', true),
 
 			],[
-				'label' => Fractal::trans('labels.view_article'),
+				'label' => Fractal::trans('labels.view_item', ['item' => Fractal::transChoice('labels.article')]),
 				'icon'  => 'glyphicon glyphicon-file',
 				'url'   => $article->getUrl(),
 			]

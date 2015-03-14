@@ -12,11 +12,11 @@ use Fractal;
 
 use Regulus\Fractal\Models\Blogs\Category;
 
-use Regulus\ActivityLog\Activity;
-use \Auth;
-use \Form;
-use \Format;
-use \Site;
+use Regulus\ActivityLog\Models\Activity;
+use Auth;
+use Form;
+use Format;
+use Site;
 
 class CategoriesController extends BlogsController {
 

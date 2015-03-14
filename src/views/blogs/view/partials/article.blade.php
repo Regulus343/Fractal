@@ -3,7 +3,7 @@
 	<div class="content-item-heading article-heading">
 		@if (Site::get('articleList'))
 
-			<h3><a href="{{ $article->getUrl() }}">{{ $article->getTitle() }}</a></h3>
+			<h3><a href="{{ $article->getUrl() }}">{!! $article->getTitle() !!}</a></h3>
 
 		@endif
 
@@ -27,7 +27,7 @@
 			<a href="{{ Fractal::url('blogs/articles/'.$article->slug.'/edit') }}" class="btn btn-primary btn-xs pull-right">
 				<span class="glyphicon glyphicon-edit"></span>
 
-				{{ Fractal::trans('labels.editArticle') }}
+				{{ Fractal::trans('labels.edit_item', ['item' => Fractal::transChoice('labels.article')]) }}
 			</a>
 
 		@endif
@@ -38,7 +38,7 @@
 
 	<div class="content-item-body article-body">
 
-		{{ $article->getRenderedContent(['previewOnly' => Site::get('articleList', false)]) }}
+		{!! $article->getRenderedContent(['previewOnly' => Site::get('articleList', false)]) !!}
 
 	</div>
 

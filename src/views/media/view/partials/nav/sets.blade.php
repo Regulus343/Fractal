@@ -6,11 +6,11 @@
 
 		@if (isset($mediaSet))
 
-		<li class="special">
-			<a href="{{ Fractal::mediaUrl('') }}">
-				<span class="glyphicon glyphicon-chevron-left"></span> {{ Fractal::trans('labels.allMediaSets') }}
-			</a>
-		</li>
+			<li class="special">
+				<a href="{{ Fractal::mediaUrl('') }}">
+					<span class="glyphicon glyphicon-chevron-left"></span> {{ Fractal::trans('labels.all_items', ['items' => Fractal::transChoice('labels.media_set', 2)]) }}
+				</a>
+			</li>
 
 		@endif
 

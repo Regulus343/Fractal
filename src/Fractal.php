@@ -34,11 +34,11 @@ use Regulus\Fractal\Models\General\Setting;
 use Regulus\Fractal\Models\Media\Item as MediaItem;
 use Regulus\Fractal\Models\Blogs\Article as BlogArticle;
 
-use \Auth;
-use \Form;
-use \Format;
-use \HTML;
-use \Site;
+use Auth;
+use Form;
+use Format;
+use HTML;
+use Site;
 
 use AlfredoRamos\ParsedownExtra\Facades\ParsedownExtra as Markdown;
 
@@ -912,6 +912,9 @@ class Fractal {
 		if (strtolower($contentType) == "markdown")
 			$content = Markdown::parse($content);
 
+		// convert lone ampersands to HTML special characters
+		$content = str_replace(' & ', ' &amp; ', $content);
+
 		// render views in content
 		preg_match_all('/\<p\>\[view:\&quot\;([a-z\:\.\_\-]*)\&quot\;\]\<\/p\>/', $content, $views);
 		if (isset($views[0]) && !empty($views[0])) {
@@ -930,9 +933,6 @@ class Fractal {
 		// add a "Read More" button
 		if ($previewOnly && $addReadMoreButton && $contentUrl)
 			$content .= '<a href="'.$contentUrl.'" class="btn btn-default btn-xs btn-read-more">'.Fractal::trans('labels.readMore').'</a>';
-
-		// convert lone ampersands to HTML special characters
-		$content = str_replace(' & ', ' &amp; ', $content);
 
 		return $content;
 	}

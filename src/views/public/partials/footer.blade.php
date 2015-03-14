@@ -17,6 +17,7 @@
 			<p>&copy;{{ date('Y') }} {{ Site::name() }}</p>
 
 			@if (config('cms.display_version'))
+
 				<p class="fractal">
 					powered by Fractal v{{ Fractal::trans('labels.version') }}
 
@@ -24,10 +25,11 @@
 						<span class="developer-mode">/ <a href="{{ Fractal::url('developer/off') }}">Disable Developer Mode</a></span>
 					@endif
 				</p>
+
 			@endif
 
 			<ul class="menu">
-				{{ Fractal::getMenuMarkup('Footer', ['listItemsOnly' => true]) }}
+				{!! Fractal::getMenuMarkup('Footer', ['listItemsOnly' => true]) !!}
 			</ul>
 		</div><!-- /.pad -->
 	</div><!-- /#footer -->

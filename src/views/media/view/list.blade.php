@@ -1,11 +1,11 @@
-@extends(Config::get('fractal::layoutPublic'))
+@extends(config('cms.layout_public'))
 
 @section(config('cms.content_section'))
 
 	@if (isset($mediaSet))
 
 		<div class="media-set-description page-description">
-			{{ $mediaSet->getRenderedDescription() }}
+			{!! $mediaSet->getRenderedDescription() !!}
 		</div>
 
 		@include(Fractal::view('public.partials.share', true))

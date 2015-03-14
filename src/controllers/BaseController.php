@@ -4,8 +4,8 @@ use App\Http\Controllers\Controller;
 
 use Fractal;
 
-use \Auth;
-use \Site;
+use Auth;
+use Site;
 
 class BaseController extends Controller {
 

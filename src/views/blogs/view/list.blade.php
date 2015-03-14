@@ -1,4 +1,4 @@
-@extends(Config::get('fractal::layoutPublic'))
+@extends(config('cms.layout_public'))
 
 @section(config('cms.content_section'))
 

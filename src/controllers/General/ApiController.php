@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Input;
 
 use Fractal;
 
-use \Auth;
+use Auth;
 
 use Regulus\Fractal\Models\Content\File as ContentFile;
 use Regulus\Fractal\Models\Media\Item as MediaItem;

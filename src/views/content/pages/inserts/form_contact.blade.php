@@ -3,15 +3,17 @@
 	<div class="row">
 		<div class="col-md-12">
 
-			{{ Form::open() }}
-				{{ Form::field('name') }}
+			{!! Form::open() !!}
 
-				{{ Form::field('email') }}
+				{!! Form::field('name') !!}
 
-				{{ Form::field('message', 'textarea') }}
+				{!! Form::field('email') !!}
 
-				{{ Form::field('[ICON: share-alt]Send Message', 'button') }}
-			{{ Form::close() }}
+				{!! Form::field('message', 'textarea') !!}
+
+				{!! Form::field('[ICON: share-alt]Send Message', 'button') !!}
+
+			{!! Form::close() !!}
 
 		</div>
 	</div>

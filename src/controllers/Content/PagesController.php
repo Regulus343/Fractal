@@ -15,11 +15,11 @@ use Regulus\Fractal\Models\Content\Page;
 use Regulus\Fractal\Models\Content\Area;
 use Regulus\Fractal\Models\Content\LayoutTemplate;
 
-use Regulus\ActivityLog\Activity;
-use \Auth;
-use \Form;
-use \Format;
-use \Site;
+use Regulus\ActivityLog\Models\Activity;
+use Auth;
+use Form;
+use Format;
+use Site;
 
 use Regulus\Fractal\Controllers\BaseController;
 
@@ -294,7 +294,7 @@ class PagesController extends BaseController {
 
 		Form::setErrors();
 
-		return View::make(Config::get('fractal::pageView'))
+		return View::make(config('cms.page_view'))
 			->with('page', $page)
 			->with('messages', $messages);
 	}

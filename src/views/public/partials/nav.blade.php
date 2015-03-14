@@ -18,7 +18,7 @@
 
 		<div class="navbar-collapse collapse">
 
-			{{ Fractal::getMenuMarkup('Main') }}
+			{!! Fractal::getMenuMarkup('Main') !!}
 
 			@if (Auth::is('admin'))
 
