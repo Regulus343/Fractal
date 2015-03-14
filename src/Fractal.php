@@ -674,7 +674,7 @@ class Fractal {
 			$name = Str::plural(Fractal::getContentType());
 
 		$fields      = [];
-		$tableConfig = config('cms_tables.'.$name);
+		$tableConfig = config('tables.'.$name);
 
 		if (empty($tableConfig) || !isset($tableConfig['columns']))
 			return $fields;
@@ -704,7 +704,7 @@ class Fractal {
 	 */
 	public function createTable($content = [], $bodyOnly = false)
 	{
-		return HTML::table(config('cms_tables.'.Str::plural($this->getContentTypeSnakeCase())), $content, $bodyOnly);
+		return HTML::table(config('tables.'.Str::plural($this->getContentTypeSnakeCase())), $content, $bodyOnly);
 	}
 
 	/**
@@ -1489,7 +1489,7 @@ class Fractal {
 	 * @param  mixed    $locale
 	 * @return string
 	 */
-	function transLowerPlural($key, array $replace = [], $locale = null)
+	function transPluralLower($key, array $replace = [], $locale = null)
 	{
 		return Str::plural($this->transLower($key, $replace, $locale));
 	}
@@ -1512,6 +1512,20 @@ class Fractal {
 	}
 
 	/**
+	 * Get a language item according to an integer value and add "a" or "an" prefix.
+	 *
+	 * @param  string  $key
+	 * @param  int     $number
+	 * @param  array   $replace
+	 * @param  string  $locale
+	 * @return string
+	 */
+	public function transChoiceA($key, $number = 1, array $replace = [], $locale = null)
+	{
+		return Format::a($this->transChoice($key, $number, $replace, $locale));
+	}
+
+	/**
 	 * Get a language item according to an integer value and make it lowercase.
 	 *
 	 * @param  string  $key
@@ -1520,9 +1534,23 @@ class Fractal {
 	 * @param  string  $locale
 	 * @return string
 	 */
-	public function transLowerChoice($key, $number = 1, array $replace = [], $locale = null)
+	public function transChoiceLower($key, $number = 1, array $replace = [], $locale = null)
 	{
 		return strtolower($this->transChoice($key, $number, $replace, $locale));
+	}
+
+	/**
+	 * Get a language item according to an integer value, make it lowercase, and add "a" or "an" prefix.
+	 *
+	 * @param  string  $key
+	 * @param  int     $number
+	 * @param  array   $replace
+	 * @param  string  $locale
+	 * @return string
+	 */
+	public function transChoiceLowerA($key, $number = 1, array $replace = [], $locale = null)
+	{
+		return Format::a(strtolower($this->transChoice($key, $number, $replace, $locale)));
 	}
 
 }

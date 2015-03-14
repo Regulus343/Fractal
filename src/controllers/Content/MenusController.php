@@ -108,7 +108,7 @@ class MenusController extends BaseController {
 		$messages = [];
 		if (Form::validated())
 		{
-			$messages['success'] = Fractal::trans('messages.successCreated', ['item' => Fractal::transLowerA('labels.menu')]);
+			$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transChoiceA('labels.menu')]);
 
 			$menu = Menu::createNew();
 
@@ -140,11 +140,11 @@ class MenusController extends BaseController {
 		$menu = Menu::find($id);
 		if (empty($menu))
 			return Redirect::to(Fractal::uri('menus'))->with('messages', [
-				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.menu')])
+				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transChoice('labels.menu')])
 			]);
 
-		Site::setTitle($menu->name.' ('.Fractal::trans('labels.menu').')');
-		Site::setHeading(Fractal::trans('labels.updateMenu').': <strong>'.Format::entities($menu->name).'</strong>');
+		Site::setTitle($menu->name.' ('.Fractal::transChoice('labels.menu').')');
+		Site::setHeading(Fractal::trans('labels.update_item', ['item' => Fractal::transChoice('labels.menu')]).': <strong>'.Format::entities($menu->name).'</strong>');
 
 		$menu->setDefaults(['items']);
 		Form::setErrors();
@@ -167,7 +167,7 @@ class MenusController extends BaseController {
 		$menu = Menu::find($id);
 		if (empty($menu))
 			return Redirect::to(Fractal::uri('', true))->with('messages', [
-				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.menu')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoice('labels.menu')])
 			]);
 
 		Form::setValidationRules(Menu::validationRules($id));
@@ -175,7 +175,7 @@ class MenusController extends BaseController {
 		$messages = [];
 		if (Form::validated())
 		{
-			$messages['success'] = Fractal::trans('messages.successUpdated', ['item' => Fractal::transLowerA('labels.menu')]);
+			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoiceA('labels.menu')]);
 
 			$menu->saveData();
 
@@ -194,7 +194,7 @@ class MenusController extends BaseController {
 			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Fractal::trans('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errors.general');
 
 			return Redirect::to(Fractal::uri($id.'/edit', true))
 				->with('messages', $messages)
@@ -207,7 +207,7 @@ class MenusController extends BaseController {
 	{
 		$result = [
 			'resultType' => 'Error',
-			'message'    => Fractal::trans('messages.errorGeneral'),
+			'message'    => Fractal::trans('messages.errors.general'),
 		];
 
 		$menu = Menu::find($id);
@@ -223,7 +223,7 @@ class MenusController extends BaseController {
 		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.successDeleted', ['item' => '<strong>'.$menu->name.'</strong>']);
+		$result['message']    = Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$menu->name.'</strong>']);
 
 		$menu->items()->delete();
 		$menu->delete();

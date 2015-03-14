@@ -26,9 +26,9 @@ class FractalServiceProvider extends ServiceProvider {
 		$this->publishes([
 			__DIR__.'/config/blogs.php'        => config_path('blogs.php'),
 			__DIR__.'/config/cms.php'          => config_path('cms.php'),
-			__DIR__.'/config/cms_tables.php'   => config_path('cms_tables.php'),
 			__DIR__.'/config/media.php'        => config_path('media.php'),
 			__DIR__.'/config/social.php'       => config_path('social.php'),
+			__DIR__.'/config/tables.php'       => config_path('tables.php'),
 
 			__DIR__.'/config/cms_settings.php' => config_path('exported/cms_settings.php'),
 			__DIR__.'/config/menus.php'        => config_path('exported/menus.php'),
@@ -39,44 +39,6 @@ class FractalServiceProvider extends ServiceProvider {
 		$this->loadTranslationsFrom(__DIR__.'/lang', 'fractal');
 
 		$this->loadViewsFrom(__DIR__.'/views', 'fractal');
-
-		//load config for dependent packages
-		/*$vendorPath = base_path().'/vendor/';
-
-		$configPackages = [
-			'regulus/activity-log',
-			'regulus/identify',
-			'regulus/elemental',
-			'regulus/formation',
-			'regulus/solid-site',
-			'regulus/tetra-text',
-			'regulus/upstream',
-		];
-
-		foreach ($configPackages as $configPackage) {
-			$this->package($configPackage, null, $vendorPath.$configPackage.'/src');
-		}
-
-		//add view namespace for Elemental
-		View::addNamespace('elemental', $vendorPath.'regulus/elemental/src/views');
-
-		//add aliases for dependent classes
-		$loader = \Illuminate\Foundation\AliasLoader::getInstance();
-
-		$loader->alias('Fractal',   'Regulus\Fractal\Facade');
-		$loader->alias('Auth',      'Regulus\Identify\Facade');
-		$loader->alias('Elemental', 'Regulus\Elemental\Facade');
-		$loader->alias('HTML',      'Regulus\Elemental\Facade');
-		$loader->alias('Form',      'Regulus\Formation\Facade');
-		$loader->alias('Site',      'Regulus\SolidSite\Facade');
-		$loader->alias('Format',    'Regulus\TetraText\Facade');
-		$loader->alias('Upstream',  'Regulus\Upstream\Facade');
-		$loader->alias('Markdown',  'MaxHoffmann\Parsedown\ParsedownFacade');
-
-		//create "parsedown" singleton for Markdown parsing
-		$this->app->singleton('parsedown', function(){
-			return new \Parsedown;
-		});*/
 
 		$extraPath  = __DIR__.'/extra/';
 		$extraFiles = [

@@ -89,7 +89,7 @@ if ( ! function_exists('trans_plural'))
 	}
 }
 
-if ( ! function_exists('trans_lower_plural'))
+if ( ! function_exists('trans_plural_lower'))
 {
 	/**
 	 * Get a language item from language arrays, make it lowercase, and make it plural.
@@ -99,8 +99,42 @@ if ( ! function_exists('trans_lower_plural'))
 	 * @param  mixed    $locale
 	 * @return string
 	 */
-	function trans_lower_plural($key, array $replace = [], $locale = null)
+	function trans_plural_lower($key, array $replace = [], $locale = null)
 	{
 		return \Illuminate\Support\Str::plural(lang_lower($key, $replace, $locale));
+	}
+}
+
+if ( ! function_exists('trans_choice_lower'))
+{
+	/**
+	 * Get a language item according to an integer value and make it lowercase.
+	 *
+	 * @param  string  $key
+	 * @param  int     $number
+	 * @param  array   $replace
+	 * @param  string  $locale
+	 * @return string
+	 */
+	function trans_choice_lower($key, $number = 1, array $replace = [], $locale = null)
+	{
+		return strtolower(trans_choice($key, $number, $replace, $locale));
+	}
+}
+
+if ( ! function_exists('trans_choice_lower_a'))
+{
+	/**
+	 * Get a language item according to an integer value and make it lowercase.
+	 *
+	 * @param  string  $key
+	 * @param  int     $number
+	 * @param  array   $replace
+	 * @param  string  $locale
+	 * @return string
+	 */
+	function trans_choice_lower_a($key, $number = 1, array $replace = [], $locale = null)
+	{
+		return \Regulus\TetraText\Facade::a(strtolower(trans_choice($key, $number, $replace, $locale)));
 	}
 }

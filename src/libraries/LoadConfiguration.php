@@ -14,7 +14,7 @@ class LoadConfiguration {
 	 * @var    array
 	 */
 	protected $delayedConfig = [
-		'cms_tables',
+		'tables',
 	];
 
 	/**
