@@ -1,6 +1,6 @@
 @if (isset($categories) && Regulus\Fractal\Models\Blogs\Category::publishedArticleInCategories($categories))
 
-	<h3>{{ Fractal::lang('labels.categories') }}</h3>
+	<h3>{{ Fractal::trans('labels.categories') }}</h3>
 
 	<ul class="nav nav-pills nav-stacked nav-side">
 
@@ -8,7 +8,7 @@
 
 		<li class="special">
 			<a href="{{ Fractal::blogUrl('') }}">
-				<span class="glyphicon glyphicon-chevron-left"></span> {{ Fractal::lang('labels.allCategories') }}
+				<span class="glyphicon glyphicon-chevron-left"></span> {{ Fractal::trans('labels.allCategories') }}
 			</a>
 		</li>
 

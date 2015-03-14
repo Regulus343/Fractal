@@ -30,14 +30,14 @@ class LayoutTemplatesController extends BaseController {
 
 		Site::set('section', 'Content');
 		Site::set('subSection', 'Layout Templates');
-		Site::set('title', Fractal::lang('labels.layoutTemplates'));
+		Site::setTitle(Fractal::trans('labels.layoutTemplates'));
 
-		//set content type and views location
+		// set content type and views location
 		Fractal::setContentType('layout-template');
 
 		Fractal::setViewsLocation('content.layout_templates');
 
-		Fractal::addTrailItem(Fractal::lang('labels.layoutTemplates'), Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::trans('labels.layoutTemplates'), Fractal::getControllerPath());
 	}
 
 	public function index()
@@ -54,7 +54,7 @@ class LayoutTemplatesController extends BaseController {
 			$categories = LayoutTemplate::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.createLayoutTemplate'),
+			'label' => Fractal::trans('labels.createLayoutTemplate'),
 			'icon'  => 'glyphicon glyphicon-th',
 			'uri'   => Fractal::uri('create', true),
 		]);
@@ -84,18 +84,18 @@ class LayoutTemplatesController extends BaseController {
 
 	public function create()
 	{
-		Site::set('title', Fractal::lang('labels.createLayoutTemplate'));
+		Site::setTitle(Fractal::trans('labels.createLayoutTemplate'));
 
 		LayoutTemplate::setDefaultsForNew();
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.returnToCategoriesList'),
+			'label' => Fractal::trans('labels.returnToCategoriesList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
 
-		Fractal::addTrailItem(Fractal::lang('labels.create'), Request::url());
+		Fractal::addTrailItem(Fractal::trans('labels.create'), Request::url());
 
 		return View::make(Fractal::view('form'));
 	}
@@ -106,7 +106,7 @@ class LayoutTemplatesController extends BaseController {
 
 		$messages = [];
 		if (Form::validated()) {
-			$messages['success'] = Fractal::lang('messages.successCreated', ['item' => Fractal::langLowerA('labels.category')]);
+			$messages['success'] = Fractal::trans('messages.successCreated', ['item' => Fractal::transLowerA('labels.category')]);
 
 			$input = Input::all();
 			$input['user_id'] = Auth::user()->id;
@@ -124,7 +124,7 @@ class LayoutTemplatesController extends BaseController {
 			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Fractal::lang('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errorGeneral');
 		}
 
 		return Redirect::to(Fractal::uri('create', true))
@@ -138,22 +138,22 @@ class LayoutTemplatesController extends BaseController {
 		$layoutTemplate = LayoutTemplate::where('id', $id)->where('static', false)->first();
 		if (empty($layoutTemplate))
 			return Redirect::to(Fractal::uri('pages'))->with('messages', [
-				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.category')])
+				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.category')])
 			]);
 
-		Site::set('title', $layoutTemplate->name.' ('.Fractal::lang('labels.category').')');
-		Site::set('titleHeading', Fractal::lang('labels.updateLayoutTemplate').': <strong>'.Format::entities($layoutTemplate->name).'</strong>');
+		Site::setTitle($layoutTemplate->name.' ('.Fractal::trans('labels.category').')');
+		Site::setHeading(Fractal::trans('labels.updateLayoutTemplate').': <strong>'.Format::entities($layoutTemplate->name).'</strong>');
 
 		Form::setDefaults($layoutTemplate);
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.returnToCategoriesList'),
+			'label' => Fractal::trans('labels.returnToCategoriesList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
 
-		Fractal::addTrailItem(Fractal::lang('labels.update'), Request::url());
+		Fractal::addTrailItem(Fractal::trans('labels.update'), Request::url());
 
 		return View::make(Fractal::view('form'))
 			->with('update', true)
@@ -165,14 +165,15 @@ class LayoutTemplatesController extends BaseController {
 		$layoutTemplate = LayoutTemplate::where('id', $id)->where('static', false)->first();
 		if (empty($layoutTemplate))
 			return Redirect::to(Fractal::uri('pages'))->with('messages', [
-				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.category')])
+				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.category')])
 			]);
 
 		$layoutTemplate->setValidationRules();
 
 		$messages = [];
-		if (Form::validated()) {
-			$messages['success'] = Fractal::lang('messages.successUpdated', ['item' => Fractal::langLowerA('labels.category')]);
+		if (Form::validated())
+		{
+			$messages['success'] = Fractal::trans('messages.successUpdated', ['item' => Fractal::transLowerA('labels.category')]);
 
 			$layoutTemplate->saveData();
 
@@ -188,7 +189,7 @@ class LayoutTemplatesController extends BaseController {
 			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Fractal::lang('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errorGeneral');
 
 			return Redirect::to(Fractal::uri($id.'/edit', true))
 				->with('messages', $messages)
@@ -201,7 +202,7 @@ class LayoutTemplatesController extends BaseController {
 	{
 		$result = [
 			'resultType' => 'Error',
-			'message'    => Fractal::lang('messages.errorGeneral'),
+			'message'    => Fractal::trans('messages.errorGeneral'),
 		];
 
 		$layoutTemplate = LayoutTemplate::find($id);
@@ -223,7 +224,7 @@ class LayoutTemplatesController extends BaseController {
 		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Fractal::lang('messages.successDeleted', ['item' => '<strong>'.$layoutTemplate->name.'</strong>']);
+		$result['message']    = Fractal::trans('messages.successDeleted', ['item' => '<strong>'.$layoutTemplate->name.'</strong>']);
 
 		$layoutTemplate->delete();
 

@@ -1,28 +1,41 @@
-@extends(Config::get('fractal::layout'))
+@extends(config('cms.layout'))
 
-@section(Config::get('fractal::contentSection'))
+@section(config('cms.content_section'))
 
 	<script type="text/javascript">
 		$(document).ready(function(){
-			if ($('#username').val() != "")
-				$('#password').focus();
-			else
-				$('#username').focus();
+
+			setTimeout(function()
+			{
+				if ($('#field-identifier').val() != "")
+					$('#field-password').focus();
+				else
+					$('#field-identifier').focus();
+			}, 500);
+
+			$(document).keypress(function(e)
+			{
+				if (e.charCode == 13)
+					$('form.form-login').submit();
+			});
+
 		});
 	</script>
 
 	<link type="text/css" rel="stylesheet" href="{{ Site::css('login', 'regulus/fractal') }}" />
 
-	{{ Form::open(['class' => 'form-login']) }}
-		<h2>{{ Site::titleHeading() }}</h2>
+	{!! Form::open(['class' => 'form-login']) !!}
 
-		{{ Form::field('username') }}
+		<h2>{{ Site::heading() }}</h2>
 
-		{{ Form::field('password') }}
+		{!! Form::field('identifier', 'text', ['label' => Fractal::trans('labels.username')]) !!}
 
-		<a href="{{ Fractal::url('forgot-password') }}" class="pull-right">{{ Fractal::lang('labels.forgotYourPassword') }}</a>
+		{!! Form::field('password') !!}
 
-		{{ Form::field('[ICON: share-alt]'.Fractal::lang('labels.logIn'), 'button') }}
-	{{ Form::close() }}
+		<a href="{{ Fractal::url('forgot-password') }}" class="pull-right">{{ Fractal::trans('labels.forgot_your_password') }}</a>
+
+		{!! Form::field('[ICON: share-alt]'.Fractal::trans('labels.log_in'), 'button') !!}
+
+	{!! Form::close() !!}
 
 @stop

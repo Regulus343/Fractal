@@ -1,6 +1,6 @@
 {
 	"name": "regulus/fractal",
-	"description": "A versatile CMS for Laravel.",
+	"description": "A versatile CMS for Laravel 5.",
 	"license": "MIT",
 	"authors": [
 		{
@@ -10,29 +10,30 @@
 	],
 	"require": {
 		"php": ">=5.4.0",
-		"illuminate/support": "4.2.*|5.*",
-		"regulus/activity-log": "0.3.1",
-		"regulus/elemental": "0.3.3",
-		"regulus/formation": "0.9.0",
-		"regulus/solid-site": "0.5.0",
-		"regulus/tetra-text": "0.4.4",
-		"regulus/upstream": "0.4.4",
-		"maxhoffmann/parsedown-laravel": "@dev",
-		"julien-c/simple-resize": "@dev"
+		"laravel/framework": "5.0.*",
+
+		"regulus/activity-log": "dev-master",
+		"regulus/elemental": "dev-master",
+		"regulus/formation": "dev-master",
+		"regulus/identify": "dev-master",
+		"regulus/solid-site": "dev-master",
+		"regulus/tetra-text": "dev-master",
+		"regulus/upstream": "dev-master",
+		"alfredo-ramos/parsedown-extra-laravel": "~0.2"
 	},
 	"autoload": {
 		"classmap": [
-			"src/commands",
-			"src/controllers",
-			"src/libraries",
 			"src/migrations",
-			"src/models",
-			"src/seeds",
-			"src/traits"
+			"src/seeds"
 		],
-		"psr-0": {
-			"Regulus\\Fractal": "src/"
+		"psr-4": {
+			"Regulus\\Fractal\\": "src/",
+			"Regulus\\Fractal\\Commands\\": "src/commands/",
+			"Regulus\\Fractal\\Controllers\\": "src/controllers/",
+			"Regulus\\Fractal\\Libraries\\": "src/libraries/",
+			"Regulus\\Fractal\\Models\\": "src/models/",
+			"Regulus\\Fractal\\Traits\\": "src/traits/"
 		}
 	},
-	"minimum-stability": "stable"
+	"minimum-stability": "dev"
 }

@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Seeder;
+
 class MenusTableSeeder extends Seeder {
 
 	public $timestamp;
@@ -33,7 +35,7 @@ class MenusTableSeeder extends Seeder {
 							[
 								'uri'                => 'menus',
 								'label'              => 'Menus',
-								'label_language_key' => 'menus',
+								'label_language_key' => 'plural:menu',
 								'icon'               => 'tasks',
 								'display_order'      => 1,
 								'auth_status'        => 1,
@@ -41,7 +43,7 @@ class MenusTableSeeder extends Seeder {
 							[
 								'uri'                => 'pages',
 								'label'              => 'Pages',
-								'label_language_key' => 'pages',
+								'label_language_key' => 'plural:page',
 								'icon'               => 'file',
 								'display_order'      => 2,
 								'auth_status'        => 1,
@@ -49,7 +51,7 @@ class MenusTableSeeder extends Seeder {
 							[
 								'uri'                => 'files',
 								'label'              => 'Files',
-								'label_language_key' => 'files',
+								'label_language_key' => 'plural:file',
 								'icon'               => 'folder-open',
 								'display_order'      => 3,
 								'auth_status'        => 1,
@@ -57,7 +59,7 @@ class MenusTableSeeder extends Seeder {
 							[
 								'uri'                => 'layout-templates',
 								'label'              => 'Layout Templates',
-								'label_language_key' => 'layoutTemplates',
+								'label_language_key' => 'plural:layout_template',
 								'icon'               => 'th',
 								'display_order'      => 4,
 								'auth_status'        => 1,
@@ -75,7 +77,7 @@ class MenusTableSeeder extends Seeder {
 							[
 								'uri'                => 'media/items',
 								'label'              => 'Media Items',
-								'label_language_key' => 'items',
+								'label_language_key' => 'plural:item',
 								'icon'               => 'picture',
 								'display_order'      => 3,
 								'auth_status'        => 1,
@@ -83,7 +85,7 @@ class MenusTableSeeder extends Seeder {
 							[
 								'uri'                => 'media/types',
 								'label'              => 'Media Types',
-								'label_language_key' => 'types',
+								'label_language_key' => 'plural:type',
 								'icon'               => 'tag',
 								'display_order'      => 3,
 								'auth_status'        => 1,
@@ -91,7 +93,7 @@ class MenusTableSeeder extends Seeder {
 							[
 								'uri'                => 'media/sets',
 								'label'              => 'Media Sets',
-								'label_language_key' => 'sets',
+								'label_language_key' => 'plural:set',
 								'icon'               => 'folder-open',
 								'display_order'      => 3,
 								'auth_status'        => 1,
@@ -109,7 +111,7 @@ class MenusTableSeeder extends Seeder {
 							[
 								'uri'                => 'blogs/articles',
 								'label'              => 'Blog Articles',
-								'label_language_key' => 'articles',
+								'label_language_key' => 'plural:article',
 								'icon'               => 'file',
 								'display_order'      => 1,
 								'auth_status'        => 1,
@@ -117,7 +119,7 @@ class MenusTableSeeder extends Seeder {
 							[
 								'uri'                => 'blogs/categories',
 								'label'              => 'Categories',
-								'label_language_key' => 'categories',
+								'label_language_key' => 'plural:category',
 								'icon'               => 'book',
 								'display_order'      => 2,
 								'auth_status'        => 1,
@@ -136,7 +138,7 @@ class MenusTableSeeder extends Seeder {
 							[
 								'uri'                => 'users',
 								'label'              => 'Users',
-								'label_language_key' => 'users',
+								'label_language_key' => 'plural:user',
 								'icon'               => 'user',
 								'display_order'      => 1,
 								'auth_status'        => 1,
@@ -145,7 +147,7 @@ class MenusTableSeeder extends Seeder {
 							[
 								'uri'                => 'users/roles',
 								'label'              => 'User Roles',
-								'label_language_key' => 'roles',
+								'label_language_key' => 'plural:role',
 								'icon'               => 'book',
 								'display_order'      => 2,
 								'auth_status'        => 1,
@@ -154,7 +156,7 @@ class MenusTableSeeder extends Seeder {
 							[
 								'uri'                => 'users/permissions',
 								'label'              => 'User Permissions',
-								'label_language_key' => 'permissions',
+								'label_language_key' => 'plural:permission',
 								'icon'               => 'star',
 								'display_order'      => 2,
 								'auth_status'        => 1,
@@ -163,7 +165,7 @@ class MenusTableSeeder extends Seeder {
 							[
 								'uri'                => 'users/activity',
 								'label'              => 'User Activity',
-								'label_language_key' => 'activity',
+								'label_language_key' => 'plural:activity',
 								'icon'               => 'info-sign',
 								'display_order'      => 3,
 								'auth_status'        => 1,
@@ -190,7 +192,7 @@ class MenusTableSeeder extends Seeder {
 					[
 						'uri'                => 'login',
 						'label'              => 'Log In',
-						'label_language_key' => 'logIn',
+						'label_language_key' => 'log_in',
 						'icon'               => 'log-in',
 						'display_order'      => 1,
 						'auth_status'        => 2,
@@ -206,7 +208,7 @@ class MenusTableSeeder extends Seeder {
 					[
 						'uri'                => 'logout',
 						'label'              => 'Log Out',
-						'label_language_key' => 'logOut',
+						'label_language_key' => 'log_out',
 						'icon'               => 'log-out',
 						'display_order'      => 3,
 						'auth_status'        => 1,
@@ -218,39 +220,39 @@ class MenusTableSeeder extends Seeder {
 
 				'items' => [
 					[
-						'type'          => 'Content Page',
-						'page_id'       => 1,
-						'label'         => 'Home',
-						'icon'          => 'home',
-						'display_order' => 1,
+						'type'               => 'Content Page',
+						'page_id'            => 1,
+						'label'              => 'Home',
+						'icon'               => 'home',
+						'display_order'      => 1,
 					],
 					[
-						'uri'           => Config::get('fractal::blogs.baseUri'),
-						'subdomain'     => Config::get('fractal::blogs.subdomain'),
-						'label'         => 'Blog',
-						'icon'          => 'comment',
-						'display_order' => 2,
+						'uri'                => Config::get('fractal::blogs.baseUri'),
+						'subdomain'          => Config::get('fractal::blogs.subdomain'),
+						'label'              => 'Blog',
+						'icon'               => 'comment',
+						'display_order'      => 2,
 					],
 					[
-						'uri'           => Config::get('fractal::media.baseUri'),
-						'subdomain'     => Config::get('fractal::media.subdomain'),
-						'label'         => 'Media',
-						'icon'          => 'book',
-						'display_order' => 3,
+						'uri'                => Config::get('fractal::media.baseUri'),
+						'subdomain'          => Config::get('fractal::media.subdomain'),
+						'label'              => 'Media',
+						'icon'               => 'book',
+						'display_order'      => 3,
 					],
 					[
-						'type'          => 'Content Page',
-						'page_id'       => 2,
-						'label'         => 'About',
-						'icon'          => 'list',
-						'display_order' => 4,
+						'type'               => 'Content Page',
+						'page_id'            => 2,
+						'label'              => 'About',
+						'icon'               => 'list',
+						'display_order'      => 4,
 					],
 					[
-						'type'          => 'Content Page',
-						'page_id'       => 3,
-						'label'         => 'Contact',
-						'icon'          => 'envelope',
-						'display_order' => 5,
+						'type'               => 'Content Page',
+						'page_id'            => 3,
+						'label'              => 'Contact',
+						'icon'               => 'envelope',
+						'display_order'      => 5,
 					],
 				],
 			],
@@ -292,7 +294,8 @@ class MenusTableSeeder extends Seeder {
 			],
 		];
 
-		foreach ($menus as $menu) {
+		foreach ($menus as $menu)
+		{
 			$items = isset($menu['items']) ? $menu['items'] : [];
 
 			if (isset($menu['items']))
@@ -314,7 +317,8 @@ class MenusTableSeeder extends Seeder {
 	 */
 	private function insertMenuItems($items, $menuId, $parentId = null)
 	{
-		foreach ($items as $item) {
+		foreach ($items as $item)
+		{
 			$subItems = isset($item['items']) ? $item['items'] : [];
 
 			if (isset($item['items']))

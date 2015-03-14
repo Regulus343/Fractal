@@ -33,14 +33,14 @@ class FilesController extends BaseController {
 
 		Site::set('section', 'Content');
 		Site::set('subSection', 'Files');
-		Site::set('title', Fractal::lang('labels.files'));
+		Site::setTitle(Fractal::trans('labels.files'));
 
-		//set content type and views location
+		// set content type and views location
 		Fractal::setContentType('file');
 
 		Fractal::setViewsLocation('content.files');
 
-		Fractal::addTrailItem(Fractal::lang('labels.files'), Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::trans('labels.files'), Fractal::getControllerPath());
 	}
 
 	public function index()
@@ -57,7 +57,7 @@ class FilesController extends BaseController {
 			$files = ContentFile::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.uploadFile'),
+			'label' => Fractal::trans('labels.uploadFile'),
 			'icon'  => 'glyphicon glyphicon-file',
 			'uri'   => Fractal::uri('create', true),
 		]);
@@ -87,19 +87,19 @@ class FilesController extends BaseController {
 
 	public function create()
 	{
-		Site::set('title', Fractal::lang('labels.uploadFile'));
+		Site::setTitle(Fractal::trans('labels.uploadFile'));
 
 		$this->setDefaultImageSize();
 
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.returnToFilesList'),
+			'label' => Fractal::trans('labels.returnToFilesList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
 
-		Fractal::addTrailItem(Fractal::lang('labels.upload'), Request::url());
+		Fractal::addTrailItem(Fractal::trans('labels.upload'), Request::url());
 
 		return View::make(Fractal::view('form'))->with('update', false);
 	}
@@ -109,11 +109,13 @@ class FilesController extends BaseController {
 		Form::setValidationRules(ContentFile::validationRules());
 
 		$messages = [];
-		if (Form::validated()) {
+		if (Form::validated())
+		{
 			$result = ContentFile::uploadFile();
 
-			if (!$result['error']) {
-				$messages['success'] = Fractal::lang('messages.successCreated', ['item' => Fractal::langLowerA('labels.file')]);
+			if (!$result['error'])
+			{
+				$messages['success'] = Fractal::trans('messages.successCreated', ['item' => Fractal::transLowerA('labels.file')]);
 
 				$fileResult = $result['files']['file'];
 
@@ -154,7 +156,7 @@ class FilesController extends BaseController {
 				$messages['error'] = $result['error'];
 			}
 		} else {
-			$messages['error'] = Fractal::lang('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errorGeneral');
 		}
 
 		return Redirect::to(Fractal::uri('create', true))
@@ -168,11 +170,11 @@ class FilesController extends BaseController {
 		$file = ContentFile::find($id);
 		if (empty($file))
 			return Redirect::to(Fractal::uri('', true))->with('messages', [
-				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.file')])
+				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.file')])
 			]);
 
-		Site::set('title', $file->name.' ('.Fractal::lang('labels.file').')');
-		Site::set('titleHeading', Fractal::lang('labels.updateFile').': <strong>'.Format::entities($file->name).'</strong>');
+		Site::setTitle($file->name.' ('.Fractal::trans('labels.file').')');
+		Site::setHeading(Fractal::trans('labels.updateFile').': <strong>'.Format::entities($file->name).'</strong>');
 
 		Form::setDefaults($file);
 
@@ -181,12 +183,12 @@ class FilesController extends BaseController {
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.returnToFilesList'),
+			'label' => Fractal::trans('labels.returnToFilesList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => 'files',
 		]);
 
-		Fractal::addTrailItem(Fractal::lang('labels.update'), Request::url());
+		Fractal::addTrailItem(Fractal::trans('labels.update'), Request::url());
 
 		return View::make(Fractal::view('form'))
 			->with('update', true)
@@ -198,21 +200,22 @@ class FilesController extends BaseController {
 		$file = ContentFile::find($id);
 		if (empty($file))
 			return Redirect::to(Fractal::uri('', true))->with('messages', [
-				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.file')])
+				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.file')])
 			]);
 
 		Form::setValidationRules(ContentFile::validationRules($id));
 
 		$messages = [];
-		if (Form::validated()) {
+		if (Form::validated())
+		{
 			$uploaded = false;
 			$result   = ['error' => false];
 
-			//get original uploaded filename
+			// get original uploaded filename
 			$originalFilename  = isset($_FILES['file']['name']) ? $_FILES['file']['name'] : '';
 			$originalExtension = strtolower(File::extension($originalFilename));
 
-			//make sure filename is unique and then again remove extension to set basename
+			// make sure filename is unique and then again remove extension to set basename
 			$filename  = Format::unique(Format::slug(Input::get('name')).'.'.File::extension($file->filename), 'content_files', 'filename', $id);
 			$basename  = str_replace('.'.$originalExtension, '', $filename);
 			$extension = $originalExtension;
@@ -229,25 +232,27 @@ class FilesController extends BaseController {
 					$basename   = $fileResult['basename'];
 					$extension  = $fileResult['extension'];
 
-					//delete current thumbnail image if it exists
+					// delete current thumbnail image if it exists
 					if (!$thumbnail && $file->thumbnail && File::exists('uploads/'.$file->getPath(true)))
 						File::delete('uploads/'.$file->getPath(true));
 				}
 			}
 
-			//if file was not uploaded but path or name was changed, move/rename file
-			if (!$uploaded && $file->filename != $filename) {
-				//move/rename file
+			// if file was not uploaded but path or name was changed, move/rename file
+			if (!$uploaded && $file->filename != $filename)
+			{
+				// move/rename file
 				if (File::exists('uploads/'.$file->getPath()))
 					File::move('uploads/'.$file->getPath(), 'uploads/files/'.$file->path.'/'.$filename);
 
-				//move/rename thumbnail image if it exists
+				// move/rename thumbnail image if it exists
 				if (File::exists('uploads/'.$file->getPath(true)) && $file->thumbnail)
 					File::move('uploads/'.$file->getPath(true), 'uploads/files/'.$file->path.'/thumbnails/'.$filename);
 			}
 
-			if (!$result['error']) {
-				$messages['success'] = Fractal::lang('messages.successUpdated', ['item' => Fractal::langLowerA('labels.file')]);
+			if (!$result['error'])
+			{
+				$messages['success'] = Fractal::trans('messages.successUpdated', ['item' => Fractal::transLowerA('labels.file')]);
 
 				$file->name      = ucfirst(trim(Input::get('name')));
 				$file->filename  = $filename;
@@ -294,7 +299,7 @@ class FilesController extends BaseController {
 				$messages['error'] = $result['error'];
 			}
 		} else {
-			$messages['error'] = Fractal::lang('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errorGeneral');
 		}
 
 		return Redirect::to(Fractal::uri($id.'/edit', true))
@@ -307,7 +312,7 @@ class FilesController extends BaseController {
 	{
 		$result = [
 			'resultType' => 'Error',
-			'message'    => Fractal::lang('messages.errorGeneral'),
+			'message'    => Fractal::trans('messages.errorGeneral'),
 		];
 
 		$file = ContentFile::find($id);
@@ -323,13 +328,13 @@ class FilesController extends BaseController {
 		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Fractal::lang('messages.successDeleted', ['item' => '<strong>'.$file->name.'</strong>']);
+		$result['message']    = Fractal::trans('messages.successDeleted', ['item' => '<strong>'.$file->name.'</strong>']);
 
-		//delete file
+		// delete file
 		if (File::exists('uploads/'.$file->getPath()))
 			File::delete('uploads/'.$file->getPath());
 
-		//delete thumbnail image if it exists
+		// delete thumbnail image if it exists
 		if (File::exists('uploads/'.$file->getPath(true)) && $file->thumbnail)
 			File::delete('uploads/'.$file->getPath(true));
 

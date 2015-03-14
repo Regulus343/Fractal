@@ -28,11 +28,11 @@ class SettingsController extends BaseController {
 		Fractal::setControllerPath($this);
 
 		Site::setMulti(['section', 'subSection'], 'Settings');
-		Site::set('title', Fractal::lang('labels.settings'));
+		Site::setTitle(Fractal::trans('labels.settings'));
 
 		Fractal::setViewsLocation('settings');
 
-		Fractal::addTrailItem(Fractal::lang('labels.settings'), Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::trans('labels.settings'), Fractal::getControllerPath());
 	}
 
 	public function getIndex()
@@ -72,7 +72,7 @@ class SettingsController extends BaseController {
 
 		$messages = [];
 		if (Form::validated()) {
-			$messages['success'] = Fractal::lang('messages.successUpdated', ['item' => Fractal::langLower('labels.settings')]);
+			$messages['success'] = Fractal::trans('messages.successUpdated', ['item' => Fractal::transLower('labels.settings')]);
 
 			foreach ($settings as $setting) {
 				if (isset($values[$setting->getFieldName()])) {
@@ -95,7 +95,7 @@ class SettingsController extends BaseController {
 				'description' => 'Updated Settings',
 			]);
 		} else {
-			$messages['error'] = Fractal::lang('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errorGeneral');
 		}
 
 		return Redirect::to(Fractal::uri('', true))

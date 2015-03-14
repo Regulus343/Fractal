@@ -41,7 +41,7 @@
 				])?>
 
 				<a href="" class="btn btn-default trigger-modal pull-right" data-modal-ajax-uri="api/view-markdown-guide" data-modal-ajax-action="get">
-					<span class="glyphicon glyphicon-file"></span>&nbsp; <?=Fractal::lang('labels.viewMarkdownGuide')?>
+					<span class="glyphicon glyphicon-file"></span>&nbsp; <?=Fractal::trans('labels.viewMarkdownGuide')?>
 				</a>
 			</div>
 
@@ -53,7 +53,7 @@
 		</div>
 
 		<a href="" class="btn btn-danger btn-xs remove-template-item pull-right">
-			<span class="glyphicon glyphicon-remove-circle"></span>&nbsp; <?=Fractal::lang('labels.removeContentArea')?>
+			<span class="glyphicon glyphicon-remove-circle"></span>&nbsp; <?=Fractal::trans('labels.removeContentArea')?>
 		</a>
 	</fieldset>
 

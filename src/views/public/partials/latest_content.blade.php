@@ -19,7 +19,7 @@
 
 							@else
 
-								<span class="not-published">{{ Fractal::lang('labels.notPublished') }}</span>
+								<span class="not-published">{{ Fractal::trans('labels.notPublished') }}</span>
 
 							@endif
 						</time>
@@ -55,7 +55,7 @@
 									{{ $contentItem->content }}
 
 									<a href="{{ $contentItem->url }}" class="btn btn-default btn-xs btn-read-more">
-										{{ Fractal::lang('labels.viewItem') }}
+										{{ Fractal::trans('labels.viewItem') }}
 									</a>
 								</div>
 							</div>

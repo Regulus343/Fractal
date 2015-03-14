@@ -5,6 +5,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 
+use Regulus\Fractal\Libraries\LoadConfiguration;
+
 class FractalServiceProvider extends ServiceProvider {
 
 	/**
@@ -21,12 +23,25 @@ class FractalServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('regulus/fractal');
+		$this->publishes([
+			__DIR__.'/config/blogs.php'        => config_path('blogs.php'),
+			__DIR__.'/config/cms.php'          => config_path('cms.php'),
+			__DIR__.'/config/cms_tables.php'   => config_path('cms_tables.php'),
+			__DIR__.'/config/media.php'        => config_path('media.php'),
+			__DIR__.'/config/social.php'       => config_path('social.php'),
 
-		$exterminator = Config::get('fractal::exterminator');
+			__DIR__.'/config/cms_settings.php' => config_path('exported/cms_settings.php'),
+			__DIR__.'/config/menus.php'        => config_path('exported/menus.php'),
+
+			__DIR__.'/assets'                  => assets_path('regulus/fractal'),
+		]);
+
+		$this->loadTranslationsFrom(__DIR__.'/lang', 'fractal');
+
+		$this->loadViewsFrom(__DIR__.'/views', 'fractal');
 
 		//load config for dependent packages
-		$vendorPath = base_path().'/vendor/';
+		/*$vendorPath = base_path().'/vendor/';
 
 		$configPackages = [
 			'regulus/activity-log',
@@ -37,9 +52,6 @@ class FractalServiceProvider extends ServiceProvider {
 			'regulus/tetra-text',
 			'regulus/upstream',
 		];
-
-		if ($exterminator)
-			$configPackages[] = "regulus/exterminator";
 
 		foreach ($configPackages as $configPackage) {
 			$this->package($configPackage, null, $vendorPath.$configPackage.'/src');
@@ -61,29 +73,29 @@ class FractalServiceProvider extends ServiceProvider {
 		$loader->alias('Upstream',  'Regulus\Upstream\Facade');
 		$loader->alias('Markdown',  'MaxHoffmann\Parsedown\ParsedownFacade');
 
-		if ($exterminator)
-			$loader->alias('Dbg', 'Regulus\Exterminator\Exterminator');
-
 		//create "parsedown" singleton for Markdown parsing
 		$this->app->singleton('parsedown', function(){
 			return new \Parsedown;
-		});
+		});*/
 
-		//load routes, filters, view composers, and settings files
-		if (Config::get('fractal::preload.filters'))
-			include app_path().'/filters.php';
+		$extraPath  = __DIR__.'/extra/';
+		$extraFiles = [
+			'filters',
+			'helpers',
+			'routes',
+			'settings',
+			'validation_rules',
+			'view_composers',
+		];
 
-		if (Config::get('fractal::preload.routes'))
-			include app_path().'/routes.php';
+		foreach ($extraFiles as $extraFile)
+		{
+			include $extraPath.$extraFile.'.php';
+		}
 
-		$extraPath = __DIR__.'/../../extra/';
-
-		include $extraPath.'filters.php';
-		include $extraPath.'helpers.php';
-		include $extraPath.'validation_rules.php';
-		include $extraPath.'view_composers.php';
-		include $extraPath.'routes.php';
-		include $extraPath.'settings.php';
+		//load delayed configuration files
+		$this->app->make('Illuminate\Foundation\Bootstrap\LoadConfiguration')
+			->loadConfigurationFiles($this->app, $this->app['config'], true);
 	}
 
 	/**
@@ -94,18 +106,10 @@ class FractalServiceProvider extends ServiceProvider {
 	public function register()
 	{
 		//bind Fractal
-		$this->app->bind('fractal', function()
+		$this->app->singleton('Regulus\Fractal\Fractal', function()
 		{
-			return new Fractal();
+			return new Fractal;
 		});
-
-		//add the install command
-		$this->app['fractal:install'] = $this->app->share(function($app)
-		{
-			return new Commands\InstallCommand($app);
-		});
-
-		$this->commands('fractal:install');
 
 		//register additional service providers
 		$this->app->register('Regulus\Elemental\ElementalServiceProvider');
@@ -122,7 +126,7 @@ class FractalServiceProvider extends ServiceProvider {
 	 */
 	public function provides()
 	{
-		return [];
+		return ['Regulus\Fractal\Fractal'];
 	}
 
 }

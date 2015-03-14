@@ -25,13 +25,13 @@ class ActivityController extends UsersController {
 
 		Site::set('section', 'Users');
 		Site::set('subSection', 'Activity');
-		Site::set('title', Fractal::lang('labels.userActivity'));
+		Site::setTitle(Fractal::trans('labels.userActivity'));
 
 		Fractal::setContentType('activities');
 
 		Fractal::setViewsLocation('users.activity');
 
-		Fractal::addTrailItem(Fractal::lang('labels.activity'), Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::trans('labels.activity'), Fractal::getControllerPath());
 
 		Site::set('defaultSorting', ['order' => 'desc']);
 	}
@@ -62,7 +62,9 @@ class ActivityController extends UsersController {
 			$data = Fractal::setPaginationMessage();
 		} else {
 			$data['content'] = Activity::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
-			if ($data['terms'] == "") $result['message'] = Fractal::lang('messages.searchNoTerms');
+
+			if ($data['terms'] == "")
+				$result['message'] = Fractal::trans('messages.search_no_terms');
 		}
 
 		$data['result']['pages']     = Fractal::getLastPage();

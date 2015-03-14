@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-	<title>{{{ Site::title() }}}</title>
+	<title>{{ Site::title() }}</title>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link rel="shortcut icon" type="image/x-icon" href="{{ Fractal::getImageUrlFromConfig('favicon') }}" />
+	<link rel="shortcut icon" type="image/x-icon" href="{{ Fractal::getImageUrlFromConfig('cms.favicon') }}" />
 
 	@include(Fractal::view('partials.included_files', true))
 </head>
@@ -24,7 +24,7 @@
 		<div class="container-full{{ (!Site::get('hideSidebar') && Auth::checkState('sidebarOpen', true, true) ? ' sidebar-offset' : '') }}" id="container-content">
 			<div class="container-pad">
 				@if (!Site::get('hideTitle'))
-					<h1 id="main-heading">{{ Site::titleHeading() }}</h1>
+					<h1 id="main-heading">{{ Site::heading() }}</h1>
 
-					{{ Site::getBreadcrumbTrailMarkup() }}
+					{!! Site::getBreadcrumbTrailMarkup() !!}
 				@endif

@@ -1,88 +1,88 @@
-@extends(Config::get('fractal::layout'))
+@extends(config('cms.layout'))
 
-@section(Config::get('fractal::contentSection'))
+@section(config('cms.content_section'))
 
 	<script type="text/javascript">
 		var minimumPasswordLength = {{ Fractal::getSetting('Minimum Password Length') }};
 	</script>
 	<script type="text/javascript" src="{{ Site::js('fractal/forms/user', 'regulus/fractal') }}"></script>
 
-	{{ Form::openResource() }}
+	{!! Form::openResource() !!}
 
 		<div class="row">
 			<div class="col-md-6">
-				{{ Form::field('username') }}
+				{!! Form::field('username') !!}
 			</div>
 			<div class="col-md-6">
-				{{ Form::field('email') }}
+				{!! Form::field('email') !!}
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-md-6">
-				{{ Form::field('first_name') }}
+				{!! Form::field('first_name') !!}
 			</div>
 			<div class="col-md-6">
-				{{ Form::field('last_name') }}
+				{!! Form::field('last_name') !!}
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-md-4">
-				{{ Form::field('city') }}
+				{!! Form::field('city') !!}
 			</div>
 			<div class="col-md-4">
-				{{ Form::field('country', 'select', [
-					'label'       => Fractal::lang('labels.country'),
+				{!! Form::field('country', 'select', [
+					'label'       => Fractal::trans('labels.country'),
 					'options'     => Form::countryOptions(),
-					'null-option' => Fractal::lang('messages.selectItem', array('item' => Format::a(strtolower(Fractal::lang('labels.country')))))
-				]) }}
+					'null-option' => Fractal::trans('messages.select_item', ['item' => Format::a(strtolower(Fractal::trans('labels.country')))])
+				]) !!}
 			</div>
 			<div class="col-md-4">
-				{{ Form::field('region', 'select', [
+				{!! Form::field('region', 'select', [
 					'label'       => Fractal::getRegionLabel(Form::value('country')),
 					'options'     => Form::provinceOptions(),
-					'null-option' => Fractal::lang('messages.selectItem', array('item' => Format::a(strtolower(Fractal::getRegionLabel(Form::value('country'))))))
-				]) }}
+					'null-option' => Fractal::trans('messages.select_item', ['item' => Format::a(strtolower(Fractal::getRegionLabel(Form::value('country'))))])
+				]) !!}
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-md-4">
-				{{ Form::field('phone', 'text', ['label' => 'Phone Number']) }}
+				{!! Form::field('phone', 'text', ['label' => 'Phone Number']) !!}
 			</div>
 			<div class="col-md-4">
-				{{ Form::field('website') }}
+				{!! Form::field('website') !!}
 			</div>
 			<div class="col-md-4">
-				{{ Form::field('twitter', 'text', ['maxlength' => 16]) }}
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-md-12">
-				{{ Form::field('about', 'textarea', ['class-field' => 'ckeditor']) }}
+				{!! Form::field('twitter', 'text', ['maxlength' => 16]) !!}
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field('roles', 'checkbox-set', [
+				{!! Form::field('about', 'textarea', ['class-field' => 'ckeditor']) !!}
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				{!! Form::field('roles', 'checkbox-set', [
 					'options'        => Form::prepOptions(Regulus\Identify\Role::orderBy('display_order')->orderBy('name')->get(), array('id', 'name')),
-					'label'          => Fractal::lang('labels.roles'),
+					'label'          => Fractal::trans('labels.roles'),
 					'associative'    => true,
 					'name-values'    => true,
-				]) }}
+				]) !!}
 			</div>
 		</div>
 
 		@if (!isset($update) || !$update)
 			<div class="row">
 				<div class="col-md-4">
-					{{ Form::field('password') }}
+					{!! Form::field('password') !!}
 				</div>
 				<div class="col-md-4">
-					{{ Form::field('password_confirmation', null, ['label' => 'Confirm Password']) }}
+					{!! Form::field('password_confirmation', null, ['label' => 'Confirm Password']) !!}
 				</div>
 				<div class="col-md-4 passwords-check">
 					<span class="glyphicon glyphicon-ok-circle passwords-match green hidden"></span>
@@ -93,20 +93,20 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field(null, 'checkbox-set', [
+				{!! Form::field(null, 'checkbox-set', [
 					'options'     => array('active' => 'Active', 'banned' => 'Banned'),
-					'label'       => Fractal::lang('labels.statuses'),
+					'label'       => Fractal::trans('labels.statuses'),
 					'associative' => true
-				]) }}
+				]) !!}
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field(Form::submitResource(Fractal::lang('labels.user')), 'button') }}
+				{!! Form::field(Form::submitResource(Fractal::trans('labels.user')), 'button') !!}
 			</div>
 		</div>
 
-	{{ Form::close() }}
+	{!! Form::close() !!}
 
 @stop

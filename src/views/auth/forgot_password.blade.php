@@ -1,23 +1,27 @@
-@extends(Config::get('fractal::layout'))
+@extends(config('cms.layout'))
 
-@section(Config::get('fractal::contentSection'))
+@section(config('cms.content_section'))
 
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$('#username').focus();
+
+			$('#field-identifier').focus();
+
 		});
 	</script>
 
 	<link type="text/css" rel="stylesheet" href="{{ Site::css('login', 'regulus/fractal') }}" />
 
-	{{ Form::open(['class' => 'form-login']) }}
-		<h2>{{ Site::titleHeading() }}</h2>
+	{!! Form::open(['class' => 'form-login']) !!}
 
-		{{ Form::field('username') }}
+		<h2>{{ Site::heading() }}</h2>
 
-		<a href="{{ Fractal::url('login') }}" class="pull-right">{{ Fractal::lang('labels.returnToLogIn') }}</a>
+		{!! Form::field('identifier', 'text', ['label' => Fractal::trans('labels.username')]) !!}
 
-		{{ Form::field('[ICON: share-alt]'.Fractal::lang('labels.resetPassword'), 'button') }}
-	{{ Form::close() }}
+		<a href="{{ Fractal::url('login') }}" class="pull-right">{{ Fractal::trans('labels.return_to_log_in') }}</a>
+
+		{!! Form::field('[ICON: share-alt]'.Fractal::trans('labels.reset_password'), 'button') !!}
+
+	{!! Form::close() !!}
 
 @stop

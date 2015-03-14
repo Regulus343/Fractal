@@ -25,7 +25,7 @@ class DashboardController extends BaseController {
 		parent::__construct();
 
 		Site::setMulti(['section', 'subSection'], 'Home');
-		Site::set('title', Fractal::lang('labels.dashboard'));
+		Site::setTitle(Fractal::trans('labels.dashboard'));
 
 		Fractal::setViewsLocation('core');
 	}
@@ -51,13 +51,14 @@ class DashboardController extends BaseController {
 
 	public function getDeveloper($off = false)
 	{
-		if ($off == "off") {
+		if ($off == "off")
 			Session::forget('developer');
-			return Redirect::to(Fractal::url())->with('messages', array('info' => Fractal::lang('messages.developerModeDisabled')));
-		} else {
+		else
 			Site::setDeveloper();
-			return Redirect::to(Fractal::url())->with('messages', array('info' => Fractal::lang('messages.developerModeEnabled')));
-		}
+
+		return Redirect::to(Fractal::url())->with('messages', [
+			'info' => Fractal::trans('messages.developer_mode_'.($off == "off" ? 'disabled' : 'enabled'),
+		]);
 	}
 
 }

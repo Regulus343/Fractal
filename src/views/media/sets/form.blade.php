@@ -1,6 +1,6 @@
-@extends(Config::get('fractal::layout'))
+@extends(config('cms.layout'))
 
-@section(Config::get('fractal::contentSection'))
+@section(config('cms.content_section'))
 
 	<script type="text/javascript">
 		var gridster;
@@ -209,7 +209,7 @@
 		@include(Fractal::view('media.sets.templates.item', true))
 
 		<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="media/sets/add-item" data-modal-ajax-action="post" data-modal-ajax-data-variables="items" data-modal-callback-function="addSelectItemAction">
-			<span class="glyphicon glyphicon-picture"></span>&nbsp; {{ Fractal::lang('labels.addMediaItem') }}
+			<span class="glyphicon glyphicon-picture"></span>&nbsp; {{ Fractal::trans('labels.addMediaItem') }}
 		</a>
 
 		<div class="row image-gallery-area hidden">
@@ -246,7 +246,7 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field(Form::submitResource(Fractal::lang('labels.mediaSet')), 'button') }}
+				{{ Form::field(Form::submitResource(Fractal::trans('labels.mediaSet')), 'button') }}
 			</div>
 		</div>
 

@@ -1,6 +1,6 @@
-@extends(Config::get('fractal::layout'))
+@extends(config('cms.layout'))
 
-@section(Config::get('fractal::contentSection'))
+@section(config('cms.content_section'))
 
 	<script type="text/javascript">
 		var contentAreaId;
@@ -28,7 +28,7 @@
 				getLayoutTags();
 			});
 
-			Formation.loadTemplates('#content-areas', $.parseJSON('{{ Form::getJsonValues('content_areas') }}'), contentAreaTemplateCallback);
+			Formation.loadTemplates('#content-areas', $.parseJSON('{!! Form::getJsonValues('content_areas') !!}'), contentAreaTemplateCallback);
 
 			$('form').submit(function(e){
 				$('#content-areas fieldset').each(function(){
@@ -191,45 +191,45 @@
 
 	@include(Fractal::view('partials.markdown_preview', true))
 
-	{{ Form::openResource() }}
+	{!! Form::openResource() !!}
 
 		<div class="row button-menu">
 			<div class="col-md-12">
 				@if (isset($update) && $update)
 					<a href="{{ $pageUrl }}" class="btn btn-default right-padded pull-right">
-						<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Fractal::lang('labels.viewPage') }}
+						<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Fractal::trans('labels.viewPage') }}
 					</a>
 				@endif
 
 				<a href="{{ Fractal::url('pages') }}" class="btn btn-default pull-right">
-					<span class="glyphicon glyphicon-list"></span>&nbsp; {{ Fractal::lang('labels.returnToPagesList') }}
+					<span class="glyphicon glyphicon-list"></span>&nbsp; {{ Fractal::trans('labels.returnToPagesList') }}
 				</a>
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-md-4">
-				{{ Form::field('title') }}
+				{!! Form::field('title') !!}
 			</div>
 			<div class="col-md-4">
-				{{ Form::field('slug') }}
+				{!! Form::field('slug') !!}
 			</div>
 			<div class="col-md-4">
-				{{ Form::field('layout_template_id', 'select', [
+				{!! Form::field('layout_template_id', 'select', [
 					'label'       => 'Layout Template',
 					'options'     => Form::prepOptions(Regulus\Fractal\Models\Content\LayoutTemplate::orderBy('static', 'desc')->orderBy('name')->get(), ['id', 'name']),
 					'null-option' => 'Custom Layout',
-				]) }}
+				]) !!}
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field('layout', 'textarea', [
+				{!! Form::field('layout', 'textarea', [
 					'id-field-container'    => 'layout-area',
 					'class-field-container' => HTML::hiddenArea(Form::value('layout_template_id') != "", true),
 					'class-field'           => 'tab',
-				]) }}
+				]) !!}
 			</div>
 		</div>
 
@@ -239,26 +239,26 @@
 		@include(Fractal::view('content.pages.templates.content_area', true))
 
 		<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="pages/add-content-area{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="get" data-modal-callback-function="selectContentAreaActions">
-			<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Fractal::lang('labels.addContentArea') }}
+			<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Fractal::trans('labels.add_content_area') }}
 		</a>
 
 		<div class="row clear">
 			<div class="col-md-2">
 				<div class="form-group">
-					{{ Form::field('published', 'checkbox', [
+					{!! Form::field('published', 'checkbox', [
 						'data-checked-show'      => '.published-at-area',
 						'data-show-hide-type'    => 'visibility',
 						'data-callback-function' => 'publishedCheckedCallback',
-					]) }}
+					]) !!}
 				</div>
 			</div>
 			<div class="col-md-3 published-at-area{{ HTML::invisibleArea(!Form::value('published', 'checkbox'), true) }}">
 				<div class="form-group">
 					<div class="input-group date date-time-picker">
-						{{ Form::text('published_at', null, [
+						{!! Form::text('published_at', null, [
 							'class'       => 'date',
 							'placeholder' => 'Date/Time Published',
-						]) }}
+						]) !!}
 
 						<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
 					</div>
@@ -268,10 +268,10 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field(Form::submitResource(Fractal::lang('labels.page')), 'button') }}
+				{!! Form::field(Form::submitResource(Fractal::trans('labels.page')), 'button') !!}
 			</div>
 		</div>
 
-	{{ Form::close() }}
+	{!! Form::close() !!}
 
 @stop

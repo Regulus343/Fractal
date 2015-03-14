@@ -28,14 +28,14 @@ class CategoriesController extends BlogsController {
 
 		Site::set('section', 'Blogs');
 		Site::set('subSection', 'Categories');
-		Site::set('title', Fractal::lang('labels.blogCategories'));
+		Site::setTitle(Fractal::transChoice('labels.blog_categories', 2));
 
-		//set content type and views location
+		// set content type and views location
 		Fractal::setContentType('blog-category');
 
 		Fractal::setViewsLocation('blogs.categories');
 
-		Fractal::addTrailItem(Fractal::lang('labels.categories'), Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::trans('labels.categories'), Fractal::getControllerPath());
 	}
 
 	public function index()
@@ -52,7 +52,7 @@ class CategoriesController extends BlogsController {
 			$categories = Category::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.createCategory'),
+			'label' => Fractal::trans('labels.create_item', ['item' => Fractal::trans('labels.blog_category')]),
 			'icon'  => 'glyphicon glyphicon-file',
 			'uri'   => Fractal::uri('create', true),
 		]);
@@ -82,18 +82,18 @@ class CategoriesController extends BlogsController {
 
 	public function create()
 	{
-		Site::set('title', Fractal::lang('labels.createCategory'));
+		Site::setTitle(Fractal::trans('labels.createCategory'));
 
 		Category::setDefaultsForNew();
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.returnToCategoriesList'),
+			'label' => Fractal::trans('labels.returnToCategoriesList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
 
-		Fractal::addTrailItem(Fractal::lang('labels.create'), Request::url());
+		Fractal::addTrailItem(Fractal::trans('labels.create'), Request::url());
 
 		return View::make(Fractal::view('form'));
 	}
@@ -104,7 +104,7 @@ class CategoriesController extends BlogsController {
 
 		$messages = [];
 		if (Form::validated()) {
-			$messages['success'] = Fractal::lang('messages.successCreated', ['item' => Fractal::langLowerA('labels.category')]);
+			$messages['success'] = Fractal::trans('messages.successCreated', ['item' => Fractal::transLowerA('labels.category')]);
 
 			$input = Input::all();
 			$input['user_id'] = Auth::user()->id;
@@ -122,7 +122,7 @@ class CategoriesController extends BlogsController {
 			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Fractal::lang('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errorGeneral');
 		}
 
 		return Redirect::to(Fractal::uri('create', true))
@@ -136,22 +136,22 @@ class CategoriesController extends BlogsController {
 		$category = Category::findBySlug($slug);
 		if (empty($category))
 			return Redirect::to(Fractal::uri('pages'))->with('messages', [
-				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.category')])
+				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.category')])
 			]);
 
-		Site::set('title', $category->name.' ('.Fractal::lang('labels.category').')');
-		Site::set('titleHeading', Fractal::lang('labels.updateCategory').': <strong>'.Format::entities($category->name).'</strong>');
+		Site::setTitle($category->name.' ('.Fractal::trans('labels.category').')');
+		Site::setHeading(Fractal::trans('labels.updateCategory').': <strong>'.Format::entities($category->name).'</strong>');
 
 		Form::setDefaults($category);
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.returnToCategoriesList'),
+			'label' => Fractal::trans('labels.returnToCategoriesList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
 
-		Fractal::addTrailItem(Fractal::lang('labels.update'), Request::url());
+		Fractal::addTrailItem(Fractal::trans('labels.update'), Request::url());
 
 		return View::make(Fractal::view('form'))
 			->with('update', true)
@@ -163,14 +163,14 @@ class CategoriesController extends BlogsController {
 		$category = Category::findBySlug($slug);
 		if (empty($category))
 			return Redirect::to(Fractal::uri('pages'))->with('messages', [
-				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.category')])
+				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.category')])
 			]);
 
 		$category->setValidationRules();
 
 		$messages = [];
 		if (Form::validated()) {
-			$messages['success'] = Fractal::lang('messages.successUpdated', ['item' => Fractal::langLowerA('labels.category')]);
+			$messages['success'] = Fractal::trans('messages.successUpdated', ['item' => Fractal::transLowerA('labels.category')]);
 
 			$category->saveData();
 
@@ -186,7 +186,7 @@ class CategoriesController extends BlogsController {
 			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Fractal::lang('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errorGeneral');
 
 			return Redirect::to(Fractal::uri($slug.'/edit', true))
 				->with('messages', $messages)
@@ -199,7 +199,7 @@ class CategoriesController extends BlogsController {
 	{
 		$result = [
 			'resultType' => 'Error',
-			'message'    => Fractal::lang('messages.errorGeneral'),
+			'message'    => Fractal::trans('messages.errorGeneral'),
 		];
 
 		$category = Category::find($id);
@@ -215,7 +215,7 @@ class CategoriesController extends BlogsController {
 		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Fractal::lang('messages.successDeleted', ['item' => '<strong>'.$category->name.'</strong>']);
+		$result['message']    = Fractal::trans('messages.successDeleted', ['item' => '<strong>'.$category->name.'</strong>']);
 
 		$category->articles()->sync([]);
 		$category->delete();

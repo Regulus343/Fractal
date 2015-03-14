@@ -1,16 +1,14 @@
 <?php namespace Regulus\Fractal\Models\Content;
 
-use Regulus\Formation\BaseModel;
+use Regulus\Formation\Models\Base;
 
 use Fractal;
 
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View as LaravelView;
 
 use \Form;
 
-class Menu extends BaseModel {
+class Menu extends Base {
 
 	/**
 	 * The database table used by the model.
@@ -141,7 +139,7 @@ class Menu extends BaseModel {
 
 		$menu = $this->createArray();
 
-		return LaravelView::make(Config::get('fractal::viewsLocation').'partials.menu')
+		return LaravelView::make(config('cms.views_location').'partials.menu')
 			->with('menu', $menu)
 			->with('listItemsOnly', $options['listItemsOnly'])
 			->with('class', $options['class'])
@@ -157,7 +155,7 @@ class Menu extends BaseModel {
 	 */
 	public static function getArray($name)
 	{
-		$menu = Config::get('fractal::menus.'.Fractal::toCamelCase($name));
+		$menu = config('menus.'.camel_case($name));
 		if (!is_null($menu))
 			return $menu;
 
@@ -180,7 +178,7 @@ class Menu extends BaseModel {
 		$menu    = (object) static::getArray($name);
 		$options = array_merge(static::$markupOptions, $options);
 
-		return LaravelView::make(Config::get('fractal::viewsLocation').'partials.menu')
+		return LaravelView::make(config('cms.views_location').'partials.menu')
 			->with('menu', $menu)
 			->with('listItemsOnly', $options['listItemsOnly'])
 			->with('class', $options['class'])
@@ -228,7 +226,9 @@ class Menu extends BaseModel {
 	 */
 	public function getLastUpdatedDateTime($dateFormat = false)
 	{
-		if (!$dateFormat) $dateFormat = Config::get('fractal::dateTimeFormat');
+		if (!$dateFormat)
+			$dateFormat = config('format.defaults.datetime');
+
 		return $this->updated_at != "0000-00-00" ? date($dateFormat, strtotime($this->updated_at)) : date($dateFormat, strtotime($this->created_at));
 	}
 

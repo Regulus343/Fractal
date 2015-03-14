@@ -75,7 +75,7 @@ class Reports {
 					$maxDay = $itemInterval;
 			}
 
-			$contentTypeLabel = Fractal::lang('labels.contentTypes.plural.'.$item->content_type);
+			$contentTypeLabel = Fractal::trans('labels.contentTypes.plural.'.$item->content_type);
 
 			if (!in_array($contentTypeLabel, $contentTypes))
 				$contentTypes[] = $contentTypeLabel;
@@ -107,7 +107,7 @@ class Reports {
 			if ($interval == "day" && ($itemInterval == 1 || $itemInterval == $maxDay))
 				$itemInterval = date('M').' '.$itemInterval;
 
-			$results['values'][Fractal::lang('labels.contentTypes.plural.'.$item->content_type)][$itemInterval] += $item->views;
+			$results['values'][Fractal::trans('labels.contentTypes.plural.'.$item->content_type)][$itemInterval] += $item->views;
 		}
 
 		return $results;
@@ -187,7 +187,7 @@ class Reports {
 					$maxDay = $itemInterval;
 			}
 
-			$contentTypeLabel = Fractal::lang('labels.contentTypes.plural.'.$item->content_type);
+			$contentTypeLabel = Fractal::trans('labels.contentTypes.plural.'.$item->content_type);
 
 			if (!in_array($contentTypeLabel, $contentTypes))
 				$contentTypes[] = $contentTypeLabel;
@@ -219,7 +219,7 @@ class Reports {
 			if ($interval == "day" && ($itemInterval == 1 || $itemInterval == $maxDay))
 				$itemInterval = date('M').' '.$itemInterval;
 
-			$results['values'][Fractal::lang('labels.contentTypes.plural.'.$item->content_type)][$itemInterval] ++;
+			$results['values'][Fractal::trans('labels.contentTypes.plural.'.$item->content_type)][$itemInterval] ++;
 		}
 
 		return $results;
@@ -316,7 +316,7 @@ class Reports {
 				{
 					$reportData[$i]->content = $contentItem;
 
-					$itemTitle = Fractal::lang('labels.contentTypes.singular.'.$item->content_type).': '.str_replace("'", "\'", $contentItem->getTitle());
+					$itemTitle = Fractal::trans('labels.contentTypes.singular.'.$item->content_type).': '.str_replace("'", "\'", $contentItem->getTitle());
 					$itemTitle = '<a href="'.$item->content->getUrl().'" target="_blank">'.$itemTitle.'</a>';
 
 					if (!in_array($itemTitle, $itemTitles))
@@ -351,7 +351,7 @@ class Reports {
 			if ($interval == "day" && ($itemInterval == 1 || $itemInterval == $maxDay))
 				$itemInterval = date('M').' '.$itemInterval;
 
-			$itemTitle = Fractal::lang('labels.contentTypes.singular.'.$item->content_type).': '.str_replace("'", "\'", $item->content->getTitle());
+			$itemTitle = Fractal::trans('labels.contentTypes.singular.'.$item->content_type).': '.str_replace("'", "\'", $item->content->getTitle());
 			$itemTitle = '<a href="'.$item->content->getUrl().'" target="_blank">'.$itemTitle.'</a>';
 
 			if (isset($item->content) && !empty($item->content))

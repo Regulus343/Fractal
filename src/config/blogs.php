@@ -35,7 +35,7 @@ return [
 	| to false.
 	|
 	*/
-	'baseUri' => false,
+	'base_uri' => false,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -50,7 +50,7 @@ return [
 	| and base URI settings.
 	|
 	*/
-	'shortRoutes' => true,
+	'short_routes' => true,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -61,7 +61,7 @@ return [
 	| controller, point this setting to it instead of the default.
 	|
 	*/
-	'viewController' => 'Regulus\Fractal\Controllers\Blogs\ViewController',
+	'view_controller' => 'Regulus\Fractal\Controllers\Blogs\ViewController',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -73,7 +73,7 @@ return [
 	| of your own for full view customization.
 	|
 	*/
-	'viewsLocation' => 'fractal::blogs.view',
+	'views_location' => 'fractal::blogs.view',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -96,7 +96,7 @@ return [
 	| article page by clicking the article's title or a "Read More" link.
 	|
 	*/
-	'previewDivider' => '[preview-divider]',
+	'preview_divider' => '[preview-divider]',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -110,7 +110,7 @@ return [
 	| to false, the selected layout will be used for the article list as well.
 	|
 	*/
-	'useStandardLayoutForArticleList' => true,
+	'use_standard_layout_for_article_list' => true,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -122,6 +122,6 @@ return [
 	| preceding the file path with, for example, "regulus/fractal::".
 	|
 	*/
-	'placeholderThumbnailImage' => 'regulus/fractal::article-placeholder',
+	'placeholder_thumbnail_image' => 'regulus/fractal::article-placeholder',
 
 ];

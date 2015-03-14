@@ -16,10 +16,10 @@ use Regulus\Fractal\Models\Media\Type;
 use Regulus\Fractal\Models\Content\FileType;
 
 use Regulus\ActivityLog\Activity;
-use \Auth;
-use \Form;
-use \Format;
-use \Site;
+use Auth;
+use Form;
+use Format;
+use Site;
 
 class ItemsController extends MediaController {
 
@@ -31,14 +31,14 @@ class ItemsController extends MediaController {
 
 		Site::set('section', 'Media');
 		Site::set('subSection', 'Items');
-		Site::set('title', Fractal::lang('labels.mediaItems'));
+		Site::setTitle(Fractal::transChoice('labels.media_item', 2));
 
-		//set content type and views location
+		// set content type and views location
 		Fractal::setContentType('media-item');
 
 		Fractal::setViewsLocation('media.items');
 
-		Fractal::addTrailItem(Fractal::lang('labels.items'), Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::trans('labels.items'), Fractal::getControllerPath());
 
 		Site::set('defaultSorting', ['order' => 'desc']);
 	}
@@ -57,7 +57,7 @@ class ItemsController extends MediaController {
 			$media = Item::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.createItem'),
+			'label' => Fractal::trans('labels.createItem'),
 			'icon'  => 'glyphicon glyphicon-picture',
 			'uri'   => Fractal::uri('create', true),
 		]);
@@ -87,7 +87,7 @@ class ItemsController extends MediaController {
 
 	public function create()
 	{
-		Site::set('title', Fractal::lang('labels.createItem'));
+		Site::setTitle(Fractal::trans('labels.create_item', ['item' => Fractal::transChoice('labels.media_item')]));
 		Site::set('wysiwyg', true);
 
 		Item::setDefaultsForNew();
@@ -97,12 +97,12 @@ class ItemsController extends MediaController {
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.returnToItemsList'),
+			'label' => Fractal::trans('labels.returnToItemsList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
 
-		Fractal::addTrailItem(Fractal::lang('labels.create'), Request::url());
+		Fractal::addTrailItem(Fractal::trans('labels.create'), Request::url());
 
 		return View::make(Fractal::view('form'));
 	}
@@ -112,7 +112,8 @@ class ItemsController extends MediaController {
 		Form::setValidationRules(Item::validationRules());
 
 		$messages = [];
-		if (Form::validated()) {
+		if (Form::validated())
+		{
 			$uploaded          = false;
 			$uploadedThumbnail = false;
 			$hostedExternally  = (bool) Input::get('hosted_externally');
@@ -132,8 +133,9 @@ class ItemsController extends MediaController {
 					$mediaSourceRequired = false;
 			}
 
-			if (!$result['error'] || !$mediaSourceRequired) {
-				$messages['success'] = Fractal::lang('messages.successCreated', ['item' => Fractal::langLowerA('labels.mediaItem')]);
+			if (!$result['error'] || !$mediaSourceRequired)
+			{
+				$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transLowerA('labels.media_item')]);
 
 				$path = null;
 				$uploadedThumbnail = false;
@@ -218,7 +220,7 @@ class ItemsController extends MediaController {
 				$messages['error'] = $result['error'];
 			}
 		} else {
-			$messages['error'] = Fractal::lang('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errorGeneral');
 		}
 
 		return Redirect::to(Fractal::uri('create', true))
@@ -232,11 +234,11 @@ class ItemsController extends MediaController {
 		$item = Item::findBySlug($slug);
 		if (empty($item))
 			return Redirect::to(Fractal::uri('media/items'))->with('messages', [
-				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.mediaItem')])
+				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.mediaItem')])
 			]);
 
-		Site::set('title', $item->getTitle().' ('.Fractal::lang('labels.mediaItem').')');
-		Site::set('titleHeading', Fractal::lang('labels.updateItem').': <strong>'.$item->getTitle().'</strong>');
+		Site::setTitle($item->getTitle().' ('.Fractal::transChoice('labels.media_item').')');
+		Site::setHeading(Fractal::trans('labels.update_item', ['item' => Fractal::transChoice('labels.media_item')]).': <strong>'.$item->getTitle().'</strong>');
 		Site::set('wysiwyg', true);
 
 		$item->setDefaults();
@@ -247,17 +249,17 @@ class ItemsController extends MediaController {
 
 		Fractal::addButtons([
 			[
-				'label' => Fractal::lang('labels.returnToItemsList'),
+				'label' => Fractal::trans('labels.return_to_items_list', ['item' => Fractal::transChoice('labels.media_item', 2)]),
 				'icon'  => 'glyphicon glyphicon-list',
 				'uri'   => Fractal::uri('', true),
 			],[
-				'label' => Fractal::lang('labels.viewItem'),
+				'label' => Fractal::trans('labels.view_item', ['item' => Fractal::transChoice('labels.media_item')]),
 				'icon'  => 'glyphicon glyphicon-file',
 				'url'   => $item->getUrl(),
 			]
 		]);
 
-		Fractal::addTrailItem(Fractal::lang('labels.update'), Request::url());
+		Fractal::addTrailItem(Fractal::trans('labels.update'), Request::url());
 
 		return View::make(Fractal::view('form'))
 			->with('update', true)
@@ -270,13 +272,14 @@ class ItemsController extends MediaController {
 		$item = Item::findBySlug($slug);
 		if (empty($item))
 			return Redirect::to(Fractal::uri('', true))->with('messages', [
-				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.mediaItem')]),
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoice('labels.media_item')]),
 			]);
 
 		Form::setValidationRules(Item::validationRules($item->id));
 
 		$messages = [];
-		if (Form::validated()) {
+		if (Form::validated())
+		{
 			$uploaded          = false;
 			$uploadedThumbnail = false;
 			$hostedExternally  = (bool) Input::get('hosted_externally');
@@ -330,7 +333,8 @@ class ItemsController extends MediaController {
 			}
 
 			//if file was not uploaded but path or name was changed, move/rename file
-			if (!$uploaded && $item->filename != $filename && !is_null($filename)) {
+			if (!$uploaded && $item->filename != $filename && !is_null($filename))
+			{
 				var_dump($filename); exit;
 				//move/rename file
 				if (File::exists('uploads/'.$item->getFilePath()))
@@ -341,8 +345,9 @@ class ItemsController extends MediaController {
 					File::move('uploads/'.$item->getFilePath(true), 'uploads/media/'.$item->path.'/thumbnails/'.$filename);
 			}
 
-			if (!$result['error']) {
-				$messages['success'] = Fractal::lang('messages.successUpdated', ['item' => Fractal::langLowerA('labels.mediaItem')]);
+			if (!$result['error'])
+			{
+				$messages['success'] = Fractal::trans('messages.successUpdated', ['item' => Fractal::transLowerA('labels.mediaItem')]);
 
 				//delete files for item
 				if ($hostedExternally && $item->isHostedLocally())
@@ -449,7 +454,7 @@ class ItemsController extends MediaController {
 					unset($messages['error']);
 			}
 		} else {
-			$messages['error'] = Fractal::lang('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errorGeneral');
 		}
 
 		return Redirect::to(Fractal::uri($item->slug.'/edit', true))
@@ -462,7 +467,7 @@ class ItemsController extends MediaController {
 	{
 		$result = [
 			'resultType' => 'Error',
-			'message'    => Fractal::lang('messages.errorGeneral'),
+			'message'    => Fractal::trans('messages.errorGeneral'),
 		];
 
 		$item = Item::find($id);
@@ -478,7 +483,7 @@ class ItemsController extends MediaController {
 		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Fractal::lang('messages.successDeleted', ['item' => '<strong>'.$item->getTitle().'</strong>']);
+		$result['message']    = Fractal::trans('messages.successDeleted', ['item' => '<strong>'.$item->getTitle().'</strong>']);
 
 		$item->deleteFiles();
 
@@ -517,6 +522,7 @@ class ItemsController extends MediaController {
 			'thumbnail_width'  => $thumbnailImageSize,
 			'thumbnail_height' => $thumbnailImageSize,
 		];
+
 		Form::setDefaults($defaults);
 	}
 

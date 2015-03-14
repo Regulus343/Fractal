@@ -11,7 +11,7 @@ return [
 	| wish to use "cms" or something else instead.
 	|
 	*/
-	'baseUri' => 'admin',
+	'base_uri' => 'admin',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -25,12 +25,14 @@ return [
 	|
 	*/
 	'controllers' => [
+
 		'standard' => [
 			'home'              => 'Regulus\Fractal\Controllers\General\DashboardController',
 			'settings'          => 'Regulus\Fractal\Controllers\General\SettingsController',
 			'account'           => 'Regulus\Fractal\Controllers\Auth\AccountController',
 			'users/activity'    => 'Regulus\Fractal\Controllers\Users\ActivityController',
 		],
+
 		'resource' => [
 			'menus'             => 'Regulus\Fractal\Controllers\Content\MenusController',
 			'pages'             => 'Regulus\Fractal\Controllers\Content\PagesController',
@@ -47,6 +49,7 @@ return [
 			'blogs/categories'  => 'Regulus\Fractal\Controllers\Blogs\CategoriesController',
 			'blogs'             => 'Regulus\Fractal\Controllers\Blogs\BlogsController',
 		],
+
 	],
 
 	/*
@@ -59,7 +62,8 @@ return [
 	| array.
 	|
 	*/
-	'controllerMethods' => [
+	'controller_methods' => [
+
 		'get'  => [
 			'pages/add-content-area/{id?}'                => 'Regulus\Fractal\Controllers\Content\PagesController@addContentArea',
 			'pages/get-content-area/{id}'                 => 'Regulus\Fractal\Controllers\Content\PagesController@getContentArea',
@@ -72,6 +76,7 @@ return [
 			'blogs/articles/delete-content-area/{id}'     => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@deleteContentArea',
 			'blogs/articles/select-thumbnail-image/{id?}' => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@selectThumbnailImage',
 		],
+
 		'post' => [
 			'menus/search'                                => 'Regulus\Fractal\Controllers\Content\MenusController@search',
 			'pages/search'                                => 'Regulus\Fractal\Controllers\Content\PagesController@search',
@@ -90,6 +95,7 @@ return [
 			'blogs/articles/layout-tags'                  => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@layoutTags',
 			'blogs/articles/render-markdown-content'      => 'Regulus\Fractal\Controllers\Blogs\ArticlesController@renderMarkdownContent',
 		],
+
 	],
 
 	/*
@@ -103,8 +109,8 @@ return [
 	| customization.
 	|
 	*/
-	'layout'       => 'fractal::layouts.master',
-	'layoutPublic' => 'fractal::layouts.public',
+	'layout'        => 'fractal::layouts.master',
+	'layout_public' => 'fractal::layouts.public',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -114,7 +120,7 @@ return [
 	| The name of the content section used for views.
 	|
 	*/
-	'contentSection' => 'content',
+	'content_section' => 'content',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -126,7 +132,7 @@ return [
 	| of your own for full view customization.
 	|
 	*/
-	'viewsLocation' => 'fractal::',
+	'views_location' => 'fractal::',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -139,7 +145,7 @@ return [
 	| "http://localhost/page/home".
 	|
 	*/
-	'pageUri' => '',
+	'page_uri' => '',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -150,7 +156,7 @@ return [
 	| point this setting to it instead of the default.
 	|
 	*/
-	'pageMethod' => 'Regulus\Fractal\Controllers\Content\PagesController@view',
+	'page_method' => 'Regulus\Fractal\Controllers\Content\PagesController@view',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -164,7 +170,7 @@ return [
 	| setting to it.
 	|
 	*/
-	'pageView' => 'fractal::content.pages.view',
+	'page_view' => 'fractal::content.pages.view',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -178,7 +184,7 @@ return [
 	| to adjust this, but it is here just in case.
 	|
 	*/
-	'useHomePageForRoot' => true,
+	'use_home_page_for_root' => true,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -192,7 +198,7 @@ return [
 	| to something like "account" and set "userRoleNoCmsAccessLogOut" to false.
 	|
 	*/
-	'userRoleNoCmsAccessUri' => '',
+	'user_role_no_cms_access_uri' => '',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -205,7 +211,7 @@ return [
 	| non-CMS account page using the "userRoleNoCmsAccessUri" setting above.
 	|
 	*/
-	'userRoleNoCmsAccessLogOut' => true,
+	'user_role_no_cms_access_log_out' => true,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -241,7 +247,7 @@ return [
 	| with, for example, "regulus/fractal::".
 	|
 	*/
-	'placeholderImage' => 'regulus/fractal::image-not-available',
+	'placeholder_image' => 'regulus/fractal::image-not-available',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -253,19 +259,7 @@ return [
 	| directory to use as a starting point.
 	|
 	*/
-	'externalLanguage' => false,
-
-	/*
-	|--------------------------------------------------------------------------
-	| Authorization Class
-	|--------------------------------------------------------------------------
-	|
-	| The name of your authorization class including the namespace and aF
-	| leading backslash. This variable along with the "authMethod" variables
-	| allow Fractal's built-in views to remain authorization class agnostic.
-	|
-	*/
-	'authClass' => '\Regulus\Identify\Facade',
+	'external_language' => false,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -275,52 +269,7 @@ return [
 	| The name of your authorization controller.
 	|
 	*/
-	'authController' => 'Regulus\Fractal\Controllers\Auth\AuthController',
-
-	/*
-	|--------------------------------------------------------------------------
-	| Authorization Method - Authentication Check
-	|--------------------------------------------------------------------------
-	|
-	| The method in your authorization class that checks if user is logged in.
-	| The default is "check()" which, along with the default auth class above,
-	| selects Laravel 4's native authentication method.
-	|
-	*/
-	'authMethodActiveCheck' => 'check()',
-
-	/*
-	|--------------------------------------------------------------------------
-	| Authorization Method - User
-	|--------------------------------------------------------------------------
-	|
-	| The method for getting the active user.
-	|
-	*/
-	'authMethodActiveUser' => 'user()',
-
-	/*
-	|--------------------------------------------------------------------------
-	| Authorization Method - User ID
-	|--------------------------------------------------------------------------
-	|
-	| The attribute for getting the active user ID which is used in conjunction
-	| with the user method above. By default, they get "user()->id" together.
-	|
-	*/
-	'authMethodActiveUserId' => 'id',
-
-	/*
-	|--------------------------------------------------------------------------
-	| Authorization Method - Admin Check
-	|--------------------------------------------------------------------------
-	|
-	| The method in your authorization class that checks if the logged in user
-	| is an administrator. Set this to false if you do not have a method of
-	| identifying an admin.
-	|
-	*/
-	'authMethodAdminCheck' => false,
+	'auth_controller' => 'Regulus\Fractal\Controllers\Auth\AuthController',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -330,7 +279,7 @@ return [
 	| The name of the admin role.
 	|
 	*/
-	'authMethodAdminRole' => 'admin',
+	'auth_method_admin_role' => 'admin',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -341,7 +290,7 @@ return [
 	| role authorization for the whole CMS.
 	|
 	*/
-	'authFilters' => [
+	'auth_filters' => [
 		'x'        => ['admin'],
 		'menus'    => ['admin'],
 		'pages'    => ['admin'],
@@ -361,104 +310,8 @@ return [
 	| hide this option from the forms unless the "developer" session is set.
 	|
 	*/
-	'enableMenuItemAuthFilters'        => true,
-	'menuItemAuthFiltersDeveloperOnly' => true,
-
-	/*
-	|--------------------------------------------------------------------------
-	| Preload Routes & Filters Files
-	|--------------------------------------------------------------------------
-	|
-	| Set these to true to preload existing files at "app/routes.php" and
-	| "app/filters.php" respectively. This can help prevent the default page
-	| routes fro overriding routes that you have already defined in your app.
-	|
-	*/
-	'preload' => [
-		'routes'  => true,
-		'filters' => true,
-	],
-
-	/*
-	|--------------------------------------------------------------------------
-	| Load jQuery
-	|--------------------------------------------------------------------------
-	|
-	| Whether or not to have Fractal automatically load jQuery.
-	| Turn this off if your website already loads jQuery.
-	|
-	*/
-	'loadJquery'   => true,
-	'loadJqueryUi' => true,
-
-	/*
-	|--------------------------------------------------------------------------
-	| Load Bootstrap
-	|--------------------------------------------------------------------------
-	|
-	| Whether or not to have Fractal automatically load Twitter Bootsrap.
-	| If set to false, Fractal will assume you are already loading
-	| Bootstrap CSS and JS files. If true, Fractal will attempt to load
-	| "bootstrap.css" and "bootstrap.min.js".
-	|
-	*/
-	'loadBootstrap' => true,
-
-	/*
-	|--------------------------------------------------------------------------
-	| Load Boxy
-	|--------------------------------------------------------------------------
-	|
-	| By default, Fractal makes use of the lightweight javascript
-	| library Boxy for modal windows like content deleting confirmation.
-	| You may turn off Boxy if you intend to use another modal window script.
-	|
-	*/
-	'loadBoxy' => true,
-
-	/*
-	|--------------------------------------------------------------------------
-	| Use Exterminator Package
-	|--------------------------------------------------------------------------
-	|
-	| If your website uses the "Regulus/Exterminator" package for debugging,
-	| set this to true to use it within Fractal.
-	|
-	*/
-	'exterminator' => false,
-
-	/*
-	|--------------------------------------------------------------------------
-	| Date Format
-	|--------------------------------------------------------------------------
-	|
-	| The default date formats.
-	|
-	*/
-	'dateFormat'     => 'F j, Y',
-	'dateTimeFormat' => 'F j, Y \a\t g:ia',
-
-	/*
-	|--------------------------------------------------------------------------
-	| Migrated
-	|--------------------------------------------------------------------------
-	|
-	| Set this to false if you registered the service provider and do not
-	| currently have the database tables migrated to prevent an error from
-	| occurring when you run the DB migrations.
-	|
-	*/
-	'migrated' => true,
-
-	/*
-	|--------------------------------------------------------------------------
-	| Workbench
-	|--------------------------------------------------------------------------
-	|
-	| Set this to true if the package is being run from Laravel's Workbench.
-	|
-	*/
-	'workbench' => false,
+	'enable_menu_item_auth_filters'         => true,
+	'menu_item_auth_filters_developer_only' => true,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -469,6 +322,6 @@ return [
 	| number in the footer of the supplied layout.
 	|
 	*/
-	'displayVersion' => true,
+	'display_version' => true,
 
 ];

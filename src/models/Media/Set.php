@@ -1,6 +1,6 @@
 <?php namespace Regulus\Fractal\Models\Media;
 
-use Regulus\Formation\BaseModel;
+use Regulus\Formation\Models\Base;
 
 use Fractal;
 
@@ -12,9 +12,9 @@ use \Form;
 use \Format;
 use \Site;
 
-use Regulus\Fractal\Traits\PublishingTrait;
+use Regulus\Fractal\Traits\Publishable;
 
-class Set extends BaseModel {
+class Set extends Base {
 
 	/**
 	 * The database table used by the model.
@@ -229,7 +229,7 @@ class Set extends BaseModel {
 		$status = Format::boolToStr($this->isPublished(), $yesNo);
 
 		if ($this->isPublishedFuture())
-			$status .= '<div><small><em>'.Fractal::lang('labels.toBePublished', [
+			$status .= '<div><small><em>'.Fractal::trans('labels.toBePublished', [
 				'dateTime' => $this->getPublishedDateTime()
 			]).'</em></small></div>';
 

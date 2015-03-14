@@ -1,13 +1,13 @@
 <?php namespace Regulus\Fractal\Traits;
 
-trait PublishingTrait {
+trait Publishable {
 
 	/**
-	 * Boot the publishing trait for a model.
+	 * Boot the publishable trait for a model.
 	 *
 	 * @return void
 	 */
-	public static function bootPublishingTrait()
+	public static function bootPublishable()
 	{
 
 	}

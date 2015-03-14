@@ -24,6 +24,27 @@ class ApiController extends BaseController {
 		return (int) Auth::removeState(Input::get('name'), Input::get('state'));
 	}
 
+	public function postAutoSave()
+	{
+		$contentType = Input::get('content_type');
+		switch($contentType)
+		{
+			case "blog-article":
+				if (Input::get('id') == "")
+				{
+					$mainContentArea = Input::get('content_areas.1');
+					unset($mainContentArea['id']);
+
+					Auth::setState('autoSavedContent.blogArticle', $mainContentArea);
+				}
+
+				return 1;
+				break;
+		}
+
+		return 0;
+	}
+
 	public function postSelectFileMediaItem()
 	{
 		$type = Input::get('type') == "Media Item" ? Input::get('type') : 'File';
@@ -31,13 +52,13 @@ class ApiController extends BaseController {
 		if ($type == "Media Item")
 		{
 			$data = [
-				'title' => Fractal::lang('labels.selectMediaItem'),
+				'title' => Fractal::trans('labels.select_item', ['item' => Fractal::transChoice('labels.media_item')]),
 				'type'  => $type,
 				'items' => MediaItem::orderBy('title')->get(),
 			];
 		} else { //"File"
 			$data = [
-				'title' => Fractal::lang('labels.selectFile'),
+				'title' => Fractal::trans('labels.select_item', ['item' => Fractal::transChoice('labels.file')]),
 				'type'  => $type,
 				'items' => ContentFile::orderBy('name')->get(),
 			];
@@ -48,7 +69,7 @@ class ApiController extends BaseController {
 
 	public function getViewMarkdownGuide()
 	{
-		return Fractal::modalView('partials.modals.markdown_guide', ['title' => Fractal::lang('labels.markdownGuide')], true);
+		return Fractal::modalView('partials.modals.markdown_guide', ['title' => Fractal::trans('labels.markdownGuide')], true);
 	}
 
 }

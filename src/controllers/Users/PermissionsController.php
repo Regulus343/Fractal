@@ -27,13 +27,13 @@ class PermissionsController extends UsersController {
 
 		Site::set('section', 'Users');
 		Site::set('subSection', 'Permissions');
-		Site::set('title', Fractal::lang('labels.userPermissions'));
+		Site::setTitle(Fractal::trans('labels.userPermissions'));
 
 		Fractal::setContentType('user-permission');
 
 		Fractal::setViewsLocation('users.permissions');
 
-		Fractal::addTrailItem(Fractal::lang('labels.permissions'), Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::trans('labels.permissions'), Fractal::getControllerPath());
 
 		Site::set('defaultSorting', ['field' => 'display_order', 'order' => 'asc']);
 	}
@@ -52,7 +52,7 @@ class PermissionsController extends UsersController {
 			$permissions = Permission::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.createPermission'),
+			'label' => Fractal::trans('labels.createPermission'),
 			'icon'  => 'glyphicon glyphicon-star',
 			'uri'   => Fractal::uri('create', true),
 		]);
@@ -82,13 +82,13 @@ class PermissionsController extends UsersController {
 
 	public function create()
 	{
-		Site::set('title', Fractal::lang('labels.createPermission'));
+		Site::setTitle(Fractal::trans('labels.create_item', ['item' => Fractal::transChoice('labels.permission')]));
 		Site::set('wysiwyg', true);
 
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.returnToPermissionsList'),
+			'label' => Fractal::trans('labels.returnToPermissionsList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
@@ -98,19 +98,21 @@ class PermissionsController extends UsersController {
 
 	public function store()
 	{
-		$tablePrefix = Config::get('identify::tablePrefix');
+		$tableName = Auth::getTableName('permissions');
 
 		$rules = [
-			'permission' => ['required', 'unique:'.$tablePrefix.'permissions'],
-			'name'       => ['required', 'unique:'.$tablePrefix.'permissions'],
+			'permission' => ['required', 'unique:'.$tableName],
+			'name'       => ['required', 'unique:'.$tableName],
 		];
 		Form::setValidationRules($rules);
 
 		$messages = [];
-		if (Form::validated()) {
-			$messages['success'] = Fractal::lang('messages.successCreated', ['item' => Fractal::langLowerA('labels.permission')]);
+		if (Form::validated())
+		{
+			$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transChoice('labels.permission')]);
 
 			$permission = new Permission;
+
 			$permission->permission  = strtolower(trim(Input::get('permission')));
 			$permission->name        = ucfirst(trim(Input::get('name')));
 			$permission->description = Input::get('description') != "" ? ucfirst(trim(Input::get('description'))) : null;
@@ -124,12 +126,12 @@ class PermissionsController extends UsersController {
 				'details'     => 'Permission: '.$permission->name,
 			]);
 
-			Fractal::addTrailItem(Fractal::lang('labels.create'), Request::url());
+			Fractal::addTrailItem(Fractal::trans('labels.create'), Request::url());
 
 			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Fractal::lang('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errorGeneral');
 		}
 
 		return Redirect::to(Fractal::uri('create', true))
@@ -143,23 +145,23 @@ class PermissionsController extends UsersController {
 		$permission = Role::find($id);
 		if (empty($permission))
 			return Redirect::to(Fractal::uri('', true))->with('messages', [
-				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.permission')])
+				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.permission')])
 			]);
 
-		Site::set('title', $permission->name.' ('.Fractal::lang('labels.permission').')');
-		Site::set('titleHeading', Fractal::lang('labels.updatePermission').': <strong>'.Format::entities($permission->name).'</strong>');
+		Site::setTitle($permission->name.' ('.Fractal::transChoice('labels.permission').')');
+		Site::setHeading(Fractal::trans('labels.update_item', ['item' => Fractal::transChoice('labels.permission')]).': <strong>'.Format::entities($permission->name).'</strong>');
 		Site::set('wysiwyg', true);
 
 		Form::setDefaults($permission);
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.returnToPermissionsList'),
+			'label' => Fractal::trans('labels.returnToPermissionsList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
 
-		Fractal::addTrailItem(Fractal::lang('labels.update'), Request::url());
+		Fractal::addTrailItem(Fractal::trans('labels.update'), Request::url());
 
 		return View::make(Fractal::view('form'))->with('update', true);
 	}
@@ -169,24 +171,22 @@ class PermissionsController extends UsersController {
 		$permission = Role::find($id);
 		if (empty($permission))
 			return Redirect::to(Fractal::uri('', true))->with('messages', [
-				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.permission')])
+				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.permission')])
 			]);
 
-		Site::set('title', $permission->name.' (User Role)');
-		Site::set('titleHeading', 'Update User Role: <strong>'.Format::entities($permission->name).'</strong>');
-		Site::set('wysiwyg', true);
+		$tableName = Auth::getTableName('permissions');
 
-		$tablePrefix = Config::get('identify::tablePrefix');
 		$rules = [
-			'permission' => ['required', 'unique:'.$tablePrefix.'permissions,permission,'.$id],
-			'name'       => ['required', 'unique:'.$tablePrefix.'permissions,name,'.$id],
+			'permission' => ['required', 'unique:'.$tableName.'permission,'.$id],
+			'name'       => ['required', 'unique:'.$tableName.'name,'.$id],
 		];
 		Form::setValidationRules($rules);
 		Form::setErrors();
 
 		$messages = [];
-		if (Form::validated()) {
-			$messages['success'] = Fractal::lang('messages.successUpdated', ['item' => Fractal::langLowerA('labels.permission')]);
+		if (Form::validated())
+		{
+			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoice('labels.permission')]);
 
 			$permission->permission  = strtolower(trim(Input::get('permission')));
 			$permission->name        = ucfirst(trim(Input::get('name')));
@@ -204,7 +204,7 @@ class PermissionsController extends UsersController {
 			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Fractal::lang('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errors.general');
 
 			return Redirect::to(Fractal::uri($id.'/edit', true))
 				->with('messages', $messages)
@@ -217,7 +217,7 @@ class PermissionsController extends UsersController {
 	{
 		$result = [
 			'resultType' => 'Error',
-			'message'    => Fractal::lang('messages.errorGeneral'),
+			'message'    => Fractal::trans('messages.errorGeneral'),
 		];
 
 		$permission = Permission::find($id);
@@ -231,7 +231,7 @@ class PermissionsController extends UsersController {
 		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Fractal::lang('messages.successDeleted', ['item' => '<strong>'.$permission->name.'</strong>']);
+		$result['message']    = Fractal::trans('messages.successDeleted', ['item' => '<strong>'.$permission->name.'</strong>']);
 
 		$permission->users()->sync([]);
 		$permission->roles()->sync([]);

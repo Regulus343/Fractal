@@ -1,6 +1,6 @@
 @extends(Config::get('fractal::layoutPublic'))
 
-@section(Config::get('fractal::contentSection'))
+@section(config('cms.content_section'))
 
 	@include(Fractal::mediaView('partials.item', true))
 

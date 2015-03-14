@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Seeder;
+
 class FileMediaTypesTableSeeder extends Seeder {
 
 	/**
@@ -91,7 +93,8 @@ class FileMediaTypesTableSeeder extends Seeder {
 			],
 		];
 
-		foreach ($fileTypes as $fileType) {
+		foreach ($fileTypes as $fileType)
+		{
 			$mediaTypes = isset($fileType['media_types']) ? $fileType['media_types'] : [];
 
 			if (isset($fileType['media_types']))
@@ -103,7 +106,8 @@ class FileMediaTypesTableSeeder extends Seeder {
 
 			$id = DB::table('file_types')->insertGetId($fileType);
 
-			foreach ($mediaTypes as $mediaType) {
+			foreach ($mediaTypes as $mediaType)
+			{
 				$mediaType['file_type_id']          = $id;
 				$mediaType['media_source_required'] = true;
 				$mediaType['created_at']            = $timestamp;

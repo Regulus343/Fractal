@@ -1,6 +1,6 @@
 <?php namespace Regulus\Fractal\Models\Content;
 
-use Regulus\Formation\BaseModel;
+use Regulus\Formation\Models\Base;
 
 use Fractal;
 
@@ -15,11 +15,11 @@ use \Site;
 
 use Regulus\Fractal\Models\Content\View as ContentView;
 
-use Regulus\Fractal\Traits\PublishingTrait;
+use Regulus\Fractal\Traits\Publishable;
 
 use MaxHoffmann\Parsedown\ParsedownFacade as Markdown;
 
-class Page extends BaseModel {
+class Page extends Base {
 
 	/**
 	 * The database table used by the model.
@@ -312,7 +312,7 @@ class Page extends BaseModel {
 		$status = Format::boolToStr($this->isPublished(), $yesNo);
 
 		if ($this->isPublishedFuture())
-			$status .= '<div><small><em>'.Fractal::lang('labels.toBePublished', [
+			$status .= '<div><small><em>'.Fractal::trans('labels.toBePublished', [
 				'dateTime' => $this->getPublishedDateTime()
 			]).'</em></small></div>';
 

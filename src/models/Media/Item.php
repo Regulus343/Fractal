@@ -1,10 +1,9 @@
 <?php namespace Regulus\Fractal\Models\Media;
 
-use Regulus\Formation\BaseModel;
+use Regulus\Formation\Models\Base;
 
 use Fractal;
 
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
@@ -21,11 +20,11 @@ use Regulus\Fractal\Models\Content\FileType;
 use Regulus\Fractal\Models\Content\View as ContentView;
 use Regulus\Fractal\Models\Content\Download as ContentDownload;
 
-use Regulus\Fractal\Traits\PublishingTrait;
+use Regulus\Fractal\Traits\Publishable;
 
 use MaxHoffmann\Parsedown\ParsedownFacade as Markdown;
 
-class Item extends BaseModel {
+class Item extends Base {
 
 	/**
 	 * The database table used by the model.
@@ -188,7 +187,7 @@ class Item extends BaseModel {
 	 */
 	public function creator()
 	{
-		return $this->belongsTo(Config::get('auth.model'), 'user_id');
+		return $this->belongsTo(config('auth.model'), 'user_id');
 	}
 
 	/**
@@ -274,7 +273,7 @@ class Item extends BaseModel {
 	 */
 	public function getUrl()
 	{
-		return Fractal::mediaUrl((!Config::get('fractal::media.shortRoutes') ? 'i/' : '').$this->slug);
+		return Fractal::mediaUrl((!config('media.short_routes') ? 'i/' : '').$this->slug);
 	}
 
 	/**
@@ -353,7 +352,7 @@ class Item extends BaseModel {
 		elseif ($this->getFileType() == "Image" || ($thumbnail && $this->thumbnail))
 			return $this->getFileUrl($thumbnail);
 
-		return Fractal::getImageUrlFromConfig('placeholderImage');
+		return Fractal::getImageUrlFromConfig('cms.placeholder_image');
 	}
 
 	/**
@@ -564,7 +563,7 @@ class Item extends BaseModel {
 		$status = Format::boolToStr($this->isPublished(), $yesNo);
 
 		if ($this->isPublishedFuture())
-			$status .= '<div><small><em>'.Fractal::lang('labels.toBePublished', [
+			$status .= '<div><small><em>'.Fractal::trans('labels.toBePublished', [
 				'dateTime' => $this->getPublishedDateTime()
 			]).'</em></small></div>';
 

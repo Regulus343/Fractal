@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Seeder;
+
 class ContentLayoutTemplatesTableSeeder extends Seeder {
 
 	/**
@@ -48,7 +50,8 @@ class ContentLayoutTemplatesTableSeeder extends Seeder {
 			],
 		];
 
-		foreach ($templates as $template) {
+		foreach ($templates as $template)
+		{
 			$template['created_at'] = $timestamp;
 			$template['updated_at'] = $timestamp;
 

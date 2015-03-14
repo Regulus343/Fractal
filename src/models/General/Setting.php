@@ -147,7 +147,7 @@ class Setting extends Eloquent {
 	public static function value($name, $default = false)
 	{
 		//first, attempt to get the value from "settings" config file
-		$value = Config::get('fractal::settings.'.Fractal::toCamelCase($name));
+		$value = Config::get('fractal::settings.'.str_replace(' ', '_', strtolower($name)));
 
 		if (!is_null($value))
 			return $value;
@@ -172,7 +172,7 @@ class Setting extends Eloquent {
 
 		$array = [];
 		foreach ($settings as $setting) {
-			$array[Fractal::toCamelCase($setting->name)] = $setting->getValue();
+			$array[str_replace(' ', '_', strtolower($setting->name))] = $setting->getValue();
 		}
 
 		return $array;

@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Seeder;
+
 class ContentPagesTableSeeder extends Seeder {
 
 	/**
@@ -34,8 +36,8 @@ class ContentPagesTableSeeder extends Seeder {
 			],
 		];
 
-		foreach ($pages as $page) {
-			$page['user_id']      = 1;
+		foreach ($pages as $page)
+		{
 			$page['created_at']   = $timestamp;
 			$page['updated_at']   = $timestamp;
 			$page['published_at'] = $timestamp;

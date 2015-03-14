@@ -1,10 +1,10 @@
 <?php namespace Regulus\Fractal\Models\Blogs;
 
-use Regulus\Formation\BaseModel;
+use Regulus\Formation\Models\Base;
 
 use Fractal;
 
-class Category extends BaseModel {
+class Category extends Base {
 
 	/**
 	 * The database table used by the model.

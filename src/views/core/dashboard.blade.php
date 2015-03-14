@@ -1,6 +1,6 @@
-@extends(Config::get('fractal::layout'))
+@extends(config('cms.layout'))
 
-@section(Config::get('fractal::contentSection'))
+@section(config('cms.content_section'))
 
 	{{-- Reports --}}
 	<script type="text/javascript">
@@ -68,7 +68,7 @@
 
 				charts.{{ $report }} = {
 					chartData: {
-						labels:   {{ json_encode($reports[$report]['labels']) }},
+						labels:   {!! json_encode($reports[$report]['labels']) !!},
 						datasets: []
 					}
 				};
@@ -85,7 +85,7 @@
 						pointStrokeColor:     "#fff",
 						pointHighlightFill:   "#fff",
 						pointHighlightStroke: "rgba(220,220,220,1)",
-						data:                 {{ json_encode(array_values($reports[$report]['values'][$type])) }}
+						data:                 {!! json_encode(array_values($reports[$report]['values'][$type])) !!}
 					};
 
 					i++;
@@ -132,11 +132,12 @@
 
 	</script>
 
-	<h1>{{ Site::titleHeading() }}</h1>
+	<h1>{{ Site::heading() }}</h1>
 
 	<div class="row">
 
 		{{-- Total Views --}}
+
 		<div class="col-md-6">
 			<div class="well">
 				<div class="btn-group chart-selection pull-right">
@@ -163,6 +164,7 @@
 		</div>
 
 		{{-- Unique Views --}}
+
 		<div class="col-md-6">
 			<div class="well">
 				<div class="btn-group chart-selection pull-right">
@@ -193,6 +195,7 @@
 	<div class="row">
 
 		{{-- Popular Content --}}
+
 		<div class="col-md-12">
 			<div class="well">
 				<div class="btn-group chart-selection pull-right">

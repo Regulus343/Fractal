@@ -1,27 +1,27 @@
-@extends(Config::get('fractal::layout'))
+@extends(config('cms.layout'))
 
-@section(Config::get('fractal::contentSection'))
+@section(config('cms.content_section'))
 
-	{{ Form::openResource() }}
+	{!! Form::openResource() !!}
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field('name') }}
+				{!! Form::field('name') !!}
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field('layout', 'textarea', ['class-field' => 'tab']) }}
+				{!! Form::field('layout', 'textarea', ['class-field' => 'tab']) !!}
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field(Form::submitResource(Fractal::lang('labels.layoutTemplate')), 'button') }}
+				{!! Form::field(Form::submitResource(Fractal::trans('labels.layoutTemplate')), 'button') !!}
 			</div>
 		</div>
 
-	{{ Form::close() }}
+	{!! Form::close() !!}
 
 @stop

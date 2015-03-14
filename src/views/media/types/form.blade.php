@@ -1,6 +1,6 @@
-@extends(Config::get('fractal::layout'))
+@extends(config('cms.layout'))
 
-@section(Config::get('fractal::contentSection'))
+@section(config('cms.content_section'))
 
 	<script type="text/javascript">
 		$(document).ready(function(){
@@ -39,7 +39,7 @@
 		<div class="row">
 			<div class="col-md-6">
 				{{ Form::field('file_type_id', 'select', [
-					'label'       => Fractal::lang('labels.fileType'),
+					'label'       => Fractal::trans('labels.fileType'),
 					'options'     => Form::prepOptions(\Regulus\Fractal\Models\Content\FileType::orderBy('name')->get(), ['id', 'name']),
 					'null-option' => 'Select a File Type',
 				]) }}
@@ -53,7 +53,7 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field(Form::submitResource(Fractal::lang('labels.mediaType')), 'button') }}
+				{{ Form::field(Form::submitResource(Fractal::trans('labels.mediaType')), 'button') }}
 			</div>
 		</div>
 

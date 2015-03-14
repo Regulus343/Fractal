@@ -1,6 +1,6 @@
 @if (isset($mediaSets) && Regulus\Fractal\Models\Media\Set::publishedItemInSets($mediaSets) && Fractal::getSetting('Display Media Sets Menu', true))
 
-	<h3>{{ Fractal::lang('labels.mediaSets') }}</h3>
+	<h3>{{ Fractal::trans('labels.mediaSets') }}</h3>
 
 	<ul class="nav nav-pills nav-stacked nav-side">
 
@@ -8,7 +8,7 @@
 
 		<li class="special">
 			<a href="{{ Fractal::mediaUrl('') }}">
-				<span class="glyphicon glyphicon-chevron-left"></span> {{ Fractal::lang('labels.allMediaSets') }}
+				<span class="glyphicon glyphicon-chevron-left"></span> {{ Fractal::trans('labels.allMediaSets') }}
 			</a>
 		</li>
 

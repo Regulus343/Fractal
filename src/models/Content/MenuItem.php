@@ -1,17 +1,14 @@
 <?php namespace Regulus\Fractal\Models\Content;
 
-use Regulus\Formation\BaseModel;
+use Regulus\Formation\Models\Base;
 
 use Fractal;
-
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\URL;
 
 use \Auth;
 use \Format;
 use \Site;
 
-class MenuItem extends BaseModel {
+class MenuItem extends Base {
 
 	/**
 	 * The database table used by the model.
@@ -113,9 +110,18 @@ class MenuItem extends BaseModel {
 	public function getLabel()
 	{
 		if (!is_null($this->label_language_key) && $this->label_language_key != "")
-			return Fractal::lang('labels.'.$this->label_language_key);
-		else
-			return $this->label;
+		{
+			if (substr($this->label_language_key, 0, 7) == "plural:")
+				return Fractal::transChoice('labels.'.str_replace('plural:', '', $this->label_language_key), 2);
+
+			elseif (substr($this->label_language_key, 0, 9) == "singular:")
+				return Fractal::transChoice('labels.'.str_replace('singular:', '', $this->label_language_key), 1);
+
+			else
+				return Fractal::trans('labels.'.$this->label_language_key);
+		}
+
+		return $this->label;
 	}
 
 	/**
@@ -125,17 +131,19 @@ class MenuItem extends BaseModel {
 	 */
 	public function getUri()
 	{
-		if ($this->menu->cms) {
-			$uri = Config::get('fractal::baseUri');
-		} else {
+		if ($this->menu->cms)
+			$uri = config('cms.base_uri');
+		else
 			$uri = '';
-		}
-		if ($this->page) {
+
+		if ($this->page)
 			$uri = $uri != '' ? $uri.'/'.$this->page->slug : $this->page->slug;
-		} else {
+		else
 			$uri = $uri != '' ? $uri.'/'.$this->uri : $this->uri;
-		}
-		if (substr($uri, -1) == '/') $uri = substr($uri, 0, (strlen($uri) - 1));
+
+		if (substr($uri, -1) == '/')
+			$uri = substr($uri, 0, (strlen($uri) - 1));
+
 		return $uri;
 	}
 
@@ -146,7 +154,7 @@ class MenuItem extends BaseModel {
 	 */
 	public function getUrl()
 	{
-		$url = URL::to($this->getUri());
+		$url = url($this->getUri());
 
 		if ($this->subdomain != false && !is_null($this->subdomain) && $this->subdomain != "")
 			$url = str_replace('http://', 'http://'.$this->subdomain.'.', str_replace('https://', 'https://'.$this->subdomain.'.', $url));
@@ -258,10 +266,13 @@ class MenuItem extends BaseModel {
 	public function getChildrenArray($setSelectedClass = true, $ignoreVisibilityStatus = false)
 	{
 		$children = [];
-		foreach ($this->children as $child) {
+
+		foreach ($this->children as $child)
+		{
 			if ($child->isVisible() || $ignoreVisibilityStatus)
 				$children[] = $child->createObject($setSelectedClass, $ignoreVisibilityStatus);
 		}
+
 		return $children;
 	}
 
@@ -299,7 +310,9 @@ class MenuItem extends BaseModel {
 	 */
 	public function getLastUpdatedDateTime($dateFormat = false)
 	{
-		if (!$dateFormat) $dateFormat = Config::get('fractal::dateTimeFormat');
+		if (!$dateFormat)
+			$dateFormat = config('format.defaults.datetime');
+
 		return $this->updated_at != "0000-00-00" ? date($dateFormat, strtotime($this->updated_at)) : date($dateFormat, strtotime($this->created_at));
 	}
 

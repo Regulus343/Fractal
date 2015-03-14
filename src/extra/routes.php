@@ -14,45 +14,53 @@
 use Illuminate\Support\Facades\Route;
 
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Config;
 
-use \Auth as Auth;
+use \Auth;
 
 use Regulus\Fractal\Models\Content\Page;
 use Regulus\Fractal\Models\Blogs\Article;
 
-$baseUri     = Config::get('fractal::baseUri');
-$controllers = Config::get('fractal::controllers');
-$methods     = Config::get('fractal::controllerMethods');
+$baseUri     = config('cms.base_uri');
+$controllers = config('cms.controllers');
+$methods     = config('cms.controller_methods');
+
+if (is_null($baseUri))
+	return;
 
 /* Additional Routes for Defined Controller Methods */
-foreach (array('get', 'post') as $type) {
-	if (isset($methods[$type])) {
-		foreach ($methods[$type] as $route => $method) {
-			if ($type == "get") {
+foreach (array('get', 'post') as $type)
+{
+	if (isset($methods[$type]))
+	{
+		foreach ($methods[$type] as $route => $method)
+		{
+			if ($type == "get")
 				Route::get($baseUri.'/'.$route, $method);
-			} else {
+			else
 				Route::post($baseUri.'/'.$route, $method);
-			}
 		}
 	}
 }
 
 /* Routes for Defined Standard Controllers */
-if (isset($controllers['standard'])) {
+if (isset($controllers['standard']))
+{
 	foreach ($controllers['standard'] as $controllerURI => $controller) {
 		Route::controller($baseUri.'/'.$controllerURI, $controller);
 	}
 }
+
 if (isset($controllers['standard']['home']))
 	Route::get($baseUri, $controllers['standard']['home'].'@getIndex');
 
 /* Routes for Defined Resource Controllers */
-if (isset($controllers['resource'])) {
+if (isset($controllers['resource']))
+{
 	foreach ($controllers['resource'] as $controllerURI => $controller) {
 		Route::resource($baseUri.'/'.$controllerURI, $controller);
 	}
 }
+
 if (isset($controllers['resource']['home']))
 	Route::get($baseUri, $controllers['resource']['home'].'@getIndex');
 
@@ -63,23 +71,23 @@ Route::get($baseUri.'/developer/{off?}', 'Regulus\Fractal\Controllers\General\Da
 Route::controller($baseUri.'/api', 'Regulus\Fractal\Controllers\General\ApiController');
 
 /* Authorization Routes */
-Route::any($baseUri.'/login', Config::get('fractal::authController').'@login');
-Route::get($baseUri.'/logout', Config::get('fractal::authController').'@logout');
-Route::any($baseUri.'/forgot-password', Config::get('fractal::authController').'@forgotPassword');
-Route::any($baseUri.'/reset-password/{id?}/{code?}', Config::get('fractal::authController').'@resetPassword');
+Route::any($baseUri.'/login', config('cms.auth_controller').'@login');
+Route::get($baseUri.'/logout', config('cms.auth_controller').'@logout');
+Route::any($baseUri.'/forgot-password', config('cms.auth_controller').'@forgotPassword');
+Route::any($baseUri.'/reset-password/{id?}/{code?}', config('cms.auth_controller').'@resetPassword');
 
-Route::controller($baseUri.'/auth', Config::get('fractal::authController'));
+Route::controller($baseUri.'/auth', config('cms.auth_controller'));
 
 /* Blog Routes */
-if (Config::get('fractal::blogs.enabled'))
+if (config('blogs.enabled'))
 {
-	$blogSubdomain  = Config::get('fractal::blogs.subdomain');
-	$blogUri        = Config::get('fractal::blogs.baseUri');
-	$blogController = Config::get('fractal::blogs.viewController');
+	$blogSubdomain  = config('blogs.subdomain');
+	$blogUri        = config('blogs.base_uri');
+	$blogController = config('blogs.view_controller');
 
 	$group = [];
 	if (is_string($blogSubdomain) && $blogSubdomain != "")
-		$group['domain'] = str_replace('http://', $blogSubdomain.'.', str_replace('https://', $blogSubdomain.'.', Config::get('app.url')));
+		$group['domain'] = str_replace('http://', $blogSubdomain.'.', str_replace('https://', $blogSubdomain.'.', config('app.url')));
 
 	if ($blogUri != false && is_null($blogUri) && $blogUri != "")
 		$group['prefix'] = $blogUri;
@@ -95,15 +103,15 @@ if (Config::get('fractal::blogs.enabled'))
 }
 
 /* Media Routes */
-if (Config::get('fractal::media.enabled'))
+if (config('media.enabled'))
 {
-	$mediaSubdomain  = Config::get('fractal::media.subdomain');
-	$mediaUri        = Config::get('fractal::media.baseUri');
-	$mediaController = Config::get('fractal::media.viewController');
+	$mediaSubdomain  = config('media.subdomain');
+	$mediaUri        = config('media.base_uri');
+	$mediaController = config('media.view_controller');
 
 	$group = [];
 	if (is_string($mediaSubdomain) && $mediaSubdomain != "")
-		$group['domain'] = str_replace('http://', $mediaSubdomain.'.', str_replace('https://', $mediaSubdomain.'.', Config::get('app.url')));
+		$group['domain'] = str_replace('http://', $mediaSubdomain.'.', str_replace('https://', $mediaSubdomain.'.', config('app.url')));
 
 	if ($mediaUri != false && is_null($mediaUri) && $mediaUri != "")
 		$group['prefix'] = $mediaUri;
@@ -119,13 +127,13 @@ if (Config::get('fractal::media.enabled'))
 }
 
 /* Content Pages Routes */
-$pageUri    = Config::get('fractal::pageUri');
-$pageMethod = Config::get('fractal::pageMethod');
+$pageUri    = config('cms.page_uri');
+$pageMethod = config('cms.page_method');
 
 if (!is_null($pageUri) && $pageUri != false && $pageUri != "")
 	Route::get($pageUri.'/{slug}', $pageMethod);
 else
 	Route::get('{slug}', $pageMethod);
 
-if (Config::get('fractal::useHomePageForRoot'))
+if (config('cms.use_home_page_for_root'))
 	Route::get('', $pageMethod);

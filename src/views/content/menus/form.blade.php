@@ -1,10 +1,10 @@
-@extends(Config::get('fractal::layout'))
+@extends(config('cms.layout'))
 
-@section(Config::get('fractal::contentSection'))
+@section(config('cms.content_section'))
 
 	<script type="text/javascript">
 		$(document).ready(function(){
-			Formation.loadTemplates('#menu-items', $.parseJSON('{{ Form::getJsonValues('items') }}'), menuItemTemplateCallback);
+			Formation.loadTemplates('#menu-items', $.parseJSON('{!! Form::getJsonValues('items') !!}'), menuItemTemplateCallback);
 
 			$('.add-menu-item').click(function(e){
 				e.preventDefault();
@@ -157,18 +157,18 @@
 		}
 	</script>
 
-	{{ Form::openResource() }}
+	{!! Form::openResource() !!}
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field('name') }}
+				{!! Form::field('name') !!}
 			</div>
 		</div>
 
 		@if (Site::developer())
 			<div class="row">
 				<div class="col-md-12">
-					{{ Form::field('cms', 'checkbox', ['label' => 'CMS']) }}
+					{!! Form::field('cms', 'checkbox', ['label' => 'CMS']) !!}
 				</div>
 			</div>
 		@endif
@@ -179,15 +179,15 @@
 		@include(Fractal::view('content.menus.templates.menu_item', true))
 
 		<a href="" class="btn btn-primary add-menu-item pull-right">
-			<span class="glyphicon glyphicon-plus"></span>&nbsp; {{ Fractal::lang('labels.addMenuItem') }}
+			<span class="glyphicon glyphicon-plus"></span>&nbsp; {{ Fractal::trans('labels.add_menu_item') }}
 		</a>
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field(Form::submitResource(Fractal::lang('labels.menu')), 'button') }}
+				{!! Form::field(Form::submitResource(Fractal::transChoice('labels.menu', 1)), 'button') !!}
 			</div>
 		</div>
 
-	{{ Form::close() }}
+	{!! Form::close() !!}
 
 @stop

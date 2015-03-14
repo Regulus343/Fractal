@@ -14,7 +14,7 @@
 
 			@else
 
-				<span class="not-published">{{ Fractal::lang('labels.notPublished') }}</span>
+				<span class="not-published">{{ Fractal::trans('labels.notPublished') }}</span>
 
 			@endif
 		</time>
@@ -35,7 +35,7 @@
 			<a href="{{ Fractal::url('media/items/'.$mediaItem->slug.'/edit') }}" class="btn btn-primary btn-xs pull-right">
 				<span class="glyphicon glyphicon-edit"></span>
 
-				{{ Fractal::lang('labels.editItem') }}
+				{{ Fractal::trans('labels.editItem') }}
 			</a>
 
 		@endif

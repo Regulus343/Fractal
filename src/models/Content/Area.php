@@ -1,6 +1,6 @@
 <?php namespace Regulus\Fractal\Models\Content;
 
-use Regulus\Formation\BaseModel;
+use Regulus\Formation\Models\Base;
 
 use Fractal;
 
@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
 
-class Area extends BaseModel {
+class Area extends Base {
 
 	/**
 	 * The database table used by the model.
@@ -120,7 +120,7 @@ class Area extends BaseModel {
 			return $title;
 		}
 
-		return Fractal::lang('labels.untitled');
+		return Fractal::trans('labels.untitled');
 	}
 
 	/**

@@ -1,6 +1,6 @@
 <?php namespace Regulus\Fractal\Controllers\Blogs;
 
-use \BaseController;
+use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -23,19 +23,19 @@ use \Form;
 use \Format;
 use \Site;
 
-class ViewController extends BaseController {
+class ViewController extends Controller {
 
 	public function __construct()
 	{
 		Site::set('public', true);
 
-		Site::setMulti(['section', 'title'], Fractal::lang('labels.blog'));
+		Site::setMulti(['section', 'title'], Fractal::trans('labels.blog'));
 
 		Fractal::setViewsLocation(Config::get('fractal::blogs.viewsLocation'), true);
 
 		Site::addTrailItems([
-			Fractal::lang('labels.home') => Site::rootUrl(),
-			Fractal::lang('labels.blog') => Fractal::blogUrl(),
+			Fractal::trans('labels.home') => Site::rootUrl(),
+			Fractal::trans('labels.blog') => Fractal::blogUrl(),
 		]);
 	}
 
@@ -84,7 +84,7 @@ class ViewController extends BaseController {
 	{
 		if (is_null($slug))
 			return Redirect::to(Fractal::blogUrl())->with('messages', [
-				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.article')])
+				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.article')])
 			]);
 
 		//allow article selection by ID for to allow shorter URLs
@@ -111,7 +111,7 @@ class ViewController extends BaseController {
 
 		if (empty($article) || (!Auth::is('admin') && !$article->isPublished()))
 			return Redirect::to(Fractal::blogUrl())->with('messages', [
-				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.article')])
+				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.article')])
 			]);
 
 		Site::setMulti(['subSection', 'title', 'articleTitle'], $article->getTitle());
@@ -139,12 +139,12 @@ class ViewController extends BaseController {
 		$messages = [];
 		if (!$article->isPublished()) {
 			if ($article->isPublishedFuture())
-				$messages['info'] = Fractal::lang('messages.notPublishedUntil', [
-					'item'     => strtolower(Fractal::lang('labels.page')),
+				$messages['info'] = Fractal::trans('messages.notPublishedUntil', [
+					'item'     => strtolower(Fractal::trans('labels.page')),
 					'dateTime' => $article->getPublishedDateTime(),
 				]);
 			else
-				$messages['info'] = Fractal::lang('messages.notPublished', ['item' => Fractal::lang('labels.article')]);
+				$messages['info'] = Fractal::trans('messages.notPublished', ['item' => Fractal::trans('labels.article')]);
 		}
 
 		return View::make(Fractal::view('article'))
@@ -162,16 +162,16 @@ class ViewController extends BaseController {
 	public function getCategory($slug = null) {
 		if (is_null($slug))
 			return Redirect::to(Fractal::blogUrl())->with('messages', [
-				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.category')])
+				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.category')])
 			]);
 
 		$category = Category::findBySlug($slug);
 		if (empty($category))
 			return Redirect::to(Fractal::blogUrl())->with('messages', [
-				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.category')])
+				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.category')])
 			]);
 
-		Site::set('title', Fractal::lang('labels.blog').': '.$category->name);
+		Site::setTitle(Fractal::trans('labels.blog').': '.$category->name);
 		Site::set('articleList', true);
 		Site::set('contentColumnWidth', 9);
 
@@ -206,9 +206,9 @@ class ViewController extends BaseController {
 		} else {
 			$articles = [];
 
-			$messages['error'] = Fractal::lang('messages.errorNoItems', [
-				'item'  => Fractal::langLower('labels.category'),
-				'items' => Fractal::langLower('labels.articles'),
+			$messages['error'] = Fractal::trans('messages.errorNoItems', [
+				'item'  => Fractal::transLower('labels.category'),
+				'items' => Fractal::transLower('labels.articles'),
 			]);
 		}
 

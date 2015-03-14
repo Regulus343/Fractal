@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Seeder;
+
 class SettingsTableSeeder extends Seeder {
 
 	/**
@@ -218,7 +220,8 @@ class SettingsTableSeeder extends Seeder {
 			],
 		];
 
-		foreach ($settings as $setting) {
+		foreach ($settings as $setting)
+		{
 			if (!isset($setting['display_order']))
 				$setting['display_order'] = $defaultDisplayOrder;
 

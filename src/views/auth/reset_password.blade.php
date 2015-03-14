@@ -1,14 +1,15 @@
-@extends(Config::get('fractal::layout'))
+@extends(config('cms.layout'))
 
-@section(Config::get('fractal::contentSection'))
+@section(config('cms.content_section'))
 
 	<script type="text/javascript">
 		var minimumPasswordLength = {{ Fractal::getSetting('Minimum Password Length') }};
 
 		$(document).ready(function(){
-			$('#new-password').focus();
 
-			$('#new-password, #new-password-confirmation').change(function(){
+			$('#field-new-password').focus();
+
+			$('#field-new-password, #field-new-password-confirmation').change(function(){
 				checkPasswords();
 			}).keyup(function(){
 				checkPasswords();
@@ -40,21 +41,23 @@
 		.passwords-check { position: absolute; z-index: 50; top: 98px; right : -20px; }
 	</style>
 
-	{{ Form::open(['class' => 'form-login']) }}
-		<h2>{{ Site::titleHeading() }}</h2>
+	{!! Form::open(['class' => 'form-login']) !!}
+
+		<h2>{{ Site::heading() }}</h2>
 
 		<div class="passwords-check">
 			<span class="glyphicon glyphicon-ok-circle passwords-match green hidden"></span>
 			<span class="glyphicon glyphicon-remove-circle passwords-mismatch red hidden"></span>
 		</div>
 
-		{{ Form::field('new_password', 'password') }}
+		{!! Form::field('new_password', 'password') }}
 
-		{{ Form::field('new_password_confirmation', 'password', array('label' => 'Confirm New Password')) }}
+		{!! Form::field('new_password_confirmation', 'password', array('label' => 'Confirm New Password')) !!}
 
-		<a href="{{ Fractal::url('login') }}" class="pull-right">{{ Fractal::lang('labels.returnToLogIn') }}</a>
+		<a href="{{ Fractal::url('login') }}" class="pull-right">{{ Fractal::trans('labels.return_to_log_in') !!}</a>
 
-		{{ Form::field('[ICON: share-alt]'.Fractal::lang('labels.resetPassword'), 'button') }}
-	{{ Form::close() }}
+		{!! Form::field('[ICON: share-alt]'.Fractal::trans('labels.reset_password'), 'button') !!}
+
+	{!! Form::close() !!}
 
 @stop

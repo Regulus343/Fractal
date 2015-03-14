@@ -1,6 +1,6 @@
-@extends(Config::get('fractal::layout'))
+@extends(config('cms.layout'))
 
-@section(Config::get('fractal::contentSection'))
+@section(config('cms.content_section'))
 
 	<script type="text/javascript">
 		var update             = {{ (isset($update) && $update ? 'true' : 'false') }};
@@ -211,12 +211,12 @@
 			<div class="col-md-12">
 				@if (isset($update) && $update)
 					<a href="{{ $itemUrl }}" class="btn btn-default right-padded pull-right">
-						<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Fractal::lang('labels.viewItem') }}
+						<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Fractal::trans('labels.viewItem') }}
 					</a>
 				@endif
 
 				<a href="{{ Fractal::url('media/items') }}" class="btn btn-default pull-right">
-					<span class="glyphicon glyphicon-list"></span>&nbsp; {{ Fractal::lang('labels.returnToItemsList') }}
+					<span class="glyphicon glyphicon-list"></span>&nbsp; {{ Fractal::trans('labels.returnToItemsList') }}
 				</a>
 			</div>
 		</div>
@@ -247,7 +247,7 @@
 						@if (!$item->mediaSourceRequired())
 
 							<a href="" class="btn btn-danger vertical-align-top" id="remove-file">
-								<span class="glyphicon glyphicon-remove"></span>&nbsp; {{ Fractal::lang('labels.removeFile') }}
+								<span class="glyphicon glyphicon-remove"></span>&nbsp; {{ Fractal::trans('labels.removeFile') }}
 							</a>
 
 						@endif
@@ -274,7 +274,7 @@
 						@if ($item->file_type_id != 1)
 
 							<a href="" class="btn btn-danger vertical-align-top" id="remove-thumbnail-image">
-								<span class="glyphicon glyphicon-remove"></span>&nbsp; {{ Fractal::lang('labels.removeThumbnailImage') }}
+								<span class="glyphicon glyphicon-remove"></span>&nbsp; {{ Fractal::trans('labels.removeThumbnailImage') }}
 							</a>
 
 						@endif
@@ -371,7 +371,7 @@
 				]) }}
 
 				<a href="" class="btn btn-default trigger-modal pull-right" data-modal-ajax-uri="api/view-markdown-guide" data-modal-ajax-action="get">
-					<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Fractal::lang('labels.viewMarkdownGuide') }}
+					<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Fractal::trans('labels.viewMarkdownGuide') }}
 				</a>
 			</div>
 
@@ -435,7 +435,7 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field(Form::submitResource(Fractal::lang('labels.mediaItem')), 'button') }}
+				{{ Form::field(Form::submitResource(Fractal::trans('labels.mediaItem')), 'button') }}
 			</div>
 		</div>
 

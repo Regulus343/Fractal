@@ -40,7 +40,7 @@ class ArrayFile {
 	 * @param  array    $array
 	 * @return string
 	 */
-	public static function save($path, $array = array())
+	public static function save($path, $array = [])
 	{
 		$file = static::create($array);
 
@@ -123,9 +123,6 @@ class ArrayFile {
 					$this->addDataToArray($setting2, $data2, $associative2, $maxNameLength);
 
 				$this->data .= "\n";
-
-				/*if (is_array(end($data)) || is_object(end($data)))
-					$this->data .= "\n";*/
 
 				$this->arrayLevelsDeep --;
 

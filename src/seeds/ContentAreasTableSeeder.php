@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Seeder;
+
 class ContentAreasTableSeeder extends Seeder {
 
 	/**
@@ -69,7 +71,8 @@ class ContentAreasTableSeeder extends Seeder {
 			],
 		];
 
-		foreach ($areas as $area) {
+		foreach ($areas as $area)
+		{
 			$pageAreas = $area['page_areas'];
 			unset($area['page_areas']);
 
@@ -79,7 +82,8 @@ class ContentAreasTableSeeder extends Seeder {
 
 			DB::table('content_areas')->insert($area);
 
-			foreach ($pageAreas as $pageArea) {
+			foreach ($pageAreas as $pageArea)
+			{
 				$pageArea['created_at'] = $timestamp;
 				$pageArea['updated_at'] = $timestamp;
 

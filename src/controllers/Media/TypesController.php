@@ -31,14 +31,14 @@ class TypesController extends BaseController {
 
 		Site::set('section', 'Media');
 		Site::set('subSection', 'Types');
-		Site::set('title', Fractal::lang('labels.mediaTypes'));
+		Site::setTitle(Fractal::transChoice('labels.media_type', 2));
 
-		//set content type and views location
+		// set content type and views location
 		Fractal::setContentType('media-type');
 
 		Fractal::setViewsLocation('media.types');
 
-		Fractal::addTrailItem(Fractal::lang('labels.mediaTypes'), Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::trans('labels.mediaTypes'), Fractal::getControllerPath());
 	}
 
 	public function index()
@@ -55,7 +55,7 @@ class TypesController extends BaseController {
 			$categories = Type::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.createType'),
+			'label' => Fractal::trans('labels.createType'),
 			'icon'  => 'glyphicon glyphicon-file',
 			'uri'   => Fractal::uri('create', true),
 		]);
@@ -85,18 +85,18 @@ class TypesController extends BaseController {
 
 	public function create()
 	{
-		Site::set('title', Fractal::lang('labels.createType'));
+		Site::setTitle(Fractal::trans('labels.create_item', ['item' => Fractal::transChoice('labels.media_type')]));
 
 		Type::setDefaultsForNew();
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.returnToTypesList'),
+			'label' => Fractal::trans('labels.returnToTypesList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
 
-		Fractal::addTrailItem(Fractal::lang('labels.create'), Request::url());
+		Fractal::addTrailItem(Fractal::trans('labels.create'), Request::url());
 
 		return View::make(Fractal::view('form'));
 	}
@@ -106,8 +106,9 @@ class TypesController extends BaseController {
 		Form::setValidationRules(Type::validationRules());
 
 		$messages = [];
-		if (Form::validated()) {
-			$messages['success'] = Fractal::lang('messages.successCreated', ['item' => Fractal::langLowerA('labels.category')]);
+		if (Form::validated())
+		{
+			$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transChoice('labels.media_type')]);
 
 			$input = Input::all();
 			$input['user_id'] = Auth::user()->id;
@@ -125,7 +126,7 @@ class TypesController extends BaseController {
 			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Fractal::lang('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errorGeneral');
 		}
 
 		return Redirect::to(Fractal::uri('create', true))
@@ -139,22 +140,22 @@ class TypesController extends BaseController {
 		$type = Type::findBySlug($slug);
 		if (empty($type))
 			return Redirect::to(Fractal::uri('pages'))->with('messages', [
-				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.category')])
+				'error' => Fractal::trans('messages.error_not_found', ['item' => Fractal::transChoice('labels.media_type')])
 			]);
 
-		Site::set('title', $type->name.' ('.Fractal::lang('labels.category').')');
-		Site::set('titleHeading', Fractal::lang('labels.updateType').': <strong>'.Format::entities($type->name).'</strong>');
+		Site::setTitle($type->name.' ('.Fractal::trans('labels.category').')');
+		Site::setHeading(Fractal::trans('labels.updateType').': <strong>'.Format::entities($type->name).'</strong>');
 
 		Form::setDefaults($type);
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.returnToTypesList'),
+			'label' => Fractal::trans('labels.returnToTypesList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
 
-		Fractal::addTrailItem(Fractal::lang('labels.update'), Request::url());
+		Fractal::addTrailItem(Fractal::trans('labels.update'), Request::url());
 
 		return View::make(Fractal::view('form'))
 			->with('update', true)
@@ -166,14 +167,14 @@ class TypesController extends BaseController {
 		$type = Type::findBySlug($slug);
 		if (empty($type))
 			return Redirect::to(Fractal::uri('pages'))->with('messages', [
-				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.category')])
+				'error' => Fractal::trans('messages.error_not_found', ['item' => Fractal::transChoice('labels.media_type')])
 			]);
 
 		$type->setValidationRules();
 
 		$messages = [];
 		if (Form::validated()) {
-			$messages['success'] = Fractal::lang('messages.successUpdated', ['item' => Fractal::langLowerA('labels.category')]);
+			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoice('labels.media_type')]);
 
 			$type->saveData();
 
@@ -189,7 +190,7 @@ class TypesController extends BaseController {
 			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Fractal::lang('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errors.general');
 
 			return Redirect::to(Fractal::uri($slug.'/edit', true))
 				->with('messages', $messages)
@@ -202,7 +203,7 @@ class TypesController extends BaseController {
 	{
 		$result = [
 			'resultType' => 'Error',
-			'message'    => Fractal::lang('messages.errorGeneral'),
+			'message'    => Fractal::trans('messages.errors.general'),
 		];
 
 		$type = Type::find($id);
@@ -221,7 +222,7 @@ class TypesController extends BaseController {
 		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Fractal::lang('messages.successDeleted', ['item' => '<strong>'.$type->name.'</strong>']);
+		$result['message']    = Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$type->name.'</strong>']);
 
 		$type->delete();
 

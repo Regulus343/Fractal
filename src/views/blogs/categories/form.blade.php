@@ -1,6 +1,6 @@
-@extends(Config::get('fractal::layout'))
+@extends(config('cms.layout'))
 
-@section(Config::get('fractal::contentSection'))
+@section(config('cms.content_section'))
 
 	<script type="text/javascript">
 		$(document).ready(function(){
@@ -22,23 +22,23 @@
 		});
 	</script>
 
-	{{ Form::openResource() }}
+	{!! Form::openResource() !!}
 
 		<div class="row">
 			<div class="col-md-6">
-				{{ Form::field('name') }}
+				{!! Form::field('name') !!}
 			</div>
 			<div class="col-md-6">
-				{{ Form::field('slug') }}
+				{!! Form::field('slug') !!}
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field(Form::submitResource(Fractal::lang('labels.category')), 'button') }}
+				{!! Form::field(Form::submitResource(Fractal::trans('labels.category')), 'button') !!}
 			</div>
 		</div>
 
-	{{ Form::close() }}
+	{!! Form::close() !!}
 
 @stop

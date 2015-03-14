@@ -11,18 +11,12 @@ use Regulus\Fractal\Facade as Fractal;
 |
 */
 
-use Illuminate\Support\Facades\Config;
+use \Site;
 
-use \Site as Site;
+$websiteName = Fractal::getSetting('Website Name');
+if ($websiteName)
+	Site::set('name', $websiteName);
 
-//ensure DB tables have been migrated first
-if (Config::get('fractal::migrated'))
-{
-	$websiteName = Fractal::getSetting('Website Name');
-	if ($websiteName)
-		Site::set('name', $websiteName);
-
-	$webmasterEmail = Fractal::getSetting('Webmaster Email');
-	if ($webmasterEmail)
-		Site::set('email', $webmasterEmail);
-}
+$webmasterEmail = Fractal::getSetting('Webmaster Email');
+if ($webmasterEmail)
+	Site::set('email', $webmasterEmail);

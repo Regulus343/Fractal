@@ -3,7 +3,9 @@
 @endif
 
 @foreach ($menu as $menuItem)
+
 	@include(Fractal::view('partials.menu_item', true))
+
 @endforeach
 
 @if (!$listItemsOnly)

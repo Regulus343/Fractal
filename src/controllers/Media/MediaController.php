@@ -28,7 +28,7 @@ class MediaController extends BaseController {
 		Fractal::setControllerPath(get_class());
 
 		Site::setMulti(['section', 'subSection'], 'Media');
-		Site::set('title', Fractal::lang('labels.media'));
+		Site::setTitle(Fractal::trans('labels.media'));
 
 		Fractal::addTrailItem('Media', Fractal::getControllerPath());
 	}

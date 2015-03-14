@@ -9,11 +9,8 @@
 |
 */
 
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
-
-use \Fractal;
 
 use \Auth;
 use \Form;
@@ -28,7 +25,7 @@ use Regulus\Fractal\Models\Blogs\Category as BlogCategory;
 use Regulus\Identify\User;
 use Regulus\Identify\Role;
 
-$viewsLocation = Config::get('fractal::viewsLocation');
+$viewsLocation = config('cms.views_location');
 
 View::composer($viewsLocation.'partials.messages', function($view)
 {

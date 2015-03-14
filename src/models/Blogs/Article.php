@@ -1,12 +1,8 @@
 <?php namespace Regulus\Fractal\Models\Blogs;
 
-use Regulus\Formation\BaseModel;
+use Regulus\Formation\Models\Base;
 
 use Fractal;
-
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Facades\URL;
 
 use \Auth;
 use \Form;
@@ -16,11 +12,11 @@ use \Site;
 use Regulus\Fractal\Models\Content\LayoutTemplate;
 use Regulus\Fractal\Models\Content\View as ContentView;
 
-use Regulus\Fractal\Traits\PublishingTrait;
+use Regulus\Fractal\Traits\Publishable;
 
 use MaxHoffmann\Parsedown\ParsedownFacade as Markdown;
 
-class Article extends BaseModel {
+class Article extends Base {
 
 	/**
 	 * The database table used by the model.
@@ -174,7 +170,7 @@ class Article extends BaseModel {
 	 */
 	public function author()
 	{
-		return $this->belongsTo(Config::get('auth.model'), 'user_id');
+		return $this->belongsTo(config('auth.model'), 'user_id');
 	}
 
 	/**
@@ -249,7 +245,7 @@ class Article extends BaseModel {
 	 */
 	public function getUrl()
 	{
-		return Fractal::blogUrl((!Config::get('fractal::blogs.shortRoutes') ? 'a/' : '').$this->slug);
+		return Fractal::blogUrl((!config('blogs.short_routes') ? 'a/' : '').$this->slug);
 	}
 
 	/**
@@ -293,7 +289,7 @@ class Article extends BaseModel {
 	public function getThumbnailImageUrl()
 	{
 		$image            = null;
-		$imagePlaceholder = Fractal::getImageUrlFromConfig('blogs.placeholderThumbnailImage');
+		$imagePlaceholder = Fractal::getImageUrlFromConfig('blogs.placeholder_thumbnail_image');
 
 		if ($this->thumbnail_image_type == "File" && $this->thumbnailImageFile)
 			$image = $this->thumbnailImageFile->getImageUrl(true);
@@ -301,7 +297,7 @@ class Article extends BaseModel {
 		if ($this->thumbnail_image_type == "Media Item" && $this->thumbnailImageMediaItem)
 			$image = $this->thumbnailImageMediaItem->getImageUrl(true);
 
-		if (is_null($image) || $image == Fractal::getImageUrlFromConfig('placeholderImage'))
+		if (is_null($image) || $image == Fractal::getImageUrlFromConfig('cms.placeholder_image'))
 			$image = $imagePlaceholder;
 
 		return $image;
@@ -348,10 +344,10 @@ class Article extends BaseModel {
 
 		//if preview only is set, select only the main or primary content area for display
 		$contentAreas = $this->contentAreas;
-		if ($previewOnly && Config::get('fractal::blogs.useStandardLayoutForArticleList'))
+		if ($previewOnly && config('blogs.use_standard_layout_for_article_list'))
 		{
 			$mainTags       = ['main', 'primary'];
-			$previewDivider = Config::get('fractal::blogs.previewDivider');
+			$previewDivider = config('blogs.preview_divider');
 
 			foreach ($contentAreas as $contentArea)
 			{
@@ -475,7 +471,7 @@ class Article extends BaseModel {
 		$status = Format::boolToStr($this->isPublished(), $yesNo);
 
 		if ($this->isPublishedFuture())
-			$status .= '<div><small><em>'.Fractal::lang('labels.toBePublished', [
+			$status .= '<div><small><em>'.Fractal::trans('labels.toBePublished', [
 				'dateTime' => $this->getPublishedDateTime()
 			]).'</em></small></div>';
 

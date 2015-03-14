@@ -1,6 +1,6 @@
 @if (isset($mediaTypes) && Regulus\Fractal\Models\Media\Type::publishedItemInTypes($mediaTypes) && Fractal::getSetting('Display Media Types Menu', true))
 
-	<h3>{{ Fractal::lang('labels.mediaTypes') }}</h3>
+	<h3>{{ Fractal::trans('labels.mediaTypes') }}</h3>
 
 	<ul class="nav nav-pills nav-stacked nav-side">
 
@@ -8,7 +8,7 @@
 
 		<li class="special">
 			<a href="{{ Fractal::mediaUrl('') }}">
-				<span class="glyphicon glyphicon-chevron-left"></span> {{ Fractal::lang('labels.allMediaTypes') }}
+				<span class="glyphicon glyphicon-chevron-left"></span> {{ Fractal::trans('labels.allMediaTypes') }}
 			</a>
 		</li>
 

@@ -1,18 +1,14 @@
 <?php namespace Regulus\Fractal\Models\Content;
 
-use Regulus\Formation\BaseModel;
+use Regulus\Formation\Models\Base;
 
 use Fractal;
-
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Facades\URL;
 
 use \Form;
 use \Format;
 use \Site;
 
-class FileType extends BaseModel {
+class FileType extends Base {
 
 	/**
 	 * The database table used by the model.

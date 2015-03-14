@@ -7,9 +7,9 @@
 				<span class="icon-bar"></span>
 			</button>
 
-			@if (Config::get('fractal::logo') && is_string(Config::get('fractal::logo')))
+			@if (config('cms.logo') && is_string(config('cms.logo')))
 				<a class="navbar-brand" id="logo" href="{{ URL::to('') }}">
-					<img src="{{ Fractal::getImageUrlFromConfig('logo') }}" alt="{{{ Site::get('name') }}}" title="{{{ Site::get('name') }}}" id="logo" />
+					<img src="{{ Fractal::getImageUrlFromConfig('cms.logo') }}" alt="{{{ Site::get('name') }}}" title="{{{ Site::get('name') }}}" id="logo" />
 				</a>
 			@else
 				<a class="navbar-brand" href="{{ URL::to('') }}">{{{ Site::get('name') }}}</a>
@@ -26,7 +26,7 @@
 					<li>
 						<a href="{{ Fractal::url() }}">
 							<span class="glyphicon glyphicon-log-in"></span>&nbsp; 
-							<span class="menu-item-label">{{ Fractal::lang('labels.returnToCms') }}</span>
+							<span class="menu-item-label">{{ Fractal::trans('labels.returnToCms') }}</span>
 						</a>
 					</li>
 				</ul>

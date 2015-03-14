@@ -2,6 +2,6 @@
 
 return [
 
-	'lowercaseNotIn' => 'The selected :attribute is invalid.',
+	'lowercase_not_in' => 'The selected :attribute is invalid.',
 
 ];

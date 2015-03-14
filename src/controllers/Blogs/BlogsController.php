@@ -26,7 +26,7 @@ class BlogsController extends BaseController {
 		Fractal::setControllerPath(get_class());
 
 		Site::setMulti(['section', 'subSection'], 'Blogs');
-		Site::set('title', Fractal::lang('labels.blogs'));
+		Site::setTitle(Fractal::transChoice('labels.blog', 2));
 
 		Fractal::addTrailItem('Blogs', Fractal::getControllerPath());
 	}

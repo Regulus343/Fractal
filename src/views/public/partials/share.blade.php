@@ -1,8 +1,8 @@
-@if (Config::get('fractal::social.share'))
+@if (config('social.share'))
 
 	<div class="social-media-share">
 
-		@foreach (Config::get('fractal::social.shareItems') as $shareItem)
+		@foreach (config('social.share_items') as $shareItem)
 
 			@if ($shareItem == "Twitter")
 

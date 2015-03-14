@@ -1,7 +1,7 @@
 <script id="menu-item-template" type="text/x-handlebars-template">
 
 	<fieldset id="menu-item-{{number}}" data-item-number="{{number}}" data-item-id="{{id}}">
-		<legend><?=Fractal::lang('labels.menuItem')?></legend>
+		<legend><?=Fractal::trans('labels.menuItem')?></legend>
 
 		<?=Form::hidden('items.{{number}}.id')?>
 
@@ -30,7 +30,7 @@
 
 				<div class="page-area hidden">
 					<?=Form::field('items.{{number}}.page_id', 'select', [
-						'label'       => Fractal::lang('labels.page'),
+						'label'       => Fractal::trans('labels.page'),
 						'options'     => $pageOptions,
 						'null-option' => 'Select a page',
 					])?>
@@ -72,7 +72,7 @@
 		<?php } ?>
 
 		<a href="" class="btn btn-danger btn-xs remove-template-item pull-right">
-			<span class="glyphicon glyphicon-remove-circle"></span>&nbsp; <?=Fractal::lang('labels.removeMenuItem')?>
+			<span class="glyphicon glyphicon-remove-circle"></span>&nbsp; <?=Fractal::trans('labels.removeMenuItem')?>
 		</a>
 	</fieldset>
 

@@ -1,12 +1,10 @@
 <?php namespace Regulus\Fractal\Models\Content;
 
-use Regulus\Formation\BaseModel;
+use Regulus\Formation\Models\Base;
 
 use Fractal;
 
-use Illuminate\Support\Facades\Config;
-
-class LayoutTemplate extends BaseModel {
+class LayoutTemplate extends Base {
 
 	/**
 	 * The database table used by the model.
@@ -48,7 +46,7 @@ class LayoutTemplate extends BaseModel {
 	 */
 	public function creator()
 	{
-		return $this->belongsTo(Config::get('auth.model'), 'user_id');
+		return $this->belongsTo(config('auth.model'), 'user_id');
 	}
 
 	/**
@@ -99,7 +97,9 @@ class LayoutTemplate extends BaseModel {
 	 */
 	public function getLastUpdatedDateTime($dateFormat = false)
 	{
-		if (!$dateFormat) $dateFormat = Config::get('fractal::dateTimeFormat');
+		if (!$dateFormat)
+			$dateFormat = config('format.defaults.datetime');
+
 		return $this->updated_at != "0000-00-00" ? date($dateFormat, strtotime($this->updated_at)) : date($dateFormat, strtotime($this->created_at));
 	}
 

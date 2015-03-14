@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-	<title>{{{ Site::title() }}}</title>
+	<title>{{ Site::title() }}</title>
 
 	@include(Fractal::view('public.partials.meta', true))
 
-	<link rel="shortcut icon" type="image/x-icon" href="{{ Fractal::getImageUrlFromConfig('favicon') }}" />
+	<link rel="shortcut icon" type="image/x-icon" href="{{ Fractal::getImageUrlFromConfig('cms.favicon') }}" />
 
 	@include(Fractal::view('partials.included_files', true))
 
@@ -30,9 +30,9 @@
 					<div class="col-md-{{ Site::get('contentColumnWidth', 12) }}">
 
 						@if (!Site::get('hideTitle'))
-							<h1 id="main-heading">{{ Site::titleHeading() }}</h1>
+							<h1 id="main-heading">{{ Site::heading() }}</h1>
 
-							{{ Site::getBreadcrumbTrailMarkup() }}
+							{!! Site::getBreadcrumbTrailMarkup() !!}
 						@endif
 
 						@include(Fractal::view('public.partials.messages', true))

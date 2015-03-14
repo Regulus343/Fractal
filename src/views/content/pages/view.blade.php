@@ -1,6 +1,6 @@
 @extends(Config::get('fractal::layoutPublic'))
 
-@section(Config::get('fractal::contentSection'))
+@section(config('cms.content_section'))
 
 	@if (Auth::is('admin'))
 
@@ -9,7 +9,7 @@
 				<a href="{{ Fractal::url('pages/'.$page->slug.'/edit') }}" class="btn btn-primary btn-xs pull-right">
 					<span class="glyphicon glyphicon-edit"></span>
 
-					{{ Fractal::lang('labels.editPage') }}
+					{{ Fractal::trans('labels.editPage') }}
 				</a>
 			</div>
 		</div>

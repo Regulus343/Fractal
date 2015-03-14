@@ -35,7 +35,7 @@ return [
 	| "subdomain" to false.
 	|
 	*/
-	'baseUri' => false,
+	'base_uri' => false,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -50,7 +50,7 @@ return [
 	| and base URI settings.
 	|
 	*/
-	'shortRoutes' => true,
+	'short_routes' => true,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -61,7 +61,7 @@ return [
 	| controller, point this setting to it instead of the default.
 	|
 	*/
-	'viewController' => 'Regulus\Fractal\Controllers\Media\ViewController',
+	'view_controller' => 'Regulus\Fractal\Controllers\Media\ViewController',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -73,6 +73,6 @@ return [
 	| of your own for full view customization.
 	|
 	*/
-	'viewsLocation' => 'fractal::media.view',
+	'views_location' => 'fractal::media.view',
 
 ];

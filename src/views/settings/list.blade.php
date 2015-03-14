@@ -1,8 +1,8 @@
-@extends(Config::get('fractal::layout'))
+@extends(config('cms.layout'))
 
-@section(Config::get('fractal::contentSection'))
+@section(config('cms.content_section'))
 
-	{{ Form::open() }}
+	{!! Form::open() !!}
 
 		<?php $lastCategory = "*"; $settingsDisplayed = 0; ?>
 
@@ -16,7 +16,7 @@
 
 				<div class="row vertical-divider">
 					<div class="col-md-12">
-						<h3>{{{ ($setting->category != "" ? $setting->category : Fractal::lang('labels.general')) }}}</h3>
+						<h3>{{ ($setting->category != "" ? $setting->category : Fractal::trans('labels.general')) }}</h3>
 					</div>
 				</div>
 				<div class="row">
@@ -31,7 +31,7 @@
 			@endif
 
 			<div class="col-md-4">
-				{{ $setting->getField() }}
+				{!! $setting->getField() !!}
 			</div>
 
 			<?php $settingsDisplayed ++; ?>
@@ -42,8 +42,8 @@
 
 		@endforeach
 
-		{{ Form::field(Form::submitResource(Fractal::lang('labels.settings'), true), 'button') }}
+		{!! Form::field(Form::submitResource(Fractal::trans('labels.settings'), true), 'button') !!}
 
-	{{ Form::close() }}
+	{!! Form::close() !!}
 
 @stop

@@ -10,15 +10,15 @@
 
 	<div id="footer">
 		<div class="pad">
-			<a href="" class="return-to-top pull-left show-tooltip" title="{{ Fractal::lang('labels.returnToTop') }}">
+			<a href="" class="return-to-top pull-left show-tooltip" title="{{ Fractal::trans('labels.return_to_top') }}">
 				<span class="glyphicon glyphicon-chevron-up"></span>
 			</a>
 
 			<p>&copy;{{ date('Y') }} {{ Site::name() }}</p>
 
-			@if (Config::get('fractal::displayVersion'))
+			@if (config('cms.display_version'))
 				<p class="fractal">
-					powered by Fractal v{{ Fractal::lang('labels.version') }}
+					powered by Fractal v{{ Fractal::trans('labels.version') }}
 
 					@if (Site::developer())
 						<span class="developer-mode">/ <a href="{{ Fractal::url('developer/off') }}">Disable Developer Mode</a></span>
@@ -32,8 +32,5 @@
 		</div><!-- /.pad -->
 	</div><!-- /#footer -->
 
-	@if (Config::get('fractal::exterminator'))
-		{{ Dbg::display() }}
-	@endif
 </body>
 </html>

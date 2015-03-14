@@ -1,10 +1,9 @@
 <?php namespace Regulus\Fractal\Models\Content;
 
-use Regulus\Formation\BaseModel;
+use Regulus\Formation\Models\Base;
 
 use Fractal;
 
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File as FileHelper;
 use Illuminate\Support\Facades\Input;
 
@@ -13,7 +12,7 @@ use \Format;
 use \Site;
 use \Upstream;
 
-class File extends BaseModel {
+class File extends Base {
 
 	/**
 	 * The database table used by the model.
@@ -78,7 +77,7 @@ class File extends BaseModel {
 	 */
 	public function creator()
 	{
-		return $this->belongsTo(Config::get('auth.model'), 'user_id');
+		return $this->belongsTo(config('auth.model'), 'user_id');
 	}
 
 	/**
@@ -134,7 +133,7 @@ class File extends BaseModel {
 		if ($this->getType() == "Image")
 			return $this->getUrl($thumbnail);
 		else
-			return Fractal::getImageUrlFromConfig('placeholderImage');
+			return Fractal::getImageUrlFromConfig('cms.placeholder_image');
 	}
 
 	/**
@@ -184,7 +183,9 @@ class File extends BaseModel {
 	 */
 	public function getLastUpdatedDateTime($dateFormat = false)
 	{
-		if (!$dateFormat) $dateFormat = Config::get('fractal::dateTimeFormat');
+		if (!$dateFormat)
+			$dateFormat = config('format.defaults.datetime');
+
 		return $this->updated_at != "0000-00-00" ? date($dateFormat, strtotime($this->updated_at)) : date($dateFormat, strtotime($this->created_at));
 	}
 

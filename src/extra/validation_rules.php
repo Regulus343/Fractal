@@ -1,7 +1,5 @@
 <?php namespace Regulus\Fractal;
 
-use \Fractal;
-
 /*
 |--------------------------------------------------------------------------
 | Validation Rules
@@ -20,5 +18,5 @@ Validator::extend('lowercase_not_in', function($attribute, $value, $parameters)
 
 Validator::replacer('lowercase_not_in', function($message, $attribute, $rule, $parameters)
 {
-	return Fractal::lang('validation.lowercaseNotIn', ['attribute' => $attribute]);
+	return Fractal::trans('validation.lowercase_not_in', ['attribute' => $attribute]);
 });

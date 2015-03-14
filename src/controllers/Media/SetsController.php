@@ -31,14 +31,14 @@ class SetsController extends BaseController {
 
 		Site::set('section', 'Media');
 		Site::set('subSection', 'Sets');
-		Site::set('title', Fractal::lang('labels.mediaSets'));
+		Site::setTitle(Fractal::transChoice('labels.media_set', 2));
 
-		//set content type and views location
+		// set content type and views location
 		Fractal::setContentType('media-set');
 
 		Fractal::setViewsLocation('media.sets');
 
-		Fractal::addTrailItem(Fractal::lang('labels.mediaSets'), Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::transChoice('labels.media_set', 2), Fractal::getControllerPath());
 	}
 
 	public function index()
@@ -55,7 +55,7 @@ class SetsController extends BaseController {
 			$sets = Set::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.createSet'),
+			'label' => Fractal::trans('labels.createSet'),
 			'icon'  => 'glyphicon glyphicon-folder-open',
 			'uri'   => Fractal::uri('create', true),
 		]);
@@ -85,19 +85,19 @@ class SetsController extends BaseController {
 
 	public function create()
 	{
-		Site::set('title', Fractal::lang('labels.createSet'));
+		Site::setTitle(Fractal::trans('labels.create_item', ['item' => Fractal::transChoice('labels.media_set')]));
 		Site::set('wysiwyg', true);
 
 		Set::setDefaultsForNew();
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.returnToSetsList'),
+			'label' => Fractal::trans('labels.returnToSetsList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
 
-		Fractal::addTrailItem(Fractal::lang('labels.create'), Request::url());
+		Fractal::addTrailItem(Fractal::trans('labels.create'), Request::url());
 
 		$items = $this->getItems();
 
@@ -110,8 +110,9 @@ class SetsController extends BaseController {
 		Form::setValidationRules(Set::validationRules());
 
 		$messages = [];
-		if (Form::validated()) {
-			$messages['success'] = Fractal::lang('messages.successCreated', ['item' => Fractal::langLowerA('labels.set')]);
+		if (Form::validated())
+		{
+			$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transChoice('labels.media_set')]);
 
 			$input = Input::all();
 			$input['user_id'] = Auth::user()->id;
@@ -131,7 +132,7 @@ class SetsController extends BaseController {
 			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Fractal::lang('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errorGeneral');
 		}
 
 		return Redirect::to(Fractal::uri('create', true))
@@ -145,23 +146,23 @@ class SetsController extends BaseController {
 		$set = Set::findBySlug($slug);
 		if (empty($set))
 			return Redirect::to(Fractal::uri('pages'))->with('messages', [
-				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.set')])
+				'error' => Fractal::trans('messages.error_not_found', ['item' => Fractal::transChoice('labels.media_set')])
 			]);
 
-		Site::set('title', $set->title.' ('.Fractal::lang('labels.mediaSet').')');
-		Site::set('titleHeading', Fractal::lang('labels.updateSet').': <strong>'.Format::entities($set->title).'</strong>');
+		Site::setTitle($set->title.' ('.Fractal::trans('labels.mediaSet').')');
+		Site::setHeading(Fractal::trans('labels.update_item', ['item' => Fractal::transChoice('labels.media_set')]).': <strong>'.Format::entities($set->title).'</strong>');
 		Site::set('wysiwyg', true);
 
 		Form::setDefaults($set);
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::lang('labels.returnToSetsList'),
+			'label' => Fractal::trans('labels.returnToSetsList'),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
 
-		Fractal::addTrailItem(Fractal::lang('labels.update'), Request::url());
+		Fractal::addTrailItem(Fractal::trans('labels.update'), Request::url());
 
 		$items = $this->getItems($set);
 
@@ -176,14 +177,15 @@ class SetsController extends BaseController {
 		$set = Set::findBySlug($slug);
 		if (empty($set))
 			return Redirect::to(Fractal::uri('pages'))->with('messages', [
-				'error' => Fractal::lang('messages.errorNotFound', ['item' => Fractal::langLower('labels.set')])
+				'error' => Fractal::trans('messages.error_not_found', ['item' => Fractal::transChoice('labels.media_set')])
 			]);
 
 		$set->setValidationRules();
 
 		$messages = [];
-		if (Form::validated()) {
-			$messages['success'] = Fractal::lang('messages.successUpdated', ['item' => Fractal::langLowerA('labels.set')]);
+		if (Form::validated())
+		{
+			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoice('labels.media_set')]);
 
 			$set->saveData();
 
@@ -201,7 +203,7 @@ class SetsController extends BaseController {
 			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Fractal::lang('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errors.general');
 
 			return Redirect::to(Fractal::uri($slug.'/edit', true))
 				->with('messages', $messages)
@@ -214,7 +216,7 @@ class SetsController extends BaseController {
 	{
 		$result = [
 			'resultType' => 'Error',
-			'message'    => Fractal::lang('messages.errorGeneral'),
+			'message'    => Fractal::trans('messages.errors.general'),
 		];
 
 		$set = Set::find($id);
@@ -230,7 +232,7 @@ class SetsController extends BaseController {
 		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Fractal::lang('messages.successDeleted', ['item' => '<strong>'.$set->title.'</strong>']);
+		$result['message']    = Fractal::trans('messages.successDeleted', ['item' => '<strong>'.$set->title.'</strong>']);
 
 		$set->items()->sync([]);
 
@@ -242,7 +244,7 @@ class SetsController extends BaseController {
 	public function addItem()
 	{
 		$data = [
-			'title'              => Fractal::lang('labels.addMediaItem'),
+			'title'              => Fractal::trans('labels.addMediaItem'),
 			'mediaItems'         => Item::orderBy('title')->get(),
 			'mediaItemsSelected' => !is_null(Input::get('items')) ? Input::get('items') : [],
 		];

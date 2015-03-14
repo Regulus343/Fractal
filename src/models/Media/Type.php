@@ -1,6 +1,6 @@
 <?php namespace Regulus\Fractal\Models\Media;
 
-use Regulus\Formation\BaseModel;
+use Regulus\Formation\Models\Base;
 
 use Fractal;
 
@@ -13,7 +13,7 @@ use \Form;
 use \Format;
 use \Site;
 
-class Type extends BaseModel {
+class Type extends Base {
 
 	/**
 	 * The database table used by the model.
