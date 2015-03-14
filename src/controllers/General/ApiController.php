@@ -35,6 +35,11 @@ class ApiController extends BaseController {
 					$mainContentArea = Input::get('content_areas.1');
 					unset($mainContentArea['id']);
 
+					if ($mainContentArea['content_type'] == "Markdown")
+						$mainContentArea['content'] = $mainContentArea['content_markdown'];
+					else
+						$mainContentArea['content'] = $mainContentArea['content_html'];
+
 					Auth::setState('autoSavedContent.blogArticle', $mainContentArea);
 				}
 

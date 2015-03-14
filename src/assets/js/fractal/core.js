@@ -3,7 +3,7 @@
 | Fractal JS
 |------------------------------------------------------------------------------
 |
-| Last Updated: March 13, 2015
+| Last Updated: March 14, 2015
 |
 */
 
@@ -1058,12 +1058,27 @@ var Fractal = {
 	{
 		setInterval(function()
 		{
-			Fractal.autoSave();
+			Fractal.saveContent();
 
 		}, this.autoSaveRate);
+
+		// allow manual save with CTRL / CMD + S
+		$(window).bind('keydown', function(e)
+		{
+			if (e.ctrlKey || e.metaKey)
+			{
+				switch (String.fromCharCode(e.which).toLowerCase())
+				{
+					case 's':
+						e.preventDefault();
+						Fractal.saveContent();
+						break;
+				}
+			}
+		});
 	},
 
-	autoSave: function()
+	saveContent: function()
 	{
 		var data = $('form').serializeArray();
 
@@ -1076,7 +1091,7 @@ var Fractal = {
 		{
 			if (result)
 			{
-				Fractal.setMainMessage(Fractal.messages.success.auto_saved, 'success');
+				Fractal.setMainMessage(Fractal.messages.success.form_content_saved, 'success');
 			}
 		});
 	},
