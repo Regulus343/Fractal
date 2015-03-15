@@ -33,14 +33,14 @@ class PagesController extends BaseController {
 
 		Site::set('section', 'Content');
 		Site::set('subSection', 'Pages');
-		Site::setTitle(Fractal::trans('labels.pages'));
+		Site::setTitle(Fractal::transChoice('labels.page', 2));
 
 		// set content type and views location
 		Fractal::setContentType('page');
 
 		Fractal::setViewsLocation('content.pages');
 
-		Fractal::addTrailItem(Fractal::trans('labels.pages'), Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::transChoice('labels.page', 2), Fractal::getControllerPath());
 	}
 
 	public function index()
@@ -57,7 +57,7 @@ class PagesController extends BaseController {
 			$pages = Page::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
-			'label' => Fractal::trans('labels.createPage'),
+			'label' => Fractal::trans('labels.create_item', ['item' => Fractal::transChoice('labels.page')]),
 			'icon'  => 'glyphicon glyphicon-file',
 			'uri'   => Fractal::uri('create', true),
 		]);
@@ -91,12 +91,15 @@ class PagesController extends BaseController {
 		Site::set('wysiwyg', true);
 
 		Page::setDefaultsForNew();
+
+		Fractal::restoreSavedContent();
+
 		Form::setErrors();
 
 		$layoutTagOptions = $this->getLayoutTagOptions();
 
 		Fractal::addButton([
-			'label' => Fractal::trans('labels.returnToPagesList'),
+			'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.page', 2)]),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
@@ -118,6 +121,8 @@ class PagesController extends BaseController {
 
 			$input = Input::all();
 			$page  = Page::createNew($input);
+
+			Fractal::clearSavedContent();
 
 			// re-export menus to config array in case published status for page has changed
 			Fractal::exportMenus();
@@ -147,11 +152,11 @@ class PagesController extends BaseController {
 		$page = Page::findBySlug($slug);
 		if (empty($page))
 			return Redirect::to(Fractal::uri('', true))->with('messages', [
-				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.page')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.page')])
 			]);
 
 		Site::setTitle($page->title.' ('.Fractal::trans('labels.page').')');
-		Site::setHeading(Fractal::trans('labels.updatePage').': <strong>'.Format::entities($page->title).'</strong>');
+		Site::setHeading(Fractal::trans('labels.update_item', ['item' => Fractal::trans('labels.page')]).': <strong>'.Format::entities($page->title).'</strong>');
 		Site::set('wysiwyg', true);
 
 		$page->setDefaults(['contentAreas']);
@@ -161,11 +166,11 @@ class PagesController extends BaseController {
 
 		Fractal::addButtons([
 			[
-				'label' => Fractal::trans('labels.returnToPagesList'),
+				'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.page', 2)]),
 				'icon'  => 'glyphicon glyphicon-list',
 				'uri'   => Fractal::uri('', true),
 			],[
-				'label' => Fractal::trans('labels.viewPage'),
+				'label' => Fractal::trans('labels.view_item', ['item' => Fractal::trans('labels.page')]),
 				'icon'  => 'glyphicon glyphicon-file',
 				'url'   => $page->getUrl(),
 			]
@@ -185,7 +190,7 @@ class PagesController extends BaseController {
 		$page = Page::findBySlug($slug);
 		if (empty($page))
 			return Redirect::to(Fractal::uri('', true))->with('messages', [
-				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.page')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.page')])
 			]);
 
 		$page->setValidationRules();
@@ -193,7 +198,7 @@ class PagesController extends BaseController {
 		$messages = [];
 		if (Form::validated())
 		{
-			$messages['success'] = Fractal::trans('messages.successUpdated', ['item' => Fractal::transLowerA('labels.page')]);
+			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoiceLowerA('labels.page')]);
 
 			$page->saveData();
 
@@ -222,7 +227,7 @@ class PagesController extends BaseController {
 	{
 		$result = [
 			'resultType' => 'Error',
-			'message'    => Fractal::trans('messages.errorGeneral'),
+			'message'    => Fractal::trans('messages.errors.general'),
 		];
 
 		$page = Page::find($id);
@@ -238,7 +243,7 @@ class PagesController extends BaseController {
 		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.successDeleted', ['item' => '<strong>'.$page->title.'</strong>']);
+		$result['message']    = Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$page->title.'</strong>']);
 
 		$page->contentAreas()->sync([]);
 		$page->delete();
@@ -284,12 +289,12 @@ class PagesController extends BaseController {
 		if (!$page->isPublished())
 		{
 			if ($page->isPublishedFuture())
-				$messages['info'] = Fractal::trans('messages.notPublishedUntil', [
+				$messages['info'] = Fractal::trans('messages.not_published_until', [
 					'item'     => strtolower(Fractal::trans('labels.page')),
 					'dateTime' => $page->getPublishedDateTime(),
 				]);
 			else
-				$messages['info'] = Fractal::trans('messages.notPublished', ['item' => Fractal::trans('labels.page')]);
+				$messages['info'] = Fractal::trans('messages.not_published', ['item' => Fractal::trans('labels.page')]);
 		}
 
 		Form::setErrors();
@@ -343,7 +348,7 @@ class PagesController extends BaseController {
 	public function addContentArea($id = null)
 	{
 		$data = [
-			'title'        => Fractal::trans('labels.addContentArea'),
+			'title'        => Fractal::trans('labels.add_item', Fractal::transChoice('labels.content_area')),
 			'pageId'       => $id,
 			'contentAreas' => Area::orderBy('title')->get(),
 		];

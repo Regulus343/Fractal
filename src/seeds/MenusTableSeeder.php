@@ -165,7 +165,7 @@ class MenusTableSeeder extends Seeder {
 							[
 								'uri'                => 'users/activity',
 								'label'              => 'User Activity',
-								'label_language_key' => 'plural:activity',
+								'label_language_key' => 'singular:activity',
 								'icon'               => 'info-sign',
 								'display_order'      => 3,
 								'auth_status'        => 1,

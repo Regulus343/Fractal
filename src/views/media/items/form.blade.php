@@ -6,8 +6,8 @@
 		var update             = {{ (isset($update) && $update ? 'true' : 'false') }};
 		var fileTypeExtensions = {{ json_encode($fileTypeExtensions) }};
 
-		$(document).ready(function(){
-
+		$(document).ready(function()
+		{
 			@if (!isset($update) || !$update)
 				$('#field-title').keyup(function(){
 					setSlugForTitle();
@@ -18,19 +18,22 @@
 				$('#field-file').off('change');
 			@endif
 
-			$('#field-slug').keyup(function(){
-				var slug = strToSlug($('#field-slug').val());
+			$('#field-slug').keyup(function()
+			{
+				var slug = Fractal.strToSlug($('#field-slug').val());
 				$('#field-slug').val(slug);
 			});
 
-			$('#remove-file').click(function(e){
+			$('#remove-file').click(function(e)
+			{
 				e.preventDefault();
 
 				$('#field-remove-file').val('1');
 				$('#file-area').fadeOut('fast');
 			});
 
-			$('#remove-thumbnail-image').click(function(e){
+			$('#remove-thumbnail-image').click(function(e)
+			{
 				e.preventDefault();
 
 				$('#field-remove-thumbnail-image').val('1');
@@ -51,8 +54,10 @@
 				checkHostedContentUri();
 			});
 
-			$('#field-description-type').change(function(){
-				if ($(this).val() == "HTML") {
+			$('#field-description-type').change(function()
+			{
+				if ($(this).val() == "HTML")
+				{
 					$('.html-description-area').show().removeClass('hidden');
 					$('.markdown-description-area').hide();
 					$('.col-markdown-preview-content').hide();
@@ -70,7 +75,8 @@
 
 			$('#field-create-thumbnail').prop('checked', true).attr('readonly', 'readonly');
 
-			$('form').submit(function(e){
+			$('form').submit(function(e)
+			{
 				if ($('#field-description-type').val() == "HTML")
 					$('#field-description').val(CKEDITOR.instances[$('#field-description-html').attr('id')].getData());
 				else
@@ -78,12 +84,14 @@
 			});
 		});
 
-		function setSlugForTitle() {
-			var slug = strToSlug($('#field-title').val());
+		function setSlugForTitle()
+		{
+			var slug = Fractal.strToSlug($('#field-title').val());
 			$('#field-slug').val(slug);
 		}
 
-		function checkHostedContentType() {
+		function checkHostedContentType()
+		{
 			if ($('#field-hosted-externally').prop('checked'))
 			{
 				if ($('#field-hosted-content-type').val() == "YouTube")
@@ -140,7 +148,8 @@
 			checkHostedContentUri();
 		}
 
-		function checkHostedContentUri() {
+		function checkHostedContentUri()
+		{
 			if ($('#field-hosted-content-type').val() == "YouTube" && $('#field-hosted-content-uri').val().length == 11)
 			{
 				$.ajax({
@@ -194,7 +203,8 @@
 			}
 		}
 
-		function publishedCheckedCallback(checked) {
+		function publishedCheckedCallback(checked)
+		{
 			if (checked)
 				$('#field-published-at').val(moment().format('MM/DD/YYYY hh:mm A'));
 			else
@@ -205,7 +215,7 @@
 
 	@include(Fractal::view('partials.markdown_preview', true))
 
-	{{ Form::openResource(array('files' => true)) }}
+	{!! Form::openResource(array('files' => true)) !!}
 
 		<div class="row button-menu">
 			<div class="col-md-12">
@@ -223,7 +233,7 @@
 
 		<div class="row">
 			<div class="col-md-4">
-				{{ Form::field('file', 'file', array('class-field' => 'file-upload-button')) }}
+				{!! Form::field('file', 'file', array('class-field' => 'file-upload-button')) !!}
 
 				@if (isset($item) && $item->hasFile())
 					<div id="file-area">
@@ -255,14 +265,14 @@
 					</div><!-- /#file-area -->
 				@endif
 
-				{{ Form::hidden('remove_file') }}
+				{!! Form::hidden('remove_file') !!}
 			</div>
 			<div class="col-md-4">
-				{{ Form::field('thumbnail_image', 'file', [
+				{!! Form::field('thumbnail_image', 'file', [
 					'class-field'          => 'file-upload-button',
 					'label'                => 'Thumbnail Image',
 					'data-file-type-field' => 'Image',
-				]) }}
+				]) !!}
 
 				@if (isset($item) && $item->hasThumbnailImage())
 					<div id="thumbnail-image-area">
@@ -282,39 +292,39 @@
 					</div><!-- /#thumbnail-image-area -->
 				@endif
 
-				{{ Form::hidden('remove_thumbnail_image') }}
+				{!! Form::hidden('remove_thumbnail_image') !!}
 			</div>
 			<div class="col-md-4">
-				{{ Form::field('file_type_id', 'select', [
+				{!! Form::field('file_type_id', 'select', [
 					'label'          => 'File Type',
 					'options'        => Form::prepOptions(Regulus\Fractal\Models\Content\FileType::orderBy('name')->get(), array('id', 'name')),
 					'null-option'    => 'None',
 					'readonly-field' => 'readonly',
-				]) }}
+				]) !!}
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-md-4 padding-vertical-10px">
-				{{ Form::field('hosted_externally', 'checkbox', [
+				{!! Form::field('hosted_externally', 'checkbox', [
 					'label'                  => 'Media Hosted Externally',
 					'data-checked-show'      => '.media-hosted-area',
 					'data-show-hide-type'    => 'display',
 					'data-callback-function' => 'publishedCheckedCallback',
-				]) }}
+				]) !!}
 			</div>
 
 			<div class="media-hosted-area{{ (!Form::value('hosted_externally', 'checkbox') ? ' hidden' : '') }}">
 				<div class="col-md-4">
-					{{ Form::field('hosted_content_type', 'select', [
+					{!! Form::field('hosted_content_type', 'select', [
 						'options' => Form::simpleOptions(['URL', 'SoundCloud', 'Vimeo', 'YouTube']),
-					]) }}
+					]) !!}
 				</div>
 				<div class="col-md-4">
-					{{ Form::openFieldContainer('hosted_content_uri') }}
+					{!! Form::openFieldContainer('hosted_content_uri') !!}
 
-						{{ Form::label('hosted_content_uri', 'Hosted Content URI') }}
-						{{ Form::text('hosted_content_uri', null, ['label' => 'Hosted URI']) }}
+						{!! Form::label('hosted_content_uri', 'Hosted Content URI') !!}
+						{!! Form::text('hosted_content_uri', null, ['label' => 'Hosted URI']) !!}
 
 						<div id="hosted-content-uri-help-youtube" class="alert alert-info hosted-content-uri-help{{ HTML::hiddenArea(Form::value('hosted_type') != "YouTube", true) }}">
 							https://www.youtube.com/watch?v=<strong class="highlight">y0uTuB3-iDx</strong>&amp;list=xyz
@@ -328,47 +338,47 @@
 							https://api.soundcloud.com/tracks/<strong class="highlight">123456789</strong> <em>(found in &lt;iframe&gt; Embed URL)</em>
 						</div>
 
-					{{ Form::closeFieldContainer('hosted_content_uri') }}
+					{!! Form::closeFieldContainer('hosted_content_uri') !!}
 
-					{{ Form::hidden('hosted_content_thumbnail_url') }}
+					{!! Form::hidden('hosted_content_thumbnail_url') !!}
 				</div>
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-md-3">
-				{{ Form::field('title') }}
+				{!! Form::field('title') !!}
 			</div>
 			<div class="col-md-3">
-				{{ Form::field('slug') }}
+				{!! Form::field('slug') !!}
 			</div>
 			<div class="col-md-3">
-				{{ Form::field('media_type_id', 'select', [
-					'label'          => 'Media Type',
-					'options'        => $mediaTypeOptions,
-					'null-option'    => 'None',
-				]) }}
+				{!! Form::field('media_type_id', 'select', [
+					'label'       => 'Media Type',
+					'options'     => $mediaTypeOptions,
+					'null-option' => 'None',
+				]) !!}
 			</div>
 			<div class="col-md-3">
-				{{ Form::field('description_type', 'select', [
+				{!! Form::field('description_type', 'select', [
 					'options' => Form::simpleOptions(['HTML', 'Markdown']),
-				]) }}
+				]) !!}
 			</div>
 		</div>
 
 		<div class="row padding-bottom-20px">
 			<div class="col-md-12 html-description-area{{ HTML::hiddenArea(Form::value('description_type') != "HTML", true) }}">
-				{{ Form::field('description_html', 'textarea', [
+				{!! Form::field('description_html', 'textarea', [
 					'label'       => 'Description',
 					'class-field' => 'ckeditor',
-				]) }}
+				]) !!}
 			</div>
 
 			<div class="col-md-12 col-lg-6 markdown-description-area{{ HTML::hiddenArea(Form::value('description_type') != "Markdown", true) }}">
-				{{ Form::field('description_markdown', 'textarea', [
+				{!! Form::field('description_markdown', 'textarea', [
 					'label'       => 'Description',
 					'class-field' => 'tab markdown',
-				]) }}
+				]) !!}
 
 				<a href="" class="btn btn-default trigger-modal pull-right" data-modal-ajax-uri="api/view-markdown-guide" data-modal-ajax-action="get">
 					<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Fractal::trans('labels.viewMarkdownGuide') }}
@@ -376,12 +386,12 @@
 			</div>
 
 			<div class="col-lg-6 col-markdown-preview-content{{ HTML::hiddenArea(Form::value('description_type') != "Markdown", true) }}">
-				<?=Form::label('')?>
+				{!! Form::label('') !!}
 
 				<div class="markdown-preview-content"></div>
 			</div>
 
-			{{ Form::hidden('description') }}
+			{!! Form::hidden('description') !!}
 		</div>
 
 		{{-- Image Settings --}}
@@ -390,7 +400,7 @@
 		<div class="row clear{{ HTML::hiddenArea(!Fractal::getSetting('Enable Media Item Comments', true), true) }}">
 			<div class="col-md-2">
 				<div class="form-group">
-					{{ Form::field('comments_enabled', 'checkbox') }}
+					{!! Form::field('comments_enabled', 'checkbox') !!}
 				</div>
 			</div>
 		</div>
@@ -398,21 +408,21 @@
 		<div class="row clear">
 			<div class="col-md-2">
 				<div class="form-group">
-					{{ Form::field('published', 'checkbox', [
+					{!! Form::field('published', 'checkbox', [
 						'data-checked-show'      => '.published-at-area',
 						'data-show-hide-type'    => 'visibility',
 						'data-callback-function' => 'publishedCheckedCallback',
-					]) }}
+					]) !!}
 				</div>
 			</div>
 
 			<div class="col-md-3 published-at-area{{ HTML::invisibleArea(!Form::value('published', 'checkbox'), true) }}">
 				<div class="form-group">
 					<div class="input-group date date-time-picker">
-						{{ Form::text('published_at', [
+						{!! Form::text('published_at', [
 							'class'       => 'date',
 							'placeholder' => 'Date/Time Published',
-						]) }}
+						]) !!}
 
 						<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
 					</div>
@@ -422,10 +432,10 @@
 			<div class="col-md-3 col-md-offset-4">
 				<div class="form-group">
 					<div class="input-group date date-picker">
-						{{ Form::text('date_created', null, [
+						{!! Form::text('date_created', null, [
 							'class'       => 'date',
 							'placeholder' => 'Date/Time Published',
-						]) }}
+						]) !!}
 
 						<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
 					</div>
@@ -435,10 +445,10 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field(Form::submitResource(Fractal::trans('labels.mediaItem')), 'button') }}
+				{!! Form::field(Form::submitResource(Fractal::trans('labels.mediaItem')), 'button') !!}
 			</div>
 		</div>
 
-	{{ Form::close() }}
+	{!! Form::close() !!}
 
 @stop

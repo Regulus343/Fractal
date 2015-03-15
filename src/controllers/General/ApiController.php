@@ -24,27 +24,35 @@ class ApiController extends BaseController {
 		return (int) Auth::removeState(Input::get('name'), Input::get('state'));
 	}
 
-	public function postAutoSave()
+	public function postSaveContent()
 	{
 		$contentType = Input::get('content_type');
-		switch($contentType)
+
+		if (in_array($contentType, ['page', 'blog-article', 'media-item']))
 		{
-			case "blog-article":
-				if (Input::get('id') == "")
+			if (Input::get('id') == "")
+			{
+				$content = Input::except('_token');
+
+				if (isset($content['content_areas']))
 				{
-					$mainContentArea = Input::get('content_areas.1');
-					unset($mainContentArea['id']);
+					foreach ($content['content_areas'] as $i => $contentArea)
+					{
+						if (isset($contentArea['content_type']) && in_array($contentArea['content_type'], ['Markdown', 'HTML'])
+						&& isset($contentArea['content_markdown']) && isset($contentArea['content_html']))
+						{
+							$content['content_areas'][$i]['content'] = $contentArea['content_'.strtolower($contentArea['content_type'])];
 
-					if ($mainContentArea['content_type'] == "Markdown")
-						$mainContentArea['content'] = $mainContentArea['content_markdown'];
-					else
-						$mainContentArea['content'] = $mainContentArea['content_html'];
-
-					Auth::setState('autoSavedContent.blogArticle', $mainContentArea);
+							unset($content['content_areas'][$i]['content_markdown']);
+							unset($content['content_areas'][$i]['content_html']);
+						}
+					}
 				}
 
+				Auth::setState('savedContent.'.camel_case(str_replace('-', '_', $contentType)), $content);
+
 				return 1;
-				break;
+			}
 		}
 
 		return 0;

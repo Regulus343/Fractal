@@ -58,7 +58,7 @@ return [
 	'search_no_results_no_terms' => 'Your search yielded no results.',
 	'search_results'             => 'Your search for &ldquo;<strong>:terms</strong>&rdquo; yielded <strong>:total</strong> :items.',
 	'search_results_no_terms'    => 'Your search yielded <strong>:total</strong> :items.',
-	'searchNoTerms'              => 'You did not enter any search terms.',
+	'search_no_terms'            => 'You did not enter any search terms.',
 
 	'developer_mode_enabled'  => '<strong>Developer Mode</strong> enabled.',
 	'developer_mode_disabled' => '<strong>Developer Mode</strong> disabled.',

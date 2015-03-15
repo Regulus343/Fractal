@@ -341,16 +341,12 @@ class Fractal {
 	 * Export the settings to a PHP array config file.
 	 *
 	 * @param  mixed    $settings
-	 * @param  boolean  $fromCli
 	 * @return void
 	 */
-	public function exportSettings($settings = null, $fromCli = false)
+	public function exportSettings($settings = null)
 	{
 		$array = Setting::createArray($settings);
-		$path  = config_path('exported/settings.php');
-
-		if (!$fromCli)
-			$path = "../".$path;
+		$path  = config_path('exported/cms_settings.php');
 
 		ArrayFile::save($path, $array);
 	}
@@ -543,8 +539,7 @@ class Fractal {
 	 */
 	public function setPaginationMessage($initialView = false)
 	{
-		$contentType = $this->getContentTypeCamelCase();
-		$item        = $this->transChoice('labels.'.$contentType);
+		$contentType = $this->getContentTypeSnakeCase();
 
 		$this->pagination['result']['resultType'] = $this->pagination['content']->total() ? "Success" : "Error";
 
@@ -552,23 +547,23 @@ class Fractal {
 		{
 			if ($this->pagination['changingPage'] || $this->pagination['terms'] == "")
 			{
-				$this->pagination['result']['message'] = $this->trans('messages.displaying_items_of_total', [
-					'start' => $this->pagination['content']->getFrom(),
-					'end'   => $this->pagination['content']->getTo(),
-					'total' => $this->pagination['content']->getTotal(),
-					'items' => Format::pluralize(strtolower($item), $this->pagination['content']->getTotal()),
+				$this->pagination['result']['message'] = $this->trans('messages.displaying.items_of_total', [
+					'start' => $this->pagination['content']->firstItem(),
+					'end'   => $this->pagination['content']->lastItem(),
+					'total' => $this->pagination['content']->count(),
+					'items' => $this->transChoiceLower('labels.'.$contentType, $this->pagination['content']->count()),
 				]);
 			} else {
 				if ($this->pagination['terms'] == "")
 					$this->pagination['result']['message'] = $this->trans('messages.search_results_no_terms', [
-						'total' => $this->pagination['content']->getTotal(),
-						'items' => Format::pluralize(strtolower($item), $this->pagination['content']->getTotal()),
+						'total' => $this->pagination['content']->count(),
+						'items' => $this->transChoiceLower('labels.'.$contentType, $this->pagination['content']->count()),
 					]);
 				else
 					$this->pagination['result']['message'] = $this->trans('messages.search_results', [
 						'terms' => $this->pagination['terms'],
-						'total' => $this->pagination['content']->getTotal(),
-						'items' => Format::pluralize(strtolower($item), $this->pagination['content']->getTotal()),
+						'total' => $this->pagination['content']->count(),
+						'items' => $this->transChoiceLower('labels.'.$contentType, $this->pagination['content']->count()),
 					]);
 			}
 		} else {
@@ -1024,6 +1019,41 @@ class Fractal {
 	}
 
 	/**
+	 * Repopulate form field values with content saved in user state if any exists.
+	 *
+	 * @return boolean
+	 */
+	public function restoreSavedContent()
+	{
+		$contentType  = $this->getContentTypeCamelCase();
+		$savedContent = \Auth::getState('savedContent.'.$contentType);
+
+		if (!is_null($savedContent))
+		{
+			if (isset($savedContent->content_areas))
+				Form::setDefaults($savedContent, 'content_areas');
+			else
+				Form::setDefaults($savedContent);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Clear saved content for a content type.
+	 *
+	 * @return boolean
+	 */
+	public function clearSavedContent()
+	{
+		$contentType = $this->getContentTypeCamelCase();
+
+		return Auth::removeState('savedContent.'.$contentType);
+	}
+
+	/**
 	 * Authenticates admin.
 	 *
 	 * @return boolean
@@ -1071,21 +1101,19 @@ class Fractal {
 	/**
 	 * Export the menus to a PHP array config file.
 	 *
-	 * @param  boolean  $fromCli
 	 * @return void
 	 */
-	public function exportMenus($fromCli = false)
+	public function exportMenus()
 	{
 		$menus = Menu::orderBy('cms', 'desc')->orderBy('name')->get();
 		$array = [];
-		foreach ($menus as $menu) {
+
+		foreach ($menus as $menu)
+		{
 			$array[str_replace(' ', '_', strtolower($menu->name))] = $menu->createArray(false, true);
 		}
 
-		$path  = config_path('exported/menus.php');
-
-		if (!$fromCli)
-			$path = "../".$path;
+		$path = config_path('exported/menus.php');
 
 		ArrayFile::save($path, $array);
 	}

@@ -2,6 +2,6 @@
 
 return [
 
-	//to be exported from database
+	// to be exported from database
 
 ];

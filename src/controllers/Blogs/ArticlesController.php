@@ -93,10 +93,7 @@ class ArticlesController extends BlogsController {
 
 		Article::setDefaultsForNew();
 
-		// load auto-saved content
-		$autoSavedContent = \Auth::user()->getState('autoSavedContent');
-		if (!is_null($autoSavedContent) && isset($autoSavedContent->blogArticle))
-			Form::setDefaults($autoSavedContent->blogArticle, null, 'content_areas.1');
+		Fractal::restoreSavedContent();
 
 		Form::setErrors();
 
@@ -119,13 +116,17 @@ class ArticlesController extends BlogsController {
 		Form::setValidationRules(Article::validationRules());
 
 		$messages = [];
-		if (Form::validated()) {
-			$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transLowerA('labels.article')]);
+		if (Form::validated())
+		{
+			$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transChoiceLowerA('labels.article')]);
 
-			$input            = Input::all();
+			$input = Input::all();
+
 			$input['user_id'] = Auth::user()->id;
 
 			$article = Article::createNew($input);
+
+			Fractal::clearSavedContent();
 
 			Activity::log([
 				'contentId'   => $article->id,
@@ -152,7 +153,7 @@ class ArticlesController extends BlogsController {
 		$article = Article::findBySlug($slug);
 		if (empty($article))
 			return Redirect::to(Fractal::uri('pages'))->with('messages', [
-				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transLower('labels.article')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.article')])
 			]);
 
 		Site::setTitle($article->getTitle().' ('.Fractal::transChoice('labels.article').')');
@@ -195,14 +196,15 @@ class ArticlesController extends BlogsController {
 		$article = Article::findBySlug($slug);
 		if (empty($article))
 			return Redirect::to(Fractal::uri('pages'))->with('messages', [
-				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transLower('labels.article')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.article')])
 			]);
 
 		$article->setValidationRules();
 
 		$messages = [];
-		if (Form::validated()) {
-			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transLowerA('labels.article')]);
+		if (Form::validated())
+		{
+			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoiceLowerA('labels.article')]);
 
 			$article->saveData();
 
@@ -340,7 +342,7 @@ class ArticlesController extends BlogsController {
 		}
 
 		$data = [
-			'title'                     => Fractal::trans('labels.selectThumbnailImage'),
+			'title'                     => Fractal::trans('labels.select_item', ['item' => Fractal::transChoice('thumbnail_image')]),
 			'defaultThumbnailImageType' => $defaultThumbnailImageType,
 			'selectedFileId'            => $selectedFileId,
 			'selectedMediaItemId'       => $selectedMediaItemId,

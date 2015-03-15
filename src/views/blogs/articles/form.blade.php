@@ -9,6 +9,7 @@
 		$(document).ready(function()
 		{
 			@if (!isset($update) || !$update)
+
 				$('#field-title').keyup(function(){
 					$('#field-title').val($('#field-title').val().replace(/  /g, ' '));
 
@@ -17,6 +18,7 @@
 
 					$('#field-content-areas-1-title').val($('#field-title').val());
 				});
+
 			@endif
 
 			$('#field-slug').keyup(function()
@@ -143,7 +145,7 @@
 					item.find('.field-content-html').val(data.content);
 			}
 
-			//set up WYSIWYG editor for HTML content field
+			// initialize WYSIWYG editor for HTML content field
 			var htmlField = item.find('.field-content-html');
 			if (htmlField)
 				CKEDITOR.replace(htmlField.attr('id'), {
@@ -156,11 +158,11 @@
 					}
 				});
 
-			//set up Markdown content field action preview window
+			// initialize Markdown content field action preview window
 			var markdownField = item.find('.field-content-markdown');
 			Fractal.initMarkdownField(markdownField);
 
-			//set up modal button triggers
+			// initialize modal button triggers
 			Fractal.initModalTriggers();
 
 			if (addingContentArea) {
