@@ -284,7 +284,7 @@ class ItemsController extends MediaController {
 		$item = Item::findBySlug($slug);
 		if (empty($item))
 			return Redirect::to(Fractal::uri('', true))->with('messages', [
-				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoice('labels.media_item')]),
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.media_item')]),
 			]);
 
 		Form::setValidationRules(Item::validationRules($item->id));

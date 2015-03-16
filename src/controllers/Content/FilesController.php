@@ -156,7 +156,7 @@ class FilesController extends BaseController {
 				$messages['error'] = $result['error'];
 			}
 		} else {
-			$messages['error'] = Fractal::trans('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errors.general');
 		}
 
 		return Redirect::to(Fractal::uri('create', true))
@@ -170,7 +170,7 @@ class FilesController extends BaseController {
 		$file = ContentFile::find($id);
 		if (empty($file))
 			return Redirect::to(Fractal::uri('', true))->with('messages', [
-				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.file')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.file')])
 			]);
 
 		Site::setTitle($file->name.' ('.Fractal::trans('labels.file').')');
@@ -200,7 +200,7 @@ class FilesController extends BaseController {
 		$file = ContentFile::find($id);
 		if (empty($file))
 			return Redirect::to(Fractal::uri('', true))->with('messages', [
-				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.file')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.file')])
 			]);
 
 		Form::setValidationRules(ContentFile::validationRules($id));
@@ -299,7 +299,7 @@ class FilesController extends BaseController {
 				$messages['error'] = $result['error'];
 			}
 		} else {
-			$messages['error'] = Fractal::trans('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errors.general');
 		}
 
 		return Redirect::to(Fractal::uri($id.'/edit', true))
@@ -312,7 +312,7 @@ class FilesController extends BaseController {
 	{
 		$result = [
 			'resultType' => 'Error',
-			'message'    => Fractal::trans('messages.errorGeneral'),
+			'message'    => Fractal::trans('messages.errors.general'),
 		];
 
 		$file = ContentFile::find($id);

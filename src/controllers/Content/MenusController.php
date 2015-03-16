@@ -140,7 +140,7 @@ class MenusController extends BaseController {
 		$menu = Menu::find($id);
 		if (empty($menu))
 			return Redirect::to(Fractal::uri('menus'))->with('messages', [
-				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoice('labels.menu')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.menu')])
 			]);
 
 		Site::setTitle($menu->name.' ('.Fractal::transChoice('labels.menu').')');
@@ -167,7 +167,7 @@ class MenusController extends BaseController {
 		$menu = Menu::find($id);
 		if (empty($menu))
 			return Redirect::to(Fractal::uri('', true))->with('messages', [
-				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoice('labels.menu')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.menu')])
 			]);
 
 		Form::setValidationRules(Menu::validationRules($id));
@@ -179,7 +179,7 @@ class MenusController extends BaseController {
 
 			$menu->saveData();
 
-			//re-export menus to config array
+			// re-export menus to config array
 			Fractal::exportMenus();
 
 			Activity::log([

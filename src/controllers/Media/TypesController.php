@@ -55,7 +55,7 @@ class TypesController extends BaseController {
 			$categories = Type::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
-			'label' => Fractal::trans('labels.createType'),
+			'label' => Fractal::trans('labels.create_item', ['item' => Fractal::transChoice('labels.media_type')]),
 			'icon'  => 'glyphicon glyphicon-file',
 			'uri'   => Fractal::uri('create', true),
 		]);
@@ -91,7 +91,7 @@ class TypesController extends BaseController {
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::trans('labels.returnToTypesList'),
+			'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.media_type', 2)]),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
@@ -126,7 +126,7 @@ class TypesController extends BaseController {
 			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Fractal::trans('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errors.general');
 		}
 
 		return Redirect::to(Fractal::uri('create', true))
@@ -140,7 +140,7 @@ class TypesController extends BaseController {
 		$type = Type::findBySlug($slug);
 		if (empty($type))
 			return Redirect::to(Fractal::uri('pages'))->with('messages', [
-				'error' => Fractal::trans('messages.error_not_found', ['item' => Fractal::transChoice('labels.media_type')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.media_type')])
 			]);
 
 		Site::setTitle($type->name.' ('.Fractal::trans('labels.category').')');
@@ -150,7 +150,7 @@ class TypesController extends BaseController {
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::trans('labels.returnToTypesList'),
+			'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.media_type', 2)]),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
@@ -167,7 +167,7 @@ class TypesController extends BaseController {
 		$type = Type::findBySlug($slug);
 		if (empty($type))
 			return Redirect::to(Fractal::uri('pages'))->with('messages', [
-				'error' => Fractal::trans('messages.error_not_found', ['item' => Fractal::transChoice('labels.media_type')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.media_type')])
 			]);
 
 		$type->setValidationRules();

@@ -138,7 +138,7 @@ class PagesController extends BaseController {
 			return Redirect::to(Fractal::uri($page->slug.'/edit', true))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Fractal::trans('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errors.general');
 		}
 
 		return Redirect::to(Fractal::uri('create', true))
@@ -214,7 +214,7 @@ class PagesController extends BaseController {
 				'updated'     => true,
 			]);
 		} else {
-			$messages['error'] = Fractal::trans('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errors.general');
 		}
 
 		return Redirect::to(Fractal::uri($slug.'/edit', true))
