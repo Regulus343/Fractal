@@ -52,7 +52,7 @@ class RolesController extends UsersController {
 			$roles = Role::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
-			'label' => Fractal::trans('labels.createRole'),
+			'label' => Fractal::trans('labels.create_item', ['item' => Fractal::transChoice('labels.role')]),
 			'icon'  => 'glyphicon glyphicon-book',
 			'uri'   => Fractal::uri('create', true),
 		]);
@@ -88,7 +88,7 @@ class RolesController extends UsersController {
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::trans('labels.returnToRolesList'),
+			'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.role', 2)]),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
@@ -131,7 +131,7 @@ class RolesController extends UsersController {
 			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Fractal::trans('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errors.general');
 		}
 
 		return Redirect::to(Fractal::uri('create', true))
@@ -145,7 +145,7 @@ class RolesController extends UsersController {
 		$role = Role::find($id);
 		if (empty($role))
 			return Redirect::to(Fractal::uri('', true))->with('messages', [
-				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoice('labels.role')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.role')])
 			]);
 
 		Site::setTitle($role->name.' ('.Fractal::transChoice('labels.role').')');
@@ -156,7 +156,7 @@ class RolesController extends UsersController {
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::trans('labels.returnToRolesList'),
+			'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.role', 2)]),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
@@ -171,7 +171,7 @@ class RolesController extends UsersController {
 		$role = Role::find($id);
 		if (empty($role))
 			return Redirect::to(Fractal::uri('', true))->with('messages', [
-				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoice('labels.role')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.role')])
 			]);
 
 		$tableName = Auth::getTableName('roles');
@@ -204,7 +204,7 @@ class RolesController extends UsersController {
 			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Fractal::trans('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errors.general');
 
 			return Redirect::to(Fractal::uri($id.'/edit', true))
 				->with('messages', $messages)

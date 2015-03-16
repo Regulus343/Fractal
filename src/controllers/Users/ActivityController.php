@@ -25,13 +25,13 @@ class ActivityController extends UsersController {
 
 		Site::set('section', 'Users');
 		Site::set('subSection', 'Activity');
-		Site::setTitle(Fractal::trans('labels.userActivity'));
+		Site::setTitle(Fractal::transChoice('labels.user_activity'));
 
 		Fractal::setContentType('activities');
 
 		Fractal::setViewsLocation('users.activity');
 
-		Fractal::addTrailItem(Fractal::trans('labels.activity'), Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::transChoice('labels.activity'), Fractal::getControllerPath());
 
 		Site::set('defaultSorting', ['order' => 'desc']);
 	}

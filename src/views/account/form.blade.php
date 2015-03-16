@@ -11,7 +11,7 @@
 
 		<div class="row">
 			<div class="col-md-6">
-				{!! Form::field('username') !!}
+				{!! Form::field('name', 'text', ['label' => Fractal::trans('labels.username')]) !!}
 			</div>
 			<div class="col-md-6">
 				{!! Form::field('email') !!}

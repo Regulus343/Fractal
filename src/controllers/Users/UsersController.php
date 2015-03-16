@@ -52,7 +52,7 @@ class UsersController extends BaseController {
 			$users = User::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
-			'label' => Fractal::trans('labels.createUser'),
+			'label' => Fractal::trans('labels.create_item', ['item' => Fractal::transChoice('labels.user')]),
 			'icon'  => 'glyphicon glyphicon-user',
 			'uri'   => Fractal::uri('create', true),
 		]);
@@ -108,7 +108,7 @@ class UsersController extends BaseController {
 	public function store()
 	{
 		$rules = [
-			'username' => ['required', 'alpha_dash', 'min:2', 'unique:auth_users,username'],
+			'name'     => ['required', 'alpha_dash', 'min:2', 'unique:auth_users,name'],
 			'email'    => ['required', 'email'],
 			'roles'    => ['required'],
 			'password' => ['required', 'confirmed'],
@@ -126,7 +126,7 @@ class UsersController extends BaseController {
 		$messages = [];
 		if (Form::validated())
 		{
-			$messages['success'] = Fractal::trans('messages.successCreated', ['item' => Fractal::transLowerA('labels.user')]);
+			$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transLowerA('labels.user')]);
 
 			$user = new User;
 
@@ -150,7 +150,7 @@ class UsersController extends BaseController {
 			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Fractal::trans('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errors.general');
 		}
 
 		return Redirect::to(Fractal::uri('create', true))
@@ -164,7 +164,7 @@ class UsersController extends BaseController {
 		$user = Fractal::userByUsername($username);
 		if (empty($user))
 			return Redirect::to(Fractal::uri('', true))->with('messages', [
-				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.user')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.user')])
 			]);
 
 		Site::setTitle($user->username.' ('.Fractal::trans('labels.user').')');
@@ -175,7 +175,7 @@ class UsersController extends BaseController {
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::trans('labels.returnToUsersList'),
+			'label' => Fractal::trans('labels.return_to_items_list', ['item' => Fractal::transChoice('labels.user')]),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
@@ -190,13 +190,13 @@ class UsersController extends BaseController {
 		$user = Fractal::userByUsername($username);
 		if (empty($user))
 			return Redirect::to(Fractal::uri('', true))->with('messages', [
-				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.user')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.user')])
 			]);
 
 		$rules = [
-			'username' => ['required', 'alpha_dash', 'min:2', 'unique:auth_users,username,'.$user->id],
-			'email'    => ['required', 'email'],
-			'roles'    => ['required'],
+			'name'  => ['required', 'alpha_dash', 'min:2', 'unique:auth_users,name,'.$user->id],
+			'email' => ['required', 'email'],
+			'roles' => ['required'],
 		];
 
 		if (Fractal::getSetting('Require Unique Email Addresses'))

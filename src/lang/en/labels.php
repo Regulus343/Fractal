@@ -84,7 +84,7 @@ return [
 	'city'                    => 'City',
 	'country'                 => 'Country',
 
-	'statuses'                => 'Statuses',
+	'status'                  => 'Status|Statuses',
 
 	'search'                  => 'Search',
 	'search_box'              => 'Search...',

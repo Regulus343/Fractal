@@ -11,7 +11,7 @@
 
 		<div class="row">
 			<div class="col-md-6">
-				{!! Form::field('username') !!}
+				{!! Form::field('name', 'text', ['label' => Fractal::trans('labels.username')]) !!}
 			</div>
 			<div class="col-md-6">
 				{!! Form::field('email') !!}
@@ -68,8 +68,8 @@
 		<div class="row">
 			<div class="col-md-12">
 				{!! Form::field('roles', 'checkbox-set', [
-					'options'        => Form::prepOptions(Regulus\Identify\Role::orderBy('display_order')->orderBy('name')->get(), array('id', 'name')),
-					'label'          => Fractal::trans('labels.roles'),
+					'options'        => Form::prepOptions(Regulus\Identify\Models\Role::orderBy('display_order')->orderBy('name')->get(), array('id', 'name')),
+					'label'          => Fractal::transChoice('labels.role', 2),
 					'associative'    => true,
 					'name-values'    => true,
 				]) !!}
@@ -94,8 +94,8 @@
 		<div class="row">
 			<div class="col-md-12">
 				{!! Form::field(null, 'checkbox-set', [
-					'options'     => array('active' => 'Active', 'banned' => 'Banned'),
-					'label'       => Fractal::trans('labels.statuses'),
+					'options'     => ['active' => 'Active', 'banned' => 'Banned'],
+					'label'       => Fractal::transChoice('labels.status', 2),
 					'associative' => true
 				]) !!}
 			</div>
@@ -103,7 +103,7 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				{!! Form::field(Form::submitResource(Fractal::trans('labels.user')), 'button') !!}
+				{!! Form::field(Form::submitResource(Fractal::transChoice('labels.user')), 'button') !!}
 			</div>
 		</div>
 

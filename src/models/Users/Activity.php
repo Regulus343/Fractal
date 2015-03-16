@@ -1,6 +1,6 @@
 <?php namespace Regulus\Fractal\Models\Users;
 
-class Activity extends \Regulus\ActivityLog\Activity {
+class Activity extends \Regulus\ActivityLog\Models\Activity {
 
 	/**
 	 * Get activity search results.

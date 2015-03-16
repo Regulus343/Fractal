@@ -48,8 +48,8 @@ class AccountController extends BaseController {
 		Form::setDefaults($user);
 
 		$rules = [
-			'username' => ['required', 'alpha_dash', 'min:2', 'unique:auth_users,username,'.$user->id],
-			'email'    => ['required', 'email'],
+			'name'  => ['required', 'alpha_dash', 'min:2', 'unique:auth_users,name,'.$user->id],
+			'email' => ['required', 'email'],
 		];
 
 		if (Fractal::getSetting('Require Unique Email Addresses'))

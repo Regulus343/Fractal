@@ -189,11 +189,15 @@ class MenuItem extends Base {
 		$selectedClass = "active";
 		$defaultClass  = $item->class;
 		$class         = $defaultClass;
-		$checked       = ! (int) $item->parentId ? "section" : "subSection";
+
+		if ((isset($item->parent_id) && ! (int) $item->parent_id) || (isset($item->parentId) && ! (int) $item->parentId))
+			$checked = "section";
+		else
+			$checked = "subSection";
 
 		$class .= Site::selectBy($checked, $item->label, true, $selectedClass);
 
-		//if nothing was found and menu item is for a content page, check it's title
+		// if nothing was found and menu item is for a content page, check its title
 		if ($class == $defaultClass && $item->type == "Content Page")
 			$class .= Site::selectBy($checked, $item->page, true, $selectedClass);
 

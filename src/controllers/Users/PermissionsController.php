@@ -52,7 +52,7 @@ class PermissionsController extends UsersController {
 			$permissions = Permission::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
-			'label' => Fractal::trans('labels.createPermission'),
+			'label' => Fractal::trans('labels.create_item', ['item' => Fractal::transChoice('labels.permission')]),
 			'icon'  => 'glyphicon glyphicon-star',
 			'uri'   => Fractal::uri('create', true),
 		]);
@@ -88,7 +88,7 @@ class PermissionsController extends UsersController {
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::trans('labels.returnToPermissionsList'),
+			'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.permission', 2)]),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
@@ -131,7 +131,7 @@ class PermissionsController extends UsersController {
 			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Fractal::trans('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errors.general');
 		}
 
 		return Redirect::to(Fractal::uri('create', true))
@@ -145,7 +145,7 @@ class PermissionsController extends UsersController {
 		$permission = Role::find($id);
 		if (empty($permission))
 			return Redirect::to(Fractal::uri('', true))->with('messages', [
-				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.permission')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.permission')])
 			]);
 
 		Site::setTitle($permission->name.' ('.Fractal::transChoice('labels.permission').')');
@@ -156,7 +156,7 @@ class PermissionsController extends UsersController {
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::trans('labels.returnToPermissionsList'),
+			'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.permission', 2)]),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
@@ -171,7 +171,7 @@ class PermissionsController extends UsersController {
 		$permission = Role::find($id);
 		if (empty($permission))
 			return Redirect::to(Fractal::uri('', true))->with('messages', [
-				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.permission')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.permission')])
 			]);
 
 		$tableName = Auth::getTableName('permissions');
@@ -217,7 +217,7 @@ class PermissionsController extends UsersController {
 	{
 		$result = [
 			'resultType' => 'Error',
-			'message'    => Fractal::trans('messages.errorGeneral'),
+			'message'    => Fractal::trans('messages.errors.general'),
 		];
 
 		$permission = Permission::find($id);

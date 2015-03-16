@@ -24,7 +24,7 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				{!! Form::field(Form::submitResource(Fractal::trans('labels.permission')), 'button') !!}
+				{!! Form::field(Form::submitResource(Fractal::transChoice('labels.permission')), 'button') !!}
 			</div>
 		</div>
 
