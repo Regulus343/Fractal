@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\DB;
 
-class User extends \Regulus\Identify\User {
+class User extends \Regulus\Identify\Models\User {
 
 	/**
 	 * Get user search results.

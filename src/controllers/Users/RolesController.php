@@ -27,13 +27,13 @@ class RolesController extends UsersController {
 
 		Site::set('section', 'Users');
 		Site::set('subSection', 'Roles');
-		Site::setTitle(Fractal::trans('labels.userRoles'));
+		Site::setTitle(Fractal::transChoice('labels.user_role', 2));
 
 		Fractal::setContentType('user-role');
 
 		Fractal::setViewsLocation('users.roles');
 
-		Fractal::addTrailItem(Fractal::trans('labels.roles'), Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::transChoice('labels.role', 2), Fractal::getControllerPath());
 
 		Site::set('defaultSorting', ['field' => 'display_order', 'order' => 'asc']);
 	}

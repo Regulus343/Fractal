@@ -30,12 +30,12 @@ class UsersController extends BaseController {
 		Fractal::setControllerPath(get_class());
 
 		Site::setMulti(['section', 'subSection'], 'Users');
-		Site::setTitle(Fractal::trans('labels.users'));
+		Site::setTitle(Fractal::transChoice('labels.user', 2));
 
 		// set content type and views location
 		Fractal::setContentType('user', true);
 
-		Fractal::addTrailItem(Fractal::trans('labels.users'), Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::transChoice('labels.user', 2), Fractal::getControllerPath());
 	}
 
 	public function index()

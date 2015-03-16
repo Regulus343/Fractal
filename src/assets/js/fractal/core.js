@@ -286,25 +286,35 @@ var Fractal = {
 			}, 500);
 		});
 
-		// initialize markdown fields
-		this.initMarkdownFields();
-
-		(function ($, undefined) {
-			$.fn.getCursorPosition = function() {
-				var el = $(this).get(0);
+		// create function to get cursor position in field
+		(function ($, undefined)
+		{
+			$.fn.getCursorPosition = function()
+			{
+				var el  = $(this).get(0);
 				var pos = 0;
-				if('selectionStart' in el) {
+
+				if('selectionStart' in el)
+				{
 					pos = el.selectionStart;
-				} else if('selection' in document) {
-					el.focus();
-					var Sel = document.selection.createRange();
-					var SelLength = document.selection.createRange().text.length;
-					Sel.moveStart('character', -el.value.length);
-					pos = Sel.text.length - SelLength;
 				}
+				else if ('selection' in document)
+				{
+					el.focus();
+					var sel       = document.selection.createRange();
+					var selLength = document.selection.createRange().text.length;
+
+					sel.moveStart('character', -el.value.length);
+
+					pos = sel.text.length - selLength;
+				}
+
 				return pos;
 			}
 		})(jQuery);
+
+		// initialize markdown fields
+		this.initMarkdownFields();
 	},
 
 	createUrl: function(uri, type)
@@ -1087,7 +1097,7 @@ var Fractal = {
 			value: this.contentType,
 		});
 
-		SolidSite.post(Fractal.createUrl('api/auto-save'), data, function(result)
+		SolidSite.post(Fractal.createUrl('api/save-content'), data, function(result)
 		{
 			if (result)
 			{

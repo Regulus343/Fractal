@@ -27,13 +27,13 @@ class PermissionsController extends UsersController {
 
 		Site::set('section', 'Users');
 		Site::set('subSection', 'Permissions');
-		Site::setTitle(Fractal::trans('labels.userPermissions'));
+		Site::setTitle(Fractal::transChoice('labels.user_permission', 2));
 
 		Fractal::setContentType('user-permission');
 
 		Fractal::setViewsLocation('users.permissions');
 
-		Fractal::addTrailItem(Fractal::trans('labels.permissions'), Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::transChoice('labels.permission', 2), Fractal::getControllerPath());
 
 		Site::set('defaultSorting', ['field' => 'display_order', 'order' => 'asc']);
 	}

@@ -46,7 +46,7 @@ return [
 						'class'      => 'btn btn-primary',
 						'uri'        => config('cms.base_uri').'/menus/:id/edit',
 						'attributes' => [
-							'title' => Fractal::trans('labels.edit_menu'),
+							'title' => Fractal::trans('labels.edit_item', ['item' => Fractal::transChoice('labels.menu')]),
 						],
 					],
 					[
@@ -58,7 +58,7 @@ return [
 							'data-action'          => 'delete',
 							'data-action-type'     => 'delete',
 							'data-action-message'  => 'confirmDelete',
-							'title'                => Fractal::trans('labels.delete_menu'),
+							'title'                => Fractal::trans('labels.delete_item', ['item' => Fractal::transChoice('labels.menu')]),
 						],
 					],
 				],
@@ -112,7 +112,7 @@ return [
 						'class'      => 'btn btn-primary',
 						'uri'        => config('cms.base_uri').'/pages/:slug/edit',
 						'attributes' => [
-							'title' => Fractal::trans('labels.edit_page'),
+							'title' => Fractal::trans('labels.edit_item', ['item' => Fractal::transChoice('labels.page')]),
 						],
 					],
 					[
@@ -120,7 +120,7 @@ return [
 						'class'      => 'btn btn-default',
 						'uri'        => config('cms.page_uri') == "" ? ':slug' : config('cms.page_uri').'/:slug',
 						'attributes' => [
-							'title'  => Fractal::trans('labels.view_page'),
+							'title'  => Fractal::trans('labels.view_item', ['item' => Fractal::transChoice('labels.page')]),
 						],
 					],
 					[
@@ -132,7 +132,7 @@ return [
 							'data-action'         => 'delete',
 							'data-action-type'    => 'delete',
 							'data-action-message' => 'confirmDelete',
-							'title'               => Fractal::trans('labels.delete_page'),
+							'title'               => Fractal::trans('labels.delete_item', ['item' => Fractal::transChoice('labels.page')]),
 						],
 					],
 				],
@@ -159,7 +159,7 @@ return [
 				'sort'      => true,
 			],
 			[
-				'label'     => Fractal::trans('labels.image'),
+				'label'     => Fractal::transChoice('labels.image'),
 				'method'    => 'getThumbnailImage()',
 				'class'     => 'image',
 				'sort'      => 'filename',
@@ -170,7 +170,7 @@ return [
 				'sort'      => true,
 			],
 			[
-				'label'     => Fractal::trans('labels.type'),
+				'label'     => Fractal::transChoice('labels.type'),
 				'method'    => 'getType()',
 				'sort'      => 'type_id',
 			],
@@ -193,7 +193,7 @@ return [
 						'class'      => 'btn btn-primary',
 						'uri'        => config('cms.base_uri').'/files/:id/edit',
 						'attributes' => [
-							'title' => Fractal::trans('labels.edit_file'),
+							'title' => Fractal::trans('labels.edit_item', ['item' => Fractal::transChoice('labels.file')]),
 						],
 					],
 					[
@@ -205,7 +205,7 @@ return [
 							'data-action'         => 'delete',
 							'data-action-type'    => 'delete',
 							'data-action-message' => 'confirmDelete',
-							'title'               => Fractal::trans('labels.delete_file'),
+							'title'               => Fractal::trans('labels.delete_item', ['item' => Fractal::transChoice('labels.file')]),
 						],
 					],
 				],
@@ -232,11 +232,11 @@ return [
 				'sort'      => true,
 			],
 			[
-				'label'     => Fractal::trans('labels.pages'),
+				'label'     => Fractal::transChoice('labels.page'),
 				'method'    => 'getNumberOfPages()',
 			],
 			[
-				'label'     => Fractal::trans('labels.blog_articles'),
+				'label'     => Fractal::transChoice('labels.blog_article'),
 				'method'    => 'getNumberOfArticles()',
 			],
 			[
@@ -253,7 +253,7 @@ return [
 						],
 						'uri'        => config('cms.base_uri').'/layout-templates/:id/edit',
 						'attributes' => [
-							'title' => Fractal::trans('labels.edit_layout_template'),
+							'title' => Fractal::trans('labels.edit_item', ['item' => Fractal::transChoice('labels.layout_template')]),
 						],
 					],
 					[
@@ -270,7 +270,7 @@ return [
 							'data-action'         => 'delete',
 							'data-action-type'    => 'delete',
 							'data-action-message' => 'confirmDelete',
-							'title'               => Fractal::trans('labels.delete_layout_template'),
+							'title'               => Fractal::trans('labels.delete_item', ['item' => Fractal::transChoice('labels.layout_template')]),
 						],
 					],
 				],
@@ -292,13 +292,13 @@ return [
 				'sort'       => true,
 			],
 			[
-				'label'      => Fractal::trans('labels.image'),
+				'label'      => Fractal::transChoice('labels.image'),
 				'method'     => 'getThumbnailImage()',
 				'class'      => 'image',
 				'sort'       => 'filename',
 			],
 			[
-				'label'      => Fractal::trans('labels.media_type'),
+				'label'      => Fractal::transChoice('labels.media_type'),
 				'method'     => 'getType()',
 				'sort'       => 'media_type_id',
 			],
@@ -313,7 +313,7 @@ return [
 				'sort'       => 'published_at',
 			],
 			[
-				'label'      => Fractal::trans('labels.media_sets'),
+				'label'      => Fractal::transChoice('labels.media_set', 2),
 				'method'     => 'getNumberOfSets()',
 				'body_class' => 'text-align-right',
 			],
@@ -341,7 +341,7 @@ return [
 						'class'      => 'btn btn-primary',
 						'uri'        => config('cms.base_uri').'/media/items/:slug/edit',
 						'attributes' => [
-							'title' => Fractal::trans('labels.edit_item'),
+							'title' => Fractal::trans('labels.edit_item', ['item' => Fractal::transChoice('labels.media_item')]),
 						],
 					],
 					[
@@ -349,7 +349,7 @@ return [
 						'class'      => 'btn btn-default',
 						'url'        => Fractal::mediaUrl(config('media.base_uri') == false ? 'item/:slug' : config('media.base_uri').'/article/:slug'),
 						'attributes' => [
-							'title'  => Fractal::trans('labels.view_item'),
+							'title'  => Fractal::trans('labels.view_item', ['item' => Fractal::transChoice('labels.media_item')]),
 						],
 					],
 					[
@@ -362,7 +362,7 @@ return [
 							'data-action-type'    => 'delete',
 							'data-action-url'     => 'items/:id',
 							'data-action-message' => 'confirmDelete',
-							'title'               => Fractal::trans('labels.delete_item'),
+							'title'               => Fractal::trans('labels.delete_item', ['item' => Fractal::transChoice('labels.media_item')]),
 						],
 					],
 				],
@@ -409,7 +409,7 @@ return [
 				'sort'      => true,
 			],
 			[
-				'label'     => Fractal::trans('labels.items'),
+				'label'     => Fractal::transChoice('labels.item', 2),
 				'method'    => 'getNumberOfItems()',
 			],
 			[
@@ -421,7 +421,7 @@ return [
 						'class'      => 'btn btn-primary',
 						'uri'        => config('cms.base_uri').'/media/types/:slug/edit',
 						'attributes' => [
-							'title' => Fractal::trans('labels.edit_type'),
+							'title' => Fractal::trans('labels.edit_item', ['item' => Fractal::transChoice('labels.media_type')]),
 						],
 					],
 					[
@@ -434,7 +434,7 @@ return [
 							'data-action-type'    => 'delete',
 							'data-action-url'     => 'types/:id',
 							'data-action-message' => 'confirmDelete',
-							'title'               => Fractal::trans('labels.delete_type'),
+							'title'               => Fractal::trans('labels.delete_item', ['item' => Fractal::transChoice('labels.media_type')]),
 						],
 					],
 				],
@@ -465,7 +465,7 @@ return [
 				'sort'      => true,
 			],
 			[
-				'label'     => Fractal::trans('labels.items'),
+				'label'     => Fractal::transChoice('labels.item', 2),
 				'method'    => 'getNumberOfItems()',
 			],
 			[
@@ -482,7 +482,7 @@ return [
 						'class'      => 'btn btn-primary',
 						'uri'        => config('cms.base_uri').'/media/sets/:slug/edit',
 						'attributes' => [
-							'title' => Fractal::trans('labels.edit_set'),
+							'title' => Fractal::trans('labels.edit_item', ['item' => Fractal::transChoice('labels.media_set')]),
 						],
 					],
 					[
@@ -495,7 +495,7 @@ return [
 							'data-action-type'    => 'delete',
 							'data-action-url'     => 'sets/:id',
 							'data-action-message' => 'confirmDelete',
-							'title'               => Fractal::trans('labels.delete_set'),
+							'title'               => Fractal::trans('labels.delete_item', ['item' => Fractal::transChoice('labels.media_set')]),
 						],
 					],
 				],
@@ -555,7 +555,7 @@ return [
 						'class'      => 'btn btn-primary',
 						'uri'        => config('cms.base_uri').'/blogs/articles/:slug/edit',
 						'attributes' => [
-							'title' => Fractal::trans('labels.edit_article'),
+							'title' => Fractal::trans('labels.edit_item', ['item' => Fractal::transChoice('labels.article')]),
 						],
 					],
 					[
@@ -563,7 +563,7 @@ return [
 						'class'      => 'btn btn-default',
 						'url'        => Fractal::blogUrl(config('blogs.base_uri') == false ? 'article/:slug' : config('blogs.base_uri').'/article/:slug'),
 						'attributes' => [
-							'title'  => Fractal::trans('labels.view_article'),
+							'title'  => Fractal::trans('labels.view_item', ['item' => Fractal::transChoice('labels.article')]),
 						],
 					],
 					[
@@ -576,7 +576,7 @@ return [
 							'data-action-type'    => 'delete',
 							'data-action-url'     => 'articles/:id',
 							'data-action-message' => 'confirmDelete',
-							'title'               => Fractal::trans('labels.delete_article'),
+							'title'               => Fractal::trans('labels.delete_item', ['item' => Fractal::transChoice('labels.article')]),
 						],
 					],
 				],
@@ -625,7 +625,7 @@ return [
 						'class'      => 'btn btn-primary',
 						'uri'        => config('cms.base_uri').'/blogs/categories/:slug/edit',
 						'attributes' => [
-							'title' => Fractal::trans('labels.edit_category'),
+							'title' => Fractal::trans('labels.edit_item', ['item' => Fractal::transChoice('labels.category')]),
 						],
 					],
 					[
@@ -638,7 +638,7 @@ return [
 							'data-action-type'    => 'delete',
 							'data-action-url'     => 'articles/:id',
 							'data-action-message' => 'confirmDelete',
-							'title'               => Fractal::trans('labels.delete_category'),
+							'title'               => Fractal::trans('labels.delete_item', ['item' => Fractal::transChoice('labels.category')]),
 						],
 					],
 				],
@@ -660,14 +660,14 @@ return [
 				'sort'      => true,
 			],
 			[
-				'attribute' => 'username',
+				'attribute' => 'name',
 				'class'     => 'username',
 				'sort'      => true,
 			],
 			[
-				'attribute' => 'name',
+				'attribute' => 'last_name',
 				'method'    => 'getName()',
-				'sort'      => 'last_name',
+				'sort'      => true,
 			],
 			[
 				'label'     => 'Email',
@@ -680,7 +680,7 @@ return [
 				'sort'      => 'email',
 			],
 			[
-				'label'     => Fractal::trans('labels.roles'),
+				'label'     => Fractal::transChoice('labels.role', 2),
 				'method'    => 'roles()',
 				'attribute' => 'name',
 				'type'      => 'list',
@@ -713,7 +713,7 @@ return [
 						'class'      => 'btn btn-primary',
 						'uri'        => config('cms.base_uri').'/users/:username/edit',
 						'attributes' => [
-							'title' => Fractal::trans('labels.edit_user'),
+							'title' => Fractal::trans('labels.edit_item', ['item' => Fractal::transChoice('labels.user')]),
 						],
 					],
 					[
@@ -768,7 +768,7 @@ return [
 							'data-action'         => 'delete',
 							'data-action-type'    => 'delete',
 							'data-action-message' => 'confirmDelete',
-							'title'               => Fractal::trans('labels.delete_user'),
+							'title'               => Fractal::trans('labels.delete_item', ['item' => Fractal::transChoice('labels.user')]),
 						],
 					],
 				],
@@ -822,7 +822,7 @@ return [
 						'class'      => 'btn btn-primary',
 						'uri'        => config('cms.base_uri').'/users/roles/:id/edit',
 						'attributes' => [
-							'title' => Fractal::trans('labels.edit_role'),
+							'title' => Fractal::trans('labels.edit_item', ['item' => Fractal::transChoice('labels.role')])
 						],
 					],
 					[
@@ -840,7 +840,7 @@ return [
 							'data-action-type'    => 'delete',
 							'data-action-url'     => 'roles/:id',
 							'data-action-message' => 'confirmDelete',
-							'title'               => Fractal::trans('labels.delete_role'),
+							'title'               => Fractal::trans('labels.delete_item', ['item' => Fractal::transChoice('labels.role')])
 						],
 					],
 				],
@@ -875,7 +875,7 @@ return [
 				'sort'      => true,
 			],
 			[
-				'label'     => \Illuminate\Support\Str::plural(Fractal::trans('labels.role')),
+				'label'     => Fractal::transChoice('labels.role', 2),
 				'method'    => 'roles()',
 				'attribute' => 'name',
 				'type'      => 'list',
@@ -895,7 +895,7 @@ return [
 						'class'      => 'btn btn-primary',
 						'uri'        => config('cms.base_uri').'/users/permissions/:id/edit',
 						'attributes' => [
-							'title' => Fractal::trans('labels.edit_permission'),
+							'title' => Fractal::trans('labels.edit_item', ['item' => Fractal::transChoice('labels.permission')])
 						],
 					],
 					[
@@ -913,7 +913,7 @@ return [
 							'data-action-type'    => 'delete',
 							'data-action-url'     => 'permissions/:id',
 							'data-action-message' => 'confirmDelete',
-							'title'               => Fractal::trans('labels.delete_permission'),
+							'title'               => Fractal::trans('labels.delete_item', ['item' => Fractal::transChoice('labels.permission')])
 						],
 					],
 				],

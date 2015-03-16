@@ -62,6 +62,10 @@ return [
 	'user_activity'           => 'User Activity|User Activities',
 	'activity'                => 'Activity|Activities',
 
+	'upload_file'             => 'Upload File',
+	'ban_user'                => 'Ban User',
+	'unban_user'              => 'Unban User',
+
 	'general'                 => 'General',
 	'content'                 => 'Content',
 

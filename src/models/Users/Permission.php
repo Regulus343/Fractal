@@ -1,6 +1,6 @@
 <?php namespace Regulus\Fractal\Models\Users;
 
-class Permission extends \Regulus\Identify\Permission {
+class Permission extends \Regulus\Identify\Models\Permission {
 
 	/**
 	 * Get user role search results.

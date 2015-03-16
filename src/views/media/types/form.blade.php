@@ -3,60 +3,59 @@
 @section(config('cms.content_section'))
 
 	<script type="text/javascript">
-		$(document).ready(function(){
-
+		$(document).ready(function()
+		{
 			@if (!isset($update) || !$update)
 				$('#field-name').keyup(function(){
 					$('#field-name').val($('#field-name').val().replace(/  /g, ' '));
 
-					var slug = strToSlug($('#field-name').val());
+					var slug = Fractal.strToSlug($('#field-name').val());
 					$('#field-slug').val(slug);
 				});
 			@endif
 
 			$('#field-slug').keyup(function(){
-				var slug = strToSlug($('#field-slug').val());
+				var slug = Fractal.strToSlug($('#field-slug').val());
 				$('#field-slug').val(slug);
 			});
-
 		});
 	</script>
 
-	{{ Form::openResource() }}
+	{!! Form::openResource() !!}
 
 		<div class="row">
 			<div class="col-md-4">
-				{{ Form::field('name') }}
+				{!! Form::field('name') !!}
 			</div>
 			<div class="col-md-4">
-				{{ Form::field('name_plural', 'text', ['label' => 'Name (Plural)']) }}
+				{!! Form::field('name_plural', 'text', ['label' => 'Name (Plural)']) !!}
 			</div>
 			<div class="col-md-4">
-				{{ Form::field('slug') }}
+				{!! Form::field('slug') !!}
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-md-6">
-				{{ Form::field('file_type_id', 'select', [
-					'label'       => Fractal::trans('labels.fileType'),
+				{!! Form::field('file_type_id', 'select', [
+					'label'       => Fractal::transChoice('labels.file_type'),
 					'options'     => Form::prepOptions(\Regulus\Fractal\Models\Content\FileType::orderBy('name')->get(), ['id', 'name']),
 					'null-option' => 'Select a File Type',
-				]) }}
+				]) !!}
 			</div>
 			<div class="col-md-6">
 				<div class="form-group">
-					{{ Form::field('media_source_required', 'checkbox') }}
+					{!! Form::field('media_source_required', 'checkbox') !!}
 				</div>
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-md-12">
-				{{ Form::field(Form::submitResource(Fractal::trans('labels.mediaType')), 'button') }}
+				{!! Form::field(Form::submitResource(Fractal::transChoice('labels.media_type')), 'button') !!}
 			</div>
 		</div>
 
-	{{ Form::close() }}
+	{!! Form::close() !!}
 
 @stop

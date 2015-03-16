@@ -1,6 +1,6 @@
 <?php namespace Regulus\Fractal\Models\Users;
 
-class Role extends \Regulus\Identify\Role {
+class Role extends \Regulus\Identify\Models\Role {
 
 	/**
 	 * Get user role search results.

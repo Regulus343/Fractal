@@ -49,6 +49,15 @@ class ApiController extends BaseController {
 					}
 				}
 
+				if (isset($content['description_type']) && in_array($content['description_type'], ['Markdown', 'HTML'])
+				&& isset($content['description_markdown']) && isset($content['description_html']))
+				{
+					$content['description'] = $content['description_'.strtolower($content['description_type'])];
+
+					unset($content['description_markdown']);
+					unset($content['description_html']);
+				}
+
 				Auth::setState('savedContent.'.camel_case(str_replace('-', '_', $contentType)), $content);
 
 				return 1;

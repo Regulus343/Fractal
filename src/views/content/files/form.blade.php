@@ -4,7 +4,7 @@
 
 	<script type="text/javascript">
 		var update             = {{ (isset($update) && $update ? 'true' : 'false') }};
-		var fileTypeExtensions = {{ json_encode($fileTypeExtensions) }};
+		var fileTypeExtensions = {!! json_encode($fileTypeExtensions) !!};
 	</script>
 	<script type="text/javascript" src="{{ Site::js('fractal/forms/file-upload', 'regulus/fractal') }}"></script>
 

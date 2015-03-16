@@ -4,7 +4,7 @@
 
 	<script type="text/javascript">
 		var update             = {{ (isset($update) && $update ? 'true' : 'false') }};
-		var fileTypeExtensions = {{ json_encode($fileTypeExtensions) }};
+		var fileTypeExtensions = {!! json_encode($fileTypeExtensions) !!};
 
 		$(document).ready(function()
 		{
@@ -74,6 +74,8 @@
 				$('#field-description-markdown').val($('#field-description').val());
 
 			$('#field-create-thumbnail').prop('checked', true).attr('readonly', 'readonly');
+
+			Fractal.initAutoSave();
 
 			$('form').submit(function(e)
 			{
@@ -226,7 +228,7 @@
 				@endif
 
 				<a href="{{ Fractal::url('media/items') }}" class="btn btn-default pull-right">
-					<span class="glyphicon glyphicon-list"></span>&nbsp; {{ Fractal::trans('labels.returnToItemsList') }}
+					<span class="glyphicon glyphicon-list"></span>&nbsp; {{ Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.media_item', 2)]) }}
 				</a>
 			</div>
 		</div>
@@ -381,7 +383,7 @@
 				]) !!}
 
 				<a href="" class="btn btn-default trigger-modal pull-right" data-modal-ajax-uri="api/view-markdown-guide" data-modal-ajax-action="get">
-					<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Fractal::trans('labels.viewMarkdownGuide') }}
+					<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Fractal::trans('labels.view_item', ['item' => Fractal::trans('labels.markdown_guide')]) }}
 				</a>
 			</div>
 
@@ -445,7 +447,7 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				{!! Form::field(Form::submitResource(Fractal::trans('labels.mediaItem')), 'button') !!}
+				{!! Form::field(Form::submitResource(Fractal::transChoice('labels.media_item')), 'button') !!}
 			</div>
 		</div>
 

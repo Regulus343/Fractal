@@ -30,7 +30,7 @@ class MenusController extends BaseController {
 
 		Site::set('section', 'Content');
 		Site::set('subSection', 'Menus');
-		Site::setTitle(Fractal::trans('labels.menus'));
+		Site::setTitle(Fractal::transChoice('labels.menu'));
 
 		// set content type and views location
 		Fractal::setContentType('menu');
@@ -56,7 +56,7 @@ class MenusController extends BaseController {
 			$menus = Menu::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
-			'label' => Fractal::trans('labels.createMenu'),
+			'label' => Fractal::trans('labels.create_item', ['item' => Fractal::transChoice('labels.menu')]),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('create', true),
 		]);
@@ -91,7 +91,7 @@ class MenusController extends BaseController {
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::trans('labels.returnToMenusList'),
+			'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.menu', 2)]),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
@@ -126,7 +126,7 @@ class MenusController extends BaseController {
 			return Redirect::to(Fractal::uri('', true))
 				->with('messages', $messages);
 		} else {
-			$messages['error'] = Fractal::trans('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errors.general');
 		}
 
 		return Redirect::to(Fractal::uri('create', true))
@@ -140,7 +140,7 @@ class MenusController extends BaseController {
 		$menu = Menu::find($id);
 		if (empty($menu))
 			return Redirect::to(Fractal::uri('menus'))->with('messages', [
-				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transChoice('labels.menu')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoice('labels.menu')])
 			]);
 
 		Site::setTitle($menu->name.' ('.Fractal::transChoice('labels.menu').')');
@@ -150,7 +150,7 @@ class MenusController extends BaseController {
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::trans('labels.returnToMenusList'),
+			'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.menu', 2)]),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => 'menus',
 		]);

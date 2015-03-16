@@ -38,7 +38,7 @@ class ItemsController extends MediaController {
 
 		Fractal::setViewsLocation('media.items');
 
-		Fractal::addTrailItem(Fractal::trans('labels.items'), Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::transChoice('labels.item'), Fractal::getControllerPath());
 
 		Site::set('defaultSorting', ['order' => 'desc']);
 	}
@@ -57,7 +57,7 @@ class ItemsController extends MediaController {
 			$media = Item::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
-			'label' => Fractal::trans('labels.createItem'),
+			'label' => Fractal::trans('labels.create_item', ['item' => Fractal::transChoice('labels.media_item')]),
 			'icon'  => 'glyphicon glyphicon-picture',
 			'uri'   => Fractal::uri('create', true),
 		]);
@@ -92,12 +92,14 @@ class ItemsController extends MediaController {
 
 		Item::setDefaultsForNew();
 
+		Fractal::restoreSavedContent();
+
 		$this->setDefaultImageSizes();
 
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::trans('labels.returnToItemsList'),
+			'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.media_item', 2)]),
 			'icon'  => 'glyphicon glyphicon-list',
 			'uri'   => Fractal::uri('', true),
 		]);
@@ -140,10 +142,12 @@ class ItemsController extends MediaController {
 				$path = null;
 				$uploadedThumbnail = false;
 
-				if (!$result['error'] && isset($result['files'])) {
+				if (!$result['error'] && isset($result['files']))
+				{
 					$fileResult = $result['files']['file'];
 
-					if (isset($result['files']['thumbnail_image']) && !$result['files']['thumbnail_image']['error']) {
+					if (isset($result['files']['thumbnail_image']) && !$result['files']['thumbnail_image']['error'])
+					{
 						$uploadedThumbnail = true;
 						$thumbnailResult   = $result['files']['thumbnail_image'];
 					}
@@ -157,23 +161,29 @@ class ItemsController extends MediaController {
 				$item->title             = ucfirst(trim(Input::get('title')));
 				$item->hosted_externally = $hostedExternally;
 
-				if ($hostedExternally) {
+				if ($hostedExternally)
+				{
 					$item->hosted_content_uri = trim(Input::get('hosted_content_uri'));
-				} else {
+				}
+				else
+				{
 					$item->hosted_content_type = null;
 					$item->hosted_content_uri  = null;
 
-					if (!$result['error'] && $uploaded) {
+					if (!$result['error'] && $uploaded)
+					{
 						$item->filename            = $fileResult['filename'];
 						$item->basename            = $fileResult['basename'];
 						$item->extension           = $fileResult['extension'];
 						$item->path                = $path;
 
-						if ($fileResult['isImage']) {
+						if ($fileResult['isImage'])
+						{
 							$item->width  = $fileResult['imageDimensions']['w'];
 							$item->height = $fileResult['imageDimensions']['h'];
 
-							if (!$uploadedThumbnail) {
+							if (!$uploadedThumbnail)
+							{
 								$item->thumbnail           = Form::value('create_thumbnail', 'checkbox');
 								$item->thumbnail_extension = $fileResult['extension'];
 								$item->thumbnail_width     = $fileResult['imageDimensions']['tw'];
@@ -206,6 +216,8 @@ class ItemsController extends MediaController {
 
 				$item->save();
 
+				Fractal::clearSavedContent();
+
 				Activity::log([
 					'contentId'   => $item->id,
 					'contentType' => 'Item',
@@ -220,7 +232,7 @@ class ItemsController extends MediaController {
 				$messages['error'] = $result['error'];
 			}
 		} else {
-			$messages['error'] = Fractal::trans('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errors.general');
 		}
 
 		return Redirect::to(Fractal::uri('create', true))
@@ -234,7 +246,7 @@ class ItemsController extends MediaController {
 		$item = Item::findBySlug($slug);
 		if (empty($item))
 			return Redirect::to(Fractal::uri('media/items'))->with('messages', [
-				'error' => Fractal::trans('messages.errorNotFound', ['item' => Fractal::transLower('labels.mediaItem')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.media_item')])
 			]);
 
 		Site::setTitle($item->getTitle().' ('.Fractal::transChoice('labels.media_item').')');
@@ -294,7 +306,8 @@ class ItemsController extends MediaController {
 			$basename  = str_replace('.'.$originalExtension, '', $filename);
 			$extension = $originalExtension;
 
-			if ($originalExtension == "") {
+			if ($originalExtension == "")
+			{
 				$filename = null;
 				$basename = null;
 			}
@@ -313,7 +326,8 @@ class ItemsController extends MediaController {
 			{
 				$result = Item::uploadFile($item->id);
 
-				if (!$result['files']['file']['error']) {
+				if (!$result['files']['file']['error'])
+				{
 					$uploaded = true;
 
 					$fileResult = $result['files']['file'];
@@ -326,7 +340,8 @@ class ItemsController extends MediaController {
 						File::delete('uploads/'.$file->getPath(true));
 				}
 
-				if (isset($result['files']['thumbnail_image']) && !$result['files']['thumbnail_image']['error']) {
+				if (isset($result['files']['thumbnail_image']) && !$result['files']['thumbnail_image']['error'])
+				{
 					$uploadedThumbnail = true;
 					$thumbnailResult   = $result['files']['thumbnail_image'];
 				}
@@ -335,7 +350,6 @@ class ItemsController extends MediaController {
 			//if file was not uploaded but path or name was changed, move/rename file
 			if (!$uploaded && $item->filename != $filename && !is_null($filename))
 			{
-				var_dump($filename); exit;
 				//move/rename file
 				if (File::exists('uploads/'.$item->getFilePath()))
 					File::move('uploads/'.$item->getFilePath(), 'uploads/media/'.$item->path.'/'.$filename);
@@ -358,13 +372,17 @@ class ItemsController extends MediaController {
 				$item->title             = ucfirst(trim(Input::get('title')));
 				$item->hosted_externally = $hostedExternally;
 
-				if ($hostedExternally) {
+				if ($hostedExternally)
+				{
 					$item->hosted_content_uri = trim(Input::get('hosted_content_uri'));
-				} else {
+				}
+				else
+				{
 					$item->hosted_content_type = null;
 					$item->hosted_content_uri  = null;
 
-					if ($uploaded) {
+					if ($uploaded)
+					{
 						$path = $this->getPathFromUploadResult($fileResult);
 
 						$item->filename  = $fileResult['filename'];
@@ -372,11 +390,13 @@ class ItemsController extends MediaController {
 						$item->extension = $fileResult['extension'];
 						$item->path      = $path;
 
-						if ($fileResult['isImage']) {
+						if ($fileResult['isImage'])
+						{
 							$item->width  = $fileResult['imageDimensions']['w'];
 							$item->height = $fileResult['imageDimensions']['h'];
 
-							if (!$uploadedThumbnail) {
+							if (!$uploadedThumbnail)
+							{
 								$item->thumbnail           = Form::value('create_thumbnail', 'checkbox');
 								$item->thumbnail_extension = $fileResult['extension'];
 								$item->thumbnail_width     = $fileResult['imageDimensions']['tw'];
@@ -441,9 +461,13 @@ class ItemsController extends MediaController {
 
 				return Redirect::to(Fractal::uri('', true))
 					->with('messages', $messages);
-			} else {
+			}
+			else
+			{
 				$error = true;
-				foreach ($result['files'] as $file) {
+
+				foreach ($result['files'] as $file)
+				{
 					if ($file['error'])
 						$messages['error'] = $file['error'];
 					else
@@ -454,7 +478,7 @@ class ItemsController extends MediaController {
 					unset($messages['error']);
 			}
 		} else {
-			$messages['error'] = Fractal::trans('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errors.general');
 		}
 
 		return Redirect::to(Fractal::uri($item->slug.'/edit', true))
@@ -467,7 +491,7 @@ class ItemsController extends MediaController {
 	{
 		$result = [
 			'resultType' => 'Error',
-			'message'    => Fractal::trans('messages.errorGeneral'),
+			'message'    => Fractal::trans('messages.errors.general'),
 		];
 
 		$item = Item::find($id);

@@ -18,7 +18,7 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				{!! Form::field(Form::submitResource(Fractal::trans('labels.layoutTemplate')), 'button') !!}
+				{!! Form::field(Form::submitResource(Fractal::transChoice('labels.layout_template')), 'button') !!}
 			</div>
 		</div>
 

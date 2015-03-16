@@ -33,14 +33,14 @@ class FilesController extends BaseController {
 
 		Site::set('section', 'Content');
 		Site::set('subSection', 'Files');
-		Site::setTitle(Fractal::trans('labels.files'));
+		Site::setTitle(Fractal::transChoice('labels.file', 2));
 
 		// set content type and views location
 		Fractal::setContentType('file');
 
 		Fractal::setViewsLocation('content.files');
 
-		Fractal::addTrailItem(Fractal::trans('labels.files'), Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::transChoice('labels.file', 2), Fractal::getControllerPath());
 	}
 
 	public function index()
@@ -57,7 +57,7 @@ class FilesController extends BaseController {
 			$files = ContentFile::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
-			'label' => Fractal::trans('labels.uploadFile'),
+			'label' => Fractal::trans('labels.upload_file'),
 			'icon'  => 'glyphicon glyphicon-file',
 			'uri'   => Fractal::uri('create', true),
 		]);
