@@ -97,15 +97,19 @@ var Fractal = {
 		$('select').select2();
 
 		// initialize embedded audio
-		audiojs.events.ready(function() {
+		audiojs.events.ready(function()
+		{
 			audiojs.createAll();
 		});
 
 		// initialize search, content, and table sorting
-		$('#form-search').submit(function(e){
+		$('#form-search').submit(function(e)
+		{
 			e.preventDefault();
+
 			$('#field-changing-page').val(0);
-			searchContent();
+
+			Fractal.searchContent();
 		});
 
 		$('#field-search').focus(function(){
@@ -120,9 +124,10 @@ var Fractal = {
 			}
 		});
 
-		$('#form-search input, #form-search select, input.search-filter, select.search-filter').change(function(){
+		$('#form-search input, #form-search select, input.search-filter, select.search-filter').change(function()
+		{
 			$('#field-changing-page').val(0);
-			searchContent();
+			Fractal.searchContent();
 		});
 
 		this.initContentTable();
