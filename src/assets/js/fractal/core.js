@@ -134,13 +134,18 @@ var Fractal = {
 
 		this.initPagination();
 
-		$('table.table-sortable thead tr th').each(function(){
-			if ($(this).attr('data-sort-field') !== undefined) {
+		$('table.table-sortable thead tr th').each(function()
+		{
+			if ($(this).attr('data-sort-field') !== undefined)
+			{
 				$(this).addClass('sortable');
 
 				var icon = "record";
-				if ($(this).attr('data-sort-field') == Fractal.sortField) {
-					if (Fractal.sortOrder == "desc") {
+
+				if ($(this).attr('data-sort-field') == Fractal.sortField)
+				{
+					if (Fractal.sortOrder == "desc")
+					{
 						$(this).addClass('sort-desc');
 						icon = "upload";
 					} else {
@@ -151,7 +156,8 @@ var Fractal = {
 
 				$(this).html($(this).html()+' <span class="sort-icon glyphicon glyphicon-'+icon+'"></span>');
 
-				$(this).mouseenter(function(){
+				$(this).mouseenter(function()
+				{
 					if (!$(this).hasClass('sort-changed')) {
 						if ($(this).hasClass('sort-asc')) {
 							$(this).children('span.sort-icon')
@@ -164,7 +170,8 @@ var Fractal = {
 								.removeClass('glyphicon-record');
 						}
 					}
-				}).mouseleave(function(){
+				}).mouseleave(function()
+				{
 					$(this).removeClass('sort-changed');
 
 					if ($(this).hasClass('sort-asc')) {
@@ -181,10 +188,12 @@ var Fractal = {
 							.removeClass('glyphicon-download')
 							.removeClass('glyphicon-upload');
 					}
-				}).click(function(){
-					sortField = $(this).attr('data-sort-field');
+				}).click(function()
+				{
+					Fractal.sortField = $(this).attr('data-sort-field');
+
 					$('table.table-sortable thead tr th.sortable').each(function(){
-						if ($(this).attr('data-sort-field') != sortField)
+						if ($(this).attr('data-sort-field') != Fractal.sortField)
 							$(this)
 								.removeClass('sort-asc')
 								.removeClass('sort-desc')
@@ -193,7 +202,7 @@ var Fractal = {
 
 					$(this).addClass('sort-changed');
 
-					$('#field-sort-field').val(sortField);
+					$('#field-sort-field').val(Fractal.sortField);
 
 					if ($(this).hasClass('sort-asc')) {
 						$(this)

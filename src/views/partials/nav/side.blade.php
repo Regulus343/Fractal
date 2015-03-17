@@ -1,6 +1,6 @@
 @if (!Site::get('hideSidebar'))
 
-	<div id="nav-side"{!! Auth::checkState('sidebarOpen', false, true) ? ' class="collapsed"' : '' !!}>
+	<div id="nav-side"{!! Auth::checkState('sidebarOpen', false, false) ? ' class="collapsed"' : '' !!}>
 
 		<div id="nav-side-toggle"></div>
 

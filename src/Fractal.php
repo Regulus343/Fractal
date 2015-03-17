@@ -472,26 +472,11 @@ class Fractal {
 			],
 		];
 
-		// set default sorting
-		if ($this->pagination['sortField'] == "" && !empty($defaultSorting))
-		{
-			if (isset($defaultSorting['field']))
-				$this->pagination['sortField'] = $defaultSorting['field'];
-
-			if (isset($defaultSorting['order']))
-				$this->pagination['sortOrder'] = (strtolower($defaultSorting['order']) == 'desc' ? 'desc' : 'asc');
-		}
-
-		// attempt to disallow sorting on fields that "sortable" is not set for via "tables" config
-		$sortableFields   = Fractal::getSortableFieldsForTable($contentType);
-		if (!in_array($this->pagination['sortField'], $sortableFields))
-			$this->pagination['sortField'] = "id";
-
 		$contentTypeStudlyCase = $this->getContentTypeStudlyCase();
 
 		if ($contentType)
 		{
-			if ($this->pagination['search'])
+			if ($this->pagination['search'] || $this->pagination['changingPage'])
 			{
 				Session::set('searchTerms'.$contentTypeStudlyCase, $terms);
 				Session::set('searchFilters'.$contentTypeStudlyCase, $this->pagination['filters']);
@@ -504,10 +489,28 @@ class Fractal {
 				$this->pagination['filters']   = Session::get('searchFilters'.$contentTypeStudlyCase);
 				$this->pagination['page']      = Session::get('page'.$contentTypeStudlyCase);
 
-				$this->pagination['sortField'] = Session::get('sortField'.$contentTypeStudlyCase, $this->pagination['sortField']);
-				$this->pagination['sortOrder'] = Session::get('sortOrder'.$contentTypeStudlyCase, $this->pagination['sortOrder']);
+				$this->pagination['sortField'] = Session::get('sortField'.$contentTypeStudlyCase);
+				$this->pagination['sortOrder'] = Session::get('sortOrder'.$contentTypeStudlyCase);
 			}
 		}
+
+		// set default sorting
+		if (is_null($this->pagination['sortField']) || $this->pagination['sortField'] == "")
+		{
+			if (!isset($defaultSorting['field']))
+				$defaultSorting['field'] = "id";
+
+			if (!isset($defaultSorting['order']))
+				$defaultSorting['order'] = "asc";
+
+			$this->pagination['sortField'] = $defaultSorting['field'];
+			$this->pagination['sortOrder'] = (strtolower($defaultSorting['order']) == 'desc' ? 'desc' : 'asc');
+		}
+
+		// attempt to disallow sorting on fields that "sortable" is not set for via "tables" config
+		$sortableFields = Fractal::getSortableFieldsForTable($contentType);
+		if (!in_array($this->pagination['sortField'], $sortableFields))
+			$this->pagination['sortField'] = "id";
 
 		$this->setSearchFormDefaults();
 
@@ -662,7 +665,7 @@ class Fractal {
 	 */
 	public function getCurrentPage()
 	{
-		if (get_class($this->pagination['content']) != "Illuminate\Pagination\LengthAwarePaginator")
+		if (!isset($this->pagination['content']) || get_class($this->pagination['content']) != "Illuminate\Pagination\LengthAwarePaginator")
 			return 1;
 
 		return $this->pagination['content']->currentPage();
@@ -690,7 +693,9 @@ class Fractal {
 	public function getSortableFieldsForTable($name = null)
 	{
 		if (is_null($name))
-			$name = Str::plural(Fractal::getContentType());
+			$name = Fractal::getContentTypeSnakeCase();
+
+		$name = snake_case(str_replace('-', '_', Str::plural($name)));
 
 		$fields      = [];
 		$tableConfig = config('tables.'.$name);
