@@ -101,8 +101,8 @@
 
 	Fractal.currentUrl       = "{{ Request::url() }}";
 
-	Fractal.labels           = {!! json_encode(Fractal::trans('labels')) !!};
-	Fractal.messages         = {!! json_encode(Fractal::trans('messages')) !!};
+	Fractal.setLabels({!! json_encode(Fractal::trans('labels')) !!});
+	Fractal.setMessages({!! json_encode(Fractal::trans('messages')) !!});
 
 	Fractal.contentType      = "{{ Fractal::getContentType() }}";
 

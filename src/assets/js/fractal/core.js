@@ -3,7 +3,7 @@
 | Fractal JS
 |------------------------------------------------------------------------------
 |
-| Last Updated: March 14, 2015
+| Last Updated: March 16, 2015
 |
 */
 
@@ -134,8 +134,8 @@ var Fractal = {
 				$(this).addClass('sortable');
 
 				var icon = "record";
-				if ($(this).attr('data-sort-field') == sortField) {
-					if (sortOrder == "desc") {
+				if ($(this).attr('data-sort-field') == Fractal.sortField) {
+					if (Fractal.sortOrder == "desc") {
 						$(this).addClass('sort-desc');
 						icon = "upload";
 					} else {
@@ -212,7 +212,7 @@ var Fractal = {
 						$('#field-sort-order').val('asc');
 					}
 
-					searchContent();
+					Fractal.searchContent();
 				});
 			}
 		});
@@ -315,6 +315,63 @@ var Fractal = {
 
 		// initialize markdown fields
 		this.initMarkdownFields();
+	},
+
+	setLabels: function(labels)
+	{
+		this.setTranslations('labels', labels);
+	},
+
+	setMessages: function(messages)
+	{
+		this.setTranslations('messages', messages);
+	},
+
+	setTranslations: function(prefix, translations)
+	{
+		if (typeof translations == "object")
+		{
+			var prefixSplit = prefix.split('.');
+
+			if (prefixSplit.length >= 1 && this[prefixSplit[0]] === undefined)
+				this[prefixSplit[0]] = {};
+
+			if (prefixSplit.length >= 2 && this[prefixSplit[0]][prefixSplit[1]] === undefined)
+				this[prefixSplit[0]][prefixSplit[1]] = {};
+
+			if (prefixSplit.length >= 3 && this[prefixSplit[0]][prefixSplit[1]][prefixSplit[2]] === undefined)
+				this[prefixSplit[0]][prefixSplit[1]][prefixSplit[2]] = {};
+
+			if (prefixSplit.length >= 4 && this[prefixSplit[0]][prefixSplit[1]][prefixSplit[2]][prefixSplit[3]] === undefined)
+				this[prefixSplit[0]][prefixSplit[1]][prefixSplit[2]][prefixSplit[3]] = {};
+
+			for (t in translations)
+			{
+				var translation = translations[t];
+
+				var key = t.camelize(true);
+
+				if (typeof translation == "object")
+				{
+					var newPrefix = prefix + '.' + key;
+					this.setTranslations(newPrefix, translation);
+				}
+				else
+				{
+					if (prefixSplit.length == 1)
+						this[prefixSplit[0]][key] = translation;
+
+					else if (prefixSplit.length == 2)
+						this[prefixSplit[0]][prefixSplit[1]][key] = translation;
+
+					else if (prefixSplit.length == 3)
+						this[prefixSplit[0]][prefixSplit[1]][prefixSplit[2]][key] = translation;
+
+					else if (prefixSplit.length >= 3)
+						this[prefixSplit[0]][prefixSplit[1]][prefixSplit[2]][prefixSplit[3]][key] = translation;
+				}
+			}
+		}
 	},
 
 	createUrl: function(uri, type)
@@ -423,6 +480,53 @@ var Fractal = {
 		});
 	},
 
+	trans: function(key, replacements)
+	{
+		if (key.substr(0, 8) != "messages" && key.substr(0, 6) != "labels")
+			key = "labels." + key;
+
+		key = key.split('.');
+
+		var trans = "";
+
+		if (key.length == 1)
+			trans = Fractal[key[0]];
+
+		else if (key.length == 2)
+			trans = Fractal[key[0]][key[1]];
+
+		else if (key.length == 3)
+			trans = Fractal[key[0]][key[1]][key[2]];
+
+		else if (key.length == 4)
+			trans = Fractal[key[0]][key[1]][key[2]][key[3]];
+
+		if (trans === undefined)
+			console.log(key);
+
+		if (typeof replacements == "object")
+		{
+			for (r in replacements)
+			{
+				trans = trans.replace(':'+r, replacements[r]);
+			}
+		}
+
+		return trans;
+	},
+
+	transChoice: function(key, number)
+	{
+		var trans = this.trans(key);
+
+		if (number === undefined)
+			number = 1;
+
+		trans = trans.split('|');
+
+		return number == 1 ? trans[0] : trans[1];
+	},
+
 	/* Setup Search and Pagination Functions */
 	searchContent: function()
 	{
@@ -439,7 +543,7 @@ var Fractal = {
 			$('.alert-dismissable').addClass('hidden');
 
 			$.ajax({
-				url:      currentUrl+'/search',
+				url:      Fractal.currentUrl + '/search',
 				type:     'post',
 				data:     postData,
 				dataType: 'json',
@@ -448,12 +552,12 @@ var Fractal = {
 				{
 					if (result.message !== undefined) {
 						if (result.resultType == "Success")
-							setMainMessage(result.message, 'success');
+							Fractal.setMainMessage(result.message, 'success');
 						else
-							setMainMessage(result.message, 'error');
+							Fractal.setMainMessage(result.message, 'error');
 					}
 
-					createPaginationMenu(result.pages);
+					Fractal.createPaginationMenu(result.pages);
 
 					$('table.table tbody').html(result.tableBody);
 
@@ -464,7 +568,7 @@ var Fractal = {
 
 				error: function()
 				{
-					Fractal.setMainMessage(fractalMessages.errorGeneral, 'error');
+					Fractal.setMainMessage(Fractal.messages.errors.general, 'error');
 
 					Fractal.searching = false;
 				}
@@ -475,6 +579,8 @@ var Fractal = {
 	createPaginationMenu: function(pages)
 	{
 		this.lastPage = pages;
+
+		var page = this.page;
 
 		if (this.lastPage > 1)
 		{
@@ -509,29 +615,31 @@ var Fractal = {
 
 			if (!$(this).hasClass('disabled') && !$(this).hasClass('active'))
 			{
-				page = parseInt($(this).attr('data-page'));
+				var page = parseInt($(this).attr('data-page'));
 
 				$('#field-page').val(page);
 				$('#field-changing-page').val(1);
 
 				$('.pagination li').removeClass('active');
-				$('.pagination li a').each(function(){
-					if ($(this).text() == page) $(this).parents('li').addClass('active');
+				$('.pagination li a').each(function()
+				{
+					if ($(this).text() == page)
+						$(this).parents('li').addClass('active');
 				});
 
-				if (page == 1) {
+				if (page == 1)
 					$('.pagination li:first-child').addClass('disabled');
-				} else {
+				else
 					$('.pagination li:first-child').removeClass('disabled');
-				}
 
-				if (page == lastPage) {
+				if (page == Fractal.lastPage)
 					$('.pagination li:last-child').addClass('disabled');
-				} else {
+				else
 					$('.pagination li:last-child').removeClass('disabled');
-				}
 
-				searchContent();
+				Fractal.page = page;
+
+				Fractal.searchContent();
 			}
 		});
 	},
@@ -549,9 +657,10 @@ var Fractal = {
 			{
 				e.preventDefault();
 
-				contentId = $(this).attr('data-item-id');
+				contentType = Fractal.contentType;
+				contentId   = $(this).attr('data-item-id');
 
-				var itemType = fractalLabels[contentType.replace(/\-/g, '_').camelize(true)].toLowerCase();
+				var itemType = Fractal.transChoice(contentType.replace(/\-/g, '_').camelize(true)).toLowerCase();
 				var itemName = $(this).attr('data-item-name');
 
 				itemAction         = $(this).attr('data-action');
@@ -560,19 +669,21 @@ var Fractal = {
 				itemActionUrl      = $(this).attr('data-action-url');
 				itemActionFunction = $(this).attr('data-action-function');
 
-				if (itemName !== undefined && itemName != "" && fractalMessages[itemActionMessage+'WithName'] !== undefined)
+				if (itemName !== undefined && itemName != "" && Fractal.trans('messages.' + itemActionMessage + 'WithName') !== undefined)
 					itemActionMessage += 'WithName';
 
-				var confirmTitle   = fractalLabels[itemAction+capitalizeFirstLetter(contentType)];
-				var confirmMessage = fractalMessages[itemActionMessage].replace(':item', itemType);
+				var confirmTitle = Fractal.trans(itemAction, {item: Fractal.transChoice(contentType)});
 
+				var replacements = {item: itemType};
 				if (itemName !== undefined)
-					confirmMessage = confirmMessage.replace(':name', itemName);
+					replacements['name'] = itemName;
+
+				var confirmMessage = Fractal.trans('messages.' + itemActionMessage, replacements);
 
 				if (itemActionFunction !== undefined)
-					modalConfirm(confirmTitle, confirmMessage, window[itemActionFunction]);
+					Fractal.modalConfirm(confirmTitle, confirmMessage, window[itemActionFunction]);
 				else
-					modalConfirm(confirmTitle, confirmMessage, actionItem);
+					Fractal.modalConfirm(confirmTitle, confirmMessage, Fractal.actionItem);
 			});
 
 			$('table td.actions a[title]').tooltip();
@@ -591,15 +702,22 @@ var Fractal = {
 		if (itemActionUrl !== undefined && itemActionUrl != "")
 			url = itemActionUrl;
 
+		var data = {};
+		if (itemActionType != "get")
+			data = SolidSite.prepData(data);
+
 		$.ajax({
 			url:      url,
 			type:     itemActionType,
+			data:     data,
 			dataType: 'json',
 
 			success: function(result)
 			{
-				if (result.resultType == "Success") {
-					$('#'+contentType+'-'+contentId).addClass('hidden');
+				if (result.resultType == "Success")
+				{
+					if (itemActionType == "delete")
+						$('#'+contentType+'-'+contentId).addClass('hidden');
 
 					Fractal.setMainMessage(result.message, 'success');
 				} else {
@@ -609,7 +727,7 @@ var Fractal = {
 
 			error: function()
 			{
-				setMainMessage(fractalMessages.errorGeneral, 'error');
+				setMainMessage(Fractal.messages.errors.general, 'error');
 			}
 		});
 	},
@@ -621,7 +739,7 @@ var Fractal = {
 			e.preventDefault();
 
 			contentId = $(this).attr('data-page-id');
-			modalConfirm(fractalLabels.deletePage+': <strong>'+$(this).parents('tr').children('td.title').text()+'</strong>', fractalMessages.confirmDelete.replace(':item', fractalLabels.page), actionDeletePage);
+			modalConfirm(fractalLabels.deletePage+': <strong>'+$(this).parents('tr').children('td.title').text()+'</strong>', Fractal.trans('messages.confirm_delete', {item: Fractal.transChoice('page')}), actionDeletePage);
 		});
 
 		$('table td.actions a[title]').tooltip();
@@ -650,7 +768,7 @@ var Fractal = {
 
 			error: function()
 			{
-				setMainMessage(fractalMessages.errorGeneral, 'error');
+				setMainMessage(Fractal.messages.errors.general, 'error');
 			}
 		});
 	},
@@ -690,7 +808,7 @@ var Fractal = {
 
 			error: function()
 			{
-				Fractal.setMainMessage(fractalMessages.errorGeneral, 'error');
+				Fractal.setMainMessage(Fractal.messages.errors.general, 'error');
 			}
 		});
 	},
@@ -750,7 +868,7 @@ var Fractal = {
 
 			error: function()
 			{
-				Fractal.setMainMessage(fractalMessages.errorGeneral, 'error');
+				Fractal.setMainMessage(Fractal.messages.errors.general, 'error');
 			}
 		});
 	},
@@ -780,7 +898,7 @@ var Fractal = {
 
 			error: function()
 			{
-				Fractal.setMainMessage(fractalMessages.errors.general, 'error');
+				Fractal.setMainMessage(Fractal.messages.errors.general, 'error');
 			}
 		});
 	},
@@ -807,7 +925,7 @@ var Fractal = {
 
 			error: function()
 			{
-				Fractal.setMainMessage(fractalMessages.errors.general, 'error');
+				Fractal.setMainMessage(Fractal.messages.errors.general, 'error');
 			}
 		});
 	},
@@ -819,7 +937,7 @@ var Fractal = {
 			e.preventDefault();
 
 			contentId = $(this).attr('data-role-id');
-			modalConfirm(fractalLabels.deleteRole+': <strong>'+$(this).parents('tr').children('td.name').text()+'</strong>', fractalMessages.confirmDelete.replace(':item', fractalLabels.role), actionDeleteUserRole);
+			//modalConfirm(fractalLabels.deleteRole+': <strong>'+$(this).parents('tr').children('td.name').text()+'</strong>', Fractal.trans('messages.confirm_delete', {item: }).replace(':item', Fractal.transChoice('labels.role')), actionDeleteUserRole);
 		});
 
 		$('table td.actions a[title]').tooltip();
@@ -1111,6 +1229,7 @@ var Fractal = {
 		field.focus();
 
 		var value = field.val();
+
 		field.val('');
 		field.val(value);
 	},

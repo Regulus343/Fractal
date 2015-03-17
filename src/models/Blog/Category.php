@@ -1,4 +1,4 @@
-<?php namespace Regulus\Fractal\Models\Blogs;
+<?php namespace Regulus\Fractal\Models\Blog;
 
 use Regulus\Formation\Models\Base;
 
@@ -38,7 +38,7 @@ class Category extends Base {
 	 */
 	public function articles()
 	{
-		return $this->belongsToMany('Regulus\Fractal\Models\Blogs\Article', 'blog_article_categories', 'category_id', 'article_id');
+		return $this->belongsToMany('Regulus\Fractal\Models\Blog\Article', 'blog_article_categories', 'category_id', 'article_id');
 	}
 
 	/**

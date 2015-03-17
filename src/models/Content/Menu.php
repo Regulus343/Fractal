@@ -6,7 +6,7 @@ use Fractal;
 
 use Illuminate\Support\Facades\View as LaravelView;
 
-use \Form;
+use Form;
 
 class Menu extends Base {
 
@@ -70,7 +70,8 @@ class Menu extends Base {
 		if ($id)
 			$rules['name'][1] .= ",".$id;
 
-		if (Form::post()) {
+		if (Form::post())
+		{
 			foreach (Form::getValuesObject('items') as $number => $values)
 			{
 				if (Form::getValueFromObject('label', $values) != "")
@@ -247,6 +248,8 @@ class Menu extends Base {
 
 		if ($searchData['terms'] != "")
 			$menus->where('name', 'like', $searchData['likeTerms']);
+
+		Fractal::setRequestedPage();
 
 		return $menus->paginate($searchData['itemsPerPage']);
 	}

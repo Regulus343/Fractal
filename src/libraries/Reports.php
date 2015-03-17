@@ -7,7 +7,7 @@ use Fractal;
 use Regulus\Fractal\Models\Content\View;
 
 use Regulus\Fractal\Models\Content\Page;
-use Regulus\Fractal\Models\Blogs\Article;
+use Regulus\Fractal\Models\Blog\Article;
 use Regulus\Fractal\Models\Media\Item;
 
 class Reports {

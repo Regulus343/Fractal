@@ -1,6 +1,8 @@
-<?php namespace Regulus\Fractal\Models\Users;
+<?php namespace Regulus\Fractal\Models\User;
 
 use Illuminate\Support\Facades\DB;
+
+use Fractal;
 
 class User extends \Regulus\Identify\Models\User {
 
@@ -29,6 +31,8 @@ class User extends \Regulus\Identify\Models\User {
 					->orWhere(DB::raw('concat_ws(\' \', first_name, last_name)'), 'like', $searchData['likeTerms'])
 					->orWhere('email', 'like', $searchData['likeTerms']);
 			});
+
+		Fractal::setRequestedPage();
 
 		return $users->paginate($searchData['itemsPerPage']);
 	}

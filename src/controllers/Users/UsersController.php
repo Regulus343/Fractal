@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use Regulus\Fractal\Models\Users\User;
-use Regulus\Fractal\Models\Users\Role;
+use Regulus\Fractal\Models\User\User;
+use Regulus\Fractal\Models\User\Role;
 
 use Regulus\ActivityLog\Models\Activity;
 use Form;

@@ -1,4 +1,4 @@
-<?php namespace Regulus\Fractal\Models\Blogs;
+<?php namespace Regulus\Fractal\Models\Blog;
 
 use Regulus\Formation\Models\Base;
 

@@ -4,9 +4,9 @@ use Regulus\Formation\Models\Base;
 
 use Fractal;
 
-use \Auth;
-use \Format;
-use \Site;
+use Auth;
+use Format;
+use Site;
 
 class MenuItem extends Base {
 

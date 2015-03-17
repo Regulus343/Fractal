@@ -345,7 +345,7 @@
 				{!! Form::field('categories.pivot.', 'select', [
 					'label'    => Fractal::transChoice('labels.category', 2),
 					'multiple' => true,
-					'options'  => Form::prepOptions(Regulus\Fractal\Models\Blogs\Category::orderBy('name')->get(), ['id', 'name']),
+					'options'  => Form::prepOptions(Regulus\Fractal\Models\Blog\Category::orderBy('name')->get(), ['id', 'name']),
 				]) !!}
 			</div>
 		</div>

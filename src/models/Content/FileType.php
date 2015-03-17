@@ -2,12 +2,6 @@
 
 use Regulus\Formation\Models\Base;
 
-use Fractal;
-
-use \Form;
-use \Format;
-use \Site;
-
 class FileType extends Base {
 
 	/**

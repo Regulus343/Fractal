@@ -1,13 +1,13 @@
-<?php namespace Regulus\Fractal\Models\Blogs;
+<?php namespace Regulus\Fractal\Models\Blog;
 
 use Regulus\Formation\Models\Base;
 
 use Fractal;
 
-use \Auth;
-use \Form;
-use \Format;
-use \Site;
+use Auth;
+use Form;
+use Format;
+use Site;
 
 use Regulus\Fractal\Models\Content\LayoutTemplate;
 use Regulus\Fractal\Models\Content\View as ContentView;
@@ -160,7 +160,7 @@ class Article extends Base {
 	 */
 	public function blog()
 	{
-		return $this->belongsTo('Regulus\Fractal\Models\Blogs\Blog');
+		return $this->belongsTo('Regulus\Fractal\Models\Blog\Blog');
 	}
 
 	/**
@@ -211,7 +211,7 @@ class Article extends Base {
 	public function contentAreas()
 	{
 		return $this
-			->belongsToMany('Regulus\Fractal\Models\Blogs\ContentArea', 'blog_article_content_areas', 'article_id', 'area_id')
+			->belongsToMany('Regulus\Fractal\Models\Blog\ContentArea', 'blog_article_content_areas', 'article_id', 'area_id')
 			->withPivot('layout_tag')
 			->orderBy('title');
 	}
@@ -224,7 +224,7 @@ class Article extends Base {
 	public function categories()
 	{
 		return $this
-			->belongsToMany('Regulus\Fractal\Models\Blogs\Category', 'blog_article_categories', 'article_id', 'category_id')
+			->belongsToMany('Regulus\Fractal\Models\Blog\Category', 'blog_article_categories', 'article_id', 'category_id')
 			->orderBy('name');
 	}
 

@@ -12,18 +12,18 @@
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
-use \Auth;
-use \Form;
-use \Site;
+use Auth;
+use Form;
+use Site;
 
 use Regulus\Fractal\Models\Content\Page;
 use Regulus\Fractal\Models\Content\FileType;
 use Regulus\Fractal\Models\Media\Type as MediaType;
 use Regulus\Fractal\Models\Media\Set as MediaSet;
-use Regulus\Fractal\Models\Blogs\Category as BlogCategory;
+use Regulus\Fractal\Models\Blog\Category as BlogCategory;
 
-use Regulus\Identify\User;
-use Regulus\Identify\Role;
+use Regulus\Identify\Models\User;
+use Regulus\Identify\Models\Role;
 
 $viewsLocation = config('cms.views_location');
 

@@ -6,7 +6,7 @@ use Fractal;
 
 use Illuminate\Support\Facades\Request;
 
-use \Auth;
+use Auth;
 
 class Download extends Base {
 

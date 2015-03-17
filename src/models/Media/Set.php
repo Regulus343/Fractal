@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
 
-use \Form;
-use \Format;
-use \Site;
+use Form;
+use Format;
+use Site;
 
 use Regulus\Fractal\Traits\Publishable;
 
@@ -310,6 +310,8 @@ class Set extends Base {
 
 		if ($searchData['terms'] != "")
 			$categories->where('name', 'like', $searchData['likeTerms']);
+
+		Fractal::setRequestedPage();
 
 		return $categories->paginate($searchData['itemsPerPage']);
 	}

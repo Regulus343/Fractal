@@ -1,4 +1,4 @@
-<?php namespace Regulus\Fractal\Models\Blogs;
+<?php namespace Regulus\Fractal\Models\Blog;
 
 use Regulus\Formation\Models\Base;
 
@@ -77,7 +77,7 @@ class ContentArea extends Base {
 	 */
 	public function articles()
 	{
-		return $this->belongsToMany('Regulus\Fractal\Models\Blogs\Article', 'blog_article_content_areas', 'area_id', 'article_id');
+		return $this->belongsToMany('Regulus\Fractal\Models\Blog\Article', 'blog_article_content_areas', 'area_id', 'article_id');
 	}
 
 	/**

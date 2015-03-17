@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use Regulus\Fractal\Models\Users\Permission;
+use Regulus\Fractal\Models\User\Permission;
 
 use Regulus\ActivityLog\Models\Activity;
 use Form;

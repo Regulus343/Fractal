@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use Regulus\Fractal\Models\Blogs\Article;
-use Regulus\Fractal\Models\Blogs\ContentArea;
+use Regulus\Fractal\Models\Blog\Article;
+use Regulus\Fractal\Models\Blog\ContentArea;
 use Regulus\Fractal\Models\Content\LayoutTemplate;
 use Regulus\Fractal\Models\Content\File as ContentFile;
 use Regulus\Fractal\Models\Media\Item as MediaItem;

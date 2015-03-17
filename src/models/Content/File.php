@@ -7,10 +7,10 @@ use Fractal;
 use Illuminate\Support\Facades\File as FileHelper;
 use Illuminate\Support\Facades\Input;
 
-use \Form;
-use \Format;
-use \Site;
-use \Upstream;
+use Form;
+use Format;
+use Site;
+use Upstream;
 
 class File extends Base {
 
@@ -233,6 +233,8 @@ class File extends Base {
 					$files->where($allowedFilter, $filters[$allowedFilter]);
 			}
 		}
+
+		Fractal::setRequestedPage();
 
 		return $files->paginate($searchData['itemsPerPage']);
 	}

@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use Regulus\Fractal\Models\Blogs\Article;
-use Regulus\Fractal\Models\Blogs\Category;
+use Regulus\Fractal\Models\Blog\Article;
+use Regulus\Fractal\Models\Blog\Category;
 
 use Regulus\ActivityLog\Models\Activity;
 use Auth;

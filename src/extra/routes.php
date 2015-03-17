@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\App;
 use \Auth;
 
 use Regulus\Fractal\Models\Content\Page;
-use Regulus\Fractal\Models\Blogs\Article;
+use Regulus\Fractal\Models\Blog\Article;
 
 $baseUri     = config('cms.base_uri');
 $controllers = config('cms.controllers');

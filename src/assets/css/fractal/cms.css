@@ -139,7 +139,7 @@ table.table-sortable thead tr th.sort-desc span.sort-icon { color: #666; }
 
 .table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(odd) > th { background-color: #eee; }
 
-table tr td.actions { width: 120px; border-left: 1px solid #999 !important; text-align: right; line-height: 100%; }
+table tr td.actions { width: 130px; border-left: 1px solid #999 !important; text-align: right; line-height: 100%; }
 table tr td.actions a.btn { padding: 2px 5px; font-size: 12px; text-shadow: #333 1px 1px 1px; }
 table tr td.actions a.btn-default { background: #333; color: #fff; border-color: #000; }
 table tr td.actions a.btn-default:hover { background: #222; }

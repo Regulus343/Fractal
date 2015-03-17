@@ -6,7 +6,7 @@
 
 		created by Cody Jassman
 		version 0.9.0a - Fractal is in transition from Laravel 4 (0.8.x) to Laravel 5 (0.9.x)
-		last updated on March 14, 2015
+		last updated on March 16, 2015
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -18,11 +18,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 
-use Illuminate\Config\Repository;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Config\Repository as RepositoryContract;
+use Illuminate\Pagination\Paginator;
 
 use Regulus\Fractal\Libraries\ArrayFile;
 
@@ -32,7 +28,7 @@ use Regulus\Fractal\Models\Content\Menu;
 use Regulus\Fractal\Models\Content\MenuItem;
 use Regulus\Fractal\Models\General\Setting;
 use Regulus\Fractal\Models\Media\Item as MediaItem;
-use Regulus\Fractal\Models\Blogs\Article as BlogArticle;
+use Regulus\Fractal\Models\Blog\Article as BlogArticle;
 
 use Auth;
 use Form;
@@ -506,7 +502,7 @@ class Fractal {
 			} else {
 				$this->pagination['terms']     = Session::get('searchTerms'.$contentTypeStudlyCase, $terms);
 				$this->pagination['filters']   = Session::get('searchFilters'.$contentTypeStudlyCase);
-				$this->pagination['page']      = Session::get('page'.$contentTypeStudlyCase, $this->pagination['page']);
+				$this->pagination['page']      = Session::get('page'.$contentTypeStudlyCase);
 
 				$this->pagination['sortField'] = Session::get('sortField'.$contentTypeStudlyCase, $this->pagination['sortField']);
 				$this->pagination['sortOrder'] = Session::get('sortOrder'.$contentTypeStudlyCase, $this->pagination['sortOrder']);
@@ -632,13 +628,41 @@ class Fractal {
 	}
 
 	/**
+	 * Get the requested content page.
+	 *
+	 * @return integer
+	 */
+	public function getRequestedPage()
+	{
+		if (empty($this->pagination))
+			return 1;
+
+		return $this->pagination['page'];
+	}
+
+	/**
+	 * Set the requested content page.
+	 *
+	 * @return integer
+	 */
+	public function setRequestedPage()
+	{
+		$currentPage = $this->getRequestedPage();
+
+		Paginator::currentPageResolver(function() use ($currentPage)
+		{
+			return $currentPage;
+		});
+	}
+
+	/**
 	 * Get the current content page.
 	 *
 	 * @return integer
 	 */
 	public function getCurrentPage()
 	{
-		if (empty($this->pagination['content']))
+		if (get_class($this->pagination['content']) != "Illuminate\Pagination\LengthAwarePaginator")
 			return 1;
 
 		return $this->pagination['content']->currentPage();

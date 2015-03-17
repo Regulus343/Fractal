@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 
-use \Auth;
-use \Form;
-use \Format;
-use \Site;
-use \Upstream;
+use Auth;
+use Form;
+use Format;
+use Site;
+use Upstream;
 
 use Regulus\Fractal\Models\Content\FileType;
 use Regulus\Fractal\Models\Content\View as ContentView;
@@ -780,6 +780,8 @@ class Item extends Base {
 					$media->where($filterField, $filters[$allowedFilter]);
 			}
 		}
+
+		Fractal::setRequestedPage();
 
 		return $media->paginate($searchData['itemsPerPage']);
 	}

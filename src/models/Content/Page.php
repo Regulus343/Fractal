@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
 
-use \Auth;
-use \Form;
-use \Format;
-use \Site;
+use Auth;
+use Form;
+use Format;
+use Site;
 
 use Regulus\Fractal\Models\Content\View as ContentView;
 
@@ -410,6 +410,8 @@ class Page extends Base {
 					->where('title', 'like', $searchData['likeTerms'])
 					->orWhere('slug', 'like', $searchData['likeTerms']);
 			});
+
+		Fractal::setRequestedPage();
 
 		return $pages->paginate($searchData['itemsPerPage']);
 	}

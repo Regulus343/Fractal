@@ -1,4 +1,4 @@
-@if (isset($categories) && Regulus\Fractal\Models\Blogs\Category::publishedArticleInCategories($categories))
+@if (isset($categories) && Regulus\Fractal\Models\Blog\Category::publishedArticleInCategories($categories))
 
 	<h3>{{ Fractal::trans('labels.categories') }}</h3>
 

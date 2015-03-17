@@ -1,4 +1,6 @@
-<?php namespace Regulus\Fractal\Models\Users;
+<?php namespace Regulus\Fractal\Models\User;
+
+use Fractal;
 
 class Activity extends \Regulus\ActivityLog\Models\Activity {
 
@@ -21,6 +23,8 @@ class Activity extends \Regulus\ActivityLog\Models\Activity {
 					->where('description', 'like', $searchData['likeTerms'])
 					->orWhere('details', 'like', $searchData['likeTerms']);
 			});
+
+		Fractal::setRequestedPage();
 
 		return $activities->paginate($searchData['itemsPerPage']);
 	}

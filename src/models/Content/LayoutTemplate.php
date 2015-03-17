@@ -76,7 +76,7 @@ class LayoutTemplate extends Base {
 	 */
 	public function articles()
 	{
-		return $this->hasMany('Regulus\Fractal\Models\Blogs\Article', 'layout_template_id');
+		return $this->hasMany('Regulus\Fractal\Models\Blog\Article', 'layout_template_id');
 	}
 
 	/**
@@ -118,6 +118,8 @@ class LayoutTemplate extends Base {
 
 		if ($searchData['terms'] != "")
 			$categories->where('name', 'like', $searchData['likeTerms']);
+
+		Fractal::setRequestedPage();
 
 		return $categories->paginate($searchData['itemsPerPage']);
 	}

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use Regulus\Fractal\Models\Users\Activity;
+use Regulus\Fractal\Models\User\Activity;
 
 use Form;
 use Format;
@@ -27,7 +27,7 @@ class ActivityController extends UsersController {
 		Site::set('subSection', 'Activity');
 		Site::setTitle(Fractal::transChoice('labels.user_activity'));
 
-		Fractal::setContentType('activities');
+		Fractal::setContentType('activity');
 
 		Fractal::setViewsLocation('users.activity');
 
@@ -45,7 +45,7 @@ class ActivityController extends UsersController {
 
 		$data     = Fractal::setPaginationMessage(true);
 		$messages = Fractal::getPaginationMessageArray();
-
+Fractal::getCurrentPage();
 		return View::make(Fractal::view('list'))
 			->with('content', $activities)
 			->with('messages', $messages);

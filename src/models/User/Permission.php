@@ -1,6 +1,8 @@
-<?php namespace Regulus\Fractal\Models\Users;
+<?php namespace Regulus\Fractal\Models\User;
 
-class Role extends \Regulus\Identify\Models\Role {
+use Fractal;
+
+class Permission extends \Regulus\Identify\Models\Permission {
 
 	/**
 	 * Get user role search results.
@@ -18,10 +20,11 @@ class Role extends \Regulus\Identify\Models\Role {
 		if ($searchData['terms'] != "")
 			$roles->where(function($query) use ($searchData) {
 				$query
-					->where('role', 'like', $searchData['likeTerms'])
-					->orWhere('name', 'like', $searchData['likeTerms'])
+					->where('name', 'like', $searchData['likeTerms'])
 					->orWhere('description', 'like', $searchData['likeTerms']);
 			});
+
+		Fractal::setRequestedPage();
 
 		return $roles->where('deleted_at', null)->paginate($searchData['itemsPerPage']);
 	}

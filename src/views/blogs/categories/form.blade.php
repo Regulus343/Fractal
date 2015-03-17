@@ -3,22 +3,23 @@
 @section(config('cms.content_section'))
 
 	<script type="text/javascript">
-		$(document).ready(function(){
-
+		$(document).ready(function()
+		{
 			@if (!isset($update) || !$update)
-				$('#field-name').keyup(function(){
+				$('#field-name').keyup(function()
+				{
 					$('#field-name').val($('#field-name').val().replace(/  /g, ' '));
 
-					var slug = strToSlug($('#field-name').val());
+					var slug = Fractal.strToSlug($('#field-name').val());
 					$('#field-slug').val(slug);
 				});
 			@endif
 
-			$('#field-slug').keyup(function(){
-				var slug = strToSlug($('#field-slug').val());
+			$('#field-slug').keyup(function()
+			{
+				var slug = Fractal.strToSlug($('#field-slug').val());
 				$('#field-slug').val(slug);
 			});
-
 		});
 	</script>
 
@@ -35,7 +36,7 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				{!! Form::field(Form::submitResource(Fractal::trans('labels.category')), 'button') !!}
+				{!! Form::field(Form::submitResource(Fractal::transChoice('labels.category')), 'button') !!}
 			</div>
 		</div>
 
