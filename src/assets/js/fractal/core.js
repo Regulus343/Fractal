@@ -516,7 +516,7 @@ var Fractal = {
 			trans = Fractal[key[0]][key[1]][key[2]][key[3]];
 
 		if (trans === undefined)
-			console.log(key);
+			trans = "";
 
 		if (typeof replacements == "object")
 		{
