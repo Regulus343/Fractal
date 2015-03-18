@@ -295,7 +295,7 @@ var Fractal = {
 		{
 			e.preventDefault();
 
-			$('html, body').animate({
+			$('html, body, #container').animate({
 				scrollTop: '0px'
 			}, 500);
 		});
@@ -496,6 +496,9 @@ var Fractal = {
 
 	trans: function(key, replacements)
 	{
+		if (key === undefined)
+			key = "";
+
 		if (key.substr(0, 8) != "messages" && key.substr(0, 6) != "labels")
 			key = "labels." + key;
 
@@ -1224,6 +1227,12 @@ var Fractal = {
 	{
 		var data = $('form').serializeArray();
 
+		for (d in data)
+		{
+			if (data[d].name == "_method")
+				data[d].value = "POST";
+		}
+
 		data.push({
 			name:  'content_type',
 			value: this.contentType,
@@ -1231,10 +1240,8 @@ var Fractal = {
 
 		SolidSite.post(Fractal.createUrl('api/save-content'), data, function(result)
 		{
-			if (result)
-			{
-				Fractal.setMainMessage(Fractal.messages.success.form_content_saved, 'success');
-			}
+			if (parseInt(result))
+				Fractal.setMainMessage(Fractal.trans('messages.success.formContentSaved'), 'success');
 		});
 	},
 

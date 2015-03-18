@@ -60,28 +60,13 @@ div.media-item-area .audiojs { margin: 0 0 6px 0; }
 
 div.media-item-description { padding: 12px 0; }
 
-ul.nav-side { margin: 0 0 18px 0; }
-
-ul.nav-side li a {
-	display: block;
-	padding: 6px;
-	width: 100%;
-	background-color: #444;
+div.content-side {
+	padding: 12px;
+	min-height: 280px;
+	background-color: #222;
 	color: #fff;
-	font-size: 0.9em;
+	border-radius: 8px; -webkit-border-radius: 8px; -moz-border-radius: 8px;
 }
-
-ul.nav-side li.active a { background-color: #222; }
-
-ul.nav-side li a:hover, ul.nav-side li.active a:hover { background-color: #282828; }
-
-ul.nav-side li.special a { background-color: #105085; }
-ul.nav-side li.special a:hover { background-color: #266ba3; }
-
-ul.nav-side li div time { font-size: 0.75em; }
-
-ul.nav-side li .badge, ul.nav-side li.active .badge { float: right; background-color: #105085; color: #fff; box-shadow: #000 0 0 5px; }
-ul.nav-side li.active .badge { background-color: #266ba3; }
 
 div#comments { margin-top: 32px; border-top: 1px solid #ddd; }
 

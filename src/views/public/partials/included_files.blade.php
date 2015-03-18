@@ -30,32 +30,9 @@
 
 <script type="text/javascript" src="{{ Site::js('bootstrap-datetimepicker.min', 'regulus/fractal') }}"></script>
 
-{{-- CK Editor --}}
-
-@if (Site::get('wysiwyg'))
-	<script type="text/javascript" src="{{ Site::asset('libraries/ckeditor/ckeditor.js', false, 'regulus/fractal') }}"></script>
-@endif
-
 {{-- Handlebars --}}
 
 <script type="text/javascript" src="{{ Site::js('handlebars.min', 'regulus/fractal') }}"></script>
-
-{{-- Inflection --}}
-
-<script type="text/javascript" src="{{ Site::js('inflection', 'regulus/fractal') }}"></script>
-
-{{-- Date Time Picker CSS --}}
-
-<link type="text/css" rel="stylesheet" href="{{ Site::css('bootstrap-datetimepicker.min', 'regulus/fractal') }}" />
-
-{{-- Date Time Picker JS --}}
-
-<script type="text/javascript" src="{{ Site::js('bootstrap-datetimepicker.min', 'regulus/fractal') }}"></script>
-
-{{-- Gridster --}}
-
-<link type="text/css" rel="stylesheet" href="{{ Site::css('jquery.gridster', 'regulus/fractal') }}" />
-<script type="text/javascript" src="{{ Site::js('jquery.gridster', 'regulus/fractal') }}"></script>
 
 {{-- Audio JS --}}
 
@@ -69,15 +46,6 @@
 
 @include('formation::load_js')
 
-{{-- Markdown --}}
-
-<script type="text/javascript" src="{{ Site::js('markdown.converter', 'regulus/fractal') }}"></script>
-<script type="text/javascript" src="{{ Site::js('markdown.sanitizer', 'regulus/fractal') }}"></script>
-
-{{-- Chart JS --}}
-
-<script type="text/javascript" src="{{ Site::js('chart.min', 'regulus/fractal') }}"></script>
-
 {{-- lightGallery --}}
 
 <link type="text/css" rel="stylesheet" href="{{ Site::css('light-gallery', 'regulus/fractal') }}" />
@@ -90,7 +58,7 @@
 {{-- Fractal CSS --}}
 
 <link type="text/css" rel="stylesheet" href="{{ Site::css('fractal/core', 'regulus/fractal') }}" />
-<link type="text/css" rel="stylesheet" href="{{ Site::css('fractal/cms', 'regulus/fractal') }}" />
+<link type="text/css" rel="stylesheet" href="{{ Site::css('fractal/public', 'regulus/fractal') }}" />
 
 {{-- Fractal JS --}}
 

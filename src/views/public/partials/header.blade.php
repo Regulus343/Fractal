@@ -7,7 +7,7 @@
 
 	<link rel="shortcut icon" type="image/x-icon" href="{{ Fractal::getImageUrlFromConfig('cms.favicon') }}" />
 
-	@include(Fractal::view('partials.included_files', true))
+	@include(Fractal::view('public.partials.included_files', true))
 
 	<link type="text/css" rel="stylesheet" href="{{ Site::css('fractal/public', 'regulus/fractal') }}" />
 
