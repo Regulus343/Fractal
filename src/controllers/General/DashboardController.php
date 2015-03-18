@@ -32,7 +32,7 @@ class DashboardController extends BaseController {
 
 	public function getIndex()
 	{
-		Site::set('hideTitle', true);
+		Site::set('title.hide', true);
 
 		$reports = [
 			'totalViewsMonth'     => Reports::totalViews('month'),

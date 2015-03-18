@@ -107,7 +107,7 @@ class LayoutTemplatesController extends BaseController {
 		$messages = [];
 		if (Form::validated())
 		{
-			$messages['success'] = Fractal::trans('messages.successCreated', ['item' => Fractal::transLowerA('labels.category')]);
+			$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transChoiceLowerA('labels.layout_template')]);
 
 			$input = Input::all();
 			$input['user_id'] = Auth::user()->id;
@@ -139,10 +139,10 @@ class LayoutTemplatesController extends BaseController {
 		$layoutTemplate = LayoutTemplate::where('id', $id)->where('static', false)->first();
 		if (empty($layoutTemplate))
 			return Redirect::to(Fractal::uri('pages'))->with('messages', [
-				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transLower('labels.category')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transLower('labels.layout_template')])
 			]);
 
-		Site::setTitle($layoutTemplate->name.' ('.Fractal::trans('labels.category').')');
+		Site::setTitle($layoutTemplate->name.' ('.Fractal::transChoice('labels.layout_template').')');
 		Site::setHeading(Fractal::trans('labels.update_item', ['item' => Fractal::transChoice('labels.layout_template')]).': <strong>'.Format::entities($layoutTemplate->name).'</strong>');
 
 		Form::setDefaults($layoutTemplate);
@@ -166,7 +166,7 @@ class LayoutTemplatesController extends BaseController {
 		$layoutTemplate = LayoutTemplate::where('id', $id)->where('static', false)->first();
 		if (empty($layoutTemplate))
 			return Redirect::to(Fractal::uri('pages'))->with('messages', [
-				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transLower('labels.category')])
+				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transLower('labels.layout_template')])
 			]);
 
 		$layoutTemplate->setValidationRules();
@@ -174,7 +174,7 @@ class LayoutTemplatesController extends BaseController {
 		$messages = [];
 		if (Form::validated())
 		{
-			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transLowerA('labels.category')]);
+			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoiceLowerA('labels.layout_template')]);
 
 			$layoutTemplate->saveData();
 
@@ -225,7 +225,7 @@ class LayoutTemplatesController extends BaseController {
 		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.successDeleted', ['item' => '<strong>'.$layoutTemplate->name.'</strong>']);
+		$result['message']    = Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$layoutTemplate->name.'</strong>']);
 
 		$layoutTemplate->delete();
 

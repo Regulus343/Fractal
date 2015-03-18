@@ -137,7 +137,7 @@ class ItemsController extends MediaController {
 
 			if (!$result['error'] || !$mediaSourceRequired)
 			{
-				$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transLowerA('labels.media_item')]);
+				$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transChoiceLowerA('labels.media_item')]);
 
 				$path = null;
 				$uploadedThumbnail = false;
@@ -361,7 +361,7 @@ class ItemsController extends MediaController {
 
 			if (!$result['error'])
 			{
-				$messages['success'] = Fractal::trans('messages.successUpdated', ['item' => Fractal::transLowerA('labels.mediaItem')]);
+				$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoiceLowerA('labels.media_item')]);
 
 				//delete files for item
 				if ($hostedExternally && $item->isHostedLocally())
@@ -507,7 +507,7 @@ class ItemsController extends MediaController {
 		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.successDeleted', ['item' => '<strong>'.$item->getTitle().'</strong>']);
+		$result['message']    = Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$item->getTitle().'</strong>']);
 
 		$item->deleteFiles();
 

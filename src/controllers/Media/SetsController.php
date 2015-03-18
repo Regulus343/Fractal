@@ -112,7 +112,7 @@ class SetsController extends BaseController {
 		$messages = [];
 		if (Form::validated())
 		{
-			$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transChoice('labels.media_set')]);
+			$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transChoiceLowerA('labels.media_set')]);
 
 			$input = Input::all();
 			$input['user_id'] = Auth::user()->id;
@@ -149,7 +149,7 @@ class SetsController extends BaseController {
 				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.media_set')])
 			]);
 
-		Site::setTitle($set->title.' ('.Fractal::trans('labels.mediaSet').')');
+		Site::setTitle($set->title.' ('.Fractal::transChoice('labels.media_set').')');
 		Site::setHeading(Fractal::trans('labels.update_item', ['item' => Fractal::transChoice('labels.media_set')]).': <strong>'.Format::entities($set->title).'</strong>');
 		Site::set('wysiwyg', true);
 
@@ -185,7 +185,7 @@ class SetsController extends BaseController {
 		$messages = [];
 		if (Form::validated())
 		{
-			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoice('labels.media_set')]);
+			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoiceLowerA('labels.media_set')]);
 
 			$set->saveData();
 
@@ -232,7 +232,7 @@ class SetsController extends BaseController {
 		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.successDeleted', ['item' => '<strong>'.$set->title.'</strong>']);
+		$result['message']    = Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$set->title.'</strong>']);
 
 		$set->items()->sync([]);
 
@@ -244,7 +244,7 @@ class SetsController extends BaseController {
 	public function addItem()
 	{
 		$data = [
-			'title'              => Fractal::trans('labels.addMediaItem'),
+			'title'              => Fractal::trans('labels.add_item', ['item' => Fractal::transChoice('labels.media_item')]),
 			'mediaItems'         => Item::orderBy('title')->get(),
 			'mediaItemsSelected' => !is_null(Input::get('items')) ? Input::get('items') : [],
 		];

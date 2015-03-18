@@ -108,7 +108,7 @@ class TypesController extends BaseController {
 		$messages = [];
 		if (Form::validated())
 		{
-			$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transChoice('labels.media_type')]);
+			$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transChoiceLowerA('labels.media_type')]);
 
 			$input = Input::all();
 			$input['user_id'] = Auth::user()->id;
@@ -143,8 +143,8 @@ class TypesController extends BaseController {
 				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.media_type')])
 			]);
 
-		Site::setTitle($type->name.' ('.Fractal::trans('labels.category').')');
-		Site::setHeading(Fractal::trans('labels.updateType').': <strong>'.Format::entities($type->name).'</strong>');
+		Site::setTitle($type->name.' ('.Fractal::transChoice('labels.media_type').')');
+		Site::setHeading(Fractal::trans('labels.update_item', ['item' => Fractal::transChoice('labels.media_type')]).': <strong>'.Format::entities($type->name).'</strong>');
 
 		Form::setDefaults($type);
 		Form::setErrors();
@@ -173,8 +173,9 @@ class TypesController extends BaseController {
 		$type->setValidationRules();
 
 		$messages = [];
-		if (Form::validated()) {
-			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoice('labels.media_type')]);
+		if (Form::validated())
+		{
+			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoiceLowerA('labels.media_type')]);
 
 			$type->saveData();
 

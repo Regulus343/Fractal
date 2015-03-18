@@ -155,7 +155,7 @@ class PagesController extends BaseController {
 				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.page')])
 			]);
 
-		Site::setTitle($page->title.' ('.Fractal::trans('labels.page').')');
+		Site::setTitle($page->title.' ('.Fractal::transChoice('labels.page').')');
 		Site::setHeading(Fractal::trans('labels.update_item', ['item' => Fractal::trans('labels.page')]).': <strong>'.Format::entities($page->title).'</strong>');
 		Site::set('wysiwyg', true);
 

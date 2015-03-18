@@ -9,8 +9,6 @@
 
 	@include(Fractal::view('public.partials.included_files', true))
 
-	<link type="text/css" rel="stylesheet" href="{{ Site::css('fractal/public', 'regulus/fractal') }}" />
-
 	<script type="text/javascript" src="{{ Site::js('fractal/public', 'regulus/fractal') }}"></script>
 </head>
 <body>
@@ -29,7 +27,7 @@
 
 					<div class="col-md-{{ Site::get('contentColumnWidth', 12) }}">
 
-						@if (!Site::get('hideTitle'))
+						@if (!Site::get('title.hide'))
 							<h1 id="main-heading">{!! Site::heading() !!}</h1>
 
 							{!! Site::getBreadcrumbTrailMarkup() !!}

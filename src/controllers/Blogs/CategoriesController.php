@@ -140,7 +140,7 @@ class CategoriesController extends BlogsController {
 				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.category')])
 			]);
 
-		Site::setTitle($category->name.' ('.Fractal::trans('labels.category').')');
+		Site::setTitle($category->name.' ('.Fractal::transChoice('labels.category').')');
 		Site::setHeading(Fractal::trans('labels.update_item', ['item' => Fractal::transChoice('labels.category')]).': <strong>'.Format::entities($category->name).'</strong>');
 
 		Form::setDefaults($category);

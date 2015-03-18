@@ -115,7 +115,7 @@ class FilesController extends BaseController {
 
 			if (!$result['error'])
 			{
-				$messages['success'] = Fractal::trans('messages.successCreated', ['item' => Fractal::transLowerA('labels.file')]);
+				$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transChoiceLowerA('labels.file')]);
 
 				$fileResult = $result['files']['file'];
 
@@ -252,7 +252,7 @@ class FilesController extends BaseController {
 
 			if (!$result['error'])
 			{
-				$messages['success'] = Fractal::trans('messages.successUpdated', ['item' => Fractal::transLowerA('labels.file')]);
+				$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoiceLowerA('labels.file')]);
 
 				$file->name      = ucfirst(trim(Input::get('name')));
 				$file->filename  = $filename;
@@ -328,7 +328,7 @@ class FilesController extends BaseController {
 		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.successDeleted', ['item' => '<strong>'.$file->name.'</strong>']);
+		$result['message']    = Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$file->name.'</strong>']);
 
 		// delete file
 		if (File::exists('uploads/'.$file->getPath()))
