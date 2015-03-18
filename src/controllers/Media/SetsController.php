@@ -19,9 +19,7 @@ use Form;
 use Format;
 use Site;
 
-use Regulus\Fractal\Controllers\BaseController;
-
-class SetsController extends BaseController {
+class SetsController extends MediaController {
 
 	public function __construct()
 	{
@@ -38,7 +36,7 @@ class SetsController extends BaseController {
 
 		Fractal::setViewsLocation('media.sets');
 
-		Fractal::addTrailItem(Fractal::transChoice('labels.media_set', 2), Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::transChoice('labels.set', 2), Fractal::getControllerPath());
 	}
 
 	public function index()

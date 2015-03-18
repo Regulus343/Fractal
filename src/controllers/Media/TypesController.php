@@ -19,9 +19,7 @@ use Form;
 use Format;
 use Site;
 
-use Regulus\Fractal\Controllers\BaseController;
-
-class TypesController extends BaseController {
+class TypesController extends MediaController {
 
 	public function __construct()
 	{
@@ -38,7 +36,7 @@ class TypesController extends BaseController {
 
 		Fractal::setViewsLocation('media.types');
 
-		Fractal::addTrailItem(Fractal::trans('labels.mediaTypes'), Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::transChoice('labels.type', 2), Fractal::getControllerPath());
 	}
 
 	public function index()

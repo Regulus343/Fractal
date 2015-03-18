@@ -37,7 +37,7 @@ class MenusController extends BaseController {
 
 		Fractal::setViewsLocation('content.menus');
 
-		Fractal::addTrailItem(Fractal::trans('labels.menus'), Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::transChoice('labels.menu', 2), Fractal::getControllerPath());
 
 		Site::set('defaultSorting', ['field' => 'cms']);
 	}
