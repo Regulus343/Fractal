@@ -14,6 +14,7 @@ return [
 		'reset_password_invalid_uri' => 'To reset password, please click on the link that was sent to your email address.',
 		'hosted_content_not_found'   => 'The hosted content you specified was not found.',
 		'account_activation'         => 'Something went wrong with your attempt to activate your account.',
+		'save_content'               => 'Your form content was unable to be saved. Please check for validation errors.',
 	],
 
 	'success' => [

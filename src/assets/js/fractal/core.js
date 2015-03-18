@@ -1216,15 +1216,18 @@ var Fractal = {
 				{
 					case 's':
 						e.preventDefault();
-						Fractal.saveContent();
+						Fractal.saveContent(true);
 						break;
 				}
 			}
 		});
 	},
 
-	saveContent: function()
+	saveContent: function(manuallySaved)
 	{
+		if (manuallySaved === undefined)
+			manuallySaved = false;
+
 		var data = $('form').serializeArray();
 
 		for (d in data)
@@ -1241,7 +1244,12 @@ var Fractal = {
 		SolidSite.post(Fractal.createUrl('api/save-content'), data, function(result)
 		{
 			if (parseInt(result))
+			{
 				Fractal.setMainMessage(Fractal.trans('messages.success.formContentSaved'), 'success');
+			} else {
+				if (manuallySaved)
+					Fractal.setMainMessage(Fractal.trans('messages.errors.saveContent'), 'error');
+			}
 		});
 	},
 
