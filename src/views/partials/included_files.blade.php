@@ -30,6 +30,10 @@
 
 <script type="text/javascript" src="{{ Site::js('bootstrap-datetimepicker.min', 'regulus/fractal') }}"></script>
 
+{{-- Font Awesome CSS --}}
+
+<link type="text/css" rel="stylesheet" href="{{ Site::css('font-awesome.min', 'regulus/fractal') }}" />
+
 {{-- CK Editor --}}
 
 @if (Site::get('wysiwyg'))

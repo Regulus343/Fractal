@@ -45,7 +45,7 @@ class ActivityController extends UsersController {
 
 		$data     = Fractal::setPaginationMessage(true);
 		$messages = Fractal::getPaginationMessageArray();
-Fractal::getCurrentPage();
+
 		return View::make(Fractal::view('list'))
 			->with('content', $activities)
 			->with('messages', $messages);

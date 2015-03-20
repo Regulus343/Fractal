@@ -53,7 +53,7 @@ class CategoriesController extends BlogsController {
 
 		Fractal::addButton([
 			'label' => Fractal::trans('labels.create_item', ['item' => Fractal::transChoice('labels.category')]),
-			'icon'  => 'glyphicon glyphicon-file',
+			'icon'  => 'book',
 			'uri'   => Fractal::uri('create', true),
 		]);
 
@@ -89,7 +89,7 @@ class CategoriesController extends BlogsController {
 
 		Fractal::addButton([
 			'label' => Fractal::trans('labels.return_to_items_list', ['item' => Fractal::transChoice('labels.category', 2)]),
-			'icon'  => 'glyphicon glyphicon-list',
+			'icon'  => 'list',
 			'uri'   => Fractal::uri('', true),
 		]);
 
@@ -148,7 +148,7 @@ class CategoriesController extends BlogsController {
 
 		Fractal::addButton([
 			'label' => Fractal::trans('labels.return_to_items_list', ['item' => Fractal::transChoice('labels.category', 2)]),
-			'icon'  => 'glyphicon glyphicon-list',
+			'icon'  => 'list',
 			'uri'   => Fractal::uri('', true),
 		]);
 

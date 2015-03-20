@@ -43,9 +43,11 @@ class SettingsController extends BaseController {
 
 		$settings = $settings->get();
 		$defaults = [];
-		foreach ($settings as $setting) {
+		foreach ($settings as $setting)
+		{
 			$defaults[$setting->getFieldName()] = $setting->value;
 		}
+
 		Form::setDefaults($defaults);
 		Form::setErrors();
 
@@ -59,23 +61,29 @@ class SettingsController extends BaseController {
 		$settings = Setting::orderBy('category')->orderBy('display_order')->orderBy('name')->get();
 		$labels   = [];
 		$rules    = [];
-		foreach ($settings as $setting) {
-			if (Site::developer() || ! (bool) $setting->developer) {
+		foreach ($settings as $setting)
+		{
+			if (Site::developer() || ! (bool) $setting->developer)
+			{
 				$labels[$setting->getFieldName()] = $setting->getLabel();
 
 				if ($setting->rules != "")
 					$rules[$setting->getFieldName()] = explode(', ', $setting->rules);
 			}
 		}
+
 		Form::setLabels($labels);
 		Form::setValidationRules($rules);
 
 		$messages = [];
-		if (Form::validated()) {
+		if (Form::validated())
+		{
 			$messages['success'] = Fractal::trans('messages.successUpdated', ['item' => Fractal::transLower('labels.settings')]);
 
-			foreach ($settings as $setting) {
-				if (isset($values[$setting->getFieldName()])) {
+			foreach ($settings as $setting)
+			{
+				if (isset($values[$setting->getFieldName()]))
+				{
 					$value = $values[$setting->getFieldName()];
 
 					if ($setting->type == "List" && is_array($value))

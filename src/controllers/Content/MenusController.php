@@ -57,7 +57,7 @@ class MenusController extends BaseController {
 
 		Fractal::addButton([
 			'label' => Fractal::trans('labels.create_item', ['item' => Fractal::transChoice('labels.menu')]),
-			'icon'  => 'glyphicon glyphicon-list',
+			'icon'  => 'th-list',
 			'uri'   => Fractal::uri('create', true),
 		]);
 
@@ -92,7 +92,7 @@ class MenusController extends BaseController {
 
 		Fractal::addButton([
 			'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.menu', 2)]),
-			'icon'  => 'glyphicon glyphicon-list',
+			'icon'  => 'list',
 			'uri'   => Fractal::uri('', true),
 		]);
 
@@ -151,7 +151,7 @@ class MenusController extends BaseController {
 
 		Fractal::addButton([
 			'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.menu', 2)]),
-			'icon'  => 'glyphicon glyphicon-list',
+			'icon'  => 'list',
 			'uri'   => 'menus',
 		]);
 

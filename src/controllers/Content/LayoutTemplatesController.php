@@ -55,7 +55,7 @@ class LayoutTemplatesController extends BaseController {
 
 		Fractal::addButton([
 			'label' => Fractal::trans('labels.create_item', ['item' => Fractal::transChoice('labels.layout_template')]),
-			'icon'  => 'glyphicon glyphicon-th',
+			'icon'  => 'th',
 			'uri'   => Fractal::uri('create', true),
 		]);
 
@@ -91,7 +91,7 @@ class LayoutTemplatesController extends BaseController {
 
 		Fractal::addButton([
 			'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.layout_template', 2)]),
-			'icon'  => 'glyphicon glyphicon-list',
+			'icon'  => 'list',
 			'uri'   => Fractal::uri('', true),
 		]);
 
@@ -150,7 +150,7 @@ class LayoutTemplatesController extends BaseController {
 
 		Fractal::addButton([
 			'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.layout_template', 2)]),
-			'icon'  => 'glyphicon glyphicon-list',
+			'icon'  => 'list',
 			'uri'   => Fractal::uri('', true),
 		]);
 

@@ -17,13 +17,13 @@ class CreateMenuItemsTable extends Migration {
 			$table->increments('id');
 
 			$table->integer('menu_id');
-			$table->integer('parent_id')->nullable();
+			$table->integer('parent_id')->nullable()->default(null);
 			$table->string('type', 32)->default('URI');
 			$table->integer('page_id');
 			$table->string('uri', 120);
-			$table->string('subdomain', 64)->nullable();
+			$table->string('subdomain', 64)->nullable()->default(null);
 			$table->string('label');
-			$table->string('label_language_key')->nullable();
+			$table->string('label_language_key')->nullable()->default(null);
 			$table->string('icon', 72);
 			$table->string('class');
 			$table->string('additional_info');

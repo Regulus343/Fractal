@@ -3,7 +3,7 @@
 | Fractal JS
 |------------------------------------------------------------------------------
 |
-| Last Updated: March 16, 2015
+| Last Updated: March 19, 2015
 |
 */
 
@@ -1206,6 +1206,14 @@ var Fractal = {
 			Fractal.saveContent();
 
 		}, this.autoSaveRate);
+
+		// allow saving by clicking "Save" button
+		$('.btn-save-content').off('click').on('click', function(e)
+		{
+			e.preventDefault();
+
+			Fractal.saveContent(true);
+		});
 
 		// allow manual save with CTRL / CMD + S
 		$(window).bind('keydown', function(e)

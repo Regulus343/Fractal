@@ -717,7 +717,7 @@ return [
 						],
 					],
 					[
-						'icon'            => 'ban-circle',
+						'icon'            => 'ban',
 						'class'           => 'btn btn-danger action-item ban-user',
 						'class_modifiers' => [
 							'hidden' => [
@@ -736,7 +736,7 @@ return [
 						],
 					],
 					[
-						'icon'            => 'ok-circle',
+						'icon'            => 'check-circle-o',
 						'class'           => 'btn btn-primary action-item unban-user',
 						'class_modifiers' => [
 							'hidden' => [

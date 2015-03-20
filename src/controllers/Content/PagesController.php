@@ -58,7 +58,7 @@ class PagesController extends BaseController {
 
 		Fractal::addButton([
 			'label' => Fractal::trans('labels.create_item', ['item' => Fractal::transChoice('labels.page')]),
-			'icon'  => 'glyphicon glyphicon-file',
+			'icon'  => 'file-o',
 			'uri'   => Fractal::uri('create', true),
 		]);
 
@@ -100,7 +100,7 @@ class PagesController extends BaseController {
 
 		Fractal::addButton([
 			'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.page', 2)]),
-			'icon'  => 'glyphicon glyphicon-list',
+			'icon'  => 'list',
 			'uri'   => Fractal::uri('', true),
 		]);
 
@@ -167,13 +167,18 @@ class PagesController extends BaseController {
 		Fractal::addButtons([
 			[
 				'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.page', 2)]),
-				'icon'  => 'glyphicon glyphicon-list',
+				'icon'  => 'list',
 				'uri'   => Fractal::uri('', true),
 			],[
-				'label' => Fractal::trans('labels.view_item', ['item' => Fractal::trans('labels.page')]),
-				'icon'  => 'glyphicon glyphicon-file',
+				'label' => Fractal::trans('labels.view_item', ['item' => Fractal::transChoice('labels.page')]),
+				'icon'  => 'file-o',
 				'url'   => $page->getUrl(),
-			]
+			],[
+				'label' => Fractal::trans('labels.save'),
+				'icon'  => 'save',
+				'url'   => '',
+				'class' => 'btn btn-green btn-save-content',
+			],
 		]);
 
 		Fractal::addTrailItem(Fractal::trans('labels.update'), Request::url());

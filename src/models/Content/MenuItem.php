@@ -255,7 +255,12 @@ class MenuItem extends Base {
 	public function getIcon()
 	{
 		if ($this->icon != "")
-			return '<span class="glyphicon glyphicon-'.$this->icon.'"></span>&nbsp; ';
+		{
+			$iconElement     = config('html.icon.element');
+			$iconClassPrefix = config('html.icon.class_prefix');
+
+			return '<'.$iconElement.' class="'.$iconClassPrefix.$this->icon.'"></i> ';
+		}
 
 		return "";
 	}

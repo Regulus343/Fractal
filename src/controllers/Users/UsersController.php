@@ -53,7 +53,7 @@ class UsersController extends BaseController {
 
 		Fractal::addButton([
 			'label' => Fractal::trans('labels.create_item', ['item' => Fractal::transChoice('labels.user')]),
-			'icon'  => 'glyphicon glyphicon-user',
+			'icon'  => 'user',
 			'uri'   => Fractal::uri('create', true),
 		]);
 
@@ -96,7 +96,7 @@ class UsersController extends BaseController {
 
 		Fractal::addButton([
 			'label' => Fractal::trans('labels.return_to_items_list', ['item' => Fractal::transChoice('labels.user')]),
-			'icon'  => 'glyphicon glyphicon-list',
+			'icon'  => 'list',
 			'uri'   => Fractal::uri('', true),
 		]);
 
@@ -176,7 +176,7 @@ class UsersController extends BaseController {
 
 		Fractal::addButton([
 			'label' => Fractal::trans('labels.return_to_items_list', ['item' => Fractal::transChoice('labels.user')]),
-			'icon'  => 'glyphicon glyphicon-list',
+			'icon'  => 'list',
 			'uri'   => Fractal::uri('', true),
 		]);
 

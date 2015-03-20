@@ -13,6 +13,8 @@ a#logo img { height: 30px; border: none; }
 #top-buttons .btn { background: none; color: #fff; border-color: #444; text-shadow: none; }
 #top-buttons .btn:hover { border-color: #777; }
 
+.btn-green { background-color: #161 !important; text-shadow: #000 0 0 5px !important; }
+
 .breadcrumb { border: 1px solid #ddd; }
 
 .alert-top {

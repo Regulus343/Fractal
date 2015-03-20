@@ -29,18 +29,18 @@ class AuthController extends BaseController {
 
 	public function login()
 	{
-		//check if an active session already exists
+		// check if an active session already exists
 		if (Auth::check())
 			return Redirect::to(Fractal::uri('account'))->with('messages', ['error' => Fractal::trans('messages.errors.already_logged_in')]);
 
-		//add a default username if it is set through a session variable
+		// add a default username if it is set through a session variable
 		if (!is_null(Session::get('username')))
 		{
 			Form::setDefaults(['identifier' => Session::get('username')]);
 			Session::forget('username');
 		}
 
-		//set form validation rules
+		// set form validation rules
 		$rules = [
 			'identifier' => ['required'],
 			'password'   => ['required', 'min:'.Fractal::getSetting('Minimum Password Length', 8)],
@@ -49,7 +49,7 @@ class AuthController extends BaseController {
 
 		$messages = [];
 
-		//login form has been submitted
+		// login form has been submitted
 		if (Auth::attempt(['identifier' => Input::get('identifier'), 'password' => Input::get('password')]))
 		{
 			$user = Auth::user();
@@ -96,7 +96,7 @@ class AuthController extends BaseController {
 				'details'     => 'Username: '.$user->username(),
 			]);
 
-			//set username session variable for easy logging back in
+			// set username session variable for easy logging back in
 			Session::set('username', $user->name);
 		}
 
@@ -129,7 +129,7 @@ class AuthController extends BaseController {
 		}
 	}
 
-	//reset password step 1 of 2 (forgot password)
+	// reset password step 1 of 2 (forgot password)
 	public function forgotPassword()
 	{
 		Site::setTitle(Fractal::trans('labels.reset_password'));
@@ -175,7 +175,7 @@ class AuthController extends BaseController {
 		return View::make(Fractal::view('forgot_password'))->with('messages', $messages);
 	}
 
-	//reset password step 2 of 2
+	// reset password step 2 of 2
 	public function resetPassword($id = 0, $code = '')
 	{
 		if (!$id || $code == "")

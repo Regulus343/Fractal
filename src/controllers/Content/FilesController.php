@@ -58,7 +58,7 @@ class FilesController extends BaseController {
 
 		Fractal::addButton([
 			'label' => Fractal::trans('labels.upload_file'),
-			'icon'  => 'glyphicon glyphicon-file',
+			'icon'  => 'file-o',
 			'uri'   => Fractal::uri('create', true),
 		]);
 
@@ -95,7 +95,7 @@ class FilesController extends BaseController {
 
 		Fractal::addButton([
 			'label' => Fractal::trans('labels.returnToFilesList'),
-			'icon'  => 'glyphicon glyphicon-list',
+			'icon'  => 'list',
 			'uri'   => Fractal::uri('', true),
 		]);
 
@@ -184,7 +184,7 @@ class FilesController extends BaseController {
 
 		Fractal::addButton([
 			'label' => Fractal::trans('labels.returnToFilesList'),
-			'icon'  => 'glyphicon glyphicon-list',
+			'icon'  => 'list',
 			'uri'   => 'files',
 		]);
 

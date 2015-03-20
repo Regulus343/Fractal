@@ -16,6 +16,7 @@ return [
 	'delete'                  => 'Delete',
 	'undelete'                => 'Undelete',
 	'remove'                  => 'Remove',
+	'save'                    => 'Save',
 
 	'add_item'                => 'Add :item',
 	'create_item'             => 'Create :item',

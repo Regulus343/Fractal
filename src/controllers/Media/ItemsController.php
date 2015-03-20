@@ -58,7 +58,7 @@ class ItemsController extends MediaController {
 
 		Fractal::addButton([
 			'label' => Fractal::trans('labels.create_item', ['item' => Fractal::transChoice('labels.media_item')]),
-			'icon'  => 'glyphicon glyphicon-picture',
+			'icon'  => 'file-image-o',
 			'uri'   => Fractal::uri('create', true),
 		]);
 
@@ -100,7 +100,7 @@ class ItemsController extends MediaController {
 
 		Fractal::addButton([
 			'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.media_item', 2)]),
-			'icon'  => 'glyphicon glyphicon-list',
+			'icon'  => 'list',
 			'uri'   => Fractal::uri('', true),
 		]);
 
@@ -172,10 +172,10 @@ class ItemsController extends MediaController {
 
 					if (!$result['error'] && $uploaded)
 					{
-						$item->filename            = $fileResult['filename'];
-						$item->basename            = $fileResult['basename'];
-						$item->extension           = $fileResult['extension'];
-						$item->path                = $path;
+						$item->filename  = $fileResult['filename'];
+						$item->basename  = $fileResult['basename'];
+						$item->extension = $fileResult['extension'];
+						$item->path      = $path;
 
 						if ($fileResult['isImage'])
 						{
@@ -262,13 +262,13 @@ class ItemsController extends MediaController {
 		Fractal::addButtons([
 			[
 				'label' => Fractal::trans('labels.return_to_items_list', ['item' => Fractal::transChoice('labels.media_item', 2)]),
-				'icon'  => 'glyphicon glyphicon-list',
+				'icon'  => 'list',
 				'uri'   => Fractal::uri('', true),
 			],[
 				'label' => Fractal::trans('labels.view_item', ['item' => Fractal::transChoice('labels.media_item')]),
-				'icon'  => 'glyphicon glyphicon-file',
+				'icon'  => 'file-image-o',
 				'url'   => $item->getUrl(),
-			]
+			],
 		]);
 
 		Fractal::addTrailItem(Fractal::trans('labels.update'), Request::url());
