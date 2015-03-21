@@ -271,12 +271,12 @@
 			<div class="col-md-12">
 				@if (isset($update) && $update)
 					<a href="{{ $articleUrl }}" class="btn btn-default right-padded pull-right">
-						<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Fractal::trans('labels.view_item', ['item' => Fractal::transChoice('labels.article')]) }}
+						<i class="fa fa-file"></i> {{ Fractal::trans('labels.view_item', ['item' => Fractal::transChoice('labels.article')]) }}
 					</a>
 				@endif
 
 				<a href="{{ Fractal::url('blogs/articles') }}" class="btn btn-default pull-right">
-					<span class="glyphicon glyphicon-list"></span>&nbsp; {{ Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.article', 2)]) }}
+					<i class="fa fa-list"></i> {{ Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.article', 2)]) }}
 				</a>
 			</div>
 		</div>
@@ -315,7 +315,7 @@
 				{!! Form::hidden('thumbnail_image_media_item_id') !!}
 
 				<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="blogs/articles/select-thumbnail-image{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="get" data-modal-callback-function="selectThumbnailImageActions">
-					<span class="glyphicon glyphicon-picture"></span>&nbsp; {{ Fractal::trans('labels.select_item', ['item' => Fractal::transChoice('labels.thumbnail_image')]) }}
+					<i class="fa fa-file-image-o"></i> {{ Fractal::trans('labels.select_item', ['item' => Fractal::transChoice('labels.thumbnail_image')]) }}
 				</a>
 			</div>
 			<div class="col-md-8">
@@ -323,7 +323,7 @@
 					<img src="{{ (isset($article) ? $article->getThumbnailImageUrl() : '') }}" alt="Thumbnail Image" title="Thumbnail Image" class="thumbnail-image" />
 
 					<a href="" class="btn btn-danger vertical-align-top" id="remove-thumbnail-image">
-						<span class="glyphicon glyphicon-remove"></span>&nbsp; {{ Fractal::trans('labels.remove_item', ['item' => Fractal::transChoice('labels.thumbnail_image')]) }}
+						<i class="fa fa-remove"></i> {{ Fractal::trans('labels.remove_item', ['item' => Fractal::transChoice('labels.thumbnail_image')]) }}
 					</a>
 				</div><!-- /#thumbnail-image-area -->
 			</div>
@@ -337,7 +337,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="blogs/articles/add-content-area{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="get" data-modal-callback-function="selectContentAreaActions">
-					<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Fractal::trans('labels.add_item', ['item' => Fractal::transChoice('labels.content_area')]) }}
+					<i class="fa fa-plus-circle"></i> {{ Fractal::trans('labels.add_item', ['item' => Fractal::transChoice('labels.content_area')]) }}
 				</a>
 			</div>
 		</div>
@@ -378,7 +378,7 @@
 							'placeholder' => 'Date/Time Published',
 						]) !!}
 
-						<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+						<span class="input-group-addon add-on"><i class="fa fa-calendar"></i></span>
 					</div>
 				</div>
 			</div>

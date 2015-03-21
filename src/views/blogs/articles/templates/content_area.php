@@ -41,7 +41,7 @@
 				])?>
 
 				<a href="" class="btn btn-default trigger-modal pull-right" data-modal-ajax-uri="api/view-markdown-guide" data-modal-ajax-action="get">
-					<span class="glyphicon glyphicon-file"></span>&nbsp; <?=Fractal::trans('labels.view_item', ['item' => Fractal::trans('labels.markdown_guide')])?>
+					<i class="fa fa-file"></i> <?=Fractal::trans('labels.view_item', ['item' => Fractal::trans('labels.markdown_guide')])?>
 				</a>
 			</div>
 
@@ -53,7 +53,7 @@
 		</div>
 
 		<a href="" class="btn btn-danger btn-xs remove-template-item pull-right">
-			<span class="glyphicon glyphicon-remove-circle"></span>&nbsp; <?=Fractal::trans('labels.remove_item', ['item' => Fractal::transChoice('labels.content_area')])?>
+			<i class="fa fa-ban"></i> <?=Fractal::trans('labels.remove_item', ['item' => Fractal::transChoice('labels.content_area')])?>
 		</a>
 	</fieldset>
 

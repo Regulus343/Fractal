@@ -179,7 +179,7 @@
 		@include(Fractal::view('content.menus.templates.menu_item', true))
 
 		<a href="" class="btn btn-primary add-menu-item pull-right">
-			<span class="glyphicon glyphicon-plus"></span>&nbsp; {{ Fractal::trans('labels.add_menu_item') }}
+			<i class="fa fa-plus-circle"></i> {{ Fractal::trans('labels.add_menu_item') }}
 		</a>
 
 		<div class="row">
