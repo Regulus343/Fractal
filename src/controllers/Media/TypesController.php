@@ -164,7 +164,7 @@ class TypesController extends MediaController {
 	{
 		$type = Type::findBySlug($slug);
 		if (empty($type))
-			return Redirect::to(Fractal::uri('pages'))->with('messages', [
+			return Redirect::to(Fractal::uri('', true))->with('messages', [
 				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.media_type')])
 			]);
 

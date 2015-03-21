@@ -152,9 +152,17 @@ class ArticlesController extends BlogsController {
 	{
 		$article = Article::findBySlug($slug);
 		if (empty($article))
-			return Redirect::to(Fractal::uri('pages'))->with('messages', [
-				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.article')])
-			]);
+		{
+			// attempt to find by ID and redirect to slugged URL if found
+			$article = Article::find($slug);
+
+			if (!empty($article))
+				return Redirect::to(Fractal::uri($article->slug.'/edit', true));
+			else
+				return Redirect::to(Fractal::uri('', true))->with('messages', [
+					'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.article')])
+				]);
+		}
 
 		Site::setTitle($article->getTitle().' ('.Fractal::transChoice('labels.article').')');
 		Site::setHeading(Fractal::trans('labels.update_item', ['item' => Fractal::transChoice('labels.article')]).': <strong>'.$article->getTitle().'</strong>');

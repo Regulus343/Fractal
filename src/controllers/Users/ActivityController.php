@@ -41,6 +41,9 @@ class ActivityController extends UsersController {
 		$data       = Fractal::setupPagination();
 		$activities = Activity::getSearchResults($data);
 
+		$item = Activity::where('content_type', 'Page')->first();
+		//dd($item->getUrl());
+
 		Fractal::setContentForPagination($activities);
 
 		$data     = Fractal::setPaginationMessage(true);

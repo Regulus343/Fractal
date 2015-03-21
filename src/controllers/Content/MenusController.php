@@ -139,7 +139,7 @@ class MenusController extends BaseController {
 	{
 		$menu = Menu::find($id);
 		if (empty($menu))
-			return Redirect::to(Fractal::uri('menus'))->with('messages', [
+			return Redirect::to(Fractal::uri('', true))->with('messages', [
 				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.menu')])
 			]);
 

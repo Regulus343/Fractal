@@ -151,9 +151,17 @@ class PagesController extends BaseController {
 	{
 		$page = Page::findBySlug($slug);
 		if (empty($page))
-			return Redirect::to(Fractal::uri('', true))->with('messages', [
-				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.page')])
-			]);
+		{
+			// attempt to find by ID and redirect to slugged URL if found
+			$page = Page::find($slug);
+
+			if (!empty($page))
+				return Redirect::to(Fractal::uri($page->slug.'/edit', true));
+			else
+				return Redirect::to(Fractal::uri('', true))->with('messages', [
+					'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.page')])
+				]);
+		}
 
 		Site::setTitle($page->title.' ('.Fractal::transChoice('labels.page').')');
 		Site::setHeading(Fractal::trans('labels.update_item', ['item' => Fractal::trans('labels.page')]).': <strong>'.Format::entities($page->title).'</strong>');

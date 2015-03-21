@@ -143,7 +143,7 @@ class SetsController extends MediaController {
 	{
 		$set = Set::findBySlug($slug);
 		if (empty($set))
-			return Redirect::to(Fractal::uri('pages'))->with('messages', [
+			return Redirect::to(Fractal::uri('', true))->with('messages', [
 				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.media_set')])
 			]);
 

@@ -245,9 +245,17 @@ class ItemsController extends MediaController {
 	{
 		$item = Item::findBySlug($slug);
 		if (empty($item))
-			return Redirect::to(Fractal::uri('media/items'))->with('messages', [
-				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.media_item')])
-			]);
+		{
+			// attempt to find by ID and redirect to slugged URL if found
+			$item = Item::find($slug);
+
+			if (!empty($item))
+				return Redirect::to(Fractal::uri($item->slug.'/edit', true));
+			else
+				return Redirect::to(Fractal::uri('', true))->with('messages', [
+					'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.media_item')])
+				]);
+		}
 
 		Site::setTitle($item->getTitle().' ('.Fractal::transChoice('labels.media_item').')');
 		Site::setHeading(Fractal::trans('labels.update_item', ['item' => Fractal::transChoice('labels.media_item')]).': <strong>'.$item->getTitle().'</strong>');

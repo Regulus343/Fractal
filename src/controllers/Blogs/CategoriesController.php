@@ -136,7 +136,7 @@ class CategoriesController extends BlogsController {
 	{
 		$category = Category::findBySlug($slug);
 		if (empty($category))
-			return Redirect::to(Fractal::uri('pages'))->with('messages', [
+			return Redirect::to(Fractal::uri('', true))->with('messages', [
 				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.category')])
 			]);
 

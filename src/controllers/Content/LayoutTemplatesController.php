@@ -138,7 +138,7 @@ class LayoutTemplatesController extends BaseController {
 	{
 		$layoutTemplate = LayoutTemplate::where('id', $id)->where('static', false)->first();
 		if (empty($layoutTemplate))
-			return Redirect::to(Fractal::uri('pages'))->with('messages', [
+			return Redirect::to(Fractal::uri('', true))->with('messages', [
 				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transLower('labels.layout_template')])
 			]);
 
