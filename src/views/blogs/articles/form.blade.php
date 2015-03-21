@@ -165,6 +165,25 @@
 			// initialize modal button triggers
 			Fractal.initModalTriggers();
 
+			// initialize expand content area buttons
+			$('.btn-expand-content-area').off('click').on('click', function(e)
+			{
+				e.preventDefault();
+
+				$(this).hide();
+				$(this).parents('.row').addClass('full-screen').find('.btn-compress-content-area').removeClass('hidden').show();
+				$('#footer').hide();
+			});
+
+			$('.btn-compress-content-area').off('click').on('click', function(e)
+			{
+				e.preventDefault();
+
+				$(this).hide();
+				$(this).parents('.row').removeClass('full-screen').find('.btn-expand-content-area').removeClass('hidden').show();
+				$('#footer').show();
+			});
+
 			if (addingContentArea) {
 				$('html, body').animate({
 					scrollTop: (item.offset().top - 30) + 'px'

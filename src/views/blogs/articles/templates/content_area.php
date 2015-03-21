@@ -35,6 +35,14 @@
 			</div>
 
 			<div class="col-md-12 col-lg-6 markdown-content-area">
+				<a href="" class="btn btn-default btn-xs btn-expand-content-area pull-right">
+					<i class="fa fa-expand"></i>
+				</a>
+
+				<a href="" class="btn btn-default btn-xs btn-compress-content-area pull-right hidden">
+					<i class="fa fa-compress"></i>
+				</a>
+
 				<?=Form::field('content_areas.{{number}}.content_markdown', 'textarea', [
 					'label'       => 'Markdown Content',
 					'class-field' => 'tab',

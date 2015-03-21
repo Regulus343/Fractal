@@ -137,7 +137,7 @@ class ApiController extends BaseController {
 
 	public function getViewMarkdownGuide()
 	{
-		return Fractal::modalView('partials.modals.markdown_guide', ['title' => Fractal::trans('labels.markdownGuide')], true);
+		return Fractal::modalView('partials.modals.markdown_guide', ['title' => Fractal::trans('labels.markdown_guide')], true);
 	}
 
 }

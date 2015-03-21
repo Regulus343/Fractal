@@ -37,6 +37,9 @@ a#logo img { height: 30px; border: none; }
 .alert-success { background: #156e05; color: #fff; }
 .alert-danger { background: #800; color: #fff; }
 
+.modal { z-index: 3000; }
+.modal-backdrop { z-index: 2700; }
+
 div.checkbox-set, div.radio-set {
 	padding: 0 8px;
 	border: 1px solid #aaa;

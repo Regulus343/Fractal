@@ -384,3 +384,8 @@ table.markdown-guide tr td img { width: 90px; }
 .legend ul { padding-left: 0; list-style: none; }
 .legend ul li { margin-right: 18px; display: inline-block; }
 .legend ul li span { display: inline-block; margin-right: 5px; width: 12px; height: 12px; }
+
+.full-screen { z-index: 2000; position: absolute; left: 0; top: 0; padding: 12px; width: 100%; height: 100%; background-color: #fff; }
+.full-screen>div { height: 100%; }
+.full-screen .form-group { height: 90%; }
+.full-screen textarea, .full-screen .markdown-preview-content { height: 95%; max-height: 95%; }
