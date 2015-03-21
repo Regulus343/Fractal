@@ -55,6 +55,7 @@ class AuthController extends BaseController {
 			$user = Auth::user();
 
 			Activity::log([
+				'action'      => 'Log In',
 				'description' => 'Logged In',
 				'details'     => 'Username: '.$user->username(),
 			]);
@@ -74,6 +75,7 @@ class AuthController extends BaseController {
 				$messages['error'] = Fractal::trans('messages.errors.log_in');
 
 				Activity::log([
+					'action'      => 'Log In',
 					'description' => 'Attempted to Log In',
 					'details'     => 'Username: '.trim(Input::get('username')),
 				]);
@@ -92,6 +94,7 @@ class AuthController extends BaseController {
 		if (!empty($user))
 		{
 			Activity::log([
+				'action'      => 'Log Out',
 				'description' => 'Logged Out',
 				'details'     => 'Username: '.$user->username(),
 			]);
@@ -110,6 +113,7 @@ class AuthController extends BaseController {
 			$user = User::find($userId);
 
 			Activity::log([
+				'action'      => 'Activate',
 				'description' => 'Account Activated',
 				'details'     => 'Username: '.$user->username,
 			]);

@@ -6,7 +6,7 @@
 
 		created by Cody Jassman
 		version 0.9.0a - Fractal is in transition from Laravel 4 (0.8.x) to Laravel 5 (0.9.x)
-		last updated on March 19, 2015
+		last updated on March 20, 2015
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
