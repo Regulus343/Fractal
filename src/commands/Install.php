@@ -46,12 +46,12 @@ class Install extends Command {
 		$this->comment('Installing Fractal...');
 		$this->info($divider);
 
-		//install Identify
+		// install Identify
 		$this->call('identify:install', [
 			'--env' => $this->option('env'),
 		]);
 
-		//run database migrations
+		// run database migrations
 		$this->comment('Migrating DB tables...');
 		$this->info($divider);
 
@@ -65,35 +65,35 @@ class Install extends Command {
 			'--path' => 'vendor/regulus/fractal/src/migrations',
 		]);
 
-		//seed database tables
+		// seed database tables
 		$this->output->writeln('');
 		$this->comment('Seeding DB tables...');
 		$this->info($divider);
 
 		$this->call('db:seed', ['--class' => 'FractalSeeder']);
 
-		//export default settings
+		// export default settings
 		$this->output->writeln('');
 		$this->comment('Exporting Fractal\'s default settings from database to config file...');
 		Fractal::exportSettings(null, true);
 		$this->info('Fractal settings exported');
 
-		//export default menus
+		// export default menus
 		$this->output->writeln('');
 		$this->comment('Exporting Fractal\'s default menus from database to config file...');
 		Fractal::exportMenus(true);
 		$this->info('Fractal menus exported');
 
-		//swap out default LoadConfiguration class
+		// swap out default LoadConfiguration class
 		$bootstrapAppFile = base_path('bootstrap/app.php');
-		if (is_file($bootstrapAppFile) && isset($xx))
+		if (is_file($bootstrapAppFile))
 		{
 			$bootstrapAppContents       = file_get_contents($bootstrapAppFile);
 			$bootstrapAppContentsLength = strlen($bootstrapAppContents);
 
 			$singleton = "\n".'$app'."->singleton(\n\t'Illuminate\Foundation\Bootstrap\LoadConfiguration',\n\t'Regulus\Fractal\Libraries\LoadConfiguration'\n);\n";
 
-			//ensure singleton has not already been added to file
+			// ensure singleton has not already been added to file
 			if (strpos($bootstrapAppContents, $singleton) === false)
 			{
 				$this->output->writeln('');
@@ -102,7 +102,7 @@ class Install extends Command {
 
 				$bootstrapAppContents = str_replace($singletonAddBefore, $singleton.$singletonAddBefore, $bootstrapAppContents);
 
-				//ensure update was successful before saving file
+				// ensure update was successful before saving file
 				if (strlen($bootstrapAppContents) > $bootstrapAppContentsLength)
 				{
 					file_put_contents($bootstrapAppFile, $bootstrapAppContents);
@@ -116,7 +116,40 @@ class Install extends Command {
 			$this->output->writeln("\n".'<info>Could not find </info>bootstrap/app.php<info>. Was not able to swap out LoadConfiguration singleton. Refer to readme to add it manually.</info>');
 		}
 
-		//show installed text
+		// add content type URIs and model classes to Activity Log's "log" config file
+		$logConfigFile = config_path('log.php');
+		if (is_file($logConfigFile))
+		{
+			$logConfigContents       = file_get_contents($logConfigFile);
+			$logConfigContentsLength = strlen($logConfigContents);
+
+			$contentTypes  = "'page' => [\n\t\t\t'uri'       => 'admin/pages/:id/edit',\n\t\t\t'model'     => 'Regulus\Fractal\Models\Content\Page',\n\t\t],\n\n\t\t";
+			$contentTypes .= "'article' => [\n\t\t\t'uri'       => 'admin/blogs/articles/:id/edit',\n\t\t\t'model'     => 'Regulus\Fractal\Models\Blog\Article',\n\t\t],";
+
+			// ensure example content type has not already been replaced
+			if (strpos($logConfigContents, $contentTypes) === false)
+			{
+				$this->output->writeln('');
+
+				$exampleContentType = "/* 'item' => [\n\t\t\t'uri'       => 'view/:id',\n\t\t\t'subdomain' => 'items',\n\t\t\t'model'     => 'App\Models\Item',\n\t\t], */";
+
+				$logConfigContents = str_replace($exampleContentType, $contentTypes, $logConfigContents);
+
+				// ensure update was successful before saving file
+				if (strlen($logConfigContents) > $logConfigContentsLength)
+				{
+					file_put_contents($logConfigFile, $logConfigContents);
+
+					$this->output->writeln('<info>Added content types to Activity Log\'s </info>config/log.php<info> config file</info>');
+				} else {
+					$this->output->writeln('<info>Was not able to add content types to Activity Log\'s </info>config/log.php<info> config file</info>');
+				}
+			}
+		} else {
+			$this->output->writeln("\n".'<info>Could not find Activity Log\'s </info>config/log.php<info> config file. Was not able populate \'</info>content_types<info>\' array.</info>');
+		}
+
+		// show installed text
 		$this->output->writeln('');
 		$this->info($divider);
 		$this->comment('Fractal installed!');
