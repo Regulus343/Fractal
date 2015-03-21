@@ -118,6 +118,8 @@ table tr td.image a { border: none; }
 table tr td.image img { width: 120px; border: 1px solid #888; border-radius: 8px; -webkit-border-radius: 8px; -moz-border-radius: 8px; }
 table tr td.image a img:hover { border: 1px solid #555; }
 
+table tr td.icon { width: 36px; font-size: 18px; }
+
 table.table-sortable thead tr th.sortable { position: relative; min-width: 42px; cursor: pointer; }
 table.table-sortable thead tr th.sortable:hover { background-color: #efefef; }
 table.table-sortable thead tr th.sortable span.sort-icon { position: absolute; top: 25%; right: 4px; color: #bbb; }

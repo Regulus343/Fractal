@@ -933,6 +933,7 @@ return [
 			[
 				'label'     => '',
 				'method'    => 'getIconMarkup()',
+				'class'     => 'icon',
 			],
 			[
 				'attribute' => 'id',
