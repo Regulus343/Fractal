@@ -11,7 +11,7 @@ use Regulus\Fractal\Facade as Fractal;
 |
 */
 
-use \Site;
+use Regulus\SolidSite\Facade as Site;
 
 $websiteName = Fractal::getSetting('Website Name');
 if ($websiteName)

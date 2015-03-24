@@ -61,7 +61,7 @@ class Reports {
 
 		$maxDay = 1;
 
-		//get month/day labels
+		// get month/day labels
 		foreach ($reportData as $item)
 		{
 			$itemInterval = date(($interval == "month" ? 'F' : 'j'), strtotime($item->{$interval}));
@@ -75,7 +75,7 @@ class Reports {
 					$maxDay = $itemInterval;
 			}
 
-			$contentTypeLabel = Fractal::trans('labels.contentTypes.plural.'.$item->content_type);
+			$contentTypeLabel = Fractal::transChoice('labels.content_types.'.$item->content_type, 2);
 
 			if (!in_array($contentTypeLabel, $contentTypes))
 				$contentTypes[] = $contentTypeLabel;
@@ -91,7 +91,7 @@ class Reports {
 			}
 		}
 
-		//set all months/days to zero for each content type
+		// set all months/days to zero for each content type
 		foreach ($contentTypes as $contentType)
 		{
 			for ($i = 0; $i < count($results['labels']); $i++)
@@ -107,7 +107,7 @@ class Reports {
 			if ($interval == "day" && ($itemInterval == 1 || $itemInterval == $maxDay))
 				$itemInterval = date('M').' '.$itemInterval;
 
-			$results['values'][Fractal::trans('labels.contentTypes.plural.'.$item->content_type)][$itemInterval] += $item->views;
+			$results['values'][Fractal::transChoice('labels.content_types.'.$item->content_type, 2)][$itemInterval] += $item->views;
 		}
 
 		return $results;
@@ -173,7 +173,7 @@ class Reports {
 
 		$maxDay = 1;
 
-		//get month/day labels
+		// get month/day labels
 		foreach ($reportData as $item)
 		{
 			$itemInterval = date(($interval == "month" ? 'F' : 'j'), strtotime($item->{$interval}));
@@ -187,7 +187,7 @@ class Reports {
 					$maxDay = $itemInterval;
 			}
 
-			$contentTypeLabel = Fractal::trans('labels.contentTypes.plural.'.$item->content_type);
+			$contentTypeLabel = Fractal::transChoice('labels.content_types.'.$item->content_type, 2);
 
 			if (!in_array($contentTypeLabel, $contentTypes))
 				$contentTypes[] = $contentTypeLabel;
@@ -203,7 +203,7 @@ class Reports {
 			}
 		}
 
-		//set all months/days to zero for each content type
+		// set all months/days to zero for each content type
 		foreach ($contentTypes as $contentType)
 		{
 			for ($i = 0; $i < count($results['labels']); $i++)
@@ -219,7 +219,7 @@ class Reports {
 			if ($interval == "day" && ($itemInterval == 1 || $itemInterval == $maxDay))
 				$itemInterval = date('M').' '.$itemInterval;
 
-			$results['values'][Fractal::trans('labels.contentTypes.plural.'.$item->content_type)][$itemInterval] ++;
+			$results['values'][Fractal::transChoice('labels.content_types.'.$item->content_type, 2)][$itemInterval] ++;
 		}
 
 		return $results;
@@ -289,7 +289,7 @@ class Reports {
 
 		$maxDay = 1;
 
-		//get month/day labels
+		// get month/day labels
 		foreach ($reportData as $i => $item)
 		{
 			$itemInterval = date(($interval == "month" ? 'F' : 'j'), strtotime($item->{$interval}));
@@ -316,7 +316,7 @@ class Reports {
 				{
 					$reportData[$i]->content = $contentItem;
 
-					$itemTitle = Fractal::trans('labels.contentTypes.singular.'.$item->content_type).': '.str_replace("'", "\'", $contentItem->getTitle());
+					$itemTitle = Fractal::transChoice('labels.content_types.'.$item->content_type).': '.str_replace("'", "\'", $contentItem->getTitle());
 					$itemTitle = '<a href="'.$item->content->getUrl().'" target="_blank">'.$itemTitle.'</a>';
 
 					if (!in_array($itemTitle, $itemTitles))
@@ -335,7 +335,7 @@ class Reports {
 			}
 		}
 
-		//set all months/days to zero for each content type
+		// set all months/days to zero for each content type
 		foreach ($itemTitles as $itemTitle)
 		{
 			for ($i = 0; $i < count($results['labels']); $i++)
@@ -351,11 +351,13 @@ class Reports {
 			if ($interval == "day" && ($itemInterval == 1 || $itemInterval == $maxDay))
 				$itemInterval = date('M').' '.$itemInterval;
 
-			$itemTitle = Fractal::trans('labels.contentTypes.singular.'.$item->content_type).': '.str_replace("'", "\'", $item->content->getTitle());
-			$itemTitle = '<a href="'.$item->content->getUrl().'" target="_blank">'.$itemTitle.'</a>';
-
 			if (isset($item->content) && !empty($item->content))
+			{
+				$itemTitle = Fractal::transChoice('labels.content_types.'.$item->content_type).': '.str_replace("'", "\'", $item->content->getTitle());
+				$itemTitle = '<a href="'.$item->content->getUrl().'" target="_blank">'.$itemTitle.'</a>';
+
 				$results['values'][$itemTitle][$itemInterval] += $item->views;
+			}
 		}
 
 		return $results;

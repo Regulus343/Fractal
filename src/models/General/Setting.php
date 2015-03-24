@@ -6,7 +6,7 @@ use Fractal;
 
 use Illuminate\Support\Facades\Config;
 
-use \Form;
+use Regulus\Formation\Facade as Form;
 
 class Setting extends Eloquent {
 

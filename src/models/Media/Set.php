@@ -8,9 +8,8 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
 
-use Form;
-use Format;
-use Site;
+use Regulus\Formation\Facade as Form;
+use Regulus\TetraText\Facade as Format;
 
 use Regulus\Fractal\Traits\Publishable;
 

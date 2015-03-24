@@ -11,10 +11,10 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 
 use Auth;
-use Form;
-use Format;
-use Site;
-use Upstream;
+use Regulus\Formation\Facade as Form;
+use Regulus\TetraText\Facade as Format;
+use Regulus\SolidSite\Facade as Site;
+use Regulus\Upstream\Facade as Upstream;
 
 use Regulus\Fractal\Models\Content\FileType;
 use Regulus\Fractal\Models\Content\View as ContentView;

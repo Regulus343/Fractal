@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\View;
 
 use Fractal;
 
-use Form;
-use Format;
-use Site;
+use Regulus\Formation\Facade as Form;
+use Regulus\TetraText\Facade as Format;
+use Regulus\SolidSite\Facade as Site;
 
 use Regulus\Fractal\Controllers\BaseController;
 

@@ -14,9 +14,9 @@ use Regulus\Fractal\Models\Blog\Category;
 
 use Regulus\ActivityLog\Models\Activity;
 use Auth;
-use Form;
-use Format;
-use Site;
+use Regulus\Formation\Facade as Form;
+use Regulus\TetraText\Facade as Format;
+use Regulus\SolidSite\Facade as Site;
 
 class CategoriesController extends BlogsController {
 
@@ -136,9 +136,17 @@ class CategoriesController extends BlogsController {
 	{
 		$category = Category::findBySlug($slug);
 		if (empty($category))
-			return Redirect::to(Fractal::uri('', true))->with('messages', [
-				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.category')])
-			]);
+		{
+			// attempt to find by ID and redirect to slugged URL if found
+			$category = Category::find($slug);
+
+			if (!empty($category))
+				return Redirect::to(Fractal::uri($category->slug.'/edit', true));
+			else
+				return Redirect::to(Fractal::uri('', true))->with('messages', [
+					'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.category')])
+				]);
+		}
 
 		Site::setTitle($category->name.' ('.Fractal::transChoice('labels.category').')');
 		Site::setHeading(Fractal::trans('labels.update_item', ['item' => Fractal::transChoice('labels.category')]).': <strong>'.Format::entities($category->name).'</strong>');

@@ -13,9 +13,9 @@ use Regulus\Fractal\Models\Blog\Article;
 
 use Regulus\ActivityLog\Models\Activity;
 use Auth;
-use Form;
-use Format;
-use Site;
+use Regulus\Formation\Facade as Form;
+use Regulus\TetraText\Facade as Format;
+use Regulus\SolidSite\Facade as Site;
 
 class BlogsController extends BaseController {
 

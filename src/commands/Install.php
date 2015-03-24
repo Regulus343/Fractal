@@ -123,8 +123,23 @@ class Install extends Command {
 			$logConfigContents       = file_get_contents($logConfigFile);
 			$logConfigContentsLength = strlen($logConfigContents);
 
-			$contentTypes  = "'page' => [\n\t\t\t'uri'       => 'admin/pages/:id/edit',\n\t\t\t'model'     => 'Regulus\Fractal\Models\Content\Page',\n\t\t],\n\n\t\t";
-			$contentTypes .= "'article' => [\n\t\t\t'uri'       => 'admin/blogs/articles/:id/edit',\n\t\t\t'model'     => 'Regulus\Fractal\Models\Blog\Article',\n\t\t],";
+			$contentTypes  = "'menu' => [\n\t\t\t'uri'   => 'admin/menus/:id/edit',\n\t\t\t'model' => 'Regulus\Fractal\Models\Content\Menu',\n\t\t],\n\n\t\t";
+			$contentTypes .= "'page' => [\n\t\t\t'uri'   => 'admin/pages/:id/edit',\n\t\t\t'model' => 'Regulus\Fractal\Models\Content\Page',\n\t\t],\n\n\t\t";
+			$contentTypes .= "'file' => [\n\t\t\t'uri'   => 'admin/files/:id/edit',\n\t\t\t'model' => 'Regulus\Fractal\Models\Content\File',\n\t\t],\n\n\t\t";
+			$contentTypes .= "'layout_template' => [\n\t\t\t'uri'   => 'admin/layout-templates/:id/edit',\n\t\t\t'model' => 'Regulus\Fractal\Models\Content\LayoutTemplate',\n\t\t],\n\n\t\t";
+
+			$contentTypes .= "'item' => [\n\t\t\t'uri'   => 'admin/media/items/:id/edit',\n\t\t\t'model' => 'Regulus\Fractal\Models\Media\Item',\n\t\t],\n\n\t\t";
+			$contentTypes .= "'type' => [\n\t\t\t'uri'   => 'admin/media/types/:id/edit',\n\t\t\t'model' => 'Regulus\Fractal\Models\Media\Type',\n\t\t],\n\n\t\t";
+			$contentTypes .= "'set' => [\n\t\t\t'uri'   => 'admin/media/sets/:id/edit',\n\t\t\t'model' => 'Regulus\Fractal\Models\Media\Set',\n\t\t],\n\n\t\t";
+
+			$contentTypes .= "'article' => [\n\t\t\t'uri'   => 'admin/blogs/articles/:id/edit',\n\t\t\t'model' => 'Regulus\Fractal\Models\Blog\Article',\n\t\t],\n\n\t\t";
+			$contentTypes .= "'category' => [\n\t\t\t'uri'   => 'admin/blogs/categories/:id/edit',\n\t\t\t'model' => 'Regulus\Fractal\Models\Blog\Category',\n\t\t],\n\n\t\t";
+
+			$contentTypes .= "'user' => [\n\t\t\t'uri'   => 'admin/users/:id/edit',\n\t\t\t'model' => 'Regulus\Fractal\Models\User\User',\n\t\t],\n\n\t\t";
+			$contentTypes .= "'role' => [\n\t\t\t'uri'   => 'admin/users/roles/:id/edit',\n\t\t\t'model' => 'Regulus\Fractal\Models\User\Role',\n\t\t],\n\n\t\t";
+			$contentTypes .= "'permission' => [\n\t\t\t'uri'   => 'admin/users/permissions/:id/edit',\n\t\t\t'model' => 'Regulus\Fractal\Models\User\Permission',\n\t\t],\n\n\t\t";
+
+			$contentTypes .= "'setting' => [\n\t\t\t'uri'   => 'admin/settings',\n\t\t\t'model' => 'Regulus\Fractal\Models\General\Setting',\n\t\t],";
 
 			// ensure example content type has not already been replaced
 			if (strpos($logConfigContents, $contentTypes) === false)

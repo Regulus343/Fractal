@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 use Illuminate\Support\Facades\App;
 
-use \Auth;
+use Auth;
 
 use Regulus\Fractal\Models\Content\Page;
 use Regulus\Fractal\Models\Blog\Article;

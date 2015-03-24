@@ -78,10 +78,10 @@
 				@foreach (array_keys($reports[$report]['values']) as $type)
 
 					var dataSet = {
-						label:                '{{ $type }}',
-						fillColor:            getColor('{{ $type }}', i, 'fill'),
-						strokeColor:          getColor('{{ $type }}', i, 'stroke'),
-						pointColor:           getColor('{{ $type }}', i, 'point'),
+						label:                '{!! $type !!}',
+						fillColor:            getColor('{!! $type !!}', i, 'fill'),
+						strokeColor:          getColor('{!! $type !!}', i, 'stroke'),
+						pointColor:           getColor('{!! $type !!}', i, 'point'),
 						pointStrokeColor:     "#fff",
 						pointHighlightFill:   "#fff",
 						pointHighlightStroke: "rgba(220,220,220,1)",

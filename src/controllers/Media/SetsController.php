@@ -15,9 +15,9 @@ use Regulus\Fractal\Models\Media\Item;
 
 use Regulus\ActivityLog\Models\Activity;
 use Auth;
-use Form;
-use Format;
-use Site;
+use Regulus\Formation\Facade as Form;
+use Regulus\TetraText\Facade as Format;
+use Regulus\SolidSite\Facade as Site;
 
 class SetsController extends MediaController {
 
@@ -143,9 +143,17 @@ class SetsController extends MediaController {
 	{
 		$set = Set::findBySlug($slug);
 		if (empty($set))
-			return Redirect::to(Fractal::uri('', true))->with('messages', [
-				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.media_set')])
-			]);
+		{
+			// attempt to find by ID and redirect to slugged URL if foun
+			$set = Set::find($slug);
+
+			if (!empty($set))
+				return Redirect::to(Fractal::uri($set->slug.'/edit', true));
+			else
+				return Redirect::to(Fractal::uri('', true))->with('messages', [
+					'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.media_set')])
+				]);
+		}
 
 		Site::setTitle($set->title.' ('.Fractal::transChoice('labels.media_set').')');
 		Site::setHeading(Fractal::trans('labels.update_item', ['item' => Fractal::transChoice('labels.media_set')]).': <strong>'.Format::entities($set->title).'</strong>');

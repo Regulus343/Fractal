@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
 use Auth;
-use Form;
-use Site;
+use Regulus\Formation\Facade as Form;
+use Regulus\SolidSite\Facade as Site;
 
 use Regulus\Fractal\Models\Content\Page;
 use Regulus\Fractal\Models\Content\FileType;

@@ -6,7 +6,7 @@
 
 		created by Cody Jassman
 		version 0.9.0a - Fractal is in transition from Laravel 4 (0.8.x) to Laravel 5 (0.9.x)
-		last updated on March 20, 2015
+		last updated on March 23, 2015
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -31,10 +31,10 @@ use Regulus\Fractal\Models\Media\Item as MediaItem;
 use Regulus\Fractal\Models\Blog\Article as BlogArticle;
 
 use Auth;
-use Form;
-use Format;
-use HTML;
-use Site;
+use Regulus\Formation\Facade as Form;
+use Regulus\TetraText\Facade as Format;
+use Regulus\Elemental\Facade as HTML;
+use Regulus\SolidSite\Facade as Site;
 
 use AlfredoRamos\ParsedownExtra\Facades\ParsedownExtra as Markdown;
 

@@ -21,8 +21,8 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 
-use \Auth;
-use \Site;
+use Auth;
+use Regulus\SolidSite\Facade as Site;
 
 $baseUri = config('cms.base_uri');
 

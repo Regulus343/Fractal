@@ -56,7 +56,7 @@ class FractalServiceProvider extends ServiceProvider {
 		}
 
 		//load delayed configuration files
-		$this->app->make('Illuminate\Foundation\Bootstrap\LoadConfiguration')
+		$this->app->make('Regulus\Fractal\Libraries\LoadConfiguration')
 			->loadConfigurationFiles($this->app, $this->app['config'], true);
 	}
 

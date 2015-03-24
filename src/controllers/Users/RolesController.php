@@ -13,9 +13,9 @@ use Fractal;
 use Regulus\Fractal\Models\User\Role;
 
 use Regulus\ActivityLog\Models\Activity;
-use Form;
-use Format;
-use Site;
+use Regulus\Formation\Facade as Form;
+use Regulus\TetraText\Facade as Format;
+use Regulus\SolidSite\Facade as Site;
 
 class RolesController extends UsersController {
 
