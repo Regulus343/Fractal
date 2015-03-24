@@ -2,7 +2,7 @@
 
 	<li class="special">
 		<a href="{{ Fractal::mediaUrl('') }}">
-			<span class="glyphicon glyphicon-chevron-left"></span> {{ Fractal::trans('labels.media_return_to_home') }}
+			<i class="fa fa-chevron-left"></i> {{ Fractal::trans('labels.media_return_to_home') }}
 		</a>
 	</li>
 
@@ -10,7 +10,7 @@
 
 		<li{{ HTML::activeArea(isset($mediaItem->id) && $mediaItemListed->id == $mediaItem->id) }}>
 			<a href="{{ $mediaItemListed->getUrl() }}">
-				<span class="glyphicon glyphicon-file"></span> {{ $mediaItemListed->getTitle() }}
+				<i class="fa fa-file"></i> {{ $mediaItemListed->getTitle() }}
 
 				@if ($mediaItemListed->published_at)
 					<div>

@@ -10,7 +10,7 @@
 		<time datetime="{{ $article->published_at }}" class="date-time-published">
 			@if ($article->published_at)
 
-				Published {{ $article->getPublishedDate() }}
+				By {{ $article->author->getName('F L') }}, published {{ $article->getPublishedDate() }}
 
 			@else
 

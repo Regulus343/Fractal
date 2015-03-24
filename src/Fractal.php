@@ -631,6 +631,19 @@ class Fractal {
 	}
 
 	/**
+	 * Set the content page.
+	 *
+	 * @param  integer  $page
+	 * @return void
+	 */
+	public function setPage($page = 1)
+	{
+		$this->pagination['page'] = $page;
+
+		$this->setRequestedPage();
+	}
+
+	/**
 	 * Get the requested content page.
 	 *
 	 * @return integer
@@ -650,11 +663,11 @@ class Fractal {
 	 */
 	public function setRequestedPage()
 	{
-		$currentPage = $this->getRequestedPage();
+		$page = $this->getRequestedPage();
 
-		Paginator::currentPageResolver(function() use ($currentPage)
+		Paginator::currentPageResolver(function() use ($page)
 		{
-			return $currentPage;
+			return $page;
 		});
 	}
 
@@ -956,7 +969,7 @@ class Fractal {
 
 		// add a "Read More" button
 		if ($previewOnly && $addReadMoreButton && $contentUrl)
-			$content .= '<a href="'.$contentUrl.'" class="btn btn-default btn-xs btn-read-more">'.Fractal::trans('labels.readMore').'</a>';
+			$content .= '<a href="'.$contentUrl.'" class="btn btn-default btn-xs btn-read-more">'.Fractal::trans('labels.read_more').'</a>';
 
 		return $content;
 	}

@@ -3,7 +3,6 @@
 use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
@@ -63,7 +62,7 @@ class ViewController extends Controller {
 		Site::set('paginationUrlSuffix', 'page');
 		Site::set('currentPage', $page);
 
-		DB::getPaginator()->setCurrentPage($page);
+		Fractal::setPage($page);
 
 		$articles = Article::orderBy('published_at', 'desc');
 
@@ -72,7 +71,7 @@ class ViewController extends Controller {
 
 		$articles = $articles->paginate(Fractal::getSetting('Articles Listed Per Page', 10));
 
-		Site::set('lastPage', $articles->getLastPage());
+		Site::set('lastPage', $articles->lastPage());
 
 		return View::make(Fractal::view('list'))
 			->with('articles', $articles);
@@ -114,7 +113,7 @@ class ViewController extends Controller {
 				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.article')])
 			]);
 
-		Site::setMulti(['subSection', 'title', 'articleTitle'], $article->getTitle());
+		Site::setMulti(['subSection', 'title.main', 'title.article'], $article->getTitle());
 		Site::set('contentColumnWidth', 9);
 		Site::set('pageIdentifier', 'article/'.$article->slug);
 
@@ -171,7 +170,7 @@ class ViewController extends Controller {
 				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.category')])
 			]);
 
-		Site::setTitle(Fractal::trans('labels.blog').': '.$category->name);
+		Site::setTitle(Fractal::transChoice('labels.blog').': '.$category->name);
 		Site::set('articleList', true);
 		Site::set('contentColumnWidth', 9);
 

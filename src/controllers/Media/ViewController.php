@@ -3,7 +3,6 @@
 use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
@@ -67,9 +66,9 @@ class ViewController extends Controller {
 		Site::set('paginationUrlSuffix', 'page');
 		Site::set('currentPage', $page);
 
-		Site::set('subSection', 'All');
+		Fractal::setPage($page);
 
-		DB::getPaginator()->setCurrentPage($page);
+		Site::set('subSection', 'All');
 
 		$mediaItems = Item::orderBy('published_at', 'desc');
 
@@ -78,7 +77,7 @@ class ViewController extends Controller {
 
 		$mediaItems = $mediaItems->paginate(Fractal::getSetting('Media Items Listed Per Page', 10));
 
-		Site::set('lastPage', $mediaItems->getLastPage());
+		Site::set('lastPage', $mediaItems->lastPage());
 
 		return View::make(Fractal::view('list'))
 			->with('mediaItems', $mediaItems);
@@ -123,7 +122,7 @@ class ViewController extends Controller {
 		if ($mediaItem->type)
 			Site::setMulti(['subSection', 'mediaType'], $mediaItem->type);
 
-		Site::setMulti(['title', 'mediaItemTitle'], $mediaItem->getTitle());
+		Site::setMulti(['title.main', 'title.mediaItem'], $mediaItem->getTitle());
 		Site::set('contentColumnWidth', 9);
 		Site::set('pageIdentifier', 'media-item/'.$mediaItem->slug);
 
@@ -183,7 +182,7 @@ class ViewController extends Controller {
 				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.media_set')])
 			]);
 
-		Site::setMulti(['title', 'subSection', 'mediaSet'], $mediaSet->title);
+		Site::setMulti(['title.main', 'subSection', 'mediaSet'], $mediaSet->title);
 
 		$mediaItems = Item::query()
 			->select(['media_items.id', 'media_items.published_at'])
@@ -258,7 +257,7 @@ class ViewController extends Controller {
 				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.media_type')])
 			]);
 
-		Site::setMulti(['title', 'subSection', 'mediaType'], $mediaType->getName(true));
+		Site::setMulti(['title.main', 'subSection', 'mediaType'], $mediaType->getName(true));
 
 		$mediaItems = Item::where('media_items.media_type_id', $mediaType->id);
 

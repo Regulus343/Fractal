@@ -2,7 +2,7 @@
 
 	<li class="special">
 		<a href="{{ Fractal::blogUrl('') }}">
-			<span class="glyphicon glyphicon-chevron-left"></span> {{ Fractal::trans('labels.blog_return_to_home') }}
+			<i class="fa fa-chevron-left"></i> {{ Fractal::trans('labels.blog_return_to_home') }}
 		</a>
 	</li>
 
@@ -10,7 +10,7 @@
 
 		<li{!! HTML::activeArea(isset($article->id) && $articleListed->id == $article->id) !!}>
 			<a href="{{ $articleListed->getUrl() }}">
-				<span class="glyphicon glyphicon-file"></span> {{ $articleListed->getTitle() }}
+				<i class="fa fa-file"></i> {{ $articleListed->getTitle() }}
 
 				@if ($articleListed->published_at)
 					<div>

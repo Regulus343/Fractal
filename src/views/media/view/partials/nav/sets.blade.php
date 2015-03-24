@@ -8,7 +8,7 @@
 
 			<li class="special">
 				<a href="{{ Fractal::mediaUrl('') }}">
-					<span class="glyphicon glyphicon-chevron-left"></span> {{ Fractal::trans('labels.all_items', ['items' => Fractal::transChoice('labels.media_set', 2)]) }}
+					<i class="fa fa-chevron-left"></i> {{ Fractal::trans('labels.all_items', ['items' => Fractal::transChoice('labels.media_set', 2)]) }}
 				</a>
 			</li>
 
@@ -20,7 +20,7 @@
 
 				<li{{ HTML::activeArea(isset($mediaSet) && $mediaSetListed->id == $mediaSet->id) }}>
 					<a href="{{ $mediaSetListed->getUrl() }}">
-						<span class="glyphicon glyphicon-th"></span> {{ $mediaSetListed->title }}
+						<span class="fa fa-th"></span> {{ $mediaSetListed->title }}
 
 						<span class="badge primary">{{ $mediaSetListed->items()->onlyPublished()->count() }}</span>
 					</a>
