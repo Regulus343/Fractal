@@ -55,7 +55,7 @@ class FractalServiceProvider extends ServiceProvider {
 			include $extraPath.$extraFile.'.php';
 		}
 
-		//load delayed configuration files
+		// load delayed configuration files
 		$this->app->make('Regulus\Fractal\Libraries\LoadConfiguration')
 			->loadConfigurationFiles($this->app, $this->app['config'], true);
 	}
@@ -67,18 +67,28 @@ class FractalServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		//bind Fractal
+		// bind Fractal
 		$this->app->singleton('Regulus\Fractal\Fractal', function()
 		{
 			return new Fractal;
 		});
 
-		//register additional service providers
+		// register additional service providers
 		$this->app->register('Regulus\Elemental\ElementalServiceProvider');
 		$this->app->register('Regulus\Formation\FormationServiceProvider');
 		$this->app->register('Regulus\SolidSite\SolidSiteServiceProvider');
 		$this->app->register('Regulus\TetraText\TetraTextServiceProvider');
 		$this->app->register('Regulus\Upstream\UpstreamServiceProvider');
+
+		// add aliases
+		$loader = AliasLoader::getInstance();
+
+		$loader->alias('Fractal',  'Regulus\Fractal\Facade');
+		$loader->alias('HTML',     'Regulus\Elemental\Facade');
+		$loader->alias('Form',     'Regulus\Formation\Facade');
+		$loader->alias('Site',     'Regulus\SolidSite\Facade');
+		$loader->alias('Format',   'Regulus\TetraText\Facade');
+		$loader->alias('Upstream', 'Regulus\Upstream\Facade');
 	}
 
 	/**
