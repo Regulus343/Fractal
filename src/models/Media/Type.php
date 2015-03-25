@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\URL;
 
-use Regulus\Formation\Facade as Form;
-use Regulus\TetraText\Facade as Format;
-use Regulus\SolidSite\Facade as Site;
+use Form;
+use Format;
+use Site;
 
 class Type extends Base {
 

@@ -5,7 +5,7 @@ use Regulus\Formation\Models\Base;
 use Fractal;
 
 use Auth;
-use Regulus\SolidSite\Facade as Site;
+use Site;
 
 class MenuItem extends Base {
 

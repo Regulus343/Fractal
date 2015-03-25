@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Input;
 use Fractal;
 
 use Auth;
-use Regulus\Formation\Facade as Form;
+use Form;
 
 use Regulus\Fractal\Models\Content\File as ContentFile;
 use Regulus\Fractal\Models\Content\Page;

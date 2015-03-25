@@ -7,10 +7,10 @@ use Fractal;
 use Illuminate\Support\Facades\File as FileHelper;
 use Illuminate\Support\Facades\Input;
 
-use Regulus\Formation\Facade as Form;
-use Regulus\TetraText\Facade as Format;
-use Regulus\SolidSite\Facade as Site;
-use Regulus\Upstream\Facade as Upstream;
+use Form;
+use Format;
+use Site;
+use Upstream;
 
 class File extends Base {
 

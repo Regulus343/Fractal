@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
 
 use Auth;
-use Regulus\Formation\Facade as Form;
-use Regulus\TetraText\Facade as Format;
-use Regulus\SolidSite\Facade as Site;
+use Form;
+use Format;
+use Site;
 
 use Regulus\Fractal\Models\Content\View as ContentView;
 

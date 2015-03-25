@@ -13,9 +13,9 @@ use Fractal;
 use Regulus\Fractal\Models\User\Permission;
 
 use Regulus\ActivityLog\Models\Activity;
-use Regulus\Formation\Facade as Form;
-use Regulus\TetraText\Facade as Format;
-use Regulus\SolidSite\Facade as Site;
+use Form;
+use Format;
+use Site;
 
 class PermissionsController extends UsersController {
 

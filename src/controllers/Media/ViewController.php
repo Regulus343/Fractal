@@ -19,9 +19,9 @@ use Regulus\Fractal\Models\Media\Set;
 
 use Regulus\ActivityLog\Models\Activity;
 use Auth;
-use Regulus\Formation\Facade as Form;
-use Regulus\TetraText\Facade as Format;
-use Regulus\SolidSite\Facade as Site;
+use Form;
+use Format;
+use Site;
 
 class ViewController extends Controller {
 

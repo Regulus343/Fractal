@@ -2,6 +2,8 @@
 
 use Illuminate\Support\ServiceProvider;
 
+use Illuminate\Foundation\AliasLoader;
+
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 

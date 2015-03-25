@@ -15,9 +15,9 @@ use Regulus\Fractal\Models\Media\Type;
 
 use Regulus\ActivityLog\Models\Activity;
 use Auth;
-use Regulus\Formation\Facade as Form;
-use Regulus\TetraText\Facade as Format;
-use Regulus\SolidSite\Facade as Site;
+use Form;
+use Format;
+use Site;
 
 class MediaController extends BaseController {
 

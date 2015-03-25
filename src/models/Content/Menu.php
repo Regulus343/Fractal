@@ -6,7 +6,7 @@ use Fractal;
 
 use Illuminate\Support\Facades\View as LaravelView;
 
-use Regulus\Formation\Facade as Form;
+use Form;
 
 class Menu extends Base {
 

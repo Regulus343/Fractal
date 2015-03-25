@@ -64,7 +64,7 @@ class UsersController extends BaseController {
 
 	public function search()
 	{
-		$data  = Fractal::setupPagination('Users');
+		$data  = Fractal::setupPagination();
 		$users = User::getSearchResults($data);
 
 		Fractal::setContentForPagination($users);

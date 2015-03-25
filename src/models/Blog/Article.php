@@ -5,9 +5,9 @@ use Regulus\Formation\Models\Base;
 use Fractal;
 
 use Auth;
-use Regulus\Formation\Facade as Form;
-use Regulus\TetraText\Facade as Format;
-use Regulus\SolidSite\Facade as Site;
+use Form;
+use Format;
+use Site;
 
 use Regulus\Fractal\Models\Content\LayoutTemplate;
 use Regulus\Fractal\Models\Content\View as ContentView;

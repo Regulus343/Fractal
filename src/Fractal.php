@@ -31,10 +31,10 @@ use Regulus\Fractal\Models\Media\Item as MediaItem;
 use Regulus\Fractal\Models\Blog\Article as BlogArticle;
 
 use Auth;
-use Regulus\Formation\Facade as Form;
-use Regulus\TetraText\Facade as Format;
-use Regulus\Elemental\Facade as HTML;
-use Regulus\SolidSite\Facade as Site;
+use Form;
+use Format;
+use HTML;
+use Site;
 
 use AlfredoRamos\ParsedownExtra\Facades\ParsedownExtra as Markdown;
 
@@ -497,6 +497,11 @@ class Fractal {
 		// set default sorting
 		if (is_null($this->pagination['sortField']) || $this->pagination['sortField'] == "")
 		{
+			if (is_string($defaultSorting))
+				$defaultSorting = [
+					'field' => $defaultSorting,
+				];
+
 			if (!isset($defaultSorting['field']))
 				$defaultSorting['field'] = "id";
 

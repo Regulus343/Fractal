@@ -10,8 +10,8 @@ use Fractal;
 
 use Regulus\ActivityLog\Models\Activity;
 use Auth;
-use Regulus\Formation\Facade as Form;
-use Regulus\SolidSite\Facade as Site;
+use Form;
+use Site;
 use User;
 
 use Regulus\Fractal\Controllers\BaseController;

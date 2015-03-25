@@ -25,7 +25,6 @@ class User extends \Regulus\Identify\Models\User {
 		if ($searchData['terms'] != "")
 			$users->where(function($query) use ($searchData) {
 				$query
-					->where('username', 'like', $searchData['likeTerms'])
 					->orWhere('first_name', 'like', $searchData['likeTerms'])
 					->orWhere('last_name', 'like', $searchData['likeTerms'])
 					->orWhere(DB::raw('concat_ws(\' \', first_name, last_name)'), 'like', $searchData['likeTerms'])
