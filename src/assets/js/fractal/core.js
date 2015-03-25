@@ -3,7 +3,7 @@
 | Fractal JS
 |------------------------------------------------------------------------------
 |
-| Last Updated: March 19, 2015
+| Last Updated: March 24, 2015
 |
 */
 
@@ -66,7 +66,7 @@ var Fractal = {
 
 			var fileType   = $(this).attr('data-file-type') !== undefined ? $(this).attr('data-file-type') : "File";
 			var buttonText = "Select "+fileType;
-			var button     = $('<button class="btn btn-default block"><span class="glyphicon glyphicon-file"></span>&nbsp; '+buttonText+'</button>').click(function(e){
+			var button     = $('<button class="btn btn-default block"><i class="fa fa-file"></i> '+buttonText+'</button>').click(function(e){
 				e.preventDefault();
 				$(this).parents('div').children('input[type="file"]').click();
 			});

@@ -87,14 +87,14 @@ class FilesController extends BaseController {
 
 	public function create()
 	{
-		Site::setTitle(Fractal::trans('labels.uploadFile'));
+		Site::setTitle(Fractal::trans('labels.upload_file'));
 
 		$this->setDefaultImageSize();
 
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::trans('labels.returnToFilesList'),
+			'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.file', 2)]),
 			'icon'  => 'list',
 			'uri'   => Fractal::uri('', true),
 		]);
@@ -144,7 +144,7 @@ class FilesController extends BaseController {
 
 				Activity::log([
 					'contentId'   => $file->id,
-					'contentType' => 'ContentFile',
+					'contentType' => 'File',
 					'action'      => 'Create',
 					'description' => 'Created a File',
 					'details'     => 'Filename: '.$file->filename,
@@ -174,7 +174,7 @@ class FilesController extends BaseController {
 			]);
 
 		Site::setTitle($file->name.' ('.Fractal::trans('labels.file').')');
-		Site::setHeading(Fractal::trans('labels.updateFile').': <strong>'.Format::entities($file->name).'</strong>');
+		Site::setHeading(Fractal::trans('labels.update_item', ['item' => Fractal::transChoice('labels.file')]).': <strong>'.Format::entities($file->name).'</strong>');
 
 		Form::setDefaults($file);
 
@@ -183,7 +183,7 @@ class FilesController extends BaseController {
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::trans('labels.returnToFilesList'),
+			'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.file', 2)]),
 			'icon'  => 'list',
 			'uri'   => 'files',
 		]);
@@ -287,7 +287,7 @@ class FilesController extends BaseController {
 
 				Activity::log([
 					'contentId'   => $file->id,
-					'contentType' => 'ContentFile',
+					'contentType' => 'File',
 					'action'      => 'Update',
 					'description' => 'Updated a File',
 					'details'     => 'Filename: '.$file->filename,
@@ -321,7 +321,7 @@ class FilesController extends BaseController {
 
 		Activity::log([
 			'contentId'   => $file->id,
-			'contentType' => 'ContentFile',
+			'contentType' => 'File',
 			'action'      => 'Delete',
 			'description' => 'Deleted a File',
 			'details'     => 'Filename: '.$file->filename,

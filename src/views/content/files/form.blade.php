@@ -52,7 +52,7 @@
 		{{-- Image Settings --}}
 		@include(Fractal::view('partials.image_settings', true))
 
-		{!! Form::field(str_replace('Create', 'Upload', Form::submitResource(Fractal::trans('labels.file'))), 'button') !!}
+		{!! Form::field(str_replace('Create', 'Upload', Form::submitResource(Fractal::transChoice('labels.file'))), 'button') !!}
 
 	{!! Form::close() !!}
 
