@@ -56,7 +56,7 @@
 
 		<a href="{{ Fractal::url('login') }}" class="pull-right">{{ Fractal::trans('labels.return_to_log_in') !!}</a>
 
-		{!! Form::field('[ICON: share-alt]'.Fractal::trans('labels.reset_password'), 'button') !!}
+		{!! Form::field('[ICON: check-circle]'.Fractal::trans('labels.reset_password'), 'button') !!}
 
 	{!! Form::close() !!}
 

@@ -223,12 +223,12 @@
 			<div class="col-md-12">
 				@if (isset($update) && $update)
 					<a href="{{ $itemUrl }}" class="btn btn-default right-padded pull-right">
-						<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Fractal::trans('labels.viewItem') }}
+						<i class="fa fa-file"></i> {{ Fractal::trans('labels.viewItem') }}
 					</a>
 				@endif
 
 				<a href="{{ Fractal::url('media/items') }}" class="btn btn-default pull-right">
-					<span class="glyphicon glyphicon-list"></span>&nbsp; {{ Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.media_item', 2)]) }}
+					<i class="fa fa-list"></i> {{ Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.media_item', 2)]) }}
 				</a>
 			</div>
 		</div>
@@ -286,7 +286,7 @@
 						@if ($item->file_type_id != 1)
 
 							<a href="" class="btn btn-danger vertical-align-top" id="remove-thumbnail-image">
-								<span class="glyphicon glyphicon-remove"></span>&nbsp; {{ Fractal::trans('labels.removeThumbnailImage') }}
+								<i class="fa fa-remove"></i> {{ Fractal::trans('labels.remove_item', ['item' => Fractal::transChoice('labels.thumbnail_image')]) }}
 							</a>
 
 						@endif
@@ -383,7 +383,7 @@
 				]) !!}
 
 				<a href="" class="btn btn-default trigger-modal pull-right" data-modal-ajax-uri="api/view-markdown-guide" data-modal-ajax-action="get">
-					<span class="glyphicon glyphicon-file"></span>&nbsp; {{ Fractal::trans('labels.view_item', ['item' => Fractal::trans('labels.markdown_guide')]) }}
+					<i class="fa fa-file"></i> {{ Fractal::trans('labels.view_item', ['item' => Fractal::trans('labels.markdown_guide')]) }}
 				</a>
 			</div>
 
@@ -426,7 +426,7 @@
 							'placeholder' => 'Date/Time Published',
 						]) !!}
 
-						<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+						<span class="input-group-addon add-on"><i class="fa fa-calendar"></i></span>
 					</div>
 				</div>
 			</div>
@@ -439,7 +439,7 @@
 							'placeholder' => 'Date/Time Published',
 						]) !!}
 
-						<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+						<span class="input-group-addon add-on"><i class="fa fa-calendar"></i></span>
 					</div>
 				</div>
 			</div>

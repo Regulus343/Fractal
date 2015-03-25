@@ -164,7 +164,7 @@ class PagesController extends BaseController {
 		}
 
 		Site::setTitle($page->title.' ('.Fractal::transChoice('labels.page').')');
-		Site::setHeading(Fractal::trans('labels.update_item', ['item' => Fractal::trans('labels.page')]).': <strong>'.Format::entities($page->title).'</strong>');
+		Site::setHeading(Fractal::trans('labels.update_item', ['item' => Fractal::transChoice('labels.page')]).': <strong>'.Format::entities($page->title).'</strong>');
 		Site::set('wysiwyg', true);
 
 		$page->setDefaults(['contentAreas']);

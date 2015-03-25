@@ -15,6 +15,9 @@ a#logo img { height: 30px; border: none; }
 
 .btn-green { background-color: #161 !important; text-shadow: #000 0 0 5px !important; }
 
+button.icon { padding-left: 10px; }
+button.icon i, button.icon span, a.btn i { padding-right: 4px; }
+
 .breadcrumb { border: 1px solid #ddd; }
 
 .alert-top {
