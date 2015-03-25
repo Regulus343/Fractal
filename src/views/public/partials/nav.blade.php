@@ -25,7 +25,7 @@
 				<ul class="nav navbar-nav navbar-right" id="nav-return-to-cms">
 					<li>
 						<a href="{{ Fractal::url() }}">
-							<span class="glyphicon glyphicon-log-in"></span>&nbsp; 
+							<i class="fa fa-sign-in"></i>
 							<span class="menu-item-label">{{ Fractal::trans('labels.return_to_cms') }}</span>
 						</a>
 					</li>

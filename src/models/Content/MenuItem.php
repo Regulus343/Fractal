@@ -153,12 +153,7 @@ class MenuItem extends Base {
 	 */
 	public function getUrl()
 	{
-		$url = url($this->getUri());
-
-		if ($this->subdomain != false && !is_null($this->subdomain) && $this->subdomain != "")
-			$url = str_replace('http://', 'http://'.$this->subdomain.'.', str_replace('https://', 'https://'.$this->subdomain.'.', $url));
-
-		return $url;
+		return Site::url($this->getUri(), $this->subdomain);
 	}
 
 	/**

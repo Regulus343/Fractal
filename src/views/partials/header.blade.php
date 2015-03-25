@@ -23,8 +23,11 @@
 
 		<div class="container-full{{ (!Site::get('hideSidebar') && Auth::checkState('sidebarOpen', true, true) ? ' sidebar-offset' : '') }}" id="container-content">
 			<div class="container-pad">
+
 				@if (!Site::get('title.hide'))
+
 					<h1 id="main-heading">{!! Site::heading() !!}</h1>
 
 					{!! Site::getBreadcrumbTrailMarkup() !!}
+
 				@endif

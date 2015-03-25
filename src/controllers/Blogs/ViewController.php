@@ -28,7 +28,7 @@ class ViewController extends Controller {
 	{
 		Site::set('public', true);
 
-		Site::setMulti(['section', 'title'], Fractal::transChoice('labels.blog'));
+		Site::setMulti(['section', 'title.main'], Fractal::transChoice('labels.blog'));
 
 		Fractal::setViewsLocation(config('blogs.views_location'), true);
 

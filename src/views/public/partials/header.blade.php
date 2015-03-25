@@ -28,9 +28,11 @@
 					<div class="col-md-{{ Site::get('contentColumnWidth', 12) }}">
 
 						@if (!Site::get('title.hide'))
+
 							<h1 id="main-heading">{!! Site::heading() !!}</h1>
 
 							{!! Site::getBreadcrumbTrailMarkup() !!}
+
 						@endif
 
 						@include(Fractal::view('public.partials.messages', true))

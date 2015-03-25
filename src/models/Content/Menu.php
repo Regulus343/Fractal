@@ -121,10 +121,13 @@ class Menu extends Base {
 	public function createArray($setSelectedClass = true, $ignoreVisibilityStatus = false)
 	{
 		$menuArray = [];
-		foreach ($this->items as $menuItem) {
-			if (! (int) $menuItem->parent_id && ($menuItem->isVisible() || $ignoreVisibilityStatus))
-				$menuArray[] = $menuItem->createObject($setSelectedClass, $ignoreVisibilityStatus);
+
+		foreach ($this->items as $item)
+		{
+			if (! (int) $item->parent_id && ($item->isVisible() || $ignoreVisibilityStatus))
+				$menuArray[] = $item->createObject($setSelectedClass, $ignoreVisibilityStatus);
 		}
+
 		return $menuArray;
 	}
 
@@ -156,7 +159,7 @@ class Menu extends Base {
 	 */
 	public static function getArray($name)
 	{
-		$menu = config('menus.'.camel_case($name));
+		$menu = config('exported.menus.'.strtolower(camel_case($name)));
 		if (!is_null($menu))
 			return $menu;
 
@@ -198,10 +201,14 @@ class Menu extends Base {
 		$added     = 0;
 		$complete  = false;
 
-		foreach ($this->items as $menuItem) {
-			if (!$complete) {
-				if (! (int) $menuItem->parent_id && $menuItem->active) {
-					if ($added < 3) {
+		foreach ($this->items as $menuItem)
+		{
+			if (!$complete)
+			{
+				if (! (int) $menuItem->parent_id && $menuItem->active)
+				{
+					if ($added < 3)
+					{
 						if ($menuItems != "")
 							$menuItems .= ', ';
 

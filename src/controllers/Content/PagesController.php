@@ -290,7 +290,6 @@ class PagesController extends BaseController {
 
 		if ($page->slug != "home")
 		{
-			Site::setTitle($page->title);
 			Site::addTrailItem($page->title, $page->slug);
 		} else {
 			Site::setTitle(null);
