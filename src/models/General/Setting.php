@@ -4,8 +4,6 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 
 use Fractal;
 
-use Illuminate\Support\Facades\Config;
-
 use Form;
 
 class Setting extends Eloquent {
@@ -26,7 +24,8 @@ class Setting extends Eloquent {
 	{
 		$name = $this->getFieldName();
 
-		if ($this->type == "Boolean") {
+		if ($this->type == "Boolean")
+		{
 			$options = $this->options != "" ? explode(', ', $this->options) : ['Yes', 'No'];
 
 			$html = Form::field($name, 'radio-set', [
@@ -34,16 +33,22 @@ class Setting extends Eloquent {
 				'options' => Form::booleanOptions($options),
 				'value'   => (int) $this->value,
 			]);
-		} else if ($this->type == "Integer") {
+		}
+		else if ($this->type == "Integer")
+		{
 			$range   = true;
 			$options = explode(':', $this->options);
-			if (count($options) == 1) {
+
+			if (count($options) == 1)
+			{
 				$range   = false;
 				$options = explode(', ', $this->options);
 			}
 
-			if (count($options) > 1) {
-				if ($range) {
+			if (count($options) > 1)
+			{
+				if ($range)
+				{
 					$optionsAdditional = explode('; +', $options[1]);
 
 					$html = Form::field($name, 'select', [
@@ -52,7 +57,9 @@ class Setting extends Eloquent {
 						'null-option' => false,
 						'value'       => $this->value,
 					]);
-				} else {
+				}
+				else
+				{
 					$html = Form::field($name, 'select', [
 						'label'   => $this->getLabel(),
 						'options' => Form::simpleOptions($options),
@@ -63,12 +70,15 @@ class Setting extends Eloquent {
 			} else {
 				$html = Form::field($name, 'number', ['label' => $this->getLabel(), 'value' => $this->value]);
 			}
-		} else {
-			if ($this->options != "") {
+		} else
+		{
+			if ($this->options != "")
+			{
 				$options = explode(', ', $this->options);
 
-				//options is a method; call it to get actual options
-				if (count($options) == 1 && strpos($options[0], '::') !== false) {
+				// options is a method; call it to get actual options
+				if (count($options) == 1 && strpos($options[0], '::') !== false)
+				{
 					$function = explode('::', $options[0]);
 					$class    = $function[0];
 					$method   = substr($function[1], 0, (strlen($function[1]) - 2));
@@ -146,15 +156,16 @@ class Setting extends Eloquent {
 	 */
 	public static function value($name, $default = false)
 	{
-		//first, attempt to get the value from "settings" config file
-		$value = Config::get('fractal::settings.'.str_replace(' ', '_', strtolower($name)));
+		// first, attempt to get the value from "settings" config file
+		$value = config('exported.settings.'.str_replace(' ', '_', strtolower($name)));
 
 		if (!is_null($value))
 			return $value;
 
-		//if that doesn't work, get the value from the database
+		// if that doesn't work, get the value from the database
 		$setting = static::where('name', $name)->first();
-		if (empty($setting)) return $default;
+		if (empty($setting))
+			return $default;
 
 		return $setting->getValue();
 	}
