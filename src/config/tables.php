@@ -232,11 +232,11 @@ return [
 				'sort'      => true,
 			],
 			[
-				'label'     => Fractal::transChoice('labels.page'),
+				'label'     => Fractal::transChoice('labels.page', 2),
 				'method'    => 'getNumberOfPages()',
 			],
 			[
-				'label'     => Fractal::transChoice('labels.blog_article'),
+				'label'     => Fractal::transChoice('labels.blog_article', 2),
 				'method'    => 'getNumberOfArticles()',
 			],
 			[
@@ -945,8 +945,9 @@ return [
 				'sort'      => 'user_id',
 			],
 			[
-				'attribute' => 'description',
-				'sort'      => true,
+				'label'     => 'Description',
+				'method'    => 'getLinkedDescription()',
+				'sort'      => 'description',
 			],
 			[
 				'attribute' => 'details',
