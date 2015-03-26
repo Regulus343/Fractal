@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 
+use Regulus\ActivityLog\Models\Activity;
 use Auth;
 use Form;
 use Format;
@@ -792,12 +793,218 @@ class Item extends Base {
 	 * @param  mixed    $id
 	 * @return array
 	 */
-	public static function uploadFile($id = null) {
-		//get original uploaded filename
+	public static function validateAndSave($item = null)
+	{
+		$result = [
+			'error'    => true,
+			'messages' => [
+				'error' => Fractal::trans('messages.errors.general'),
+			],
+		];
+
+		$id = !empty($item) ? $item->id : null;
+
+		Form::setValidationRules(Item::validationRules($id));
+
+		if (Form::isValid())
+		{
+			$uploaded            = false;
+			$uploadedThumbnail   = false;
+			$hostedExternally    = (bool) Input::get('hosted_externally');
+			$mediaSourceRequired = true;
+			$uploadResult        = ['error' => false];
+
+			if (Input::get('media_type_id') != "")
+			{
+				$mediaType = Type::find(Input::get('media_type_id'));
+
+				if (!empty($mediaType) && !$mediaType->media_source_required)
+					$mediaSourceRequired = false;
+			}
+
+			$filename = null;
+
+			$thumbnail = Form::value('create_thumbnail', 'checkbox');
+
+			if ((isset($_FILES['file']['name']) && $_FILES['file']['name'] != "") || (isset($_FILES['thumbnail_image']['name']) && $_FILES['thumbnail_image']['name']))
+			{
+				$uploadResult = static::uploadFile($id);
+
+				if (!$uploadResult['files']['file']['error'])
+				{
+					$uploaded = true;
+
+					$fileResult = $uploadResult['files']['file'];
+					$filename   = $fileResult['filename'];
+					$basename   = $fileResult['basename'];
+					$extension  = $fileResult['extension'];
+
+					// delete current thumbnail image if it exists
+					if (isset($item) && !$thumbnail && $item->thumbnail && File::exists('uploads/'.$file->getPath(true)))
+						File::delete('uploads/'.$file->getPath(true));
+				}
+
+				if (isset($uploadResult['files']['thumbnail_image']) && !$uploadResult['files']['thumbnail_image']['error'])
+				{
+					$uploadedThumbnail = true;
+					$thumbnailResult   = $uploadResult['files']['thumbnail_image'];
+				}
+			}
+
+			// if file was not uploaded but path or name was changed, move/rename file
+			if (!$uploaded && $item->filename != $filename && !is_null($filename))
+			{
+				// move/rename file
+				if (File::exists('uploads/'.$item->getFilePath()))
+					File::move('uploads/'.$item->getFilePath(), 'uploads/media/'.$item->path.'/'.$filename);
+
+				// move/rename thumbnail image if it exists
+				if (File::exists('uploads/'.$item->getFilePath(true)) && $item->thumbnail)
+					File::move('uploads/'.$item->getFilePath(true), 'uploads/media/'.$item->path.'/thumbnails/'.$filename);
+			}
+
+			if (!$uploadResult['error'] || !$mediaSourceRequired)
+			{
+				$result = [
+					'error' => false,
+					'messages' => [
+						'success' => Fractal::trans('messages.success.'.(!is_null($id) ? 'updated' : 'created'), ['item' => Fractal::transChoiceLowerA('labels.media_item')]),
+					],
+				];
+
+				if (is_null($id))
+					$item = new static;
+
+				// delete files for item
+				if ($hostedExternally && $item->isHostedLocally())
+					$item->deleteFiles();
+
+				$input = Input::all();
+
+				if (in_array(Input::get('description_type'), ['Markdown', 'HTML']))
+				{
+					$input['description'] = Input::get('description_'.strtolower(Input::get('description_type')));
+				}
+
+				$item->fillFormattedValues($input);
+
+				$item->title             = ucfirst(trim(Input::get('title')));
+				$item->hosted_externally = $hostedExternally;
+
+				if ($hostedExternally)
+				{
+					$item->hosted_content_uri = trim(Input::get('hosted_content_uri'));
+				}
+				else
+				{
+					$item->hosted_content_type = null;
+					$item->hosted_content_uri  = null;
+
+					if ($uploaded)
+					{
+						$path = static::getPathFromUploadResult($fileResult);
+
+						$item->filename  = $fileResult['filename'];
+						$item->basename  = $fileResult['basename'];
+						$item->extension = $fileResult['extension'];
+						$item->path      = $path;
+
+						if ($fileResult['isImage'])
+						{
+							$item->width  = $fileResult['imageDimensions']['w'];
+							$item->height = $fileResult['imageDimensions']['h'];
+
+							if (!$uploadedThumbnail)
+							{
+								$item->thumbnail           = Form::value('create_thumbnail', 'checkbox');
+								$item->thumbnail_extension = $fileResult['extension'];
+								$item->thumbnail_width     = $fileResult['imageDimensions']['tw'];
+								$item->thumbnail_height    = $fileResult['imageDimensions']['th'];
+							}
+						} else {
+							$item->width  = null;
+							$item->height = null;
+						}
+					}
+
+					// upload thumbnail image only instead of resizing uploaded image file
+					if ($uploadedThumbnail)
+					{
+						$path = $this->getPathFromUploadResult($thumbnailResult);
+						$item->path = $path;
+
+						$item->thumbnail           = true;
+						$item->thumbnail_extension = $thumbnailResult['extension'];
+						$item->thumbnail_width     = $thumbnailResult['imageDimensions']['tw'];
+						$item->thumbnail_height    = $thumbnailResult['imageDimensions']['th'];
+					}
+
+					// remove file
+					if (Input::get('remove_file') && !$mediaSourceRequired)
+					{
+						if (File::exists('uploads/'.$item->getFilePath()))
+							File::delete('uploads/'.$item->getFilePath());
+
+						$item->filename  = null;
+						$item->basename  = null;
+						$item->extension = null;
+						$item->path      = null;
+						$item->width     = null;
+						$item->height    = null;
+					}
+
+					// remove thumbnail image
+					if (Input::get('remove_thumbnail_image') && Input::get('file_type_id') != 1)
+					{
+						if (File::exists('uploads/'.$item->getFilePath(true)))
+							File::delete('uploads/'.$item->getFilePath(true));
+
+						$item->thumbnail           = false;
+						$item->thumbnail_extension = null;
+						$item->thumbnail_width     = null;
+						$item->thumbnail_height    = null;
+					}
+				}
+
+				$item->published_at = Input::get('published') ? date('Y-m-d H:i:s', strtotime(Input::get('published_at'))) : null;
+
+				$item->save();
+
+				Activity::log([
+					'contentId'   => $item->id,
+					'contentType' => 'Media Item',
+					'action'      => 'Create',
+					'description' => 'Created a Media Item',
+					'details'     => 'Title: '.$item->title,
+					'updated'     => (bool) $id,
+				]);
+			}
+			else
+			{
+				foreach ($uploadResult['files'] as $file)
+				{
+					if ($file['error'])
+						$result['messages']['error'] = $file['error'];
+				}
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Upload a file.
+	 *
+	 * @param  mixed    $id
+	 * @return array
+	 */
+	public static function uploadFile($id = null)
+	{
+		// get original uploaded filename
 		$originalFilename  = isset($_FILES['file']['name']) ? $_FILES['file']['name'] : '';
 		$originalExtension = strtolower(File::extension($originalFilename));
 
-		//make sure filename is unique and then again remove extension to set basename
+		// make sure filename is unique and then again remove extension to set basename
 		$uniqueFilename = Format::unique(Format::slug(Input::get('title')).'.'.$originalExtension, 'media_items', 'filename', $id, true);
 		$basename       = str_replace('.'.$originalExtension, '', $uniqueFilename);
 
@@ -820,21 +1027,23 @@ class Item extends Base {
 			'imageThumb'      => true,
 		];
 
-		//set image resize settings
-		if (!empty($fileType)) {
+		// set image resize settings
+		if (!empty($fileType))
+		{
 			$width           = Input::get('width');
 			$height          = Input::get('height');
 			$thumbnailWidth  = 0;
 			$thumbnailHeight = 0;
 
 			$defaultThumbnailSize = Fractal::getSetting('Default Image Thumbnail Size', 200);
-			if ($width != "" && $height != "" && $width > 0 && $height > 0) {
+			if ($width != "" && $height != "" && $width > 0 && $height > 0)
+			{
 				$config['imageResize']        = true;
 				$config['imageResizeQuality'] = Fractal::getSetting('Image Resize Quality', 60);
 				$config['imageCrop']          = Form::value('crop', 'checkbox');
 			}
 
-			$config['imageThumb']      = true; //always create thumbnail for media items
+			$config['imageThumb']      = true; // always create thumbnail for media items
 			$config['imageDimensions'] = [
 				'w'  => (int) $width,
 				'h'  => (int) $height,
@@ -846,6 +1055,28 @@ class Item extends Base {
 		$upstream = Upstream::make($config);
 
 		return $upstream->upload();
+	}
+
+	/**
+	 * Get the file path from an upload result.
+	 *
+	 * @param  array    $fileResult
+	 * @return string
+	 */
+	public static function getPathFromUploadResult($fileResult)
+	{
+		if (!isset($fileResult['path']))
+			return "";
+
+		$path = str_replace('uploads/media', '', $fileResult['path']);
+
+		if (substr($path, 0, 1) == "/")
+			$path = substr($path, 1);
+
+		if (substr($path, -1) == "/")
+			$path = substr($path, 0, (strlen($path) - 1));
+
+		return str_replace('/thumbnails', '', $path);
 	}
 
 }

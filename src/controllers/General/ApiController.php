@@ -106,6 +106,19 @@ class ApiController extends BaseController {
 						}
 
 						break;
+
+					case "media-item":
+
+						$item = MediaItem::find(Input::get('id'));
+						if (!empty($item))
+						{
+							$result = MediaItem::validateAndSave($item, $content);
+
+							if (!$result['error'])
+								return 1;
+						}
+
+						break;
 				}
 			}
 		}

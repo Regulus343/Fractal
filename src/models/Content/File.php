@@ -245,12 +245,13 @@ class File extends Base {
 	 * @param  mixed    $id
 	 * @return array
 	 */
-	public static function uploadFile($id = null) {
-		//get original uploaded filename
+	public static function uploadFile($id = null)
+	{
+		// get original uploaded filename
 		$originalFilename  = isset($_FILES['file']['name']) ? $_FILES['file']['name'] : '';
 		$originalExtension = strtolower(FileHelper::extension($originalFilename));
 
-		//make sure filename is unique and then again remove extension to set basename
+		// make sure filename is unique and then again remove extension to set basename
 		$uniqueFilename = Format::unique(Format::slug(Input::get('name')).'.'.$originalExtension, 'content_files', 'filename', $id, true);
 		$basename       = str_replace('.'.$originalExtension, '', $uniqueFilename);
 
@@ -269,15 +270,17 @@ class File extends Base {
 			'maxFileSize'     => '8MB',
 		];
 
-		//set image resize settings
-		if (!empty($fileType) && $fileType->name == "Image") {
+		// set image resize settings
+		if (!empty($fileType) && $fileType->name == "Image")
+		{
 			$width           = Input::get('width');
 			$height          = Input::get('height');
 			$thumbnailWidth  = 0;
 			$thumbnailHeight = 0;
 
 			$defaultThumbnailSize = Fractal::getSetting('Default Image Thumbnail Size', 200);
-			if ($width != "" && $height != "" && $width > 0 && $height > 0) {
+			if ($width != "" && $height != "" && $width > 0 && $height > 0)
+			{
 				$config['imageResize']        = true;
 				$config['imageResizeQuality'] = Fractal::getSetting('Image Resize Quality', 60);
 				$config['imageCrop']          = Form::value('crop', 'checkbox');

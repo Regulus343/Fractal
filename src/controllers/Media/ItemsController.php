@@ -111,132 +111,13 @@ class ItemsController extends MediaController {
 
 	public function store()
 	{
-		Form::setValidationRules(Item::validationRules());
+		$result = Item::validateAndSave();
 
-		$messages = [];
-		if (Form::isValid())
-		{
-			$uploaded          = false;
-			$uploadedThumbnail = false;
-			$hostedExternally  = (bool) Input::get('hosted_externally');
-
-			if ($hostedExternally)
-				$result = ['error' => false];
-			else
-				$result = Item::uploadFile();
-
-			$uploaded = isset($result['files']['file']) && !$result['files']['file']['error'];
-
-			$mediaSourceRequired = true;
-			if (Input::get('media_type_id') != "")
-			{
-				$mediaType = Type::find(Input::get('media_type_id'));
-				if (!empty($mediaType) && !$mediaType->media_source_required)
-					$mediaSourceRequired = false;
-			}
-
-			if (!$result['error'] || !$mediaSourceRequired)
-			{
-				$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transChoiceLowerA('labels.media_item')]);
-
-				$path = null;
-				$uploadedThumbnail = false;
-
-				if (!$result['error'] && isset($result['files']))
-				{
-					$fileResult = $result['files']['file'];
-
-					if (isset($result['files']['thumbnail_image']) && !$result['files']['thumbnail_image']['error'])
-					{
-						$uploadedThumbnail = true;
-						$thumbnailResult   = $result['files']['thumbnail_image'];
-					}
-
-					$path = $this->getPathFromUploadResult($fileResult);
-				}
-
-				$item = new Item();
-				$item->fillFormattedValues(Input::all());
-
-				$item->title             = ucfirst(trim(Input::get('title')));
-				$item->hosted_externally = $hostedExternally;
-
-				if ($hostedExternally)
-				{
-					$item->hosted_content_uri = trim(Input::get('hosted_content_uri'));
-				}
-				else
-				{
-					$item->hosted_content_type = null;
-					$item->hosted_content_uri  = null;
-
-					if (!$result['error'] && $uploaded)
-					{
-						$item->filename  = $fileResult['filename'];
-						$item->basename  = $fileResult['basename'];
-						$item->extension = $fileResult['extension'];
-						$item->path      = $path;
-
-						if ($fileResult['isImage'])
-						{
-							$item->width  = $fileResult['imageDimensions']['w'];
-							$item->height = $fileResult['imageDimensions']['h'];
-
-							if (!$uploadedThumbnail)
-							{
-								$item->thumbnail           = Form::value('create_thumbnail', 'checkbox');
-								$item->thumbnail_extension = $fileResult['extension'];
-								$item->thumbnail_width     = $fileResult['imageDimensions']['tw'];
-								$item->thumbnail_height    = $fileResult['imageDimensions']['th'];
-							}
-						} else {
-							$item->width               = null;
-							$item->height              = null;
-							$item->thumbnail           = false;
-							$item->thumbnail_extension = null;
-							$item->thumbnail_width     = null;
-							$item->thumbnail_height    = null;
-						}
-					}
-				}
-
-				//upload thumbnail image only instead of resizing uploaded image file
-				if ($uploadedThumbnail)
-				{
-					$path = $this->getPathFromUploadResult($thumbnailResult);
-					$item->path = $path;
-
-					$item->thumbnail           = true;
-					$item->thumbnail_extension = $thumbnailResult['extension'];
-					$item->thumbnail_width     = $thumbnailResult['imageDimensions']['tw'];
-					$item->thumbnail_height    = $thumbnailResult['imageDimensions']['th'];
-				}
-
-				$item->published_at = Input::get('published') ? date('Y-m-d H:i:s', strtotime(Input::get('published_at'))) : null;
-
-				$item->save();
-
-				Fractal::clearSavedContent();
-
-				Activity::log([
-					'contentId'   => $item->id,
-					'contentType' => 'Item',
-					'action'      => 'Create',
-					'description' => 'Created a Media Item',
-					'details'     => 'Title: '.$item->title,
-				]);
-
-				return Redirect::to(Fractal::uri('', true))
-					->with('messages', $messages);
-			} else {
-				$messages['error'] = $result['error'];
-			}
-		} else {
-			$messages['error'] = Fractal::trans('messages.errors.general');
-		}
+		if (!$result['error'])
+			Fractal::clearSavedContent();
 
 		return Redirect::to(Fractal::uri('create', true))
-			->with('messages', $messages)
+			->with('messages', $result['messages'])
 			->with('errors', Form::getErrors())
 			->withInput();
 	}
@@ -276,6 +157,11 @@ class ItemsController extends MediaController {
 				'label' => Fractal::trans('labels.view_item', ['item' => Fractal::transChoice('labels.media_item')]),
 				'icon'  => 'file-image-o',
 				'url'   => $item->getUrl(),
+			],[
+				'label' => Fractal::trans('labels.save'),
+				'icon'  => 'save',
+				'url'   => '',
+				'class' => 'btn btn-green btn-save-content',
 			],
 		]);
 
@@ -295,202 +181,10 @@ class ItemsController extends MediaController {
 				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.media_item')]),
 			]);
 
-		Form::setValidationRules(Item::validationRules($item->id));
-
-		$messages = [];
-		if (Form::isValid())
-		{
-			$uploaded          = false;
-			$uploadedThumbnail = false;
-			$hostedExternally  = (bool) Input::get('hosted_externally');
-			$result            = ['error' => false];
-
-			//get original uploaded filename
-			$originalFilename  = isset($_FILES['file']['name']) ? $_FILES['file']['name'] : '';
-			$originalExtension = strtolower(File::extension($originalFilename));
-
-			//make sure filename is unique and then again remove extension to set basename
-			$filename  = Format::unique(Format::slug(Input::get('title')).'.'.File::extension($item->filename), 'media_items', 'filename', $item->id);
-			$basename  = str_replace('.'.$originalExtension, '', $filename);
-			$extension = $originalExtension;
-
-			if ($originalExtension == "")
-			{
-				$filename = null;
-				$basename = null;
-			}
-
-			$mediaSourceRequired = true;
-			if (Input::get('media_type_id') != "")
-			{
-				$mediaType = Type::find(Input::get('media_type_id'));
-				if (!empty($mediaType) && !$mediaType->media_source_required)
-					$mediaSourceRequired = false;
-			}
-
-			$thumbnail = Form::value('create_thumbnail', 'checkbox');
-
-			if ((isset($_FILES['file']['name']) && $_FILES['file']['name'] != "") || (isset($_FILES['thumbnail_image']['name']) && $_FILES['thumbnail_image']['name']))
-			{
-				$result = Item::uploadFile($item->id);
-
-				if (!$result['files']['file']['error'])
-				{
-					$uploaded = true;
-
-					$fileResult = $result['files']['file'];
-					$filename   = $fileResult['filename'];
-					$basename   = $fileResult['basename'];
-					$extension  = $fileResult['extension'];
-
-					//delete current thumbnail image if it exists
-					if (!$thumbnail && $item->thumbnail && File::exists('uploads/'.$file->getPath(true)))
-						File::delete('uploads/'.$file->getPath(true));
-				}
-
-				if (isset($result['files']['thumbnail_image']) && !$result['files']['thumbnail_image']['error'])
-				{
-					$uploadedThumbnail = true;
-					$thumbnailResult   = $result['files']['thumbnail_image'];
-				}
-			}
-
-			//if file was not uploaded but path or name was changed, move/rename file
-			if (!$uploaded && $item->filename != $filename && !is_null($filename))
-			{
-				//move/rename file
-				if (File::exists('uploads/'.$item->getFilePath()))
-					File::move('uploads/'.$item->getFilePath(), 'uploads/media/'.$item->path.'/'.$filename);
-
-				//move/rename thumbnail image if it exists
-				if (File::exists('uploads/'.$item->getFilePath(true)) && $item->thumbnail)
-					File::move('uploads/'.$item->getFilePath(true), 'uploads/media/'.$item->path.'/thumbnails/'.$filename);
-			}
-
-			if (!$result['error'])
-			{
-				$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoiceLowerA('labels.media_item')]);
-
-				//delete files for item
-				if ($hostedExternally && $item->isHostedLocally())
-					$item->deleteFiles();
-
-				$item->fillFormattedValues(Input::all());
-
-				$item->title             = ucfirst(trim(Input::get('title')));
-				$item->hosted_externally = $hostedExternally;
-
-				if ($hostedExternally)
-				{
-					$item->hosted_content_uri = trim(Input::get('hosted_content_uri'));
-				}
-				else
-				{
-					$item->hosted_content_type = null;
-					$item->hosted_content_uri  = null;
-
-					if ($uploaded)
-					{
-						$path = $this->getPathFromUploadResult($fileResult);
-
-						$item->filename  = $fileResult['filename'];
-						$item->basename  = $fileResult['basename'];
-						$item->extension = $fileResult['extension'];
-						$item->path      = $path;
-
-						if ($fileResult['isImage'])
-						{
-							$item->width  = $fileResult['imageDimensions']['w'];
-							$item->height = $fileResult['imageDimensions']['h'];
-
-							if (!$uploadedThumbnail)
-							{
-								$item->thumbnail           = Form::value('create_thumbnail', 'checkbox');
-								$item->thumbnail_extension = $fileResult['extension'];
-								$item->thumbnail_width     = $fileResult['imageDimensions']['tw'];
-								$item->thumbnail_height    = $fileResult['imageDimensions']['th'];
-							}
-						} else {
-							$item->width  = null;
-							$item->height = null;
-						}
-					}
-
-					//upload thumbnail image only instead of resizing uploaded image file
-					if ($uploadedThumbnail)
-					{
-						$path = $this->getPathFromUploadResult($thumbnailResult);
-						$item->path = $path;
-
-						$item->thumbnail           = true;
-						$item->thumbnail_extension = $thumbnailResult['extension'];
-						$item->thumbnail_width     = $thumbnailResult['imageDimensions']['tw'];
-						$item->thumbnail_height    = $thumbnailResult['imageDimensions']['th'];
-					}
-
-					//remove file
-					if (Input::get('remove_file') && !$mediaSourceRequired)
-					{
-						if (File::exists('uploads/'.$item->getFilePath()))
-							File::delete('uploads/'.$item->getFilePath());
-
-						$item->filename  = null;
-						$item->basename  = null;
-						$item->extension = null;
-						$item->path      = null;
-						$item->width     = null;
-						$item->height    = null;
-					}
-
-					//remove thumbnail image
-					if (Input::get('remove_thumbnail_image') && Input::get('file_type_id') != 1)
-					{
-						if (File::exists('uploads/'.$item->getFilePath(true)))
-							File::delete('uploads/'.$item->getFilePath(true));
-
-						$item->thumbnail           = false;
-						$item->thumbnail_extension = null;
-						$item->thumbnail_width     = null;
-						$item->thumbnail_height    = null;
-					}
-				}
-
-				$item->published_at = Input::get('published') ? date('Y-m-d H:i:s', strtotime(Input::get('published_at'))) : null;
-
-				$item->save();
-
-				Activity::log([
-					'contentId'   => $item->id,
-					'contentType' => 'Item',
-					'action'      => 'Update',
-					'description' => 'Updated a Media Item',
-					'details'     => 'Title: '.$item->title,
-				]);
-
-				return Redirect::to(Fractal::uri('', true))
-					->with('messages', $messages);
-			}
-			else
-			{
-				$error = true;
-
-				foreach ($result['files'] as $file)
-				{
-					if ($file['error'])
-						$messages['error'] = $file['error'];
-					else
-						$error = false;
-				}
-
-				if (!$error)
-					unset($messages['error']);
-			}
-		} else {
-			$messages['error'] = Fractal::trans('messages.errors.general');
-		}
+		$result = Item::validateAndSave($item);
 
 		return Redirect::to(Fractal::uri($item->slug.'/edit', true))
-			->with('messages', $messages)
+			->with('messages', $result['messages'])
 			->with('errors', Form::getErrors())
 			->withInput();
 	}
@@ -508,7 +202,7 @@ class ItemsController extends MediaController {
 
 		Activity::log([
 			'contentId'   => $item->id,
-			'contentType' => 'Item',
+			'contentType' => 'Media Item',
 			'action'      => 'Delete',
 			'description' => 'Deleted a Media Item',
 			'details'     => 'Title: '.$item->title,
@@ -556,22 +250,6 @@ class ItemsController extends MediaController {
 		];
 
 		Form::setDefaults($defaults);
-	}
-
-	private function getPathFromUploadResult($fileResult)
-	{
-		if (!isset($fileResult['path']))
-			return "";
-
-		$path = str_replace('uploads/media', '', $fileResult['path']);
-
-		if (substr($path, 0, 1) == "/")
-			$path = substr($path, 1);
-
-		if (substr($path, -1) == "/")
-			$path = substr($path, 0, (strlen($path) - 1));
-
-		return str_replace('/thumbnails', '', $path);
 	}
 
 }

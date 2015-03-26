@@ -81,6 +81,7 @@ class FractalServiceProvider extends ServiceProvider {
 		$this->app->register('Regulus\SolidSite\SolidSiteServiceProvider');
 		$this->app->register('Regulus\TetraText\TetraTextServiceProvider');
 		$this->app->register('Regulus\Upstream\UpstreamServiceProvider');
+		$this->app->register('AlfredoRamos\ParsedownExtra\ParsedownExtraServiceProvider');
 
 		// add aliases
 		$loader = AliasLoader::getInstance();

@@ -219,6 +219,8 @@
 
 	{!! Form::openResource(array('files' => true)) !!}
 
+		{!! Form::hidden('id') !!}
+
 		<div class="row button-menu">
 			<div class="col-md-12">
 				@if (isset($update) && $update)
