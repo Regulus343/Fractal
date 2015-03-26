@@ -1,6 +1,6 @@
 @if (isset($mediaTypes) && Regulus\Fractal\Models\Media\Type::publishedItemInTypes($mediaTypes) && Fractal::getSetting('Display Media Types Menu', true))
 
-	<h3>{{ Fractal::trans('labels.mediaTypes') }}</h3>
+	<h3>{{ Fractal::transChoice('labels.media_type', 2) }}</h3>
 
 	<ul class="nav nav-pills nav-stacked nav-side">
 

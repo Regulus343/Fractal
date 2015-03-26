@@ -1,6 +1,6 @@
 @if (isset($mediaSets) && Regulus\Fractal\Models\Media\Set::publishedItemInSets($mediaSets) && Fractal::getSetting('Display Media Sets Menu', true))
 
-	<h3>{{ Fractal::trans('labels.mediaSets') }}</h3>
+	<h3>{{ Fractal::transChoice('labels.media_set', 2) }}</h3>
 
 	<ul class="nav nav-pills nav-stacked nav-side">
 
