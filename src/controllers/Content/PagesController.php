@@ -115,7 +115,7 @@ class PagesController extends BaseController {
 		Form::setValidationRules(Page::validationRules());
 
 		$messages = [];
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$messages['success'] = Fractal::trans('messages.successCreated', ['item' => Fractal::transLowerA('labels.page')]);
 
@@ -209,7 +209,7 @@ class PagesController extends BaseController {
 		$page->setValidationRules();
 
 		$messages = [];
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoiceLowerA('labels.page')]);
 

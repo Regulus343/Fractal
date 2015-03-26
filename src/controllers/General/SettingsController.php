@@ -76,7 +76,7 @@ class SettingsController extends BaseController {
 		Form::setValidationRules($rules);
 
 		$messages = [];
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$messages['success'] = Fractal::trans('messages.successUpdated', ['item' => Fractal::transLower('labels.settings')]);
 

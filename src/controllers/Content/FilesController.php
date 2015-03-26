@@ -109,7 +109,7 @@ class FilesController extends BaseController {
 		Form::setValidationRules(ContentFile::validationRules());
 
 		$messages = [];
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$result = ContentFile::uploadFile();
 
@@ -206,7 +206,7 @@ class FilesController extends BaseController {
 		Form::setValidationRules(ContentFile::validationRules($id));
 
 		$messages = [];
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$uploaded = false;
 			$result   = ['error' => false];

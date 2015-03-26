@@ -107,7 +107,7 @@ class PermissionsController extends UsersController {
 		Form::setValidationRules($rules);
 
 		$messages = [];
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transChoice('labels.permission')]);
 
@@ -184,7 +184,7 @@ class PermissionsController extends UsersController {
 		Form::setErrors();
 
 		$messages = [];
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoice('labels.permission')]);
 

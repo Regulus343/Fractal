@@ -114,7 +114,7 @@ class ItemsController extends MediaController {
 		Form::setValidationRules(Item::validationRules());
 
 		$messages = [];
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$uploaded          = false;
 			$uploadedThumbnail = false;
@@ -298,7 +298,7 @@ class ItemsController extends MediaController {
 		Form::setValidationRules(Item::validationRules($item->id));
 
 		$messages = [];
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$uploaded          = false;
 			$uploadedThumbnail = false;

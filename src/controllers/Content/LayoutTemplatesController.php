@@ -105,7 +105,7 @@ class LayoutTemplatesController extends BaseController {
 		Form::setValidationRules(LayoutTemplate::validationRules());
 
 		$messages = [];
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transChoiceLowerA('labels.layout_template')]);
 
@@ -172,7 +172,7 @@ class LayoutTemplatesController extends BaseController {
 		$layoutTemplate->setValidationRules();
 
 		$messages = [];
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoiceLowerA('labels.layout_template')]);
 

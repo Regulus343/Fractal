@@ -124,7 +124,7 @@ class UsersController extends BaseController {
 		Form::setValidationRules($rules);
 
 		$messages = [];
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transLowerA('labels.user')]);
 
@@ -209,7 +209,7 @@ class UsersController extends BaseController {
 		Form::setValidationRules($rules);
 
 		$messages = [];
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoice('labels.user')]);
 

@@ -79,7 +79,7 @@ class ApiController extends BaseController {
 							$page->setValidationRules();
 
 							$messages = [];
-							if (Form::validated())
+							if (Form::isValid())
 							{
 								$page->saveData($content);
 
@@ -97,7 +97,7 @@ class ApiController extends BaseController {
 							$article->setValidationRules();
 
 							$messages = [];
-							if (Form::validated())
+							if (Form::isValid())
 							{
 								$article->saveData($content);
 

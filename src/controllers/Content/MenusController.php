@@ -106,7 +106,7 @@ class MenusController extends BaseController {
 		Form::setValidationRules(Menu::validationRules());
 
 		$messages = [];
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transChoiceLowerA('labels.menu')]);
 
@@ -173,7 +173,7 @@ class MenusController extends BaseController {
 		Form::setValidationRules(Menu::validationRules($id));
 
 		$messages = [];
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoiceLowerA('labels.menu')]);
 

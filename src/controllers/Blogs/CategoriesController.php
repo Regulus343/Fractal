@@ -103,7 +103,7 @@ class CategoriesController extends BlogsController {
 		Form::setValidationRules(Category::validationRules());
 
 		$messages = [];
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transChoiceLowerA('labels.category')]);
 
@@ -178,7 +178,7 @@ class CategoriesController extends BlogsController {
 		$category->setValidationRules();
 
 		$messages = [];
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoiceLowerA('labels.category')]);
 

@@ -104,7 +104,7 @@ class TypesController extends MediaController {
 		Form::setValidationRules(Type::validationRules());
 
 		$messages = [];
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transChoiceLowerA('labels.media_type')]);
 
@@ -179,7 +179,7 @@ class TypesController extends MediaController {
 		$type->setValidationRules();
 
 		$messages = [];
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoiceLowerA('labels.media_type')]);
 

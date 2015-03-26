@@ -143,7 +143,7 @@ class AuthController extends BaseController {
 
 		$messages = [];
 
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$username = trim(Input::get('username'));
 			$user = User::getByUsernameOrEmail($username);
@@ -202,7 +202,7 @@ class AuthController extends BaseController {
 
 		$messages = [];
 
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$user->updateAccount('password');
 

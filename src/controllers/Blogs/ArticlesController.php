@@ -116,7 +116,7 @@ class ArticlesController extends BlogsController {
 		Form::setValidationRules(Article::validationRules());
 
 		$messages = [];
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transChoiceLowerA('labels.article')]);
 
@@ -215,7 +215,7 @@ class ArticlesController extends BlogsController {
 		$article->setValidationRules();
 
 		$messages = [];
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoiceLowerA('labels.article')]);
 

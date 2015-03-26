@@ -108,7 +108,7 @@ class SetsController extends MediaController {
 		Form::setValidationRules(Set::validationRules());
 
 		$messages = [];
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$messages['success'] = Fractal::trans('messages.success.created', ['item' => Fractal::transChoiceLowerA('labels.media_set')]);
 
@@ -189,7 +189,7 @@ class SetsController extends MediaController {
 		$set->setValidationRules();
 
 		$messages = [];
-		if (Form::validated())
+		if (Form::isValid())
 		{
 			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoiceLowerA('labels.media_set')]);
 
