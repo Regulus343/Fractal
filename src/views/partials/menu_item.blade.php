@@ -4,7 +4,7 @@
 
 	<li class="{{ Fractal::setMenuItemSelectedClass($menuItem) }}" data-menu-item-id="{{ $menuItem->id }}">
 
-		<a href="{{ URL::to($menuItem->url) }}" class="{{ $menuItem->anchorClass }}"
+		<a href="{{ URL::to($menuItem->url) }}" class="{{ $menuItem->anchor_class }}"
 		{!! (!empty($menuItem->children) && $actionSubMenuDropDown ? ' data-toggle="dropdown"' : '') !!}>
 
 			{!! $menuItem->icon !!}

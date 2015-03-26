@@ -6,7 +6,7 @@
 
 		created by Cody Jassman
 		version 0.9.0a - Fractal is in transition from Laravel 4 (0.8.x) to Laravel 5 (0.9.x)
-		last updated on March 24, 2015
+		last updated on March 25, 2015
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -1212,19 +1212,23 @@ class Fractal {
 	 */
 	public function isMenuItemVisible($menuItem)
 	{
+		if (get_class($menuItem) == "Regulus\Fractal\Models\Content\MenuItem")
+			$menuItem = $menuItem->createObject();
+
 		$visible = true;
 
 		if (! (bool) $menuItem->active)
 			$visible = false;
 
-		if ($menuItem->type == "Content Page" && (is_null($menuItem->pagePublishedDate) || strtotime($menuItem->pagePublishedDate) > time()))
+		if ($menuItem->type == "Content Page" && is_null($menuItem->page_published_date) || strtotime($menuItem->page_published_date) > time())
 			$visible = false;
 
-		if ($menuItem->authStatus) {
-			if (Auth::check() && (int) $menuItem->authStatus == 2)
+		if ($menuItem->auth_status)
+		{
+			if (Auth::check() && (int) $menuItem->auth_status == 2)
 				$visible = false;
 
-			if (!Auth::check() && (int) $menuItem->authStatus == 1)
+			if (!Auth::check() && (int) $menuItem->auth_status == 1)
 				$visible = false;
 		}
 

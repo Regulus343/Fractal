@@ -289,19 +289,19 @@ class MenuItem extends Base {
 	public function createObject($setSelectedClass = true, $ignoreVisibilityStatus = false)
 	{
 		return (object) [
-			'id'                => (int) $this->id,
-			'parentId'          => (int) $this->parent_id,
-			'type'              => $this->type,
-			'url'               => $this->getUrl(),
-			'page'              => $this->type == "Content Page" ? $this->page->title : false,
-			'pagePublishedDate' => $this->type == "Content Page" ? $this->page->published_at : null,
-			'label'             => $this->getLabel(),
-			'icon'              => $this->getIcon(),
-			'class'             => $this->getClass($setSelectedClass),
-			'active'            => $this->active,
-			'authStatus'        => $this->auth_status,
-			'anchorClass'       => $this->getAnchorClass(),
-			'children'          => $this->getChildrenArray($setSelectedClass, $ignoreVisibilityStatus),
+			'id'                  => (int) $this->id,
+			'parent_id'           => (int) $this->parent_id,
+			'type'                => $this->type,
+			'url'                 => $this->getUrl(),
+			'page'                => $this->type == "Content Page" ? $this->page->title : false,
+			'page_published_date' => $this->type == "Content Page" ? $this->page->published_at : null,
+			'label'               => $this->getLabel(),
+			'icon'                => $this->getIcon(),
+			'class'               => $this->getClass($setSelectedClass),
+			'active'              => $this->active,
+			'auth_status'         => $this->auth_status,
+			'anchor_class'        => $this->getAnchorClass(),
+			'children'            => $this->getChildrenArray($setSelectedClass, $ignoreVisibilityStatus),
 		];
 	}
 
