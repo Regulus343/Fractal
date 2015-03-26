@@ -172,6 +172,7 @@
 
 				$(this).hide();
 				$(this).parents('.row').addClass('full-screen').find('.btn-compress-content-area').removeClass('hidden').show();
+				$('nav.navbar-fixed-top').hide();
 				$('#footer').hide();
 			});
 
@@ -181,6 +182,7 @@
 
 				$(this).hide();
 				$(this).parents('.row').removeClass('full-screen').find('.btn-expand-content-area').removeClass('hidden').show();
+				$('nav.navbar-fixed-top').show();
 				$('#footer').show();
 			});
 

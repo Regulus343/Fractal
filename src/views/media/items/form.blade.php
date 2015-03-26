@@ -77,6 +77,27 @@
 
 			Fractal.initAutoSave();
 
+			// initialize expand description buttons
+			$('.btn-expand-description').off('click').on('click', function(e)
+			{
+				e.preventDefault();
+
+				$(this).hide();
+				$(this).parents('.row').addClass('full-screen').find('.btn-compress-description').removeClass('hidden').show();
+				$('nav.navbar-fixed-top').hide();
+				$('#footer').hide();
+			});
+
+			$('.btn-compress-description').off('click').on('click', function(e)
+			{
+				e.preventDefault();
+
+				$(this).hide();
+				$(this).parents('.row').removeClass('full-screen').find('.btn-expand-description').removeClass('hidden').show();
+				$('nav.navbar-fixed-top').show();
+				$('#footer').show();
+			});
+
 			$('form').submit(function(e)
 			{
 				if ($('#field-description-type').val() == "HTML")
@@ -379,6 +400,14 @@
 			</div>
 
 			<div class="col-md-12 col-lg-6 markdown-description-area{{ HTML::hiddenArea(Form::value('description_type') != "Markdown", true) }}">
+				<a href="" class="btn btn-default btn-xs btn-expand-description pull-right">
+					<i class="fa fa-expand"></i>
+				</a>
+
+				<a href="" class="btn btn-default btn-xs btn-compress-description pull-right hidden">
+					<i class="fa fa-compress"></i>
+				</a>
+
 				{!! Form::field('description_markdown', 'textarea', [
 					'label'       => 'Description',
 					'class-field' => 'tab markdown',
