@@ -3,7 +3,7 @@
 | Fractal JS
 |------------------------------------------------------------------------------
 |
-| Last Updated: March 24, 2015
+| Last Updated: March 26, 2015
 |
 */
 
@@ -61,7 +61,8 @@ var Fractal = {
 		}, this.messageShowTime);
 
 		// initialize file fields
-		$('input[type="file"].file-upload-button').each(function(){
+		$('input[type="file"].file-upload-button').each(function()
+		{
 			$(this).addClass('hidden');
 
 			var fileType   = $(this).attr('data-file-type') !== undefined ? $(this).attr('data-file-type') : "File";
@@ -80,17 +81,23 @@ var Fractal = {
 				.after(dummyInput)
 				.after('<div class="clear"></div>');
 
-		}).change(function(){
+		}).change(function()
+		{
 			var path     = $(this).val().split('\\');
 			var filename = path[(path.length - 1)];
+
 			$('#'+$(this).attr('id')+'-dummy').val(filename);
 		});
 
 		// initialize number fields
-		$('input[type="number"], input.number').keyup(function(){
-			if (isNaN($(this).val()) || $(this).val() == "") $(this).val('');
+		$('input[type="number"], input.number').keyup(function()
+		{
+			if (isNaN($(this).val()) || $(this).val() == "")
+				$(this).val('');
+
 		}).change(function(){
-			if (isNaN($(this).val()) || $(this).val() == "") $(this).val('');
+			if (isNaN($(this).val()) || $(this).val() == "")
+				$(this).val('');
 		});
 
 		// initialize select fields
@@ -158,12 +165,16 @@ var Fractal = {
 
 				$(this).mouseenter(function()
 				{
-					if (!$(this).hasClass('sort-changed')) {
-						if ($(this).hasClass('sort-asc')) {
+					if (!$(this).hasClass('sort-changed'))
+					{
+						if ($(this).hasClass('sort-asc'))
+						{
 							$(this).children('span.sort-icon')
 								.addClass('glyphicon-upload')
 								.removeClass('glyphicon-download');
-						} else {
+						}
+						else
+						{
 							$(this).children('span.sort-icon')
 								.addClass('glyphicon-download')
 								.removeClass('glyphicon-upload')
@@ -174,15 +185,20 @@ var Fractal = {
 				{
 					$(this).removeClass('sort-changed');
 
-					if ($(this).hasClass('sort-asc')) {
+					if ($(this).hasClass('sort-asc'))
+					{
 						$(this).children('span.sort-icon')
 							.addClass('glyphicon-download')
 							.removeClass('glyphicon-upload');
-					} else if ($(this).hasClass('sort-desc')) {
+					}
+					else if ($(this).hasClass('sort-desc'))
+					{
 						$(this).children('span.sort-icon')
 							.addClass('glyphicon-upload')
 							.removeClass('glyphicon-download');
-					} else {
+					}
+					else
+					{
 						$(this).children('span.sort-icon')
 							.addClass('glyphicon-record')
 							.removeClass('glyphicon-download')
@@ -204,7 +220,8 @@ var Fractal = {
 
 					$('#field-sort-field').val(Fractal.sortField);
 
-					if ($(this).hasClass('sort-asc')) {
+					if ($(this).hasClass('sort-asc'))
+					{
 						$(this)
 							.addClass('sort-desc')
 							.removeClass('sort-asc');
@@ -214,7 +231,9 @@ var Fractal = {
 							.removeClass('glyphicon-upload');
 
 						$('#field-sort-order').val('desc');
-					} else {
+					}
+					else
+					{
 						$(this)
 							.addClass('sort-asc')
 							.removeClass('sort-desc');
@@ -232,8 +251,10 @@ var Fractal = {
 		});
 
 		// allow tab characters for some textareas
-		$('textarea.tab').keydown(function(e){
-			if (e.keyCode == 9) {
+		$('textarea.tab').keydown(function(e)
+		{
+			if (e.keyCode == 9)
+			{
 				var value     = "\t";
 				var startPos  = this.selectionStart;
 				var endPos    = this.selectionEnd;
@@ -744,119 +765,9 @@ var Fractal = {
 
 			error: function()
 			{
-				setMainMessage(Fractal.messages.errors.general, 'error');
-			}
-		});
-	},
-
-	initPagesTable: function()
-	{
-		$('.delete-page').click(function(e)
-		{
-			e.preventDefault();
-
-			contentId = $(this).attr('data-page-id');
-			modalConfirm(fractalLabels.deletePage+': <strong>'+$(this).parents('tr').children('td.title').text()+'</strong>', Fractal.trans('messages.confirm_delete', {item: Fractal.transChoice('page')}), actionDeletePage);
-		});
-
-		$('table td.actions a[title]').tooltip();
-	},
-
-	actionDeletePage: function()
-	{
-		$('#modal').modal('hide');
-
-		$.ajax({
-			url:      Fractal.createUrl('pages/' + contentId),
-			type:     'delete',
-			dataType: 'json',
-
-			success: function(result)
-			{
-				if (result.resultType == "Success")
-				{
-					$('#page-'+contentId).addClass('hidden');
-
-					Fractal.setMainMessage(result.message, 'success');
-				} else {
-					Fractal.setMainMessage(result.message, 'error');
-				}
-			},
-
-			error: function()
-			{
-				setMainMessage(Fractal.messages.errors.general, 'error');
-			}
-		});
-	},
-
-	initFilesTable: function()
-	{
-		$('.delete-file').click(function(e)
-		{
-			e.preventDefault();
-
-			contentId = $(this).attr('data-file-id');
-			modalConfirm(fractalLabels.deleteFile+': <strong>'+$(this).parents('tr').children('td.name').text()+'</strong>', fractalMessages.confirmDelete.replace(':item', fractalLabels.file), actionDeleteFile);
-		});
-
-		$('table td.actions a[title]').tooltip();
-	},
-
-	actionDeleteFile: function()
-	{
-		$('#modal').modal('hide');
-		$.ajax({
-			url:      Fractal.createUrl('files/' + contentId),
-			type:     'delete',
-			dataType: 'json',
-
-			success: function(result)
-			{
-				if (result.resultType == "Success")
-				{
-					$('#file-'+contentId).addClass('hidden');
-
-					Fractal.setMainMessage(result.message, 'success');
-				} else {
-					Fractal.setMainMessage(result.message, 'error');
-				}
-			},
-
-			error: function()
-			{
 				Fractal.setMainMessage(Fractal.messages.errors.general, 'error');
 			}
 		});
-	},
-
-	initUsersTable: function()
-	{
-		$('.ban-user').click(function(e)
-		{
-			e.preventDefault();
-
-			contentId = $(this).attr('data-user-id');
-			modalConfirm(fractalLabels.banUser+': <strong>'+$(this).parents('tr').children('td.username').text()+'</strong>', fractalMessages.confirmBanUser, actionBanUser);
-		});
-
-		$('.unban-user').click(function(e)
-		{
-			e.preventDefault();
-
-			contentId = $(this).attr('data-user-id');
-			modalConfirm(fractalLabels.unbanUser+': <strong>'+$(this).parents('tr').children('td.username').text()+'</strong>', fractalMessages.confirmUnbanUser, actionUnbanUser);
-		});
-
-		$('.delete-user').click(function(e)
-		{
-			e.preventDefault();
-
-			contentId = $(this).attr('data-user-id');
-			modalConfirm(fractalLabels.deleteUser+': <strong>'+$(this).parents('tr').children('td.username').text()+'</strong>', fractalMessages.confirmDelete.replace(':item', fractalLabels.user), actionDeleteUser);
-		});
-
-		$('table td.actions a[title]').tooltip();
 	},
 
 	actionBanUser: function()
@@ -900,7 +811,8 @@ var Fractal = {
 
 			success: function(result)
 			{
-				if (result.resultType == "Success") {
+				if (result.resultType == "Success")
+				{
 					$('#user-'+contentId).removeClass('danger');
 					$('#user-'+contentId+' td.actions a.unban-user').addClass('hidden');
 					$('#user-'+contentId+' td.actions a.ban-user').removeClass('hidden');
@@ -916,74 +828,6 @@ var Fractal = {
 			error: function()
 			{
 				Fractal.setMainMessage(Fractal.messages.errors.general, 'error');
-			}
-		});
-	},
-
-	actionDeleteUser: function()
-	{
-		$('#modal').modal('hide');
-		$.ajax({
-			url:      Fractal.createUrl('users/' + contentId),
-			type:     'delete',
-			dataType: 'json',
-
-			success: function(result)
-			{
-				if (result.resultType == "Success")
-				{
-					$('#user-'+contentId).addClass('hidden');
-
-					Fractal.setMainMessage(result.message, 'success');
-				} else {
-					Fractal.setMainMessage(result.message, 'error');
-				}
-			},
-
-			error: function()
-			{
-				Fractal.setMainMessage(Fractal.messages.errors.general, 'error');
-			}
-		});
-	},
-
-	initUserRolesTable: function()
-	{
-		$('.delete-user-role').click(function(e)
-		{
-			e.preventDefault();
-
-			contentId = $(this).attr('data-role-id');
-			//modalConfirm(fractalLabels.deleteRole+': <strong>'+$(this).parents('tr').children('td.name').text()+'</strong>', Fractal.trans('messages.confirm_delete', {item: }).replace(':item', Fractal.transChoice('labels.role')), actionDeleteUserRole);
-		});
-
-		$('table td.actions a[title]').tooltip();
-	},
-
-	actionDeleteUserRole: function()
-	{
-		$('#modal').modal('hide');
-
-		$.ajax({
-			url:      Fractal.createUrl('user-roles/' + contentId),
-			type:     'delete',
-			dataType: 'json',
-
-			success: function(result)
-			{
-				if (result.resultType == "Success")
-				{
-					$('#role-'+contentId).addClass('hidden');
-
-					Fractal.setMainMessage(result.message, 'success');
-				} else {
-					Fractal.setMainMessage(result.message, 'error');
-				}
-			},
-
-			error: function()
-			{
-				Fractal.setMainMessage(fractalMessages.errors.general, 'error');
 			}
 		});
 	},

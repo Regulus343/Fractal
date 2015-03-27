@@ -251,9 +251,11 @@
 			<div class="col-md-4">
 				{!! Form::field('title') !!}
 			</div>
+
 			<div class="col-md-4">
 				{!! Form::field('slug') !!}
 			</div>
+
 			<div class="col-md-4">
 				{!! Form::field('layout_template_id', 'select', [
 					'label'       => 'Layout Template',
@@ -293,6 +295,7 @@
 					]) !!}
 				</div>
 			</div>
+
 			<div class="col-md-3 published-at-area{{ HTML::invisibleArea(!Form::value('published', 'checkbox'), true) }}">
 				<div class="form-group">
 					<div class="input-group date date-time-picker">

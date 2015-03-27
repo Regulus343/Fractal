@@ -306,9 +306,11 @@
 			<div class="col-md-4">
 				{!! Form::field('title') !!}
 			</div>
+
 			<div class="col-md-4">
 				{!! Form::field('slug') !!}
 			</div>
+
 			<div class="col-md-4">
 				{!! Form::field('layout_template_id', 'select', [
 					'label'       => 'Layout Template',
@@ -339,6 +341,7 @@
 					<i class="fa fa-file-image-o"></i> {{ Fractal::trans('labels.select_item', ['item' => Fractal::transChoice('labels.thumbnail_image')]) }}
 				</a>
 			</div>
+
 			<div class="col-md-8">
 				<div id="thumbnail-image-area"{!! HTML::hiddenArea(!isset($article) || !$article->hasThumbnailImage()) !!}>
 					<img src="{{ (isset($article) ? $article->getThumbnailImageUrl() : '') }}" alt="Thumbnail Image" title="Thumbnail Image" class="thumbnail-image" />
@@ -391,6 +394,7 @@
 					]) !!}
 				</div>
 			</div>
+
 			<div class="col-md-3 published-at-area{{ HTML::invisibleArea(!Form::value('published', 'checkbox'), true) }}">
 				<div class="form-group">
 					<div class="input-group date date-time-picker">

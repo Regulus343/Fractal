@@ -13,6 +13,7 @@
 			<div class="col-md-6">
 				{!! Form::field('name', 'text', ['label' => Fractal::trans('labels.username')]) !!}
 			</div>
+
 			<div class="col-md-6">
 				{!! Form::field('email') !!}
 			</div>
@@ -22,6 +23,7 @@
 			<div class="col-md-6">
 				{!! Form::field('first_name') !!}
 			</div>
+
 			<div class="col-md-6">
 				{!! Form::field('last_name') !!}
 			</div>
@@ -31,6 +33,7 @@
 			<div class="col-md-4">
 				{!! Form::field('city') !!}
 			</div>
+
 			<div class="col-md-4">
 				{!! Form::field('country', 'select', [
 					'label'       => Fractal::trans('labels.country'),
@@ -38,6 +41,7 @@
 					'null-option' => Fractal::trans('messages.select_item', ['item' => Format::a(strtolower(Fractal::trans('labels.country')))])
 				]) !!}
 			</div>
+
 			<div class="col-md-4">
 				{!! Form::field('region', 'select', [
 					'label'       => Fractal::getRegionLabel(Form::value('country')),
@@ -51,9 +55,11 @@
 			<div class="col-md-4">
 				{!! Form::field('phone', 'text', array('label' => 'Phone Number')) !!}
 			</div>
+
 			<div class="col-md-4">
 				{!! Form::field('website') !!}
 			</div>
+
 			<div class="col-md-4">
 				{!! Form::field('twitter', 'text', array('maxlength' => 16)) !!}
 			</div>
@@ -70,9 +76,11 @@
 				<div class="col-md-4">
 					{!! Form::field('password') !!}
 				</div>
+
 				<div class="col-md-4">
 					{!! Form::field('password_confirmation', null, array('label' => 'Confirm Password')) !!}
 				</div>
+
 				<div class="col-md-4 passwords-check">
 					<span class="glyphicon glyphicon-ok-circle passwords-match green hidden"></span>
 					<span class="glyphicon glyphicon-remove-circle passwords-mismatch red hidden"></span>

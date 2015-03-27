@@ -711,7 +711,7 @@ return [
 					[
 						'icon'       => 'edit',
 						'class'      => 'btn btn-primary',
-						'uri'        => config('cms.base_uri').'/users/:username/edit',
+						'uri'        => config('cms.base_uri').'/users/:name/edit',
 						'attributes' => [
 							'title' => Fractal::trans('labels.edit_item', ['item' => Fractal::transChoice('labels.user')]),
 						],
