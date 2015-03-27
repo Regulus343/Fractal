@@ -38,13 +38,13 @@ return [
 	],
 
 	'confirm' => [
-		'activate'         => 'Are you sure you want to activate this :item?',
-		'delete'           => 'Are you sure you want to delete this :item?',
-		'delete_with_name' => 'Are you sure you want to delete the :item entitled &ldquo;<strong>:name</strong>&rdquo;?',
-		'delete_permanent' => 'This action cannot be undone.',
-		'undelete'         => 'Are you sure you want to undelete this :item?',
-		'ban_user'         => 'Are you sure you want to ban the user named &ldquo;<strong>:name</strong>&rdquo;?',
-		'unban_user'       => 'Are you sure you want to unban the user named &ldquo;<strong>:name</strong>&rdquo;?',
+		'activate'             => 'Are you sure you want to activate this :item?',
+		'delete'               => 'Are you sure you want to delete this :item?',
+		'delete_with_name'     => 'Are you sure you want to delete the :item entitled &ldquo;<strong>:name</strong>&rdquo;?',
+		'delete_permanent'     => 'This action cannot be undone.',
+		'undelete'             => 'Are you sure you want to undelete this :item?',
+		'ban_user_with_name'   => 'Are you sure you want to ban the user named &ldquo;<strong>:name</strong>&rdquo;?',
+		'unban_user_with_name' => 'Are you sure you want to unban the user named &ldquo;<strong>:name</strong>&rdquo;?',
 	],
 
 	'displaying' => [

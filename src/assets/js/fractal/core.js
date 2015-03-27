@@ -696,21 +696,27 @@ var Fractal = {
 				e.preventDefault();
 
 				contentType = Fractal.contentType;
-				contentId   = $(this).attr('data-item-id');
+				contentId   = $(this).data('item-id');
 
 				var itemType = Fractal.transChoice(contentType.replace(/\-/g, '_').camelize(true)).toLowerCase();
-				var itemName = $(this).attr('data-item-name');
+				var itemName = $(this).data('item-name');
 
-				itemAction         = $(this).attr('data-action');
-				itemActionType     = $(this).attr('data-action-type') !== undefined ? $(this).attr('data-action-type') : 'post';
-				itemActionMessage  = $(this).attr('data-action-message');
-				itemActionUrl      = $(this).attr('data-action-url');
-				itemActionFunction = $(this).attr('data-action-function');
+				itemAction         = $(this).data('action');
+				itemActionType     = $(this).data('action-type') !== undefined ? $(this).data('action-type') : 'post';
+				itemActionMessage  = $(this).data('action-message');
+				itemActionUrl      = $(this).data('action-url');
+				itemActionFunction = $(this).data('action-function');
 
 				if (itemName !== undefined && itemName != "" && Fractal.trans('messages.' + itemActionMessage + 'WithName') !== undefined)
 					itemActionMessage += 'WithName';
 
-				var confirmTitle = Fractal.trans(itemAction, {item: Fractal.transChoice(contentType)});
+				var confirmTitle = Fractal.trans('labels.' + $(this).data('action-title'), {item: Fractal.transChoice(contentType)});
+
+				if (confirmTitle == "")
+					confirmTitle = Fractal.trans(itemAction, {item: Fractal.transChoice(contentType)});
+
+				if (confirmTitle == "")
+					confirmTitle = "Complete Action";
 
 				var replacements = {item: itemType};
 				if (itemName !== undefined)
@@ -719,7 +725,7 @@ var Fractal = {
 				var confirmMessage = Fractal.trans('messages.' + itemActionMessage, replacements);
 
 				if (itemActionFunction !== undefined)
-					Fractal.modalConfirm(confirmTitle, confirmMessage, window[itemActionFunction]);
+					Fractal.modalConfirm(confirmTitle, confirmMessage, Fractal[itemActionFunction]);
 				else
 					Fractal.modalConfirm(confirmTitle, confirmMessage, Fractal.actionItem);
 			});
@@ -775,7 +781,7 @@ var Fractal = {
 		$('#modal').modal('hide');
 
 		$.ajax({
-			url:      Fractal.createUrl('/users/' + contentId + '/ban'),
+			url:      Fractal.createUrl('users/' + contentId + '/ban'),
 			dataType: 'json',
 
 			success: function(result)
