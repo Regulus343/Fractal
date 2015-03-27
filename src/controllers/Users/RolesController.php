@@ -13,6 +13,7 @@ use Fractal;
 use Regulus\Fractal\Models\User\Role;
 
 use Regulus\ActivityLog\Models\Activity;
+use Auth;
 use Form;
 use Format;
 use Site;

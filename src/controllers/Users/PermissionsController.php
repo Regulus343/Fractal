@@ -13,6 +13,7 @@ use Fractal;
 use Regulus\Fractal\Models\User\Permission;
 
 use Regulus\ActivityLog\Models\Activity;
+use Auth;
 use Form;
 use Format;
 use Site;
@@ -142,7 +143,7 @@ class PermissionsController extends UsersController {
 
 	public function edit($id)
 	{
-		$permission = Role::find($id);
+		$permission = Permission::find($id);
 		if (empty($permission))
 			return Redirect::to(Fractal::uri('', true))->with('messages', [
 				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.permission')])
@@ -168,7 +169,7 @@ class PermissionsController extends UsersController {
 
 	public function update($id)
 	{
-		$permission = Role::find($id);
+		$permission = Permission::find($id);
 		if (empty($permission))
 			return Redirect::to(Fractal::uri('', true))->with('messages', [
 				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.permission')])
@@ -177,8 +178,8 @@ class PermissionsController extends UsersController {
 		$tableName = Auth::getTableName('permissions');
 
 		$rules = [
-			'permission' => ['required', 'unique:'.$tableName.'permission,'.$id],
-			'name'       => ['required', 'unique:'.$tableName.'name,'.$id],
+			'permission' => ['required', 'unique:'.$tableName.',permission,'.$id],
+			'name'       => ['required', 'unique:'.$tableName.',name,'.$id],
 		];
 		Form::setValidationRules($rules);
 		Form::setErrors();

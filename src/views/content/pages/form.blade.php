@@ -236,12 +236,12 @@
 		<div class="row button-menu">
 			<div class="col-md-12">
 				@if (isset($update) && $update)
-					<a href="{{ $pageUrl }}" class="btn btn-default right-padded pull-right">
+					<a href="{{ $pageUrl }}" class="btn btn-default icon pull-right">
 						<i class="fa fa-file"></i> {{ Fractal::trans('labels.view_item', ['item' => Fractal::transChoice('labels.page')]) }}
 					</a>
 				@endif
 
-				<a href="{{ Fractal::url('pages') }}" class="btn btn-default pull-right">
+				<a href="{{ Fractal::url('pages') }}" class="btn btn-default icon pull-right">
 					<i class="fa fa-list"></i> {{ Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.page', 2)]) }}
 				</a>
 			</div>
@@ -279,7 +279,7 @@
 
 		@include(Fractal::view('content.pages.templates.content_area', true))
 
-		<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="pages/add-content-area{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="get" data-modal-callback-function="selectContentAreaActions">
+		<a href="" class="btn btn-primary icon trigger-modal pull-right" data-modal-ajax-uri="pages/add-content-area{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="get" data-modal-callback-function="selectContentAreaActions">
 			<i class="fa fa-plus-circle"></i> {{ Fractal::trans('labels.add_item', ['item' => Fractal::transChoice('labels.content_area')]) }}
 		</a>
 

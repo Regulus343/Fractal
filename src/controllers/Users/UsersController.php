@@ -130,7 +130,7 @@ class UsersController extends BaseController {
 
 			$user = new User;
 
-			$user->fill(Input::except('csrf_token', 'roles', 'password', 'password_confirmation'));
+			$user->fill(Input::except('_token', 'roles', 'password', 'password_confirmation'));
 
 			$user->first_name = Format::name($user->first_name);
 			$user->last_name  = Format::name($user->last_name);
@@ -144,7 +144,7 @@ class UsersController extends BaseController {
 				'contentType' => 'User',
 				'action'      => 'Create',
 				'description' => 'Created a User',
-				'details'     => 'Username: '.$user->username,
+				'details'     => 'Username: '.$user->name,
 			]);
 
 			return Redirect::to(Fractal::uri('', true))
@@ -159,16 +159,24 @@ class UsersController extends BaseController {
 			->withInput();
 	}
 
-	public function edit($username)
+	public function edit($name)
 	{
-		$user = Fractal::userByUsername($username);
+		$user = User::where('name', $name)->first();
 		if (empty($user))
-			return Redirect::to(Fractal::uri('', true))->with('messages', [
-				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.user')])
-			]);
+		{
+			// attempt to find by ID and redirect to slugged URL if found
+			$user = User::find($name);
 
-		Site::setTitle($user->username.' ('.Fractal::trans('labels.user').')');
-		Site::setHeading(Fractal::trans('labels.update_item', ['item' => Fractal::transChoice('labels.user')]).': <strong>'.Format::entities($user->username).'</strong>');
+			if (!empty($user))
+				return Redirect::to(Fractal::uri($user->name.'/edit', true));
+			else
+				return Redirect::to(Fractal::uri('', true))->with('messages', [
+					'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.user')])
+				]);
+		}
+
+		Site::setTitle($user->name.' ('.Fractal::trans('labels.user').')');
+		Site::setHeading(Fractal::trans('labels.update_item', ['item' => Fractal::transChoice('labels.user')]).': <strong>'.Format::entities($user->name).'</strong>');
 		Site::set('wysiwyg', true);
 
 		Form::setDefaults($user, ['roles' => 'id']);
@@ -185,9 +193,9 @@ class UsersController extends BaseController {
 		return View::make(Fractal::view('form'))->with('update', true);
 	}
 
-	public function update($username)
+	public function update($name)
 	{
-		$user = Fractal::userByUsername($username);
+		$user = User::where('name', $name)->first();
 		if (empty($user))
 			return Redirect::to(Fractal::uri('', true))->with('messages', [
 				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.user')])
@@ -226,7 +234,7 @@ class UsersController extends BaseController {
 				'contentType' => 'User',
 				'action'      => 'Update',
 				'description' => 'Updated a User',
-				'details'     => 'Username: '.$user->username,
+				'details'     => 'Username: '.$user->name,
 			]);
 
 			return Redirect::to(Fractal::uri('', true))
@@ -234,7 +242,7 @@ class UsersController extends BaseController {
 		} else {
 			$messages['error'] = Fractal::trans('messages.errors.general');
 
-			return Redirect::to(Fractal::uri($username.'/edit', true))
+			return Redirect::to(Fractal::uri($name.'/edit', true))
 				->with('messages', $messages)
 				->with('errors', Form::getErrors())
 				->withInput();
@@ -263,11 +271,11 @@ class UsersController extends BaseController {
 			'contentType' => 'User',
 			'action'      => 'Ban',
 			'description' => 'Banned a User',
-			'details'     => 'Username: '.$user->username,
+			'details'     => 'Username: '.$user->name,
 		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.success.banned', ['item' => '<strong>'.$user->username.'</strong>']);
+		$result['message']    = Fractal::trans('messages.success.banned', ['item' => '<strong>'.$user->name.'</strong>']);
 		return $result;
 	}
 
@@ -293,11 +301,11 @@ class UsersController extends BaseController {
 			'contentType' => 'User',
 			'action'      => 'Unban',
 			'description' => 'Unbanned a User',
-			'details'     => 'Username: '.$user->username,
+			'details'     => 'Username: '.$user->name,
 		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.success.unbanned', ['item' => '<strong>'.$user->username.'</strong>']);
+		$result['message']    = Fractal::trans('messages.success.unbanned', ['item' => '<strong>'.$user->name.'</strong>']);
 		return $result;
 	}
 
@@ -308,7 +316,7 @@ class UsersController extends BaseController {
 			'message'    => Fractal::trans('messages.errors.general'),
 		];
 
-		$user = \User::find($id);
+		$user = User::find($id);
 		if (empty($user))
 			return $result;
 
@@ -321,11 +329,11 @@ class UsersController extends BaseController {
 			'contentType' => 'User',
 			'action'      => 'Delete',
 			'description' => 'Deleted a User',
-			'details'     => 'Username: '.$user->username,
+			'details'     => 'Username: '.$user->name,
 		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$user->username.'</strong>']);
+		$result['message']    = Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$user->name.'</strong>']);
 		return $result;
 	}
 

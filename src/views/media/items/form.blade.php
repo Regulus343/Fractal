@@ -245,12 +245,12 @@
 		<div class="row button-menu">
 			<div class="col-md-12">
 				@if (isset($update) && $update)
-					<a href="{{ $itemUrl }}" class="btn btn-default right-padded pull-right">
+					<a href="{{ $itemUrl }}" class="btn btn-default icon pull-right">
 						<i class="fa fa-file"></i> {{ Fractal::trans('labels.viewItem') }}
 					</a>
 				@endif
 
-				<a href="{{ Fractal::url('media/items') }}" class="btn btn-default pull-right">
+				<a href="{{ Fractal::url('media/items') }}" class="btn btn-default icon pull-right">
 					<i class="fa fa-list"></i> {{ Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.media_item', 2)]) }}
 				</a>
 			</div>
@@ -281,8 +281,8 @@
 
 						@if (!$item->mediaSourceRequired())
 
-							<a href="" class="btn btn-danger vertical-align-top" id="remove-file">
-								<span class="glyphicon glyphicon-remove"></span>&nbsp; {{ Fractal::trans('labels.removeFile') }}
+							<a href="" class="btn btn-danger icon vertical-align-top" id="remove-file">
+								<i class="fa fa-remove"></i> {{ Fractal::trans('labels.remove_item', ['item' => Fractal::transChoice('labels.file')]) }}
 							</a>
 
 						@endif

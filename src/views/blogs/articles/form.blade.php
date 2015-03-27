@@ -291,12 +291,12 @@
 		<div class="row button-menu">
 			<div class="col-md-12">
 				@if (isset($update) && $update)
-					<a href="{{ $articleUrl }}" class="btn btn-default right-padded pull-right">
+					<a href="{{ $articleUrl }}" class="btn btn-default icon pull-right">
 						<i class="fa fa-file"></i> {{ Fractal::trans('labels.view_item', ['item' => Fractal::transChoice('labels.article')]) }}
 					</a>
 				@endif
 
-				<a href="{{ Fractal::url('blogs/articles') }}" class="btn btn-default pull-right">
+				<a href="{{ Fractal::url('blogs/articles') }}" class="btn btn-default icon pull-right">
 					<i class="fa fa-list"></i> {{ Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.article', 2)]) }}
 				</a>
 			</div>
@@ -335,7 +335,7 @@
 				{!! Form::hidden('thumbnail_image_file_id') !!}
 				{!! Form::hidden('thumbnail_image_media_item_id') !!}
 
-				<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="blogs/articles/select-thumbnail-image{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="get" data-modal-callback-function="selectThumbnailImageActions">
+				<a href="" class="btn btn-primary icon trigger-modal pull-right" data-modal-ajax-uri="blogs/articles/select-thumbnail-image{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="get" data-modal-callback-function="selectThumbnailImageActions">
 					<i class="fa fa-file-image-o"></i> {{ Fractal::trans('labels.select_item', ['item' => Fractal::transChoice('labels.thumbnail_image')]) }}
 				</a>
 			</div>
@@ -343,7 +343,7 @@
 				<div id="thumbnail-image-area"{!! HTML::hiddenArea(!isset($article) || !$article->hasThumbnailImage()) !!}>
 					<img src="{{ (isset($article) ? $article->getThumbnailImageUrl() : '') }}" alt="Thumbnail Image" title="Thumbnail Image" class="thumbnail-image" />
 
-					<a href="" class="btn btn-danger vertical-align-top" id="remove-thumbnail-image">
+					<a href="" class="btn btn-danger icon vertical-align-top" id="remove-thumbnail-image">
 						<i class="fa fa-remove"></i> {{ Fractal::trans('labels.remove_item', ['item' => Fractal::transChoice('labels.thumbnail_image')]) }}
 					</a>
 				</div><!-- /#thumbnail-image-area -->
@@ -357,7 +357,7 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				<a href="" class="btn btn-primary trigger-modal pull-right" data-modal-ajax-uri="blogs/articles/add-content-area{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="get" data-modal-callback-function="selectContentAreaActions">
+				<a href="" class="btn btn-primary icon trigger-modal pull-right" data-modal-ajax-uri="blogs/articles/add-content-area{{ (isset($id) ? '/'.$id : '') }}" data-modal-ajax-action="get" data-modal-callback-function="selectContentAreaActions">
 					<i class="fa fa-plus-circle"></i> {{ Fractal::trans('labels.add_item', ['item' => Fractal::transChoice('labels.content_area')]) }}
 				</a>
 			</div>

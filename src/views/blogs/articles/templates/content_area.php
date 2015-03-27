@@ -48,7 +48,7 @@
 					'class-field' => 'tab',
 				])?>
 
-				<a href="" class="btn btn-default trigger-modal pull-right" data-modal-ajax-uri="api/view-markdown-guide" data-modal-ajax-action="get">
+				<a href="" class="btn btn-default icon trigger-modal pull-right" data-modal-ajax-uri="api/view-markdown-guide" data-modal-ajax-action="get">
 					<i class="fa fa-file"></i> <?=Fractal::trans('labels.view_item', ['item' => Fractal::trans('labels.markdown_guide')])?>
 				</a>
 			</div>
@@ -60,7 +60,7 @@
 			</div>
 		</div>
 
-		<a href="" class="btn btn-danger btn-xs remove-template-item pull-right">
+		<a href="" class="btn btn-danger btn-xs icon remove-template-item pull-right">
 			<i class="fa fa-ban"></i> <?=Fractal::trans('labels.remove_item', ['item' => Fractal::transChoice('labels.content_area')])?>
 		</a>
 	</fieldset>

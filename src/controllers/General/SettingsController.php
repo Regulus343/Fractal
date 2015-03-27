@@ -78,7 +78,7 @@ class SettingsController extends BaseController {
 		$messages = [];
 		if (Form::isValid())
 		{
-			$messages['success'] = Fractal::trans('messages.successUpdated', ['item' => Fractal::transLower('labels.settings')]);
+			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transLower('labels.settings')]);
 
 			foreach ($settings as $setting)
 			{
@@ -103,7 +103,7 @@ class SettingsController extends BaseController {
 				'description' => 'Updated Settings',
 			]);
 		} else {
-			$messages['error'] = Fractal::trans('messages.errorGeneral');
+			$messages['error'] = Fractal::trans('messages.errors.general');
 		}
 
 		return Redirect::to(Fractal::uri('', true))

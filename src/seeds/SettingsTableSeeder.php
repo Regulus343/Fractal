@@ -38,7 +38,7 @@ class SettingsTableSeeder extends Seeder {
 				'name'          => 'CMS Roles',
 				'value'         => 'admin, mod',
 				'type'          => 'List',
-				'options'       => '\Regulus\Identify\Role::getSelectable()',
+				'options'       => '\Regulus\Identify\Models\Role::getSelectable()',
 				'developer'     => true,
 			],
 			[
