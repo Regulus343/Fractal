@@ -93,6 +93,9 @@ return [
 	'return_to_top'           => 'Return to Top',
 
 	'read_more'               => 'Read More...',
+	'view'                    => 'View',
+
+	'preview_divider'         => 'Preview Divider',
 
 	'timestamp'               => 'Timestamp',
 	'to_be_published'         => 'To Be Published on :dateTime',

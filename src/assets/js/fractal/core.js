@@ -3,7 +3,7 @@
 | Fractal JS
 |------------------------------------------------------------------------------
 |
-| Last Updated: March 26, 2015
+| Last Updated: March 30, 2015
 |
 */
 
@@ -899,7 +899,10 @@ var Fractal = {
 				$('#markdown-preview').fadeOut();
 			});
 
-			this.renderMarkdownPreview(field);
+			setTimeout(function()
+			{
+				Fractal.renderMarkdownPreview(field);
+			}, 250);
 		}
 	},
 

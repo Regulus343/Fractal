@@ -44,6 +44,8 @@ class Article extends Base {
 		'title',
 		'layout_template_id',
 		'layout',
+		'content_rendered',
+		'content_rendered_preview',
 		'thumbnail_image_type',
 		'thumbnail_image_file_id',
 		'thumbnail_image_media_item_id',
@@ -133,7 +135,8 @@ class Article extends Base {
 			'title' => ['required'],
 		];
 
-		if (Form::post()) {
+		if (Form::post())
+		{
 			foreach (Form::getValuesObject('content_areas') as $number => $values)
 			{
 				if (Form::getValueFromObject('title', $values) != "" || Form::getValueFromObject('pivot.layout_tag', $values) != ""
@@ -337,14 +340,39 @@ class Article extends Base {
 	 */
 	public function getRenderedContent($config = [])
 	{
+		$configDefault = [
+			'contentUrl'            => $this->getUrl(),
+			'contentType'           => $this->content_type,
+			'previewOnly'           => false,
+			'render'                => true,
+			'thumbnailImageFileId'  => $this->thumbnail_image_file_id,
+			'viewButton'            => true,
+			'viewButtonPlaceholder' => true,
+			'viewButtonLabel'       => 'read_more',
+		];
+
+		$config = array_merge($configDefault, $config);
+
+		// return pre-rendered content if "render" is not set
+		if (!$config['render'])
+		{
+			if ($config['previewOnly'])
+			{
+				if (!is_null($this->content_rendered_preview))
+					return Fractal::addViewButtonToContent($this->content_rendered_preview, $config);
+			}
+			else
+			{
+				if (!is_null($this->content_rendered))
+					return $this->content_rendered;
+			}
+		}
+
 		$content = $this->getLayout();
 
-		$previewOnly       = isset($config['previewOnly'])       ? $config['previewOnly']       : false;
-		$addReadMoreButton = isset($config['addReadMoreButton']) ? $config['addReadMoreButton'] : true;
-
-		//if preview only is set, select only the main or primary content area for display
+		// if preview only is set, select only the main or primary content area for display
 		$contentAreas = $this->contentAreas;
-		if ($previewOnly && config('blogs.use_standard_layout_for_article_list'))
+		if ($config['previewOnly'] && config('blogs.use_standard_layout_for_article_list'))
 		{
 			$mainTags       = ['main', 'primary'];
 			$previewDivider = config('blogs.preview_divider');
@@ -384,18 +412,31 @@ class Article extends Base {
 			}
 		}
 
-		$config  = [
-			'contentUrl'           => $this->getUrl(),
-			'previewOnly'          => $previewOnly,
-			'addReadMoreButton'    => $addReadMoreButton,
-			'thumbnailImageFileId' => $this->thumbnail_image_file_id,
-		];
-
 		foreach ($contentAreas as $contentArea) {
 			$content = $contentArea->renderContentToLayout($content, $config);
 		}
 
+		if ($config['previewOnly'])
+			$this->content_rendered_preview = Fractal::addViewButtonToContent($content, $config);
+		else
+			$this->content_rendered = $content;
+
+		$this->save();
+
 		return $content;
+	}
+
+	/**
+	 * Rendered the content for the article.
+	 *
+	 * @param  array    $config
+	 * @return string
+	 */
+	public function renderContent($config = [])
+	{
+		$config['render'] = true;
+
+		return $this->getRenderedContent($config);
 	}
 
 	/**

@@ -23,6 +23,8 @@ class CreateMediaItemsTable extends Migration {
 			$table->string('title');
 			$table->string('description_type', 8);
 			$table->text('description');
+			$table->text('description_rendered')->nullable();
+			$table->text('description_rendered_preview')->nullable();
 
 			$table->boolean('hosted_externally');
 			$table->string('hosted_content_type', 32)->nullable();

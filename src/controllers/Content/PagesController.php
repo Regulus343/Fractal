@@ -122,6 +122,8 @@ class PagesController extends BaseController {
 			$input = Input::all();
 			$page  = Page::createNew($input);
 
+			$page->renderContent();
+
 			Fractal::clearSavedContent();
 
 			// re-export menus to config array in case published status for page has changed
@@ -214,6 +216,8 @@ class PagesController extends BaseController {
 			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoiceLowerA('labels.page')]);
 
 			$page->saveData();
+
+			$page->renderContent();
 
 			// re-export menus to config array in case published status for page has changed
 			Fractal::exportMenus();
@@ -354,7 +358,10 @@ class PagesController extends BaseController {
 
 	public function renderMarkdownContent()
 	{
-		return Fractal::renderMarkdownContent(Input::get('content'), ['insertViews' => false]);
+		return Fractal::renderMarkdownContent(Input::get('content'), [
+			'insertViews'    => false,
+			'previewDivider' => true,
+		]);
 	}
 
 	public function addContentArea($id = null)

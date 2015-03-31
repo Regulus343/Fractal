@@ -64,7 +64,7 @@ class ViewController extends Controller {
 
 		Fractal::setPage($page);
 
-		$articles = Article::orderBy('published_at', 'desc');
+		$articles = Article::orderBy('published_at', 'desc')->orderBy('id', 'desc');
 
 		if (Auth::isNot('admin'))
 			$articles->onlyPublished();
@@ -119,7 +119,7 @@ class ViewController extends Controller {
 
 		Site::set('contentUrl', $article->getUrl());
 		Site::set('contentImage', $article->getThumbnailImageUrl());
-		Site::set('contentDescription', strip_tags($article->getRenderedContent(['previewOnly' => true, 'addReadMoreButton' => false])));
+		Site::set('contentDescription', strip_tags($article->getRenderedContent(['previewOnly' => true, 'viewButton' => false])));
 
 		Site::addTrailItem(strip_tags($article->getTitle()), $article->getUrl());
 
@@ -196,7 +196,8 @@ class ViewController extends Controller {
 		if (!empty($articleIds))
 		{
 			$articles = Article::whereIn('id', $articleIds)
-				->orderBy('published_at', 'desc');
+				->orderBy('published_at', 'desc')
+				->orderBy('id', 'desc');
 
 			if (Auth::isNot('admin'))
 				$articles->onlyPublished();

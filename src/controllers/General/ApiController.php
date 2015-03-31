@@ -83,6 +83,8 @@ class ApiController extends BaseController {
 							{
 								$page->saveData($content);
 
+								$page->renderContent();
+
 								return 1;
 							}
 						}
@@ -100,6 +102,8 @@ class ApiController extends BaseController {
 							if (Form::isValid())
 							{
 								$article->saveData($content);
+
+								$article->renderContent();
 
 								return 1;
 							}

@@ -54,6 +54,8 @@ class Item extends Base {
 		'title',
 		'description_type',
 		'description',
+		'description_rendered',
+		'description_rendered_preview',
 		'hosted_externally',
 		'hosted_content_type',
 		'hosted_content_uri',
@@ -474,22 +476,70 @@ class Item extends Base {
 	 */
 	public function getRenderedDescription($config = [])
 	{
-		$previewOnly = isset($config['previewOnly']) ? $config['previewOnly'] : false;
-		$sanitized   = isset($config['sanitized'])   ? $config['sanitized']   : false;
+		$configDefault = [
+			'contentUrl'            => $this->getUrl(),
+			'contentType'           => $this->description_type,
+			'previewOnly'           => false,
+			'render'                => false,
+			'sanitized'             => false,
+			'viewButton'            => true,
+			'viewButtonPlaceholder' => true,
+		];
 
-		$config['contentType'] = $this->description_type;
+		$config = array_merge($configDefault, $config);
+
+		if (!$config['render'])
+		{
+			$description = null;
+
+			if ($config['previewOnly'])
+			{
+				if (!is_null($this->description_rendered_preview))
+					$description = Fractal::addViewButtonToContent($this->description_rendered_preview, $config);
+			}
+			else
+			{
+				if (!is_null($this->description_rendered))
+					$description = $this->description_rendered;
+			}
+
+			if (!is_null($description))
+			{
+				if ($config['sanitized'])
+					$description = static::sanitizeDescription($description);
+
+				return $description;
+			}
+		}
 
 		$description = Fractal::renderContent($this->description, $config);
 
-		if ($sanitized && $description != "")
-		{
-			$description = '<div class="item-description">'.$description.'</div>';
-			$description = str_replace('<', '&lt;', $description);
-			$description = str_replace('>', '&gt;', $description);
-			$description = str_replace('"', "'", $description);
-		}
+		if ($config['previewOnly'])
+			$this->description_rendered_preview = Fractal::addViewButtonToContent($description, $config);
+		else
+			$this->description_rendered = $description;
+
+		$this->save();
+
+		$description = Fractal::addViewButtonToContent($description, $config);
+
+		if ($config['sanitized'])
+			$description = static::sanitizeDescription($description);
 
 		return $description;
+	}
+
+	/**
+	 * Render the description.
+	 *
+	 * @param  array    $config
+	 * @return string
+	 */
+	public function renderDescription($config = [])
+	{
+		$config['render'] = true;
+
+		return $this->getRenderedDescription($config);
 	}
 
 	/**
@@ -970,6 +1020,8 @@ class Item extends Base {
 
 				$item->save();
 
+				$item->renderDescription();
+
 				Activity::log([
 					'contentId'   => $item->id,
 					'contentType' => 'Media Item',
@@ -1077,6 +1129,22 @@ class Item extends Base {
 			$path = substr($path, 0, (strlen($path) - 1));
 
 		return str_replace('/thumbnails', '', $path);
+	}
+
+	/**
+	 * Sanitize the description for use in a data attribute for an element.
+	 *
+	 * @param  array    $config
+	 * @return string
+	 */
+	public static function sanitizeDescription($description)
+	{
+		$description = '<div class="item-description">'.$description.'</div>';
+		$description = str_replace('<', '&lt;', $description);
+		$description = str_replace('>', '&gt;', $description);
+		$description = str_replace('"', "'", $description);
+
+		return $description;
 	}
 
 }

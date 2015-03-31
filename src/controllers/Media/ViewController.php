@@ -70,7 +70,7 @@ class ViewController extends Controller {
 
 		Site::set('subSection', 'All');
 
-		$mediaItems = Item::orderBy('published_at', 'desc');
+		$mediaItems = Item::orderBy('published_at', 'desc')->orderBy('id', 'desc');
 
 		if (Auth::isNot('admin'))
 			$mediaItems->onlyPublished();
@@ -277,7 +277,8 @@ class ViewController extends Controller {
 		if (!empty($mediaItemIds))
 		{
 			$mediaItems = Item::whereIn('id', $mediaItemIds)
-				->orderBy('published_at', 'desc');
+				->orderBy('published_at', 'desc')
+				->orderBy('id', 'desc');
 
 			if (Auth::isNot('admin'))
 				$mediaItems->onlyPublished();

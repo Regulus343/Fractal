@@ -145,3 +145,18 @@ fieldset.indent-level-3 { margin-left: 96px; }
 #footer p.fractal { clear: right; color: #555; font-size: 11px; }
 #footer p.fractal a { z-index: 500; position: relative; color: #999; }
 #footer p.fractal a:hover { color: #d00; }
+
+blockquote.quote { color: #444; font-size: 22px; }
+blockquote.quote span.quotation-mark { color: #777; font-size: 32px; }
+blockquote.quote span.ellipsis { color: #777; }
+
+div.preview-divider {
+	margin: 0 0 8px 0;
+	padding: 0;
+	color: #999;
+	border-top: 1px dashed #999;
+	border-bottom: 1px dashed #999;
+	font-size: smaller;
+	text-align: center;
+	text-transform: uppercase;
+}

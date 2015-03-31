@@ -38,7 +38,7 @@
 
 	<div class="content-item-body article-body">
 
-		{!! $article->getRenderedContent(['previewOnly' => Site::get('articleList', false)]) !!}
+		{!! $article->getRenderedContent(['previewOnly' => Site::get('articleList')]) !!}
 
 	</div>
 

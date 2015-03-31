@@ -21,6 +21,8 @@ class CreateMediaSetsTable extends Migration {
 			$table->string('title');
 			$table->string('description_type', 8);
 			$table->text('description');
+			$table->text('description_rendered')->nullable();
+			$table->text('description_rendered_preview')->nullable();
 			$table->boolean('image_gallery');
 
 			$table->timestamps();

@@ -246,7 +246,7 @@
 			<div class="col-md-12">
 				@if (isset($update) && $update)
 					<a href="{{ $itemUrl }}" class="btn btn-default icon pull-right">
-						<i class="fa fa-file"></i> {{ Fractal::trans('labels.viewItem') }}
+						<i class="fa fa-file"></i> {{ Fractal::trans('labels.view_item', ['item' => Fractal::transChoice('labels.media_item')]) }}
 					</a>
 				@endif
 

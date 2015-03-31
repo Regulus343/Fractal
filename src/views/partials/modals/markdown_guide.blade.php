@@ -160,6 +160,19 @@ will place them in a "code" block.</code></pre>
 
 	<tr>
 		<td class="monospace">
+			#### Embed an image with a class and an ID:<br /><br />
+
+			[image:1; .pull-right #image-id]
+		</td>
+		<td class="black">
+			<h4>Embed an image with a class and an ID:</h4>
+
+			<img src="{{ Site::img('logo', 'regulus/fractal') }}" alt="Image Example" title="Image Example" class="pull-right" id="image-id" />
+		</td>
+	</tr>
+
+	<tr>
+		<td class="monospace">
 			#### Make a content page URL:<br /><br />
 
 			page:about
@@ -205,11 +218,87 @@ will place them in a "code" block.</code></pre>
 
 			[vimeo:123456789]<br /><br />
 
-			[soundcloud:123456789]<br /><br />
+			[soundcloud:123456789]
 		</td>
 		<td>
 			<h2>No Preview Available</h2>
 		</td>
 	</tr>
+
+	<tr>
+		<td class="monospace">
+			#### Place a preview divider:<br /><br />
+
+			{{ config('blogs.preview_divider') }}
+		</td>
+		<td>
+			<h4>Place a preview divider:</h4>
+
+			<div class="preview-divider">{{ Fractal::trans('labels.preview_divider') }}</div>
+		</td>
+	</tr>
+
+	<tr>
+		<td class="monospace">
+			#### Declare quotable text and embed a quote:<br /><br />
+
+			Ron Paul once said, "[quotable]Truth is treason in the empire of lies.[/quotable]"<br /><br />
+
+			[quote:1]
+		</td>
+		<td>
+			<h4>Declare quotable text and embed a quote:</h4>
+
+			<p>Ron Paul once said, "[quotable]Truth is treason in the empire of lies.[/quotable]"</p>
+
+			<blockquote class="quote">
+				<span class="quotation-mark quotation-left">&ldquo;</span>
+
+				Truth is treason in the empire of lies.
+
+				<span class="quotation-mark quotation-right">&rdquo;</span>
+			</blockquote>
+		</td>
+	</tr>
+
+	<tr>
+		<td class="monospace">
+			#### Embed a quote with a class and an ID:<br /><br />
+
+			Ron Paul once said, "[quotable]Truth is treason in the empire of lies.[/quotable]"<br /><br />
+
+			[quote:1; .pull-right #quote-id]
+		</td>
+		<td>
+			<h4>Embed a quote with a class and an ID:</h4>
+
+			<p>Ron Paul once said, "[quotable]Truth is treason in the empire of lies.[/quotable]"</p>
+
+			<blockquote class="quote pull-right" id="quote-id">
+				<span class="quotation-mark quotation-left">&ldquo;</span>
+
+				Truth is treason in the empire of lies.
+
+				<span class="quotation-mark quotation-right">&rdquo;</span>
+			</blockquote>
+		</td>
+	</tr>
+
+	@if (Session::get('developer'))
+
+		<tr>
+			<td class="monospace">
+				#### Load a view file:<br /><br />
+
+				[view:"forms.contact"]<br /><br />
+
+				[view:"fractal::content.pages.inserts.form_contact"]
+			</td>
+			<td>
+				<h2>No Preview Available</h2>
+			</td>
+		</tr>
+
+	@endif
 
 </table>

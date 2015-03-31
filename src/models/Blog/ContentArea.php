@@ -132,13 +132,15 @@ class ContentArea extends Base {
 	 */
 	public function getRenderedContent($config = [])
 	{
-		$config  = [
+		$configDefault = [
 			'contentType'          => $this->content_type,
-			'contentUrl'           => isset($config['contentUrl'])           ? $config['contentUrl']           : null,
-			'previewOnly'          => isset($config['previewOnly'])          ? $config['previewOnly']          : false,
-			'addReadMoreButton'    => isset($config['addReadMoreButton'])    ? $config['addReadMoreButton']    : false,
-			'thumbnailImageFileId' => isset($config['thumbnailImageFileId']) ? $config['thumbnailImageFileId'] : null,
+			'contentUrl'           => null,
+			'previewOnly'          => false,
+			'viewButton'           => false,
+			'thumbnailImageFileId' => null,
 		];
+
+		$config = array_merge($configDefault, $config);
 
 		$content = ($config['previewOnly'] && $this->content_modified != "") ? $this->content_modified : $this->content;
 

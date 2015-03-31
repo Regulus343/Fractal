@@ -41,7 +41,7 @@
 	@if ($mediaItem->description)
 
 		<div class="media-item-description">
-			{!! $mediaItem->getRenderedDescription() !!}
+			{!! $mediaItem->getRenderedDescription(['previewOnly' => Site::get('mediaList')]) !!}
 		</div>
 
 	@endif

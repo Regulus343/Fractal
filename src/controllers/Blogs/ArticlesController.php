@@ -126,6 +126,8 @@ class ArticlesController extends BlogsController {
 
 			$article = Article::createNew($input);
 
+			$article->renderContent();
+
 			Fractal::clearSavedContent();
 
 			Activity::log([
@@ -220,6 +222,8 @@ class ArticlesController extends BlogsController {
 			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoiceLowerA('labels.article')]);
 
 			$article->saveData();
+
+			$article->renderContent();
 
 			Activity::log([
 				'contentId'   => $article->id,

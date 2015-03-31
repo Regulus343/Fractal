@@ -24,6 +24,9 @@ class CreateBlogArticlesTable extends Migration {
 			$table->integer('layout_template_id');
 			$table->text('layout');
 
+			$table->text('content_rendered')->nullable();
+			$table->text('content_rendered_preview')->nullable();
+
 			$table->string('thumbnail_image_type', 16)->nullable();
 			$table->integer('thumbnail_image_file_id')->nullable();
 			$table->integer('thumbnail_image_media_item_id')->nullable();

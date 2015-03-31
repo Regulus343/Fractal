@@ -19,7 +19,7 @@ div.content-item-heading h3 { margin-top: 0; padding-top: 0; }
 div.content-item-heading time { color: #555; font-style: italic; }
 div.content-item-body img { max-width: 100%; }
 div.content-item-body p { width: inherit; }
-div.content-item-body a.btn-read-more { margin-left: 6px; }
+div.content-item-body a.btn-view-content { margin-left: 6px; }
 
 div.content-item-body img.primary { float: left; margin: 0 12px 12px 0; width: 30%; max-width: 300px; }
 

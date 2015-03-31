@@ -45,6 +45,7 @@ class Page extends Base {
 		'title',
 		'layout_template_id',
 		'layout',
+		'content_rendered',
 		'published_at',
 	];
 
@@ -117,7 +118,8 @@ class Page extends Base {
 			'title' => ['required'],
 		];
 
-		if (Form::post()) {
+		if (Form::post())
+		{
 			foreach (Form::getValuesObject('content_areas') as $number => $values)
 			{
 				if (Form::getValueFromObject('title', $values) != "" || Form::getValueFromObject('pivot.layout_tag', $values) != ""
@@ -226,17 +228,35 @@ class Page extends Base {
 	/**
 	 * Get the rendered content for the page.
 	 *
+	 * @param  boolean  $render
 	 * @return string
 	 */
-	public function getRenderedContent()
+	public function getRenderedContent($render = false)
 	{
+		// return pre-rendered content if "render" is not set
+		if (!$render && !is_null($this->content_rendered))
+			return $this->content_rendered;
+
 		$content = $this->getLayout();
 
 		foreach ($this->contentAreas as $contentArea) {
 			$content = $contentArea->renderContentToLayout($content);
 		}
 
+		$this->content_rendered = $content;
+		$this->save();
+
 		return $content;
+	}
+
+	/**
+	 * Render the content for the page.
+	 *
+	 * @return string
+	 */
+	public function renderContent($render = false)
+	{
+		return $this->getRenderedContent(true);
 	}
 
 	/**

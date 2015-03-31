@@ -117,6 +117,8 @@ class SetsController extends MediaController {
 
 			$set = Set::createNew($input);
 
+			$set->renderDescription();
+
 			$set->saveItems(explode(',', $input['items']));
 
 			Activity::log([
@@ -194,6 +196,8 @@ class SetsController extends MediaController {
 			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoiceLowerA('labels.media_set')]);
 
 			$set->saveData();
+
+			$set->renderDescription();
 
 			$set->saveItems(explode(',', Input::get('items')));
 

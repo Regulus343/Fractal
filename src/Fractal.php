@@ -6,7 +6,7 @@
 
 		created by Cody Jassman
 		version 0.9.0a - Fractal is in transition from Laravel 4 (0.8.x) to Laravel 5 (0.9.x)
-		last updated on March 25, 2015
+		last updated on March 30, 2015
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -758,29 +758,42 @@ class Fractal {
 	 */
 	public function renderContent($content, $config = [])
 	{
-		$contentType       = isset($config['contentType'])       ? $config['contentType']       : "HTML";
-		$contentUrl        = isset($config['contentUrl'])        ? $config['contentUrl']        : null;
-		$previewOnly       = isset($config['previewOnly'])       ? $config['previewOnly']       : false;
-		$addReadMoreButton = isset($config['addReadMoreButton']) ? $config['addReadMoreButton'] : false;
+		$configDefault = [
+			'contentType'           => 'HTML',
+			'contentUrl'            => null,
+			'previewOnly'           => false,
+			'previewDivider'        => false,
+			'viewButton'            => false,
+			'viewButtonPlaceholder' => false,
+			'viewButtonLabel'       => 'view',
+		];
+
+		$config = array_merge($configDefault, $config);
+
+		$viewButtonPlaceholder = "[view-content-button]";
 
 		// replace HTML special character quotation marks with actual quotation marks
 		$content = str_replace('&quot;', '"', $content);
 
 		// cut off content after the preview divider for blog articles if preview only option is set
 		$previewDivider = config('blogs.preview_divider');
-		if ($previewOnly)
+		if ($config['previewOnly'])
 		{
 			$dividerPosition = strpos($content, $previewDivider);
 			if ($dividerPosition)
 				$content = substr($content, 0, $dividerPosition);
-		} else {
-			$content = str_replace($previewDivider, '', str_replace("\n".$previewDivider."\n", '', $content));
+		}
+		else
+		{
+			$previewDividerMarkup = $config['previewDivider'] ? '<div class="preview-divider">'.$this->trans('labels.preview_divider').'</div>' : '';
+
+			$content = str_replace($previewDivider, $previewDividerMarkup, str_replace("\n".$previewDivider."\n", $previewDividerMarkup, $content));
 		}
 
 		// add thumbnail image to content
 		if (isset($config['thumbnailImageFileId']) && !is_null($config['thumbnailImageFileId']))
 		{
-			preg_match_all('/(\[thumbnail\-image)([\;A-Za-z0-9\-\.\#\ ]*)\]/', $content, $thumbnailImages);
+			preg_match_all('/(\[thumbnail\-image)[;]{0,1}([A-Za-z0-9\-\_\.\#\ ]*)\]/', $content, $thumbnailImages);
 			if (isset($thumbnailImages[0]) && !empty($thumbnailImages[0]))
 			{
 				$thumbnailImageText = $thumbnailImages[1][0];
@@ -800,12 +813,13 @@ class Fractal {
 		}
 
 		// add file images to content
-		$content = $this->renderContentImages($content, '/\!\[file:([0-9]*)([\;A-Za-z0-9\-\.\#\ ]*)\]/'); //Markdown style image replacement
-		$content = $this->renderContentImages($content, '/\[image:([0-9]*)([\;A-Za-z0-9\-\.\#\ ]*)\]/'); //custom "image" replacement tag to match others
+		$content = $this->renderContentImages($content, '/\!\[file:([0-9]*)[;]{0,1}([\;A-Za-z0-9\-\_\.\#\ ]*)\]/'); //Markdown style image replacement
+		$content = $this->renderContentImages($content, '/\[image:([0-9]*)[;]{0,1}([\;A-Za-z0-9\-\_\.\#\ ]*)\]/'); //custom "image" replacement tag to match others
 
 		// add file links to content
 		preg_match_all('/\[file:([0-9]*)\]/', $content, $fileIds);
-		if (isset($fileIds[0]) && !empty($fileIds[0])) {
+		if (isset($fileIds[0]) && !empty($fileIds[0]))
+		{
 			$files = ContentFile::whereIn('id', $fileIds[1])->get();
 
 			for ($f = 0; $f < count($fileIds[0]); $f++)
@@ -838,10 +852,12 @@ class Fractal {
 
 		// add file URLs to content
 		preg_match_all('/file:([0-9]*)/', $content, $fileIds);
-		if (isset($fileIds[0]) && !empty($fileIds[0])) {
+		if (isset($fileIds[0]) && !empty($fileIds[0]))
+		{
 			$files = ContentFile::whereIn('id', $fileIds[1])->get();
 
-			for ($f = 0; $f < count($fileIds[0]); $f++) {
+			for ($f = 0; $f < count($fileIds[0]); $f++)
+			{
 				$url = "";
 				foreach ($files as $file)
 				{
@@ -856,7 +872,8 @@ class Fractal {
 
 		// add page links to content
 		preg_match_all('/\[page:([a-z\-]*)\]/', $content, $pageSlugs);
-		if (isset($pageSlugs[0]) && !empty($pageSlugs[0])) {
+		if (isset($pageSlugs[0]) && !empty($pageSlugs[0]))
+		{
 			$pages = Page::whereIn('slug', $pageSlugs[1])->get();
 
 			for ($p = 0; $p < count($pageSlugs[0]); $p++) {
@@ -880,7 +897,8 @@ class Fractal {
 
 		// add page links to content
 		preg_match_all('/page:([a-z\-]*)/', $content, $pageSlugs);
-		if (isset($pageSlugs[0]) && !empty($pageSlugs[0])) {
+		if (isset($pageSlugs[0]) && !empty($pageSlugs[0]))
+		{
 			$pages = Page::whereIn('slug', $pageSlugs[1])->get();
 
 			for ($p = 0; $p < count($pageSlugs[0]); $p++)
@@ -950,8 +968,82 @@ class Fractal {
 			}
 		}
 
+		// insert quotes
+		$quotes = [];
+		preg_match_all('/\[quotable\]([A-Za-z0-9\.\!\?\,\;\:\'\"\@\#\$\%\&\*\ \n]*)\[\/quotable\]/', $content, $quotableResult);
+		if (isset($quotableResult[0]) && !empty($quotableResult[0]))
+		{
+			for ($q = 0; $q < count($quotableResult[0]); $q++)
+			{
+				$content = str_replace($quotableResult[0][$q], $quotableResult[1][$q], $content);
+			}
+
+			$quotes = $quotableResult[1];
+		}
+
+		preg_match_all('/\[quote:([0-9]*)[;]{0,1}([A-Za-z0-9\-\_\.\#\ ]*)\]/', $content, $quotesResult);
+		if (isset($quotesResult[0]) && !empty($quotesResult[0]))
+		{
+			$quotationLeft  = '<span class="quotation-mark quotation-left">&ldquo;</span>';
+			$quotationRight = '<span class="quotation-mark quotation-right">&rdquo;</span>';
+			$ellipsis       = '<span class="ellipsis">...</span>';
+
+			for ($q = 0; $q < count($quotesResult[0]); $q++)
+			{
+				$quoteIndex = (int) $quotesResult[1][$q] - 1;
+
+				$quote = isset($quotes[$quoteIndex]) ? $quotes[$quoteIndex] : "";
+
+				if (!is_null($quote) && $quote != "")
+				{
+					// add ellipses if necessary
+					$quoteStart = substr($quote, 0, 1);
+					$quoteEnd   = substr($quote, -1);
+
+					if (strtolower($quoteStart) == $quoteStart)
+						$quote = $ellipsis.$quote;
+
+					if (!in_array($quoteEnd, ['.', '?', '!']))
+						$quote .= $ellipsis;
+
+					// add ID and/or classes
+					$id      = "";
+					$classes = ['quote'];
+					if (isset($quotesResult[2][$q]) && !empty($quotesResult[2][$q]))
+					{
+						$idClasses = explode(' ', $quotesResult[2][$q]);
+
+						foreach ($idClasses as $idClass)
+						{
+							if (substr($idClass, 0, 1) == "#")
+								$id = str_replace('#', '', $idClass);
+							else if (substr($idClass, 0, 1) == ".")
+								$classes[] = str_replace('.', '', $idClass);
+						}
+					}
+
+					// build quote markup
+					$quoteMarkup = '<blockquote';
+
+					if ($id != "")
+						$quoteMarkup .= ' id="'.$id.'" ';
+
+					if (!empty($classes))
+						$quoteMarkup .= ' class="'.implode(' ', $classes).'" ';
+
+					$quoteMarkup .= '>'.$quotationLeft.$quote.$quotationRight.'</blockquote>';
+
+					$quote = $quoteMarkup;
+				}
+
+				$content = str_replace($quotesResult[0][$q], $quote, $content);
+			}
+
+			$quotes = $quotesResult[1];
+		}
+
 		// render to Markdown
-		if (strtolower($contentType) == "markdown")
+		if (strtolower($config['contentType']) == "markdown")
 			$content = Markdown::parse($content);
 
 		// convert lone ampersands to HTML special characters
@@ -959,8 +1051,9 @@ class Fractal {
 
 		// render views in content
 		preg_match_all('/\<p\>\[view:\&quot\;([a-z\:\.\_\-]*)\&quot\;\]\<\/p\>/', $content, $views);
-		if (isset($views[0]) && !empty($views[0])) {
-			if (!$previewOnly && (!isset($config['insertViews']) || $config['insertViews'] != false))
+		if (isset($views[0]) && !empty($views[0]))
+		{
+			if (!$config['previewOnly'] && (!isset($config['insertViews']) || $config['insertViews'] != false))
 			{
 				for ($v = 0; $v < count($views[0]); $v++)
 				{
@@ -972,9 +1065,21 @@ class Fractal {
 			}
 		}
 
-		// add a "Read More" button
-		if ($previewOnly && $addReadMoreButton && $contentUrl)
-			$content .= '<a href="'.$contentUrl.'" class="btn btn-default btn-xs btn-read-more">'.Fractal::trans('labels.read_more').'</a>';
+		// add a "View" / "Read More" button
+		if ($config['previewOnly'] && $config['viewButton'] && $config['contentUrl'])
+		{
+			$viewButtonPlaceholderText = $viewButtonPlaceholder;
+
+			if ($config['viewButtonPlaceholder'])
+			{
+				if (strpos($content, $viewButtonPlaceholderText) === false)
+					$content .= $viewButtonPlaceholderText;
+			}
+			else
+			{
+				$content .= $this->getViewButtonMarkup($config['contentUrl'], $config['viewButtonLabel']);
+			}
+		}
 
 		return $content;
 	}
@@ -1003,7 +1108,8 @@ class Fractal {
 	public function renderContentImages($content, $expression)
 	{
 		preg_match_all($expression, $content, $fileIds);
-		if (isset($fileIds[0]) && !empty($fileIds[0])) {
+		if (isset($fileIds[0]) && !empty($fileIds[0]))
+		{
 			$files = ContentFile::whereIn('id', $fileIds[1])->get();
 
 			for ($f = 0; $f < count($fileIds[0]); $f++)
@@ -1019,10 +1125,12 @@ class Fractal {
 					}
 				}
 
+				// add ID and/or classes
 				$id      = "";
 				$classes = [];
-				if (isset($fileIds[2][$f]) && !empty($fileIds[2][$f])) {
-					$idClasses = str_replace(';', '', explode(' ', $fileIds[2][$f]));
+				if (isset($fileIds[2][$f]) && !empty($fileIds[2][$f]))
+				{
+					$idClasses = explode(' ', $fileIds[2][$f]);
 
 					foreach ($idClasses as $idClass)
 					{
@@ -1051,6 +1159,40 @@ class Fractal {
 		}
 
 		return $content;
+	}
+
+	/**
+	 * Get the markup for the "Read More" button.
+	 *
+	 * @param  string   $uri
+	 * @param  string   $label
+	 * @return string
+	 */
+	public function getViewContentButtonMarkup($url, $label = 'view')
+	{
+		return '<a href="'.$url.'" class="btn btn-default btn-xs btn-view-content">'.Fractal::trans('labels.'.$label).'</a>';
+	}
+
+	/**
+	 * Get the markup for the "Read More" button.
+	 *
+	 * @param  string   $uri
+	 * @param  string   $label
+	 * @return string
+	 */
+	public function addViewButtonToContent($content, $config)
+	{
+		$configDefault = [
+			'contentUrl'      => Request::url(),
+			'viewButton'      => false,
+			'viewButtonLabel' => 'view',
+		];
+
+		$config = array_merge($configDefault, $config);
+
+		$viewButtonMarkup = $config['viewButton'] ? Fractal::getViewContentButtonMarkup($config['contentUrl'], $config['viewButtonLabel']) : "";
+
+		return str_replace('[view-content-button]', $viewButtonMarkup, $content);
 	}
 
 	/**

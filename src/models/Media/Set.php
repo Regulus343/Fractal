@@ -40,6 +40,8 @@ class Set extends Base {
 		'title',
 		'description_type',
 		'description',
+		'description_rendered',
+		'description_rendered_preview',
 		'image_gallery',
 		'published_at',
 	];
@@ -156,17 +158,63 @@ class Set extends Base {
 	/**
 	 * Get the rendered description.
 	 *
-	 * @param  boolean  $previewOnly
+	 * @param  array    $config
 	 * @return string
 	 */
-	public function getRenderedDescription($previewOnly = false)
+	public function getRenderedDescription($config = [])
 	{
-		$config = [
-			'contentType' => $this->description_type,
-			'previewOnly' => $previewOnly,
+		$configDefault = [
+			'contentUrl'            => $this->getUrl(),
+			'contentType'           => $this->description_type,
+			'previewOnly'           => false,
+			'render'                => false,
+			'viewButton'            => true,
+			'viewButtonPlaceholder' => true,
 		];
 
-		return Fractal::renderContent($this->description, $config);
+		$config = array_merge($configDefault, $config);
+
+		if (!$config['render'])
+		{
+			$description = null;
+
+			if ($config['previewOnly'])
+			{
+				if (!is_null($this->description_rendered_preview))
+					return Fractal::addViewButtonToContent($this->description_rendered_preview, $config);
+			}
+			else
+			{
+				if (!is_null($this->description_rendered))
+					return $this->description_rendered;
+			}
+		}
+
+		$description = Fractal::renderContent($this->description, $config);
+
+		if ($config['previewOnly'])
+			$this->description_rendered_preview = Fractal::addViewButtonToContent($description, $config);
+		else
+			$this->description_rendered = $description;
+
+		$this->save();
+
+		$description = Fractal::addViewButtonToContent($description, $config);
+
+		return $description;
+	}
+
+	/**
+	 * Render the description.
+	 *
+	 * @param  array    $config
+	 * @return string
+	 */
+	public function renderDescription($config = [])
+	{
+		$config['render'] = true;
+
+		return $this->getRenderedDescription($config);
 	}
 
 	/**
