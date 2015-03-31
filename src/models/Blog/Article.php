@@ -417,11 +417,14 @@ class Article extends Base {
 		}
 
 		if ($config['previewOnly'])
-			$this->content_rendered_preview = Fractal::addViewButtonToContent($content, $config);
+			$this->content_rendered_preview = $content;
 		else
 			$this->content_rendered = $content;
 
 		$this->save();
+
+		if ($config['previewOnly'])
+			$content = Fractal::addViewButtonToContent($content, $config);
 
 		return $content;
 	}
