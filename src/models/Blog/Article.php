@@ -342,7 +342,7 @@ class Article extends Base {
 	{
 		$configDefault = [
 			'contentUrl'            => $this->getUrl(),
-			'contentType'           => $this->content_type,
+			'contentType'           => 'HTML',
 			'previewOnly'           => false,
 			'render'                => true,
 			'thumbnailImageFileId'  => $this->thumbnail_image_file_id,
@@ -412,7 +412,10 @@ class Article extends Base {
 			}
 		}
 
-		foreach ($contentAreas as $contentArea) {
+		foreach ($contentAreas as $contentArea)
+		{
+			$config['contentType'] = $contentArea->content_type;
+
 			$content = $contentArea->renderContentToLayout($content, $config);
 		}
 

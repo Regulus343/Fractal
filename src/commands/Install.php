@@ -57,7 +57,7 @@ class Install extends Command {
 
 		$this->call('migrate', [
 			'--env'  => $this->option('env'),
-			'--path' => 'vendor/vendor/regulus/activity-log/src/migrations',
+			'--path' => 'vendor/regulus/activity-log/src/migrations',
 		]);
 
 		$this->call('migrate', [
