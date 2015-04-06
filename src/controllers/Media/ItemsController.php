@@ -38,14 +38,14 @@ class ItemsController extends MediaController {
 
 		Fractal::setViewsLocation('media.items');
 
-		Fractal::addTrailItem(Fractal::transChoice('labels.item'), Fractal::getControllerPath());
+		Fractal::addTrailItem(Fractal::transChoice('labels.item', 2), Fractal::getControllerPath());
 
 		Site::set('defaultSorting', ['order' => 'desc']);
 	}
 
 	public function index()
 	{
-		$data  = Fractal::setupPagination();
+		$data  = Fractal::initPagination();
 		$media = Item::getSearchResults($data);
 
 		Fractal::setContentForPagination($media);
@@ -69,7 +69,7 @@ class ItemsController extends MediaController {
 
 	public function search()
 	{
-		$data  = Fractal::setupPagination();
+		$data  = Fractal::initPagination();
 		$media = Item::getSearchResults($data);
 
 		Fractal::setContentForPagination($media);
@@ -182,6 +182,12 @@ class ItemsController extends MediaController {
 			]);
 
 		$result = Item::validateAndSave($item);
+
+		$slug = $result['slug'];
+
+		if (!$result['error'])
+			return Redirect::to(Fractal::uri('', true))
+				->with('messages', $result['messages']);
 
 		return Redirect::to(Fractal::uri($item->slug.'/edit', true))
 			->with('messages', $result['messages'])

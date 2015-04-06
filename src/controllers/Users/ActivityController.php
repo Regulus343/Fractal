@@ -38,7 +38,7 @@ class ActivityController extends UsersController {
 
 	public function getIndex()
 	{
-		$data       = Fractal::setupPagination();
+		$data       = Fractal::initPagination();
 		$activities = Activity::getSearchResults($data);
 
 		Fractal::setContentForPagination($activities);
@@ -53,7 +53,7 @@ class ActivityController extends UsersController {
 
 	public function postSearch()
 	{
-		$data       = Fractal::setupPagination();
+		$data       = Fractal::initPagination();
 		$activities = Activity::getSearchResults($data);
 
 		Fractal::setContentForPagination($activities);

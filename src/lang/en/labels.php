@@ -8,6 +8,11 @@ return [
 	'dashboard'               => 'Dashboard',
 	'return_to_cms'           => 'Return to CMS',
 
+	'yes'                     => 'Yes',
+	'no'                      => 'No',
+	'ok'                      => 'OK',
+	'cancel'                  => 'Cancel',
+
 	'create'                  => 'Create',
 	'edit'                    => 'Edit',
 	'update'                  => 'Update',
@@ -125,7 +130,12 @@ return [
 
 	'select_item'             => 'Select :item',
 
+	'published'               => 'Published',
 	'not_published'           => 'Not Published',
+	'date_time_published'     => 'Date / Time Published',
+	'sticky'                  => 'Sticky',
+
+	'date_created'            => 'Date Created',
 
 	'all_items'               => 'All :items',
 

@@ -40,7 +40,7 @@ class CategoriesController extends BlogsController {
 
 	public function index()
 	{
-		$data       = Fractal::setupPagination();
+		$data       = Fractal::initPagination();
 		$categories = Category::getSearchResults($data);
 
 		Fractal::setContentForPagination($categories);
@@ -64,7 +64,7 @@ class CategoriesController extends BlogsController {
 
 	public function search()
 	{
-		$data       = Fractal::setupPagination();
+		$data       = Fractal::initPagination();
 		$categories = Category::getSearchResults($data);
 
 		Fractal::setContentForPagination($categories);
@@ -183,6 +183,8 @@ class CategoriesController extends BlogsController {
 			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoiceLowerA('labels.category')]);
 
 			$category->saveData();
+
+			$slug = $category->slug;
 
 			Activity::log([
 				'contentId'   => $category->id,

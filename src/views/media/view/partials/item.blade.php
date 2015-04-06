@@ -26,6 +26,14 @@
 			</time>
 
 		@endif
+
+		@if ($mediaItem->sticky)
+
+			<span class="badge badge-primary badge-sticky" title="{{ Fractal::trans('labels.sticky') }}">
+				<i class="fa fa-thumb-tack"></i>
+			</span>
+
+		@endif
 	</div>
 
 	@if (!Site::get('mediaList'))

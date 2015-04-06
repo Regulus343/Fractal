@@ -18,6 +18,14 @@
 
 			@endif
 		</time>
+
+		@if ($article->sticky)
+
+			<span class="badge badge-primary badge-sticky" title="{{ Fractal::trans('labels.sticky') }}">
+				<i class="fa fa-thumb-tack"></i>
+			</span>
+
+		@endif
 	</div>
 
 	@if (!Site::get('articleList'))
@@ -42,9 +50,41 @@
 
 	</div>
 
-	@if (!Site::get('articleList') && $article->commentsEnabled())
+	@if (!Site::get('articleList'))
 
-		@include(Fractal::view('public.partials.comments', true))
+		@if ($article->getPreviousItem() || $article->getNextItem())
+
+			<div class="nav-previous-next-content">
+
+				@if ($article->getPreviousItem())
+
+					<a href="{{ Fractal::blogUrl($article->getPreviousItem('slug')) }}" class="btn btn-primary btn-previous">
+						<i class="fa fa-arrow-left"></i>
+
+						{!! $article->getPreviousItem('title') !!}
+					</a>
+
+				@endif
+
+				@if ($article->getNextItem())
+
+					<a href="{{ Fractal::blogUrl($article->getNextItem('slug')) }}" class="btn btn-primary btn-next">
+						 {!! $article->getNextItem('title') !!}
+
+						 <i class="fa fa-arrow-right"></i>
+					</a>
+
+				@endif
+
+			</div><!-- /.nav-previous-next-content -->
+
+		@endif
+
+		@if ($article->commentsEnabled())
+
+			@include(Fractal::view('public.partials.comments', true))
+
+		@endif
 
 	@endif
 

@@ -40,6 +40,7 @@ class ContentPagesTableSeeder extends Seeder {
 		{
 			$page['created_at']   = $timestamp;
 			$page['updated_at']   = $timestamp;
+			$page['published']    = true;
 			$page['published_at'] = $timestamp;
 
 			DB::table('content_pages')->insert($page);

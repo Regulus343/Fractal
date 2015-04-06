@@ -70,8 +70,10 @@ class Item extends Base {
 		'thumbnail_extension',
 		'thumbnail_width',
 		'thumbnail_height',
+		'sticky',
 		'comments_enabled',
 		'date_created',
+		'published',
 		'published_at',
 	];
 
@@ -84,7 +86,9 @@ class Item extends Base {
 		'slug'             => 'unique-slug',
 		'comments_enabled' => 'checkbox',
 		'date_created'     => 'date',
+		'published'        => 'checkbox',
 		'published_at'     => 'date-time',
+		'sticky'           => 'checkbox',
 	];
 
 	/**
@@ -92,9 +96,7 @@ class Item extends Base {
 	 *
 	 * @var    array
 	 */
-	protected $formats = [
-		'published' => 'trueIfNotNull:published_at',
-	];
+	protected $formats = [];
 
 	/**
 	 * The special formatted fields for the model for saving to the database.
@@ -568,34 +570,35 @@ class Item extends Base {
 	 * @param  boolean  $allowAdmin
 	 * @return Collection
 	 */
-	public function scopeOnlyPublished($query, $allowAdmin = false)
+	public function scopeOnlyPublished($query, $allowAdmin = true)
 	{
 		if ($allowAdmin && Auth::is('admin'))
 			return $query;
 
-		return $query->whereNotNull('media_items.published_at')->where('media_items.published_at', '<=', date('Y-m-d H:i:s'));
+		return $query
+			->where('media_items.published', true)
+			->whereNotNull('media_items.published_at')
+			->where('media_items.published_at', '<=', date('Y-m-d H:i:s'));
 	}
 
 	/**
 	 * Get the published status.
 	 *
-	 * @param  mixed    $dateFormat
-	 * @return string
+	 * @return boolean
 	 */
 	public function isPublished()
 	{
-		return !is_null($this->published_at) && strtotime($this->published_at) <= time();
+		return $this->published && !is_null($this->published_at) && strtotime($this->published_at) <= time();
 	}
 
 	/**
 	 * Check whether article is to be published in the future.
 	 *
-	 * @param  mixed    $dateFormat
-	 * @return string
+	 * @return boolean
 	 */
 	public function isPublishedFuture()
 	{
-		return !is_null($this->published_at) && strtotime($this->published_at) > time();
+		return $this->published && !is_null($this->published_at) && strtotime($this->published_at) > time();
 	}
 
 	/**
@@ -607,15 +610,15 @@ class Item extends Base {
 	public function getPublishedStatus($dateFormat = false)
 	{
 		$yesNo = [
-			'<span class="boolean-true">Yes</span>',
-			'<span class="boolean-false">No</span>',
+			'<span class="boolean-true" title="'.$this->getPublishedDateTime($dateFormat).'">'.Fractal::trans('labels.yes').'</span>',
+			'<span class="boolean-false">'.Fractal::trans('labels.no').'</span>',
 		];
 
 		$status = Format::boolToStr($this->isPublished(), $yesNo);
 
 		if ($this->isPublishedFuture())
 			$status .= '<div><small><em>'.Fractal::trans('labels.toBePublished', [
-				'dateTime' => $this->getPublishedDateTime()
+				'dateTime' => $this->getPublishedDateTime($dateFormat)
 			]).'</em></small></div>';
 
 		return $status;
@@ -675,6 +678,30 @@ class Item extends Base {
 			$dateFormat = Fractal::getDateTimeFormat();
 
 		return Fractal::dateTimeSet($this->updated_at) ? date($dateFormat, strtotime($this->updated_at)) : date($dateFormat, strtotime($this->created_at));
+	}
+
+	/**
+	 * Order results by default ordering criteria.
+	 *
+	 * @return Collection
+	 */
+	public function scopeOrderByDefault($query)
+	{
+		return $query
+			->orderBy('published')
+			->orderBy('sticky', 'desc')
+			->orderBy('published_at', 'desc')
+			->orderBy('id', 'desc');
+	}
+
+	/**
+	 * Return pagination by default limit.
+	 *
+	 * @return Collection
+	 */
+	public function scopePaginateDefault($query)
+	{
+		return $query->paginate(Fractal::getSetting('Media Items Listed Per Page', 10));
 	}
 
 	/**
@@ -847,6 +874,7 @@ class Item extends Base {
 	{
 		$result = [
 			'error'    => true,
+			'slug'     => null,
 			'messages' => [
 				'error' => Fractal::trans('messages.errors.general'),
 			],
@@ -1021,6 +1049,8 @@ class Item extends Base {
 				$item->save();
 
 				$item->renderDescription();
+
+				$result['slug'] = $item->slug;
 
 				Activity::log([
 					'contentId'   => $item->id,

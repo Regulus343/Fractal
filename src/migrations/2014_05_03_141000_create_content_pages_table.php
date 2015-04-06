@@ -25,6 +25,7 @@ class CreateContentPagesTable extends Migration {
 			$table->text('content_rendered')->nullable();
 
 			$table->timestamps();
+			$table->boolean('published');
 			$table->timestamp('published_at')->nullable();
 			$table->softDeletes();
 		});

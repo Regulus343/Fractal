@@ -41,7 +41,7 @@ class SetsController extends MediaController {
 
 	public function index()
 	{
-		$data = Fractal::setupPagination();
+		$data = Fractal::initPagination();
 		$sets = Set::getSearchResults($data);
 
 		Fractal::setContentForPagination($sets);
@@ -65,7 +65,7 @@ class SetsController extends MediaController {
 
 	public function search()
 	{
-		$data = Fractal::setupPagination();
+		$data = Fractal::initPagination();
 		$sets = Set::getSearchResults($data);
 
 		Fractal::setContentForPagination($sets);
@@ -201,6 +201,8 @@ class SetsController extends MediaController {
 
 			$set->saveItems(explode(',', Input::get('items')));
 
+			$slug = $set->slug;
+
 			Activity::log([
 				'contentId'   => $set->id,
 				'contentType' => 'Set',
@@ -270,10 +272,7 @@ class SetsController extends MediaController {
 		{
 			foreach ($set->items as $item)
 			{
-				$items[] = array_merge($item->toArray(), [
-					'fileTypeId' => $item->file_type_id,
-					'imageUrl'   => $item->getImageUrl(true),
-				]);
+				$items[] = $this->formatItemForList($item);
 			}
 		} else {
 			$itemIds = explode(',', Input::old('items'));
@@ -283,14 +282,27 @@ class SetsController extends MediaController {
 				$item = Item::find($itemId);
 
 				if (!empty($item))
-					$items[] = array_merge($item->toArray(), [
-						'fileTypeId' => $item->file_type_id,
-						'imageUrl'   => $item->getImageUrl(true),
-					]);
+					$items[] = $this->formatItemForList($item);
 			}
 		}
 
 		return $items;
+	}
+
+	private function formatItemForList($item)
+	{
+		$itemArray = $item->toArray();
+
+		unset($itemArray['description']);
+		unset($itemArray['description_rendered']);
+		unset($itemArray['description_rendered_preview']);
+
+		$itemArray = array_merge($itemArray, [
+			'fileTypeId' => $item->file_type_id,
+			'imageUrl'   => $item->getImageUrl(true),
+		]);
+
+		return $itemArray;
 	}
 
 }

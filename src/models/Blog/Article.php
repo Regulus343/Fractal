@@ -49,8 +49,10 @@ class Article extends Base {
 		'thumbnail_image_type',
 		'thumbnail_image_file_id',
 		'thumbnail_image_media_item_id',
+		'sticky',
 		'audio_file',
 		'comments_enabled',
+		'published',
 		'published_at',
 	];
 
@@ -62,7 +64,9 @@ class Article extends Base {
 	protected $types = [
 		'slug'             => 'unique-slug',
 		'comments_enabled' => 'checkbox',
+		'published'        => 'checkbox',
 		'published_at'     => 'date-time',
+		'sticky'           => 'checkbox',
 	];
 
 	/**
@@ -70,9 +74,7 @@ class Article extends Base {
 	 *
 	 * @var    array
 	 */
-	protected $formats = [
-		'published'  => 'trueIfNotNull:published_at',
-	];
+	protected $formats = [];
 
 	/**
 	 * The special formatted fields for the model for saving to the database.
@@ -101,6 +103,14 @@ class Article extends Base {
 		'p',
 		'page',
 	];
+
+	/**
+	 * The slugs and titles for the previous and next articles.
+	 *
+	 * @var    mixed
+	 */
+	protected $previous = null;
+	protected $next     = null;
 
 	/**
 	 * The default values for the model.
@@ -471,34 +481,35 @@ class Article extends Base {
 	 * @param  boolean  $allowAdmin
 	 * @return Collection
 	 */
-	public function scopeOnlyPublished($query, $allowAdmin = false)
+	public function scopeOnlyPublished($query, $allowAdmin = true)
 	{
 		if ($allowAdmin && Auth::is('admin'))
 			return $query;
 
-		return $query->whereNotNull('published_at')->where('published_at', '<=', date('Y-m-d H:i:s'));
+		return $query
+			->where('published', true)
+			->whereNotNull('published_at')
+			->where('published_at', '<=', date('Y-m-d H:i:s'));
 	}
 
 	/**
 	 * Get the published status.
 	 *
-	 * @param  mixed    $dateFormat
-	 * @return string
+	 * @return boolean
 	 */
 	public function isPublished()
 	{
-		return !is_null($this->published_at) && strtotime($this->published_at) <= time();
+		return $this->published && !is_null($this->published_at) && strtotime($this->published_at) <= time();
 	}
 
 	/**
 	 * Check whether article is to be published in the future.
 	 *
-	 * @param  mixed    $dateFormat
-	 * @return string
+	 * @return boolean
 	 */
 	public function isPublishedFuture()
 	{
-		return !is_null($this->published_at) && strtotime($this->published_at) > time();
+		return $this->published && !is_null($this->published_at) && strtotime($this->published_at) > time();
 	}
 
 	/**
@@ -509,17 +520,16 @@ class Article extends Base {
 	 */
 	public function getPublishedStatus($dateFormat = false)
 	{
-
 		$yesNo = [
-			'<span class="boolean-true">Yes</span>',
-			'<span class="boolean-false">No</span>',
+			'<span class="boolean-true" title="'.$this->getPublishedDateTime($dateFormat).'">'.Fractal::trans('labels.yes').'</span>',
+			'<span class="boolean-false">'.Fractal::trans('labels.no').'</span>',
 		];
 
 		$status = Format::boolToStr($this->isPublished(), $yesNo);
 
 		if ($this->isPublishedFuture())
 			$status .= '<div><small><em>'.Fractal::trans('labels.toBePublished', [
-				'dateTime' => $this->getPublishedDateTime()
+				'dateTime' => $this->getPublishedDateTime($dateFormat)
 			]).'</em></small></div>';
 
 		return $status;
@@ -565,6 +575,169 @@ class Article extends Base {
 			$dateFormat = Fractal::getDateTimeFormat();
 
 		return Fractal::dateTimeSet($this->updated_at) ? date($dateFormat, strtotime($this->updated_at)) : date($dateFormat, strtotime($this->created_at));
+	}
+
+	/**
+	 * Order results by default ordering criteria.
+	 *
+	 * @return Collection
+	 */
+	public function scopeOrderByDefault($query, $descending = true)
+	{
+		if ($descending)
+			return $query
+				->orderBy('published')
+				->orderBy('sticky', 'desc')
+				->orderBy('published_at', 'desc')
+				->orderBy('id', 'desc');
+		else
+			return $query
+				->orderBy('sticky')
+				->orderBy('published_at')
+				->orderBy('published', 'desc')
+				->orderBy('id');
+	}
+
+	/**
+	 * Return pagination by default limit.
+	 *
+	 * @return Collection
+	 */
+	public function scopePaginateDefault($query)
+	{
+		return $query->paginate(Fractal::getSetting('Articles Listed Per Page', 10));
+	}
+
+	/**
+	 * Get the previous or next article.
+	 *
+	 * @param  mixed    $select
+	 * @param  string   $type
+	 * @return Article
+	 */
+	public function getPreviousNext($select = null, $type = 'previous')
+	{
+		if (!is_null($select))
+			$article = static::select($select);
+		else
+			$article = static::query();
+
+		$article
+			->onlyPublished()
+			->where('id', '!=', $this->id);
+
+		if (strtolower($type) == "next")
+			return $article
+				->where(function($query)
+				{
+					$query
+						->orWhere(function($query)
+						{
+							$query
+								->where('published_at', '>', $this->published_at)
+								->where('sticky', $this->sticky);
+						})
+						->orWhere(function($query)
+						{
+							$query
+								->where('published_at', '<=', $this->published_at)
+								->where('sticky', '>', $this->sticky);
+						});
+				})
+				->orderByDefault(false)
+				->first();
+		else
+			return $article
+				->where(function($query)
+				{
+					$query
+						->orWhere(function($query)
+						{
+							$query
+								->where('published_at', '<=', $this->published_at)
+								->where('sticky', $this->sticky);
+						})
+						->orWhere(function($query)
+						{
+							$query
+								->where('published_at', '>', $this->published_at)
+								->where('sticky', '<', $this->sticky);
+						});
+				})
+				->orderByDefault()
+				->first();
+	}
+
+	/**
+	 * Get the previous article.
+	 *
+	 * @param  mixed    $select
+	 * @return Article
+	 */
+	public function getPrevious($select = null)
+	{
+		return $this->getPreviousNext($select, 'previous');
+	}
+
+	/**
+	 * Get the next article.
+	 *
+	 * @param  mixed    $select
+	 * @return Article
+	 */
+	public function getNext($select = null)
+	{
+		return $this->getPreviousNext($select, 'next');
+	}
+
+	/**
+	 * Get the slug or title for the previous article.
+	 *
+	 * @param  mixed    $select
+	 * @return mixed
+	 */
+	public function getPreviousItem($item = 'slug')
+	{
+		if (!is_null($this->previous) && isset($this->previous[$item]))
+			return $this->previous[$item];
+
+		$article = $this->getPreviousNext(['slug', 'title'], 'previous');
+
+		if (!empty($article))
+			$this->previous = [
+				'slug'  => $article->slug,
+				'title' => $article->getTitle(),
+			];
+
+		if (isset($this->previous[$item]))
+			return $this->previous[$item];
+
+		return null;
+	}
+
+	/**
+	 * Get the slug or title for the next article.
+	 *
+	 * @param  mixed    $select
+	 * @return mixed
+	 */
+	public function getNextItem($item = 'slug')
+	{
+		if (!is_null($this->next) && isset($this->next[$item]))
+			return $this->next[$item];
+
+		$article = $this->getPreviousNext(['slug', 'title'], 'next');
+
+		if (!empty($article))
+			$this->next = [
+				'slug'  => $article->slug,
+				'title' => $article->getTitle(),
+			];
+
+		if (isset($this->next[$item]))
+			return $this->next[$item];
+
+		return null;
 	}
 
 	/**

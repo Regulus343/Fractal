@@ -31,10 +31,12 @@ class CreateBlogArticlesTable extends Migration {
 			$table->integer('thumbnail_image_file_id')->nullable();
 			$table->integer('thumbnail_image_media_item_id')->nullable();
 
+			$table->boolean('sticky');
 			$table->boolean('audio_file');
 			$table->boolean('comments_enabled');
 
 			$table->timestamps();
+			$table->boolean('published');
 			$table->timestamp('published_at')->nullable();
 			$table->softDeletes();
 		});

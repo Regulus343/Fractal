@@ -46,6 +46,7 @@ class Page extends Base {
 		'layout_template_id',
 		'layout',
 		'content_rendered',
+		'published',
 		'published_at',
 	];
 
@@ -56,7 +57,9 @@ class Page extends Base {
 	 */
 	protected $types = [
 		'slug'         => 'unique-slug',
+		'published'    => 'checkbox',
 		'published_at' => 'date-time',
+		'sticky'       => 'checkbox',
 	];
 
 	/**
@@ -64,9 +67,7 @@ class Page extends Base {
 	 *
 	 * @var    array
 	 */
-	protected $formats = [
-		'published' => 'trueIfNotNull:published_at',
-	];
+	protected $formats = [];
 
 	/**
 	 * The special formatted fields for the model for saving to the database.
@@ -290,29 +291,30 @@ class Page extends Base {
 		if ($allowAdmin && Auth::is('admin'))
 			return $query;
 
-		return $query->whereNotNull('published_at')->where('published_at', '<=', date('Y-m-d H:i:s'));
+		return $query
+			->where('published', true)
+			->whereNotNull('published_at')
+			->where('published_at', '<=', date('Y-m-d H:i:s'));
 	}
 
 	/**
 	 * Get the published status.
 	 *
-	 * @param  mixed    $dateFormat
-	 * @return string
+	 * @return boolean
 	 */
 	public function isPublished()
 	{
-		return !is_null($this->published_at) && strtotime($this->published_at) <= time();
+		return $this->published && !is_null($this->published_at) && strtotime($this->published_at) <= time();
 	}
 
 	/**
 	 * Check whether page is to be published in the future.
 	 *
-	 * @param  mixed    $dateFormat
-	 * @return string
+	 * @return boolean
 	 */
 	public function isPublishedFuture()
 	{
-		return !is_null($this->published_at) && strtotime($this->published_at) > time();
+		return $this->published && !is_null($this->published_at) && strtotime($this->published_at) > time();
 	}
 
 	/**
@@ -325,15 +327,15 @@ class Page extends Base {
 	{
 
 		$yesNo = [
-			'<span class="boolean-true">Yes</span>',
-			'<span class="boolean-false">No</span>',
+			'<span class="boolean-true" title="'.$this->getPublishedDateTime($dateFormat).'">'.Fractal::trans('labels.yes').'</span>',
+			'<span class="boolean-false">'.Fractal::trans('labels.no').'</span>',
 		];
 
 		$status = Format::boolToStr($this->isPublished(), $yesNo);
 
 		if ($this->isPublishedFuture())
 			$status .= '<div><small><em>'.Fractal::trans('labels.toBePublished', [
-				'dateTime' => $this->getPublishedDateTime()
+				'dateTime' => $this->getPublishedDateTime($dateFormat)
 			]).'</em></small></div>';
 
 		return $status;

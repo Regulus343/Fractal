@@ -7,7 +7,7 @@
 		@if (isset($mediaSet))
 
 			<li class="special">
-				<a href="{{ Fractal::mediaUrl('') }}">
+				<a href="{{ Fractal::mediaUrl() }}">
 					<i class="fa fa-chevron-left"></i> {{ Fractal::trans('labels.all_items', ['items' => Fractal::transChoice('labels.media_set', 2)]) }}
 				</a>
 			</li>
@@ -16,7 +16,7 @@
 
 		@foreach ($mediaSets as $mediaSetListed)
 
-			@if ($mediaSetListed->items()->onlyPublished()->count())
+			@if ($mediaSetListed->items()->onlyPublished(false)->count())
 
 				<li{{ HTML::activeArea(isset($mediaSet) && $mediaSetListed->id == $mediaSet->id) }}>
 					<a href="{{ $mediaSetListed->getUrl() }}">

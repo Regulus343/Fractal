@@ -42,7 +42,7 @@ class LayoutTemplatesController extends BaseController {
 
 	public function index()
 	{
-		$data       = Fractal::setupPagination();
+		$data       = Fractal::initPagination();
 		$categories = LayoutTemplate::getSearchResults($data);
 
 		Fractal::setContentForPagination($categories);
@@ -66,7 +66,7 @@ class LayoutTemplatesController extends BaseController {
 
 	public function search()
 	{
-		$data       = Fractal::setupPagination();
+		$data       = Fractal::initPagination();
 		$categories = LayoutTemplate::getSearchResults($data);
 
 		Fractal::setContentForPagination($categories);

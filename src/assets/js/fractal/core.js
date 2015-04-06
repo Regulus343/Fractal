@@ -3,7 +3,7 @@
 | Fractal JS
 |------------------------------------------------------------------------------
 |
-| Last Updated: March 30, 2015
+| Last Updated: April 5, 2015
 |
 */
 
@@ -1137,6 +1137,15 @@ var Fractal = {
 		editor.getSelection().selectRanges([range]);
 	},
 
+	preventBackspaceNavigation: function()
+	{
+		$(document).keydown(function(e)
+		{
+			if (e.keyCode == 8 && e.target.tagName == "BODY")
+				e.preventDefault();
+		});
+	},
+
 	upperCaseWords: function(str)
 	{
 		// From: http://phpjs.org/functions
@@ -1153,6 +1162,9 @@ var Fractal = {
 
 	strToSlug: function(string)
 	{
+		if (string === undefined)
+			string = "";
+
 		var slug = string.toLowerCase()
 			.replace(/!/g, '').replace(/\?/g, '').replace(/@/g, '')
 			.replace(/#/g, '').replace(/\$/g, '').replace(/%/g, '')
@@ -1165,6 +1177,21 @@ var Fractal = {
 			.replace(/--/g, '-').replace(/--/g, '-');
 
 		return slug;
+	},
+
+	initSlugField: function(id)
+	{
+		if (id === undefined)
+			id = "field-slug";
+
+		$('#'+id).keyup(function(e)
+		{
+			if (e.keyCode == 9)
+				return;
+
+			var slug = Fractal.strToSlug($('#'+id).val());
+			$('#'+id).val(slug);
+		});
 	},
 
 }

@@ -6,7 +6,7 @@
 
 		created by Cody Jassman
 		version 0.9.0a - Fractal is in transition from Laravel 4 (0.8.x) to Laravel 5 (0.9.x)
-		last updated on March 30, 2015
+		last updated on April 5, 2015
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -129,6 +129,7 @@ class Fractal {
 	public function blogUri($uri = '')
 	{
 		$fullUri = config('blogs.base_uri');
+
 		if ($fullUri != "" && $fullUri !== false && !is_null($fullUri))
 			$fullUri .= '/'.$uri;
 		else
@@ -157,6 +158,7 @@ class Fractal {
 	public function mediaUri($uri = '')
 	{
 		$fullUri = config('media.base_uri');
+
 		if ($fullUri != "" && $fullUri !== false && !is_null($fullUri))
 			$fullUri .= '/'.$uri;
 		else
@@ -437,13 +439,13 @@ class Fractal {
 	}
 
 	/**
-	 * Setup pagination.
+	 * Initialize pagination.
 	 *
 	 * @param  array    $defaultSorting
 	 * @param  mixed    $page
 	 * @return array
 	 */
-	public function setupPagination($defaultSorting = [], $page = null)
+	public function initPagination($defaultSorting = [], $page = null)
 	{
 		$contentType = $this->getContentType();
 

@@ -45,7 +45,7 @@ class FilesController extends BaseController {
 
 	public function index()
 	{
-		$data  = Fractal::setupPagination();
+		$data  = Fractal::initPagination();
 		$files = ContentFile::getSearchResults($data);
 
 		Fractal::setContentForPagination($files);
@@ -69,7 +69,7 @@ class FilesController extends BaseController {
 
 	public function search()
 	{
-		$data  = Fractal::setupPagination('Files');
+		$data  = Fractal::initPagination('Files');
 		$files = ContentFile::getSearchResults($data);
 
 		Fractal::setContentForPagination($files);

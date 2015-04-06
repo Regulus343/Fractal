@@ -41,7 +41,7 @@ class RolesController extends UsersController {
 
 	public function index()
 	{
-		$data  = Fractal::setupPagination();
+		$data  = Fractal::initPagination();
 		$roles = Role::getSearchResults($data);
 
 		Fractal::setContentForPagination($roles);
@@ -65,7 +65,7 @@ class RolesController extends UsersController {
 
 	public function search()
 	{
-		$data  = Fractal::setupPagination();
+		$data  = Fractal::initPagination();
 		$roles = Role::getSearchResults($data);
 
 		Fractal::setContentForPagination($roles);

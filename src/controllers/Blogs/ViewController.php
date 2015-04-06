@@ -64,12 +64,10 @@ class ViewController extends Controller {
 
 		Fractal::setPage($page);
 
-		$articles = Article::orderBy('published_at', 'desc')->orderBy('id', 'desc');
-
-		if (Auth::isNot('admin'))
-			$articles->onlyPublished();
-
-		$articles = $articles->paginate(Fractal::getSetting('Articles Listed Per Page', 10));
+		$articles = Article::query()
+			->onlyPublished()
+			->orderByDefault()
+			->paginateDefault();
 
 		Site::set('lastPage', $articles->lastPage());
 
@@ -89,19 +87,19 @@ class ViewController extends Controller {
 		//allow article selection by ID for to allow shorter URLs
 		if (is_numeric($slug))
 		{
-			$article = Article::where('id', $slug)->onlyPublished(true)->first();
+			$article = Article::where('id', $slug)->onlyPublished()->first();
 
 			//if article is found by ID, redirect to URL with slug
 			if (!empty($article))
 				return Redirect::to($article->getUrl());
 		}
 
-		$article = Article::findBySlug($slug, true)->onlyPublished(true)->first();
+		$article = Article::findBySlug($slug, true)->onlyPublished()->first();
 
 		//if article is not found, check slug without dashes
 		if (empty($article))
 		{
-			$article = Article::findByDashlessSlug($slug, true)->onlyPublished(true)->first();
+			$article = Article::findByDashlessSlug($slug, true)->onlyPublished()->first();
 
 			//if article is found by dashless slug, redirect to URL with proper slug
 			if (!empty($article))
@@ -127,7 +125,7 @@ class ViewController extends Controller {
 
 		$articles = Article::query()
 			->where('id', '<=', ((int) $article->id + 3))
-			->orderBy('published_at', 'desc')
+			->orderByDefault()
 			->take(8);
 
 		if (Auth::isNot('admin'))
@@ -178,15 +176,14 @@ class ViewController extends Controller {
 			->select('blog_articles.id')
 			->leftJoin('blog_article_categories', 'blog_articles.id', '=', 'blog_article_categories.article_id')
 			->leftJoin('blog_categories', 'blog_article_categories.category_id', '=', 'blog_categories.id')
-			->where('blog_categories.slug', $slug);
-
-		if (Auth::isNot('admin'))
-			$articles->onlyPublished();
-
-		$articles = $articles->get();
+			->where('blog_categories.slug', $slug)
+			->onlyPublished()
+			->orderByDefault()
+			->paginateDefault();
 
 		$articleIds = [];
-		foreach ($articles as $article) {
+		foreach ($articles as $article)
+		{
 			if (!in_array($article->id, $articleIds))
 				$articleIds[] = $article->id;
 		}
@@ -196,14 +193,12 @@ class ViewController extends Controller {
 		if (!empty($articleIds))
 		{
 			$articles = Article::whereIn('id', $articleIds)
-				->orderBy('published_at', 'desc')
-				->orderBy('id', 'desc');
-
-			if (Auth::isNot('admin'))
-				$articles->onlyPublished();
-
-			$articles = $articles->get();
-		} else {
+				->onlyPublished()
+				->orderByDefault()
+				->paginateDefault();
+		}
+		else
+		{
 			$articles = [];
 
 			$messages['error'] = Fractal::trans('messages.errors.no_items', [

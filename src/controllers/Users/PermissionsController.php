@@ -41,7 +41,7 @@ class PermissionsController extends UsersController {
 
 	public function index()
 	{
-		$data        = Fractal::setupPagination();
+		$data        = Fractal::initPagination();
 		$permissions = Permission::getSearchResults($data);
 
 		Fractal::setContentForPagination($permissions);
@@ -65,7 +65,7 @@ class PermissionsController extends UsersController {
 
 	public function search()
 	{
-		$data        = Fractal::setupPagination();
+		$data        = Fractal::initPagination();
 		$permissions = Permission::getSearchResults($data);
 
 		Fractal::setContentForPagination($permissions);

@@ -46,7 +46,7 @@ class ArticlesController extends BlogsController {
 
 	public function index()
 	{
-		$data     = Fractal::setupPagination();
+		$data     = Fractal::initPagination();
 		$articles = Article::getSearchResults($data);
 
 		Fractal::setContentForPagination($articles);
@@ -70,7 +70,7 @@ class ArticlesController extends BlogsController {
 
 	public function search()
 	{
-		$data     = Fractal::setupPagination();
+		$data     = Fractal::initPagination();
 		$articles = Article::getSearchResults($data);
 
 		Fractal::setContentForPagination($articles);
@@ -225,6 +225,8 @@ class ArticlesController extends BlogsController {
 
 			$article->renderContent();
 
+			$slug = $article->slug;
+
 			Activity::log([
 				'contentId'   => $article->id,
 				'contentType' => 'Article',
@@ -233,14 +235,19 @@ class ArticlesController extends BlogsController {
 				'details'     => 'Title: '.$article->title,
 				'updated'     => true,
 			]);
-		} else {
-			$messages['error'] = Fractal::trans('messages.errors.general');
-		}
 
-		return Redirect::to(Fractal::uri($slug.'/edit', true))
-			->with('messages', $messages)
-			->with('errors', Form::getErrors())
-			->withInput();
+			return Redirect::to(Fractal::uri('', true))
+				->with('messages', $messages);
+		}
+		else
+		{
+			$messages['error'] = Fractal::trans('messages.errors.general');
+
+			return Redirect::to(Fractal::uri($slug.'/edit', true))
+				->with('messages', $messages)
+				->with('errors', Form::getErrors())
+				->withInput();
+		}
 	}
 
 	public function destroy($id)

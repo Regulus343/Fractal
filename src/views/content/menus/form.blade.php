@@ -3,7 +3,10 @@
 @section(config('cms.content_section'))
 
 	<script type="text/javascript">
-		$(document).ready(function(){
+		$(document).ready(function()
+		{
+			Fractal.preventBackspaceNavigation();
+
 			Formation.loadTemplates('#menu-items', $.parseJSON('{!! Form::getJsonValues('items') !!}'), menuItemTemplateCallback);
 
 			$('.add-menu-item').click(function(e){

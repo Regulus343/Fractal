@@ -14,10 +14,7 @@
 				});
 			@endif
 
-			$('#field-slug').keyup(function(){
-				var slug = Fractal.strToSlug($('#field-slug').val());
-				$('#field-slug').val(slug);
-			});
+			Fractal.initSlugField();
 		});
 	</script>
 

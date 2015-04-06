@@ -41,7 +41,7 @@ class TypesController extends MediaController {
 
 	public function index()
 	{
-		$data       = Fractal::setupPagination();
+		$data       = Fractal::initPagination();
 		$categories = Type::getSearchResults($data);
 
 		Fractal::setContentForPagination($categories);
@@ -65,7 +65,7 @@ class TypesController extends MediaController {
 
 	public function search()
 	{
-		$data       = Fractal::setupPagination();
+		$data       = Fractal::initPagination();
 		$categories = Type::getSearchResults($data);
 
 		Fractal::setContentForPagination($categories);
@@ -184,6 +184,8 @@ class TypesController extends MediaController {
 			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoiceLowerA('labels.media_type')]);
 
 			$type->saveData();
+
+			$slug = $type->slug;
 
 			Activity::log([
 				'contentId'   => $type->id,

@@ -26,6 +26,7 @@ class CreateMediaSetsTable extends Migration {
 			$table->boolean('image_gallery');
 
 			$table->timestamps();
+			$table->boolean('published');
 			$table->timestamp('published_at')->nullable();
 			$table->softDeletes();
 		});

@@ -45,7 +45,7 @@ class PagesController extends BaseController {
 
 	public function index()
 	{
-		$data  = Fractal::setupPagination();
+		$data  = Fractal::initPagination();
 		$pages = Page::getSearchResults($data);
 
 		Fractal::setContentForPagination($pages);
@@ -69,7 +69,7 @@ class PagesController extends BaseController {
 
 	public function search()
 	{
-		$data  = Fractal::setupPagination();
+		$data  = Fractal::initPagination();
 		$pages = Page::getSearchResults($data);
 
 		Fractal::setContentForPagination($pages);
@@ -219,6 +219,8 @@ class PagesController extends BaseController {
 
 			$page->renderContent();
 
+			$slug = $page->slug;
+
 			// re-export menus to config array in case published status for page has changed
 			Fractal::exportMenus();
 
@@ -230,14 +232,19 @@ class PagesController extends BaseController {
 				'details'     => 'Title: '.$page->title,
 				'updated'     => true,
 			]);
-		} else {
-			$messages['error'] = Fractal::trans('messages.errors.general');
-		}
 
-		return Redirect::to(Fractal::uri($slug.'/edit', true))
-			->with('messages', $messages)
-			->with('errors', Form::getErrors())
-			->withInput();
+			return Redirect::to(Fractal::uri('', true))
+				->with('messages', $messages);
+		}
+		else
+		{
+			$messages['error'] = Fractal::trans('messages.errors.general');
+
+			return Redirect::to(Fractal::uri($slug.'/edit', true))
+				->with('messages', $messages)
+				->with('errors', Form::getErrors())
+				->withInput();
+		}
 	}
 
 	public function destroy($id)

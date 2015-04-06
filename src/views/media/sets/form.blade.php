@@ -8,6 +8,8 @@
 
 		$(document).ready(function()
 		{
+			Fractal.preventBackspaceNavigation();
+
 			gridster = $('ul#items').gridster(
 			{
 				widget_margins:         [10, 10],
@@ -50,11 +52,7 @@
 				});
 			@endif
 
-			$('#field-slug').keyup(function()
-			{
-				var slug = Fractal.strToSlug($('#field-slug').val());
-				$('#field-slug').val(slug);
-			});
+			Fractal.initSlugField();
 
 			$('#field-description-type').change(function()
 			{
@@ -80,7 +78,6 @@
 				else
 					$('#field-description').val($('#field-description-markdown').val());
 			});
-
 		});
 
 		function addInitialItems(items)
@@ -233,18 +230,11 @@
 			<span class="glyphicon glyphicon-picture"></span>&nbsp; {{ Fractal::trans('labels.add_item', ['item' => Fractal::transChoice('labels.media_item')]) }}
 		</a>
 
-		<div class="row image-gallery-area hidden">
-			<div class="col-md-6">
-				<div class="form-group">
-					{!! Form::field('image_gallery', 'checkbox') !!}
-				</div>
-			</div>
-		</div>
-
 		<div class="row clear">
 			<div class="col-md-2">
 				<div class="form-group">
 					{!! Form::field('published', 'checkbox', [
+						'label'                  => Fractal::trans('labels.published'),
 						'data-checked-show'      => '.published-at-area',
 						'data-show-hide-type'    => 'visibility',
 						'data-callback-function' => 'publishedCheckedCallback',
@@ -254,13 +244,21 @@
 			<div class="col-md-3 published-at-area{{ HTML::invisibleArea(!Form::value('published', 'checkbox'), true) }}">
 				<div class="form-group">
 					<div class="input-group date date-time-picker">
-						{!! Form::text('published_at', null, [
+						{!! Form::text('published_at', [
 							'class'       => 'date',
-							'placeholder' => 'Date/Time Published',
+							'placeholder' => Fractal::trans('labels.date_time_published'),
 						]) !!}
 
 						<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
 					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row image-gallery-area hidden">
+			<div class="col-md-6">
+				<div class="form-group">
+					{!! Form::field('image_gallery', 'checkbox') !!}
 				</div>
 			</div>
 		</div>

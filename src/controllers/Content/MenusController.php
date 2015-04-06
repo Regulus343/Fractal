@@ -44,7 +44,7 @@ class MenusController extends BaseController {
 
 	public function index()
 	{
-		$data  = Fractal::setupPagination();
+		$data  = Fractal::initPagination();
 		$menus = Menu::getSearchResults($data);
 
 		Fractal::setContentForPagination($menus);
@@ -68,7 +68,7 @@ class MenusController extends BaseController {
 
 	public function search()
 	{
-		$data  = Fractal::setupPagination();
+		$data  = Fractal::initPagination();
 		$menus = Menu::getSearchResults($data);
 
 		Fractal::setContentForPagination($menus);

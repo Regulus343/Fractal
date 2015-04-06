@@ -89,7 +89,7 @@ return [
 				'sort'       => true,
 			],
 			[
-				'label'      => 'Published',
+				'label'      => Fractal::trans('labels.published'),
 				'method'     => 'getPublishedStatus()',
 				'sort'       => 'published_at',
 			],
@@ -308,9 +308,15 @@ return [
 				'sort'       => true,
 			],
 			[
-				'label'      => 'Published',
+				'label'      => Fractal::trans('labels.published'),
 				'method'     => 'getPublishedStatus()',
 				'sort'       => 'published_at',
+			],
+			[
+				'label'      => Fractal::trans('labels.sticky'),
+				'attribute'  => 'sticky',
+				'type'       => 'boolean',
+				'sort'       => true,
 			],
 			[
 				'label'      => Fractal::transChoice('labels.media_set', 2),
@@ -474,6 +480,11 @@ return [
 				'sort'      => true,
 			],
 			[
+				'label'      => Fractal::trans('labels.published'),
+				'method'     => 'getPublishedStatus()',
+				'sort'       => 'published_at',
+			],
+			[
 				'label'     => 'Actions',
 				'class'     => 'actions',
 				'elements'  => [
@@ -532,9 +543,15 @@ return [
 				'type'       => 'list',
 			],
 			[
-				'label'      => 'Published',
+				'label'      => Fractal::trans('labels.published'),
 				'method'     => 'getPublishedStatus()',
 				'sort'       => 'published_at',
+			],
+			[
+				'label'      => Fractal::trans('labels.sticky'),
+				'attribute'  => 'sticky',
+				'type'       => 'boolean',
+				'sort'       => true,
 			],
 			[
 				'label'      => (Fractal::getSetting('Display Unique Content Views') ? 'Unique ' : '').'Views',

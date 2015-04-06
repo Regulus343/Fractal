@@ -40,7 +40,7 @@ class UsersController extends BaseController {
 
 	public function index()
 	{
-		$data  = Fractal::setupPagination();
+		$data  = Fractal::initPagination();
 		$users = User::getSearchResults($data);
 
 		Fractal::setContentForPagination($users);
@@ -64,7 +64,7 @@ class UsersController extends BaseController {
 
 	public function search()
 	{
-		$data  = Fractal::setupPagination();
+		$data  = Fractal::initPagination();
 		$users = User::getSearchResults($data);
 
 		Fractal::setContentForPagination($users);

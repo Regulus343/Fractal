@@ -34,6 +34,9 @@ a.thumbnail-image img { max-width: 100%; border: none; }
 
 time.date-created { margin-left: 12px; }
 
+span.badge-sticky { margin: 0 0 3px 4px; font-size: 10px; }
+ul.nav-pills.nav-side span.badge-sticky { font-size: 8px; }
+
 img.thumbnail-image { padding: 3px; max-width: 120px; border: 1px solid #aaa; }
 
 div.content-item-body img.thumbnail-image { float: left; margin: 0 12px 12px 0; }

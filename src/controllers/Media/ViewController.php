@@ -70,12 +70,10 @@ class ViewController extends Controller {
 
 		Site::set('subSection', 'All');
 
-		$mediaItems = Item::orderBy('published_at', 'desc')->orderBy('id', 'desc');
-
-		if (Auth::isNot('admin'))
-			$mediaItems->onlyPublished();
-
-		$mediaItems = $mediaItems->paginate(Fractal::getSetting('Media Items Listed Per Page', 10));
+		$mediaItems = Item::query()
+			->onlyPublished()
+			->orderByDefault()
+			->paginateDefault();
 
 		Site::set('lastPage', $mediaItems->lastPage());
 
@@ -95,7 +93,7 @@ class ViewController extends Controller {
 		// allow item selection by ID for to allow shorter URLs
 		if (is_numeric($slug))
 		{
-			$mediaItem = Item::where('id', $slug)->onlyPublished(true)->first();
+			$mediaItem = Item::where('id', $slug)->onlyPublished()->first();
 
 			// if item is found by ID, redirect to URL with slug
 			if (!empty($mediaItem))
@@ -107,7 +105,7 @@ class ViewController extends Controller {
 		// if item is not found, check slug without dashes
 		if (empty($mediaItem))
 		{
-			$mediaItem = Item::findByDashlessSlug($slug, true)->onlyPublished(true)->first();
+			$mediaItem = Item::findByDashlessSlug($slug, true)->onlyPublished()->first();
 
 			// if item is found by dashless slug, redirect to URL with proper slug
 			if (!empty($mediaItem))
@@ -136,7 +134,7 @@ class ViewController extends Controller {
 
 		$mediaItems = Item::query()
 			->where('id', '<=', ((int) $mediaItem->id + 3))
-			->orderBy('published_at', 'desc')
+			->orderByDefault()
 			->take(8);
 
 		if (Auth::isNot('admin'))
@@ -188,15 +186,14 @@ class ViewController extends Controller {
 			->select(['media_items.id', 'media_items.published_at'])
 			->leftJoin('media_item_sets', 'media_items.id', '=', 'media_item_sets.item_id')
 			->leftJoin('media_sets', 'media_item_sets.set_id', '=', 'media_sets.id')
-			->where('media_sets.slug', $slug);
-
-		if (Auth::isNot('admin'))
-			$mediaItems->onlyPublished();
-
-		$mediaItems = $mediaItems->get();
+			->where('media_sets.slug', $slug)
+			->onlyPublished()
+			->orderByDefault()
+			->get();
 
 		$mediaItemIds = [];
-		foreach ($mediaItems as $mediaItem) {
+		foreach ($mediaItems as $mediaItem)
+		{
 			if (!in_array($mediaItem->id, $mediaItemIds))
 				$mediaItemIds[] = $mediaItem->id;
 		}
@@ -214,12 +211,9 @@ class ViewController extends Controller {
 			->leftJoin('media_item_sets', 'media_items.id', '=', 'media_item_sets.item_id')
 			->leftJoin('media_sets', 'media_item_sets.set_id', '=', 'media_sets.id')
 			->where('media_sets.slug', $slug)
-			->orderBy('media_item_sets.display_order');
-
-		if (Auth::isNot('admin'))
-			$mediaItems->onlyPublished();
-
-		$mediaItems = $mediaItems->get();
+			->onlyPublished()
+			->orderByDefault()
+			->paginateDefault();
 
 		Site::set('contentUrl', $mediaSet->getUrl());
 		Site::set('contentDescription', strip_tags($mediaSet->getRenderedDescription(true)));
@@ -259,15 +253,15 @@ class ViewController extends Controller {
 
 		Site::setMulti(['title.main', 'subSection', 'mediaType'], $mediaType->getName(true));
 
-		$mediaItems = Item::where('media_items.media_type_id', $mediaType->id);
-
-		if (Auth::isNot('admin'))
-			$mediaItems->onlyPublished();
-
-		$mediaItems = $mediaItems->get();
+		$mediaItems = Item::query()
+			->where('media_items.media_type_id', $mediaType->id)
+			->onlyPublished()
+			->orderByDefault()
+			->paginateDefault();
 
 		$mediaItemIds = [];
-		foreach ($mediaItems as $mediaItem) {
+		foreach ($mediaItems as $mediaItem)
+		{
 			if (!in_array($mediaItem->id, $mediaItemIds))
 				$mediaItemIds[] = $mediaItem->id;
 		}
@@ -277,14 +271,12 @@ class ViewController extends Controller {
 		if (!empty($mediaItemIds))
 		{
 			$mediaItems = Item::whereIn('id', $mediaItemIds)
-				->orderBy('published_at', 'desc')
-				->orderBy('id', 'desc');
-
-			if (Auth::isNot('admin'))
-				$mediaItems->onlyPublished();
-
-			$mediaItems = $mediaItems->get();
-		} else {
+				->onlyPublished()
+				->orderByDefault()
+				->paginateDefault();
+		}
+		else
+		{
 			$mediaItems = [];
 
 			$messages['error'] = Fractal::trans('messages.errors.no_items', [
