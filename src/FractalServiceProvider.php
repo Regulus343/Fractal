@@ -76,6 +76,7 @@ class FractalServiceProvider extends ServiceProvider {
 		});
 
 		// register additional service providers
+		$this->app->register('Regulus\ActivityLog\ActivityLogServiceProvider');
 		$this->app->register('Regulus\Elemental\ElementalServiceProvider');
 		$this->app->register('Regulus\Formation\FormationServiceProvider');
 		$this->app->register('Regulus\SolidSite\SolidSiteServiceProvider');
