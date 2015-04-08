@@ -15,9 +15,9 @@ class CreateContentViewsTable extends Migration {
 		Schema::create('content_views', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('user_id');
 			$table->integer('content_id');
 			$table->string('content_type', 72);
+			$table->integer('user_id')->nullable();
 			$table->string('ip_address', 64);
 			$table->string('user_agent');
 			$table->integer('views')->default(1);

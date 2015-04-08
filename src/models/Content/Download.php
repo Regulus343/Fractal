@@ -23,9 +23,9 @@ class Download extends Base {
 	 * @var    array
 	 */
 	protected $fillable = [
-		'user_id',
 		'content_id',
 		'content_type',
+		'user_id',
 		'ip_address',
 		'user_agent',
 		'downloads',
