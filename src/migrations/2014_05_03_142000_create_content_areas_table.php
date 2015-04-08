@@ -20,8 +20,6 @@ class CreateContentAreasTable extends Migration {
 			$table->string('content_type', 8);
 			$table->text('content');
 
-			$table->integer('user_id');
-
 			$table->timestamps();
 			$table->softDeletes();
 		});

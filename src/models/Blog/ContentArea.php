@@ -31,10 +31,11 @@ class ContentArea extends Base {
 	 * @var    array
 	 */
 	protected $fillable = [
+		'blog_id',
+		'user_id',
 		'title',
 		'content_type',
 		'content',
-		'user_id',
 	];
 
 	/**

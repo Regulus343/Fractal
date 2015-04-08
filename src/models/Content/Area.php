@@ -33,7 +33,6 @@ class Area extends Base {
 		'title',
 		'content_type',
 		'content',
-		'user_id',
 	];
 
 	/**

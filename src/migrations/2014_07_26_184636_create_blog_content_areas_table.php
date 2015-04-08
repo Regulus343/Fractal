@@ -16,11 +16,12 @@ class CreateBlogContentAreasTable extends Migration {
 		{
 			$table->increments('id');
 
+			$table->integer('blog_id');
+			$table->integer('user_id');
+
 			$table->string('title');
 			$table->string('content_type', 8);
 			$table->text('content');
-
-			$table->integer('user_id');
 
 			$table->timestamps();
 			$table->softDeletes();

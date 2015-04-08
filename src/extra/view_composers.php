@@ -12,9 +12,10 @@
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
+use Fractal;
 use Auth;
-use Regulus\Formation\Facade as Form;
-use Regulus\SolidSite\Facade as Site;
+use Form;
+use Site;
 
 use Regulus\Fractal\Models\Content\Page;
 use Regulus\Fractal\Models\Content\FileType;
