@@ -236,7 +236,7 @@ class Page extends Base {
 	{
 		// return pre-rendered content if "render" is not set
 		if (!$render && !is_null($this->content_rendered))
-			return $this->content_rendered;
+			return Fractal::renderContentViews($this->content_rendered);
 
 		$content = $this->getLayout();
 

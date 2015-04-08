@@ -510,7 +510,7 @@ class Item extends Base {
 				if ($config['sanitized'])
 					$description = static::sanitizeDescription($description);
 
-				return $description;
+				return Fractal::renderContentViews($description);
 			}
 		}
 

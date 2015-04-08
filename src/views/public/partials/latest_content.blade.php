@@ -38,7 +38,7 @@
 
 						@if ($contentItem->type == "Article")
 
-							{{ $contentItem->content }}
+							{!! $contentItem->content !!}
 
 						@else
 
@@ -52,11 +52,7 @@
 								</div>
 
 								<div class="col-sm-10">
-									{{ $contentItem->content }}
-
-									<a href="{{ $contentItem->url }}" class="btn btn-default btn-xs btn-read-more">
-										{{ Fractal::trans('labels.viewItem') }}
-									</a>
+									{!! $contentItem->content !!}
 								</div>
 							</div>
 

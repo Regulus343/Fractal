@@ -6,7 +6,7 @@
 
 		created by Cody Jassman
 		version 0.9.0a - Fractal is in transition from Laravel 4 (0.8.x) to Laravel 5 (0.9.x)
-		last updated on April 5, 2015
+		last updated on April 7, 2015
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -796,6 +796,7 @@ class Fractal {
 		if (isset($config['thumbnailImageFileId']) && !is_null($config['thumbnailImageFileId']))
 		{
 			preg_match_all('/(\[thumbnail\-image)[;]{0,1}([A-Za-z0-9\-\_\.\#\ ]*)\]/', $content, $thumbnailImages);
+
 			if (isset($thumbnailImages[0]) && !empty($thumbnailImages[0]))
 			{
 				$thumbnailImageText = $thumbnailImages[1][0];
@@ -820,6 +821,7 @@ class Fractal {
 
 		// add file links to content
 		preg_match_all('/\[file:([0-9]*)\]/', $content, $fileIds);
+
 		if (isset($fileIds[0]) && !empty($fileIds[0]))
 		{
 			$files = ContentFile::whereIn('id', $fileIds[1])->get();
@@ -854,6 +856,7 @@ class Fractal {
 
 		// add file URLs to content
 		preg_match_all('/file:([0-9]*)/', $content, $fileIds);
+
 		if (isset($fileIds[0]) && !empty($fileIds[0]))
 		{
 			$files = ContentFile::whereIn('id', $fileIds[1])->get();
@@ -874,6 +877,7 @@ class Fractal {
 
 		// add page links to content
 		preg_match_all('/\[page:([a-z\-]*)\]/', $content, $pageSlugs);
+
 		if (isset($pageSlugs[0]) && !empty($pageSlugs[0]))
 		{
 			$pages = Page::whereIn('slug', $pageSlugs[1])->get();
@@ -899,6 +903,7 @@ class Fractal {
 
 		// add page links to content
 		preg_match_all('/page:([a-z\-]*)/', $content, $pageSlugs);
+
 		if (isset($pageSlugs[0]) && !empty($pageSlugs[0]))
 		{
 			$pages = Page::whereIn('slug', $pageSlugs[1])->get();
@@ -920,6 +925,7 @@ class Fractal {
 
 		// add media items to content
 		preg_match_all('/\[media:([0-9]*)\]/', $content, $mediaItemIds);
+
 		if (isset($mediaItemIds[0]) && !empty($mediaItemIds[0]))
 		{
 			$mediaItems = MediaItem::whereIn('id', $mediaItemIds[1])->get();
@@ -939,6 +945,7 @@ class Fractal {
 
 		// embed YouTube videos in content
 		preg_match_all('/\[youtube:([A-Za-z0-9\_\-]{11})\]/', $content, $videos);
+
 		if (isset($videos[0]) && !empty($videos[0]))
 		{
 			for ($v = 0; $v < count($videos[0]); $v++)
@@ -950,6 +957,7 @@ class Fractal {
 
 		// embed Vimeo videos in content
 		preg_match_all('/\[vimeo:([0-9]*)\]/', $content, $videos);
+
 		if (isset($videos[0]) && !empty($videos[0]))
 		{
 			for ($v = 0; $v < count($videos[0]); $v++)
@@ -961,6 +969,7 @@ class Fractal {
 
 		// embed SoundCloud audio in content
 		preg_match_all('/\[soundcloud:([0-9]*)\]/', $content, $audioItems);
+
 		if (isset($audioItems[0]) && !empty($audioItems[0]))
 		{
 			for ($a = 0; $a < count($audioItems[0]); $a++)
@@ -973,6 +982,7 @@ class Fractal {
 		// insert quotes
 		$quotes = [];
 		preg_match_all('/\[quotable\]([A-Za-z0-9\.\!\?\,\;\:\'\"\@\#\$\%\&\*\ \n]*)\[\/quotable\]/', $content, $quotableResult);
+
 		if (isset($quotableResult[0]) && !empty($quotableResult[0]))
 		{
 			for ($q = 0; $q < count($quotableResult[0]); $q++)
@@ -984,6 +994,7 @@ class Fractal {
 		}
 
 		preg_match_all('/\[quote:([0-9]*)[;]{0,1}([A-Za-z0-9\-\_\.\#\ ]*)\]/', $content, $quotesResult);
+
 		if (isset($quotesResult[0]) && !empty($quotesResult[0]))
 		{
 			$quotationLeft  = '<span class="quotation-mark quotation-left">&ldquo;</span>';
@@ -1051,22 +1062,6 @@ class Fractal {
 		// convert lone ampersands to HTML special characters
 		$content = str_replace(' & ', ' &amp; ', $content);
 
-		// render views in content
-		preg_match_all('/\<p\>\[view:\&quot\;([a-z\:\.\_\-]*)\&quot\;\]\<\/p\>/', $content, $views);
-		if (isset($views[0]) && !empty($views[0]))
-		{
-			if (!$config['previewOnly'] && (!isset($config['insertViews']) || $config['insertViews'] != false))
-			{
-				for ($v = 0; $v < count($views[0]); $v++)
-				{
-					$view    = View::make($views[1][$v])->render();
-					$content = str_replace($views[0][$v], $view, $content);
-				}
-			} else {
-				$content = str_replace($views[0][0], '', $content);
-			}
-		}
-
 		// add a "View" / "Read More" button
 		if ($config['previewOnly'] && $config['viewButton'] && $config['contentUrl'])
 		{
@@ -1110,6 +1105,7 @@ class Fractal {
 	public function renderContentImages($content, $expression)
 	{
 		preg_match_all($expression, $content, $fileIds);
+
 		if (isset($fileIds[0]) && !empty($fileIds[0]))
 		{
 			$files = ContentFile::whereIn('id', $fileIds[1])->get();
@@ -1156,6 +1152,35 @@ class Fractal {
 					$image .= '/>';
 
 					$content = str_replace($fileIds[0][$f], $image, $content);
+				}
+			}
+		}
+
+		return $content;
+	}
+
+	/**
+	 * Render views to content.
+	 *
+	 * @param  string   $content
+	 * @param  boolean  $renderViews
+	 * @return string
+	 */
+	public function renderContentViews($content, $renderViews = true)
+	{
+		preg_match_all('/\<p\>\[view:\&quot\;([a-z\:\.\_\-]*)\&quot\;\]\<\/p\>/', $content, $views);
+
+		if (isset($views[0]) && !empty($views[0]))
+		{
+			for ($v = 0; $v < count($views[0]); $v++)
+			{
+				if ($renderViews)
+				{
+					$view    = View::make($views[1][$v])->render();
+					$content = str_replace($views[0][$v], $view, $content);
+				} else
+				{
+					$content = str_replace($views[0][$v], '', $content);
 				}
 			}
 		}

@@ -186,7 +186,7 @@ class Set extends Base {
 			else
 			{
 				if (!is_null($this->description_rendered))
-					return $this->description_rendered;
+					return Fractal::renderContentViews($this->description_rendered);
 			}
 		}
 

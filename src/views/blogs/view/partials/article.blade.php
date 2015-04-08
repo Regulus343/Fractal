@@ -58,7 +58,7 @@
 
 				@if ($article->getPreviousItem())
 
-					<a href="{{ Fractal::blogUrl($article->getPreviousItem('slug')) }}" class="btn btn-primary btn-previous">
+					<a href="{{ Fractal::blogUrl($article->getPreviousItem('slug')) }}" class="btn btn-primary btn-sm btn-previous">
 						<i class="fa fa-arrow-left"></i>
 
 						{!! $article->getPreviousItem('title') !!}
@@ -68,7 +68,7 @@
 
 				@if ($article->getNextItem())
 
-					<a href="{{ Fractal::blogUrl($article->getNextItem('slug')) }}" class="btn btn-primary btn-next">
+					<a href="{{ Fractal::blogUrl($article->getNextItem('slug')) }}" class="btn btn-primary btn-sm btn-next">
 						 {!! $article->getNextItem('title') !!}
 
 						 <i class="fa fa-arrow-right"></i>

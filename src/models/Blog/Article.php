@@ -369,12 +369,12 @@ class Article extends Base {
 			if ($config['previewOnly'])
 			{
 				if (!is_null($this->content_rendered_preview))
-					return Fractal::addViewButtonToContent($this->content_rendered_preview, $config);
+					return Fractal::renderContentViews(Fractal::addViewButtonToContent($this->content_rendered_preview, $config), false);
 			}
 			else
 			{
 				if (!is_null($this->content_rendered))
-					return $this->content_rendered;
+					return Fractal::renderContentViews($this->content_rendered);
 			}
 		}
 
