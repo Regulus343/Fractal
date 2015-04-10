@@ -633,15 +633,21 @@ class Article extends Base {
 					$query
 						->orWhere(function($query)
 						{
-							$query
-								->where('published_at', '>', $this->published_at)
-								->where('sticky', $this->sticky);
+							if ($this->published)
+								$query->where('published_at', '>', $this->published_at);
+							else
+								$query->where('id', '>', $this->id);
+
+							$query->where('sticky', $this->sticky);
 						})
 						->orWhere(function($query)
 						{
-							$query
-								->where('published_at', '<=', $this->published_at)
-								->where('sticky', '>', $this->sticky);
+							if ($this->published)
+								$query->where('published_at', '<=', $this->published_at);
+							else
+								$query->where('id', '<=', $this->id);
+
+							$query->where('sticky', '>', $this->sticky);
 						});
 				})
 				->orderByDefault(false)
@@ -653,15 +659,21 @@ class Article extends Base {
 					$query
 						->orWhere(function($query)
 						{
-							$query
-								->where('published_at', '<=', $this->published_at)
-								->where('sticky', $this->sticky);
+							if ($this->published)
+								$query->where('published_at', '<=', $this->published_at);
+							else
+								$query->where('id', '<=', $this->id);
+
+							$query->where('sticky', $this->sticky);
 						})
 						->orWhere(function($query)
 						{
-							$query
-								->where('published_at', '>', $this->published_at)
-								->where('sticky', '<', $this->sticky);
+							if ($this->published)
+								$query->where('published_at', '>', $this->published_at);
+							else
+								$query->where('id', '>', $this->id);
+
+							$query->where('sticky', '<', $this->sticky);
 						});
 				})
 				->orderByDefault()

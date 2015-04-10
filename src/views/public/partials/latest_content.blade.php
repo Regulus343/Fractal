@@ -19,7 +19,7 @@
 
 							@else
 
-								<span class="not-published">{{ Fractal::trans('labels.notPublished') }}</span>
+								<span class="not-published">{{ Fractal::trans('labels.not_published') }}</span>
 
 							@endif
 						</time>
