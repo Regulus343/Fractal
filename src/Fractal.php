@@ -6,7 +6,7 @@
 
 		created by Cody Jassman
 		version 0.9.0a - Fractal is in transition from Laravel 4 (0.8.x) to Laravel 5 (0.9.x)
-		last updated on April 7, 2015
+		last updated on April 11, 2015
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -1112,26 +1112,23 @@ class Fractal {
 
 			for ($f = 0; $f < count($fileIds[0]); $f++)
 			{
-				$name = "";
-				$url  = "";
-
-				foreach ($files as $file) {
-					if ((int) $file->id == (int) $fileIds[1][$f])
-					{
-						$name = $file->name;
-						$url  = $file->getUrl();
-					}
-				}
-
 				// add ID and/or classes
-				$id      = "";
-				$classes = [];
+				$id        = "";
+				$classes   = [];
+				$thumbnail = false;
+				$modal     = false;
 				if (isset($fileIds[2][$f]) && !empty($fileIds[2][$f]))
 				{
 					$idClasses = explode(' ', $fileIds[2][$f]);
 
 					foreach ($idClasses as $idClass)
 					{
+						if (strpos($idClass, 'thumb') !== false)
+							$thumbnail = true;
+
+						if ($idClass == '.modal-image')
+							$modal = true;
+
 						if (substr($idClass, 0, 1) == "#")
 							$id = str_replace('#', '', $idClass);
 						else if (substr($idClass, 0, 1) == ".")
@@ -1139,19 +1136,45 @@ class Fractal {
 					}
 				}
 
+				if ($modal && !in_array('image', $classes))
+					$classes[] = "image";
+
+				// add name and URL of image
+				$name        = "";
+				$url         = "";
+				$urlFullSize = "";
+
+				foreach ($files as $file)
+				{
+					if ((int) $file->id == (int) $fileIds[1][$f])
+					{
+						$name        = $file->name;
+						$url         = $file->getUrl($thumbnail);
+						$urlFullSize = $file->getUrl();
+					}
+				}
+
 				if ($url != "")
 				{
 					$image = '<img src="'.$url.'" alt="'.$name.'" title="'.$name.'" ';
 
+					if ($modal)
+						$html = '<a href="'.$urlFullSize.'" ';
+					else
+						$html = $image;
+
 					if ($id != "")
-						$image .= 'id="'.$id.'" ';
+						$html .= 'id="'.$id.'" ';
 
 					if (!empty($classes))
-						$image .= 'class="'.implode(' ', $classes).'" ';
+						$html .= 'class="'.implode(' ', $classes).'" ';
 
-					$image .= '/>';
+					if ($modal)
+						$html .= '>'.$image.' /></a>';
+					else
+						$html .= '/>';
 
-					$content = str_replace($fileIds[0][$f], $image, $content);
+					$content = str_replace($fileIds[0][$f], $html, $content);
 				}
 			}
 		}
