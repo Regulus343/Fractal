@@ -6,7 +6,7 @@
 
 		created by Cody Jassman
 		version 0.9.0a - Fractal is in transition from Laravel 4 (0.8.x) to Laravel 5 (0.9.x)
-		last updated on April 11, 2015
+		last updated on April 16, 2015
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -1058,6 +1058,9 @@ class Fractal {
 		// render to Markdown
 		if (strtolower($config['contentType']) == "markdown")
 			$content = Markdown::parse($content);
+
+		// render breadcrumb trail
+		$content = str_replace('[breadcrumb-trail]', Site::getBreadcrumbTrailMarkup(), $content);
 
 		// convert lone ampersands to HTML special characters
 		$content = str_replace(' & ', ' &amp; ', $content);

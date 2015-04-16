@@ -294,7 +294,7 @@ class PagesController extends BaseController {
 		if (empty($page) || (!Auth::is('admin') && !$page->isPublished()))
 			return Redirect::to('');
 
-		Site::setMulti(['section', 'subSection'], $page->title);
+		Site::setMulti(['section', 'subSection', 'title.main'], $page->title);
 
 		Site::resetTrailItems();
 		Site::addTrailItem(Fractal::trans('labels.home'), '');
@@ -304,7 +304,12 @@ class PagesController extends BaseController {
 			Site::addTrailItem($page->title, $page->slug);
 		} else {
 			Site::setTitle(null);
+			Site::set('title.hide', true);
 		}
+
+		// hide title if h1 tag is present in content
+		if (strpos($page->getRenderedContent(), '<h1>') !== false)
+			Site::set('title.hide', true);
 
 		$page->logView();
 

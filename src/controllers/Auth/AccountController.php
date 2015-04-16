@@ -69,7 +69,7 @@ class AccountController extends BaseController {
 		$messages = [];
 		if (Form::isValid())
 		{
-			$messages['success'] = Fractal::trans('messages.successUpdated', ['item' => Fractal::trans('labels.your_account')]);
+			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::trans('labels.your_account')]);
 
 			$user->fill(Input::except('csrf_token', 'password', 'password_confirmation'));
 			$user->first_name = Format::name($user->first_name);
