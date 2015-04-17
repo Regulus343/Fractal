@@ -1059,9 +1059,6 @@ class Fractal {
 		if (strtolower($config['contentType']) == "markdown")
 			$content = Markdown::parse($content);
 
-		// render breadcrumb trail
-		$content = str_replace('[breadcrumb-trail]', Site::getBreadcrumbTrailMarkup(), $content);
-
 		// convert lone ampersands to HTML special characters
 		$content = str_replace(' & ', ' &amp; ', $content);
 

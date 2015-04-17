@@ -236,18 +236,22 @@ class Page extends Base {
 	{
 		// return pre-rendered content if "render" is not set
 		if (!$render && !is_null($this->content_rendered))
-			return Fractal::renderContentViews($this->content_rendered);
+		{
+			$content = Fractal::renderContentViews($this->content_rendered);
+		}
+		else
+		{
+			$content = $this->getLayout();
 
-		$content = $this->getLayout();
+			foreach ($this->contentAreas as $contentArea) {
+				$content = $contentArea->renderContentToLayout($content);
+			}
 
-		foreach ($this->contentAreas as $contentArea) {
-			$content = $contentArea->renderContentToLayout($content);
+			$this->content_rendered = $content;
+			$this->save();
 		}
 
-		$this->content_rendered = $content;
-		$this->save();
-
-		return $content;
+		return $this->addBreadcrumbTrailToContent($content);
 	}
 
 	/**
@@ -258,6 +262,18 @@ class Page extends Base {
 	public function renderContent($render = false)
 	{
 		return $this->getRenderedContent(true);
+	}
+
+	/**
+	 * Add the breadcrumb trail to content if necessary.
+	 *
+	 * @return string
+	 */
+	public function addBreadcrumbTrailToContent($content)
+	{
+		$html = Site::getBreadcrumbTrailMarkup();
+
+		return str_replace('[breadcrumb-trail]', $html, str_replace('<p>[breadcrumb-trail]</p>', $html, $content));
 	}
 
 	/**
