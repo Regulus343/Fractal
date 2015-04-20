@@ -5,8 +5,8 @@
 		A versatile CMS for Laravel 5.
 
 		created by Cody Jassman
-		version 0.9.0a - Fractal is in transition from Laravel 4 (0.8.x) to Laravel 5 (0.9.x)
-		last updated on April 16, 2015
+		version 0.9.0
+		last updated on April 19, 2015
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;

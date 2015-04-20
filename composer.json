@@ -12,13 +12,13 @@
 		"php": ">=5.4.0",
 		"laravel/framework": "5.0.*",
 
-		"regulus/activity-log": "dev-master",
-		"regulus/elemental": "dev-master",
-		"regulus/formation": "dev-master",
-		"regulus/identify": "dev-master",
-		"regulus/solid-site": "dev-master",
-		"regulus/tetra-text": "dev-master",
-		"regulus/upstream": "dev-master",
+		"regulus/activity-log": "0.5.*",
+		"regulus/elemental": "0.5.*",
+		"regulus/formation": "1.0.*",
+		"regulus/identify": "0.8.*",
+		"regulus/solid-site": "0.6.*",
+		"regulus/tetra-text": "0.5.*",
+		"regulus/upstream": "0.5.*",
 		"alfredo-ramos/parsedown-extra-laravel": "~0.2"
 	},
 	"autoload": {
@@ -35,5 +35,5 @@
 			"Regulus\\Fractal\\Traits\\": "src/traits/"
 		}
 	},
-	"minimum-stability": "dev"
+	"minimum-stability": "stable"
 }

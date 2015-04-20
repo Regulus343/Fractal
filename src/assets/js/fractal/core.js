@@ -3,7 +3,7 @@
 | Fractal JS
 |------------------------------------------------------------------------------
 |
-| Last Updated: April 5, 2015
+| Last Updated: April 19, 2015
 |
 */
 
@@ -23,6 +23,7 @@ var Fractal = {
 
 	contentType:                null,
 	contentId:                  null,
+	contentChanged:             false,
 
 	page:                       1,
 	lastPage:                   1,
@@ -45,6 +46,8 @@ var Fractal = {
 	markdownContentUpdateTimer: null,
 
 	autoSaveRate:               (1000 * 60), // auto-save every every minute
+
+	caretPos:                   null,
 
 	init: function()
 	{
@@ -957,16 +960,22 @@ var Fractal = {
 		var wysiwyg = field.hasClass('field-content-html');
 
 		if (wysiwyg)
-			var text = CKEDITOR.instances[field.attr('id')].getData();
+		{
+			var text      = CKEDITOR.instances[field.attr('id')].getData();
+			this.caretPos = text.length;
+		}
 		else
-			var text = field.val();
+		{
+			var text      = field.val();
+			this.caretPos = field.caret().begin;
+		}
 
 		if (text.substr(-5) == "</p>\n")
 			text = text.substr(0, (text.length - 5));
 
 		var url = this.createUrl('api/select-file-media-item');
 
-		if (text.substr(-5) == "file:")
+		if (text.substr((this.caretPos - 5), 5) == "file:")
 		{
 			var type = "File";
 			this.modalAjax(url, 'post', {type: type}, this.selectFileMediaItem(field, type));
@@ -975,7 +984,7 @@ var Fractal = {
 				$('#modal').modal('hide');
 		}
 
-		if (text.substr(-7) == "[image:")
+		if (text.substr((this.caretPos - 7), 7) == "[image:")
 		{
 			var type = "File";
 			this.modalAjax(url, 'post', {type: type}, this.selectFileMediaItem(field, type, true));
@@ -984,7 +993,7 @@ var Fractal = {
 				$('#modal').modal('hide');
 		}
 
-		if (text.substr(-7) == "[media:")
+		if (text.substr((this.caretPos - 7), 7) == "[media:")
 		{
 			var type = "Media Item";
 			this.modalAjax(url, 'post', {type: type}, this.selectFileMediaItem(field, type, true));
@@ -998,9 +1007,10 @@ var Fractal = {
 	{
 		var wysiwyg = field.hasClass('field-content-html');
 		var text    = wysiwyg ? CKEDITOR.instances[field.attr('id')].getData() : field.val();
+		var delay   = 1200;
 
 		if (wysiwyg && text.substr(-5) == "</p>\n")
-			text= text.substr(0, (text.length - 5));
+			text = text.substr(0, (text.length - 5));
 
 		if (type == "File")
 		{
@@ -1010,53 +1020,85 @@ var Fractal = {
 			{
 				$('#select-file li').off('click').on('click', function()
 				{
-					text += $(this).attr('data-file-id') + (addClosingBracket === true ? ']' : '');
+					var addedText = $(this).attr('data-file-id') + (addClosingBracket === true ? ']' : '');
 
 					if (wysiwyg)
+					{
+						text += addedText;
 						CKEDITOR.instances[field.attr('id')].setData(text);
+					}
 					else
+					{
+						text = text.substr(0, Fractal.caretPos) + addedText + text.substr(Fractal.caretPos);
 						field.val(text);
+
+						Fractal.caretPos += addedText.length;
+					}
 
 					Fractal.activeActions['selectingFile'] = false;
 					$('#modal').modal('hide');
 
 					if (wysiwyg)
-						setTimeout(function(){ focusWysiwyg(field); }, 100);
-					else
-						focusField(field);
-				});
-			}, 2000);
+						setTimeout(function(){
+							focusWysiwyg(field);
+						}, 100);
 
-		} else {
+					else
+						Fractal.setCaretPosition(field);
+				});
+			}, delay);
+		}
+		else
+		{
 			this.activeActions['selectingMediaItem'] = true;
 
-			setTimeout(function(){
+			setTimeout(function()
+			{
 				$('#select-media-item li').off('click').on('click', function()
 				{
-					text += $(this).attr('data-media-item-id') + (addClosingBracket === true ? ']' : '');
+					var addedText = $(this).attr('data-media-item-id') + (addClosingBracket === true ? ']' : '');
 
 					if (wysiwyg)
+					{
+						text += addedText;
 						CKEDITOR.instances[field.attr('id')].setData(text);
+					}
 					else
+					{
+						text = text.substr(0, Fractal.caretPos) + addedText + text.substr(Fractal.caretPos);
 						field.val(text);
+
+						Fractal.caretPos += addedText.length;
+					}
 
 					Fractal.activeActions['selectingMediaItem'] = false;
 					$('#modal').modal('hide');
 
 					if (wysiwyg)
-						setTimeout(function(){ focusWysiwyg(field); }, 100);
+						setTimeout(function(){
+							focusWysiwyg(field);
+						}, 100);
+
 					else
-						focusField(field);
+						Fractal.setCaretPosition(field);
 				});
-			}, 2000);
+			}, delay);
 		}
 	},
 
 	initAutoSave: function()
 	{
+		$('input, textarea, select').keypress(function()
+		{
+			Fractal.contentChanged = true;
+		});
+
 		setInterval(function()
 		{
-			Fractal.saveContent();
+			if (Fractal.contentChanged)
+				Fractal.saveContent();
+
+			Fractal.contentChanged = false;
 
 		}, this.autoSaveRate);
 
@@ -1144,6 +1186,35 @@ var Fractal = {
 			if (e.keyCode == 8 && e.target.tagName == "BODY")
 				e.preventDefault();
 		});
+	},
+
+	setSelectionRange: function(field, start, end)
+	{
+		if (typeof field.attr == "function")
+			field = document.getElementById(field.attr('id'));
+
+		if (field.setSelectionRange) {
+			field.focus();
+			field.setSelectionRange(start, end);
+		}
+		else if (field.createTextRange)
+		{
+			field.focus();
+			var range = field.createTextRange();
+
+			range.collapse(true);
+			range.moveEnd('character', end);
+			range.moveStart('character', start);
+			range.select();
+		}
+	},
+
+	setCaretPosition: function(field, position)
+	{
+		if (position === undefined)
+			position = this.caretPos;
+
+		this.setSelectionRange(field, position, position);
 	},
 
 	upperCaseWords: function(str)

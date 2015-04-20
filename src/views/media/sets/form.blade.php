@@ -43,13 +43,13 @@
 			@endif
 
 			@if (!isset($update) || !$update)
+
 				$('#field-title').keyup(function()
 				{
-					$('#field-title').val($('#field-title').val().replace(/  /g, ' '));
-
 					var slug = Fractal.strToSlug($('#field-title').val());
 					$('#field-slug').val(slug);
 				});
+
 			@endif
 
 			Fractal.initSlugField();

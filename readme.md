@@ -5,7 +5,7 @@ Fractal
 
 [![Latest Stable Version](https://poser.pugx.org/regulus/fractal/v/stable.svg)](https://packagist.org/packages/regulus/fractal) [![License](https://poser.pugx.org/regulus/fractal/license.svg)](https://packagist.org/packages/regulus/fractal)
 
-> **Note:** Fractal is in transition from Laravel 4 (0.8.x) to Laravel 5 (0.9.x). Expect things to be broken for now. Version will be 0.9.0a until it is once again stable and fully transitioned. For Laravel 4, you may use <a href="https://github.com/Regulus343/Fractal/tree/v0.8.2">version 0.8.2</a>.
+> **Note:** For Laravel 4, you may use <a href="https://github.com/Regulus343/Fractal/tree/v0.8.2">version 0.8.2</a>.
 
 ![Screenshot](resources/screenshot.png)
 
@@ -30,10 +30,9 @@ Fractal is a content management system for Laravel which maintains freedom and e
 
 Please keep in mind though that there are a variety of different levels of customization available from using all or a partial set of custom controllers (Fractal's controller and method routes are set in `config.php` for easy modification), using custom views, or even just customizing any of the many available config settings or database-stored settings in the CMS' Settings page. The level of control of your website or web application that you wish to externalize from Fractal is entirely up to you.
 
-A few more things that should be mentioned before we get started with the Table of Contents:
+A couple more things that should be mentioned before we get started with the Table of Contents:
 
 - Fractal uses the [Identify](https://github.com/Regulus343/Identify) authorization / authentication package and uses Twitter Bootstrap 3 as its CSS framework.
-- Fractal is still considered beta software and moved into beta as of version 0.8.0, though with the advent of Laravel 5 / Fractal 0.9.0, it is essentially "alpha" again while it gets fully migrated to Laravel 5. Things are going to be broken, probably until the end of March.
 - You may view [Fractal on Trello](https://trello.com/b/ZaGw8Jly/fractal) to see what's on the bug fixing and feature implementation roadmap.
 
 ## Table of Contents
@@ -51,7 +50,7 @@ A few more things that should be mentioned before we get started with the Table 
 To install Fractal, make sure "regulus/fractal" has been added to Laravel 5's `composer.json` file.
 
 	"require": {
-		"regulus/fractal": "dev-master"
+		"regulus/fractal": "0.9.*"
 	},
 
 Then run `php composer.phar update` from the command line. Composer will install the Fractal package.

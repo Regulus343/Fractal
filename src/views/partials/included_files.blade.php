@@ -56,6 +56,10 @@
 
 <script type="text/javascript" src="{{ Site::js('bootstrap-datetimepicker.min', 'regulus/fractal') }}"></script>
 
+{{-- Masked Input --}}
+
+<script type="text/javascript" src="{{ Site::js('jquery.maskedinput.min', 'regulus/fractal') }}"></script>
+
 {{-- Gridster --}}
 
 <link type="text/css" rel="stylesheet" href="{{ Site::css('jquery.gridster', 'regulus/fractal') }}" />

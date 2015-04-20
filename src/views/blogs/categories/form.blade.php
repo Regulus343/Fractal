@@ -6,13 +6,13 @@
 		$(document).ready(function()
 		{
 			@if (!isset($update) || !$update)
+
 				$('#field-name').keyup(function()
 				{
-					$('#field-name').val($('#field-name').val().replace(/  /g, ' '));
-
 					var slug = Fractal.strToSlug($('#field-name').val());
 					$('#field-slug').val(slug);
 				});
+
 			@endif
 
 			Fractal.initSlugField();

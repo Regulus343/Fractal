@@ -11,13 +11,20 @@
 			Fractal.preventBackspaceNavigation();
 
 			@if (!isset($update) || !$update)
-				$('#field-title').keyup(function(){
+
+				$('#field-title').keyup(function()
+				{
 					setSlugForTitle();
-				}).change(function(){
+
+				}).change(function()
+				{
 					setSlugForTitle();
 				});
+
 			@else
+
 				$('#field-file').off('change');
+
 			@endif
 
 			Fractal.initSlugField();

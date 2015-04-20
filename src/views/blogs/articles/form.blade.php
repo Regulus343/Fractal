@@ -12,9 +12,8 @@
 
 			@if (!isset($update) || !$update)
 
-				$('#field-title').keyup(function(){
-					$('#field-title').val($('#field-title').val().replace(/  /g, ' '));
-
+				$('#field-title').keyup(function()
+				{
 					var slug = Fractal.strToSlug($('#field-title').val());
 					$('#field-slug').val(slug);
 
@@ -150,7 +149,7 @@
 					on: {
 						key: function() {
 							setTimeout(function(){
-								checkForSelectFileMediaItem(htmlField);
+								Fractal.checkForSelectFileMediaItem(htmlField);
 							}, 50);
 						}
 					}

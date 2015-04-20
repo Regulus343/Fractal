@@ -12,9 +12,8 @@
 
 			@if (!isset($update) || !$update)
 
-				$('#field-title').keyup(function(){
-					$('#field-title').val($('#field-title').val().replace(/  /g, ' '));
-
+				$('#field-title').keyup(function()
+				{
 					var slug = Fractal.strToSlug($('#field-title').val());
 					$('#field-slug').val(slug);
 
@@ -96,7 +95,15 @@
 			// initialize WYSIWYG editor for HTML content field
 			var htmlField = item.find('.field-content-html');
 			if (htmlField)
-				CKEDITOR.replace(htmlField.attr('id'));
+				CKEDITOR.replace(htmlField.attr('id'), {
+					on: {
+						key: function() {
+							setTimeout(function(){
+								Fractal.checkForSelectFileMediaItem(htmlField);
+							}, 50);
+						}
+					}
+				});
 
 			// initialize Markdown content field action preview window
 			var markdownField = item.find('.field-content-markdown');

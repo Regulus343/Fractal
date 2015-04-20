@@ -31,7 +31,7 @@ $(document).ready(function(){
 					$('#nav-side').css('width', '');
 					$('#container-content').css('margin-left', '');
 
-					setUserState('sidebarOpen', true);
+					Fractal.setUserState('sidebarOpen', true);
 				}
 			});
 
@@ -53,7 +53,7 @@ $(document).ready(function(){
 				complete: function(){
 					$('#nav-side').addClass('collapsed');
 
-					setUserState('sidebarOpen', false);
+					Fractal.setUserState('sidebarOpen', false);
 				}
 			});
 
@@ -75,12 +75,12 @@ $(document).ready(function(){
 			$(this).parents('li').find('ul').slideDown(250);
 			$(this).parents('li').addClass('open');
 
-			setUserState('menuOpen[]', $(this).parents('li').attr('data-menu-item-id'));
+			Fractal.setUserState('menuOpen[]', $(this).parents('li').attr('data-menu-item-id'));
 		} else {
 			$(this).parents('li').find('ul').css('display', 'block').slideUp(250);
 			$(this).parents('li').removeClass('open');
 
-			removeUserState('menuOpen[]', $(this).parents('li').attr('data-menu-item-id'));
+			Fractal.removeUserState('menuOpen[]', $(this).parents('li').attr('data-menu-item-id'));
 		}
 	});
 });
