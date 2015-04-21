@@ -19,7 +19,7 @@ class CreateMenuItemsTable extends Migration {
 			$table->integer('menu_id');
 			$table->integer('parent_id')->nullable()->default(null);
 			$table->string('type', 32)->default('URI');
-			$table->integer('page_id');
+			$table->integer('page_id')->nullable()->default(null);
 			$table->string('uri', 120);
 			$table->string('subdomain', 64)->nullable()->default(null);
 			$table->string('label');
