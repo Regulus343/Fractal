@@ -955,6 +955,17 @@ class Fractal {
 			}
 		}
 
+		preg_match_all('/\[youtube-audio:([A-Za-z0-9\_\-]{11})\]/', $content, $videos);
+
+		if (isset($videos[0]) && !empty($videos[0]))
+		{
+			for ($v = 0; $v < count($videos[0]); $v++)
+			{
+				$video   = '<div class="youtube-audio">'.$this->getEmbeddedContent('YouTube', $videos[1][$v]).'</div>';
+				$content = str_replace($videos[0][$v], $video, $content);
+			}
+		}
+
 		// embed Vimeo videos in content
 		preg_match_all('/\[vimeo:([0-9]*)\]/', $content, $videos);
 

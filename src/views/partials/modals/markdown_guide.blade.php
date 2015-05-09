@@ -216,6 +216,8 @@ will place them in a "code" block.</code></pre>
 
 			[youtube:y0uTuB3-iDx]<br /><br />
 
+			[youtube-audio:y0uTuB3-iDx]<br /><br />
+
 			[vimeo:123456789]<br /><br />
 
 			[soundcloud:123456789]
@@ -275,6 +277,29 @@ will place them in a "code" block.</code></pre>
 			<p>Ron Paul once said, "[quotable]Truth is treason in the empire of lies.[/quotable]"</p>
 
 			<blockquote class="quote pull-right" id="quote-id">
+				<span class="quotation-mark quotation-left">&ldquo;</span>
+
+				Truth is treason in the empire of lies.
+
+				<span class="quotation-mark quotation-right">&rdquo;</span>
+			</blockquote>
+		</td>
+	</tr>
+
+	<tr>
+		<td class="monospace">
+			#### Embed a quote:<br /><br />
+
+			Ron Paul once said:<br /><br />
+
+			[quote]Truth is treason in the empire of lies.[/quote]
+		</td>
+		<td>
+			<h4>Embed a quote with a class and an ID:</h4>
+
+			<p>Ron Paul once said:</p>
+
+			<blockquote>
 				<span class="quotation-mark quotation-left">&ldquo;</span>
 
 				Truth is treason in the empire of lies.

@@ -45,7 +45,10 @@ div.content-item-body img.thumbnail-image { float: left; margin: 0 12px 12px 0; 
 
 img.media-image { max-width: 100%; }
 
-iframe.video { margin: 0 auto 10px 0; width: 450px; height: 254px; }
+iframe.video { margin: 0 auto 10px auto; width: 450px; height: 254px; }
+
+div.youtube-audio { position: relative; height: 50px; overflow: hidden; }
+div.youtube-audio iframe.youtube { position: absolute; bottom: 0; }
 
 @media (min-width: 768px) {
 	iframe.video { width: 672px; height: 378px; }
