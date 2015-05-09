@@ -5,8 +5,8 @@
 		A versatile CMS for Laravel 5.
 
 		created by Cody Jassman
-		version 0.9.0
-		last updated on April 19, 2015
+		version 0.9.1
+		last updated on May 8, 2015
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -979,9 +979,16 @@ class Fractal {
 			}
 		}
 
+		// render to Markdown
+		if (strtolower($config['contentType']) == "markdown")
+			$content = Markdown::parse($content);
+
 		// insert quotes
+		$quotationLeft  = '<span class="quotation-mark quotation-left">&ldquo;</span>';
+		$quotationRight = '<span class="quotation-mark quotation-right">&rdquo;</span>';
+
 		$quotes = [];
-		preg_match_all('/\[quotable\]([A-Za-z0-9\.\!\?\,\;\:\'\"\@\#\$\%\&\*\ \n]*)\[\/quotable\]/', $content, $quotableResult);
+		preg_match_all('/\[quotable\](.*?)\[\/quotable\]/', $content, $quotableResult);
 
 		if (isset($quotableResult[0]) && !empty($quotableResult[0]))
 		{
@@ -997,9 +1004,7 @@ class Fractal {
 
 		if (isset($quotesResult[0]) && !empty($quotesResult[0]))
 		{
-			$quotationLeft  = '<span class="quotation-mark quotation-left">&ldquo;</span>';
-			$quotationRight = '<span class="quotation-mark quotation-right">&rdquo;</span>';
-			$ellipsis       = '<span class="ellipsis">...</span>';
+			$ellipsis = '<span class="ellipsis">...</span>';
 
 			for ($q = 0; $q < count($quotesResult[0]); $q++)
 			{
@@ -1044,7 +1049,7 @@ class Fractal {
 					if (!empty($classes))
 						$quoteMarkup .= ' class="'.implode(' ', $classes).'" ';
 
-					$quoteMarkup .= '>'.$quotationLeft.$quote.$quotationRight.'</blockquote>';
+					$quoteMarkup .= '>'.$quotationLeft.trim($quote).$quotationRight.'</blockquote>';
 
 					$quote = $quoteMarkup;
 				}
@@ -1055,9 +1060,28 @@ class Fractal {
 			$quotes = $quotesResult[1];
 		}
 
-		// render to Markdown
-		if (strtolower($config['contentType']) == "markdown")
-			$content = Markdown::parse($content);
+		preg_match_all('/\[quote\](.*?)\[\/quote\]/s', $content, $quotesResult);
+
+		if (isset($quotesResult[0]) && !empty($quotesResult[0]))
+		{
+			for ($q = 0; $q < count($quotesResult[0]); $q++)
+			{
+				// build quote markup
+				$classes     = ['quote'];
+				$quoteMarkup = '<blockquote';
+
+				if (!empty($classes))
+					$quoteMarkup .= ' class="'.implode(' ', $classes).'" ';
+
+				$quoteMarkup .= '>'.$quotationLeft.trim($quotesResult[1][$q]).$quotationRight.'</blockquote>';
+
+				$quote = $quoteMarkup;
+
+				$content = str_replace($quotesResult[0][$q], $quote, $content);
+			}
+
+			$quotes = $quotesResult[1];
+		}
 
 		// convert lone ampersands to HTML special characters
 		$content = str_replace(' & ', ' &amp; ', $content);
