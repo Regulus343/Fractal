@@ -6,7 +6,7 @@
 
 		created by Cody Jassman
 		version 0.9.1
-		last updated on May 8, 2015
+		last updated on May 14, 2015
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -1084,7 +1084,7 @@ class Fractal {
 				if (!empty($classes))
 					$quoteMarkup .= ' class="'.implode(' ', $classes).'" ';
 
-				$quoteMarkup .= '>'.$quotationLeft.trim($quotesResult[1][$q]).$quotationRight.'</blockquote>';
+				$quoteMarkup .= '>'.$quotationLeft.'<p>'.trim($quotesResult[1][$q]).'</p>'.$quotationRight.'</blockquote>';
 
 				$quote = $quoteMarkup;
 
@@ -1112,6 +1112,9 @@ class Fractal {
 				$content .= $this->getViewButtonMarkup($config['contentUrl'], $config['viewButtonLabel']);
 			}
 		}
+
+		//remove paragraph tags around blockquotes
+		$content = str_replace('<p><blockquote', '<blockquote', str_replace('</blockquote></p>', '</blockquote>', $content));
 
 		return $content;
 	}

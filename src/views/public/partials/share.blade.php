@@ -57,7 +57,7 @@
 				{{-- Pinterest --}}
 
 				<div class="share-item share-pinterest">
-					<a href="//gb.pinterest.com/pin/create/button/?url={{ urlencode(Site::get('contentUrl', Request::url())) }}&media={{ urlencode(Site::get('contentImage')) }}&description={{ urlencode(Site::get('contentDescription')) }}" data-pin-do="buttonPin" data-pin-config="beside" data-pin-color="red"><img src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_red_20.png" /></a>
+					<a href="//gb.pinterest.com/pin/create/button/?url={{ urlencode(Site::get('contentUrl', Request::url())) }}&amp;media={{ urlencode(Site::get('contentImage')) }}&amp;description={{ urlencode(Site::get('contentDescription')) }}" data-pin-do="buttonPin" data-pin-config="beside" data-pin-color="red"><img src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_red_20.png" alt="Pinterest" /></a>
 
 					<script type="text/javascript" async defer src="//assets.pinterest.com/js/pinit.js"></script>
 				</div>
