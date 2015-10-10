@@ -6,23 +6,39 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
+use Illuminate\Http\Request;
+
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Contracts\Auth\PasswordBroker;
+use Illuminate\Foundation\Auth\ResetsPasswords;
+
 use Fractal;
 
 use Regulus\ActivityLog\Models\Activity;
 use Auth;
 use Form;
 use Site;
-use User;
+use Regulus\Identify\Models\User;
 
 use Regulus\Fractal\Controllers\BaseController;
 
 class AuthController extends BaseController {
 
-	public function __construct()
+	use ResetsPasswords;
+
+	protected $redirectTo;
+
+	public function __construct(Guard $auth, PasswordBroker $passwords)
 	{
 		Site::setMulti(['section', 'subSection'], 'Log In');
 		Site::setTitle(Fractal::trans('labels.log_in'));
 		Site::set('hideSidebar', true);
+
+		$this->auth       = $auth;
+		$this->passwords  = $passwords;
+		$this->redirectTo = Fractal::url('login');
+
+		$this->middleware('guest');
 
 		Fractal::setViewsLocation('auth');
 	}
@@ -133,50 +149,141 @@ class AuthController extends BaseController {
 		}
 	}
 
-	// reset password step 1 of 2 (forgot password)
-	public function forgotPassword()
+	/**
+	 * Display the form to request a password reset link.
+	 *
+	 * @return Response
+	 */
+	public function getEmail()
 	{
 		Site::setTitle(Fractal::trans('labels.reset_password'));
 
-		$rules = ['username' => 'required'];
-		Form::setValidationRules($rules);
+		Form::setErrors();
 
-		$messages = [];
+		return View::make(Fractal::view('forgot_password'));
+	}
 
-		if (Form::isValid())
+	/**
+	 * Send a reset link to the given user.
+	 *
+	 * @param  Request  $request
+	 * @return Response
+	 */
+	public function postEmail(Request $request)
+	{
+		$this->validate($request, ['email' => 'required|email']);
+
+		$response = $this->passwords->sendResetLink($request->only('email'), function($m)
 		{
-			$username = trim(Input::get('username'));
-			$user = User::getByUsernameOrEmail($username);
+			$m->subject($this->getEmailSubject());
+		});
 
-			if (!empty($user))
-			{
-				$user->resetPasswordCode($username);
+		switch ($response)
+		{
+			case PasswordBroker::RESET_LINK_SENT:
 
-				Session::set('username', $user->username);
+				$user = User::getByUsernameOrEmail($request->get('email'));
 
 				Activity::log([
 					'description' => 'Reset Password Credentials Successfully Requested',
-					'details'     => 'Username: '.$user->username,
+					'details'     => 'Username: '.$user->name,
 				]);
-			} else {
-				Session::set('username', trim(Input::get('username')));
+
+				return redirect()->back()->with('messages', ['success' => Fractal::trans('messages.success.forgot_password_emailed')]);
+
+			case PasswordBroker::INVALID_USER:
 
 				Activity::log([
 					'description' => 'Reset Password Credentials Erroneously Requested',
-					'details'     => 'Username: '.trim(Input::get('username')),
+					'details'     => 'Email: '.trim($request->get('email')),
 				]);
-			}
 
-			//even if user doesn't exist, suggest the user does exist to prevent someone from using this function to find usernames
-			return Redirect::to(Fractal::uri('login'))->with('messages', [
-				'success' => Fractal::trans('messages.success._forgot_password')
-			]);
-		} else {
-			if ($_POST)
-				$messages['error'] = Fractal::trans('messages.errors.general');
+				return redirect()->back()
+					->with('messages', ['error' => Fractal::trans('messages.errors.general')])
+					->withErrors(['email' => trans($response)]);
+		}
+	}
+
+	/**
+	 * Display the password reset view for the given token.
+	 *
+	 * @param  string  $token
+	 * @return Response
+	 */
+	public function getReset($token = null)
+	{
+		if (is_null($token))
+		{
+			throw new NotFoundHttpException;
 		}
 
-		return View::make(Fractal::view('forgot_password'))->with('messages', $messages);
+		Site::setTitle(Fractal::trans('labels.reset_password'));
+
+		Form::setErrors();
+
+		return view(Fractal::view('reset_password'))->with('token', $token);
+	}
+
+	/**
+	 * Reset the given user's password.
+	 *
+	 * @param  Request  $request
+	 * @return Response
+	 */
+	public function postReset(Request $request)
+	{
+		$this->validate($request, [
+			'token'    => 'required',
+			'email'    => 'required|email',
+			'password' => 'required|confirmed',
+		]);
+
+		$credentials = $request->only('email', 'password', 'password_confirmation', 'token');
+
+		$response = $this->passwords->reset($credentials, function($user, $password)
+		{
+			$user->password = bcrypt($password);
+
+			$user->save();
+
+			$this->auth->login($user);
+		});
+
+		switch ($response)
+		{
+			case PasswordBroker::PASSWORD_RESET:
+
+				$user = User::getByUsernameOrEmail($request->get('email'));
+
+				Activity::log([
+					'description' => 'Reset Password',
+					'details'     => 'Username: '.$user->name,
+				]);
+
+				return redirect($this->redirectPath())->with('messages', ['success' => Fractal::trans('messages.success.reset_password')]);
+
+			default:
+
+				return redirect()->back()
+					->with('messages', ['error' => Fractal::trans('messages.errors.general')])
+					->withInput($request->only('email'))
+					->withErrors(['email' => trans($response)]);
+		}
+	}
+
+	/**
+	 * Get the post register / login redirect path.
+	 *
+	 * @return string
+	 */
+	public function redirectPath()
+	{
+		if (property_exists($this, 'redirectPath'))
+		{
+			return $this->redirectPath;
+		}
+
+		return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
 	}
 
 	// reset password step 2 of 2

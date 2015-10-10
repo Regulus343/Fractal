@@ -5,24 +5,28 @@
 	<script type="text/javascript">
 		var minimumPasswordLength = {{ Fractal::getSetting('Minimum Password Length') }};
 
-		$(document).ready(function(){
+		$(document).ready(function()
+		{
+			$('#field-password').focus();
 
-			$('#field-new-password').focus();
-
-			$('#field-new-password, #field-new-password-confirmation').change(function(){
+			$('#field-password, #field-password-confirmation').change(function()
+			{
 				checkPasswords();
-			}).keyup(function(){
+			}).keyup(function()
+			{
 				checkPasswords();
 			});
-
 		});
 
-		function checkPasswords() {
-			var password             = $('#new-password').val();
-			var passwordConfirmation = $('#new-password-confirmation').val();
+		function checkPasswords()
+		{
+			var password             = $('#field-password').val();
+			var passwordConfirmation = $('#field-password-confirmation').val();
 
-			if (password != "") {
-				if (password == passwordConfirmation && password.length >= minimumPasswordLength) {
+			if (password != "")
+			{
+				if (password == passwordConfirmation && password.length >= minimumPasswordLength)
+				{
 					$('.passwords-check .passwords-mismatch').addClass('hidden');
 					$('.passwords-check .passwords-match').removeClass('hidden');
 				} else {
@@ -43,6 +47,8 @@
 
 	{!! Form::open(['class' => 'form-login']) !!}
 
+		{!! Form::hidden('token', ['value' => $token]) !!}
+
 		<h2>{{ Site::heading() }}</h2>
 
 		<div class="passwords-check">
@@ -50,11 +56,13 @@
 			<span class="glyphicon glyphicon-remove-circle passwords-mismatch red hidden"></span>
 		</div>
 
-		{!! Form::field('new_password', 'password') }}
+		{!! Form::field('email', 'text', ['label' => Fractal::trans('labels.email')]) !!}
 
-		{!! Form::field('new_password_confirmation', 'password', array('label' => 'Confirm New Password')) !!}
+		{!! Form::field('password', 'password') !!}
 
-		<a href="{{ Fractal::url('login') }}" class="pull-right">{{ Fractal::trans('labels.return_to_log_in') !!}</a>
+		{!! Form::field('password_confirmation', 'password', array('label' => 'Confirm New Password')) !!}
+
+		<a href="{{ Fractal::url('login') }}" class="pull-right">{{ Fractal::trans('labels.return_to_log_in') }}</a>
 
 		{!! Form::field('[ICON: check-circle]'.Fractal::trans('labels.reset_password'), 'button') !!}
 

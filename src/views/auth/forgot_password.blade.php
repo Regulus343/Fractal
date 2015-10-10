@@ -3,10 +3,12 @@
 @section(config('cms.content_section'))
 
 	<script type="text/javascript">
-		$(document).ready(function(){
-
-			$('#field-identifier').focus();
-
+		$(document).ready(function()
+		{
+			setTimeout(function()
+			{
+				$('#field-email').focus();
+			}, 500);
 		});
 	</script>
 
@@ -16,7 +18,7 @@
 
 		<h2>{{ Site::heading() }}</h2>
 
-		{!! Form::field('identifier', 'text', ['label' => Fractal::trans('labels.username')]) !!}
+		{!! Form::field('email', 'text', ['label' => Fractal::trans('labels.email')]) !!}
 
 		<a href="{{ Fractal::url('login') }}" class="pull-right">{{ Fractal::trans('labels.return_to_log_in') }}</a>
 

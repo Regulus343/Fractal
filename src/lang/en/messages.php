@@ -3,18 +3,17 @@
 return [
 
 	'errors' => [
-		'general'                    => 'Something went wrong. Please correct any errors and try again.',
-		'not_found'                  => 'The :item you selected was not found.',
-		'no_items'                   => 'The :item you selected contained no :items.',
-		'log_in'                     => 'Something went wrong. Please check your username and password and try again.',
-		'already_logged_in'          => 'You are already logged in.',
-		'log_in_required'            => 'You must be logged in to access the requested page.',
-		'unauthorized'               => 'You are not authorized to access the requested page.',
-		'delete_items_exist'         => 'The :item could not be deleted because it is assigned to <strong>:total</strong> existing :relatedItem.',
-		'reset_password_invalid_uri' => 'To reset password, please click on the link that was sent to your email address.',
-		'hosted_content_not_found'   => 'The hosted content you specified was not found.',
-		'account_activation'         => 'Something went wrong with your attempt to activate your account.',
-		'save_content'               => 'Your form content was unable to be saved. Please check for validation errors.',
+		'general'                  => 'Something went wrong. Please correct any errors and try again.',
+		'not_found'                => 'The :item you selected was not found.',
+		'no_items'                 => 'The :item you selected contained no :items.',
+		'log_in'                   => 'Something went wrong. Please check your username and password and try again.',
+		'already_logged_in'        => 'You are already logged in.',
+		'log_in_required'          => 'You must be logged in to access the requested page.',
+		'unauthorized'             => 'You are not authorized to access the requested page.',
+		'delete_items_exist'       => 'The :item could not be deleted because it is assigned to <strong>:total</strong> existing :relatedItem.',
+		'hosted_content_not_found' => 'The hosted content you specified was not found.',
+		'account_activation'       => 'Something went wrong with your attempt to activate your account.',
+		'save_content'             => 'Your form content was unable to be saved. Please check for validation errors.',
 	],
 
 	'success' => [

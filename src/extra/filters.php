@@ -32,7 +32,7 @@ Route::filter('fractal-auth', function() use ($baseUri)
 	$uriSegments = explode('/', $path);
 	$uriToCheck  = isset($uriSegments[1]) ? $uriSegments[1] : '';
 
-	if (!in_array($uriToCheck, ['login', 'logout', 'activate', 'forgot-password', 'reset-password']))
+	if (!in_array($uriToCheck, ['login', 'logout', 'activate', 'password']))
 	{
 		if (!Auth::check())
 		{

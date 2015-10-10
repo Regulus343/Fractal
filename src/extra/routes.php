@@ -73,8 +73,10 @@ Route::controller($baseUri.'/api', 'Regulus\Fractal\Controllers\General\ApiContr
 /* Authorization Routes */
 Route::any($baseUri.'/login', config('cms.auth_controller').'@login');
 Route::get($baseUri.'/logout', config('cms.auth_controller').'@logout');
-Route::any($baseUri.'/forgot-password', config('cms.auth_controller').'@forgotPassword');
-Route::any($baseUri.'/reset-password/{id?}/{code?}', config('cms.auth_controller').'@resetPassword');
+Route::get($baseUri.'/password', config('cms.auth_controller').'@getEmail');
+Route::post($baseUri.'/password', config('cms.auth_controller').'@postEmail');
+Route::get($baseUri.'/password/reset/{token}', config('cms.auth_controller').'@getReset');
+Route::post($baseUri.'/password/reset/{token}', config('cms.auth_controller').'@postReset');
 
 Route::controller($baseUri.'/auth', config('cms.auth_controller'));
 

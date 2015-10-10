@@ -3,8 +3,8 @@
 @section(config('cms.content_section'))
 
 	<script type="text/javascript">
-		$(document).ready(function(){
-
+		$(document).ready(function()
+		{
 			setTimeout(function()
 			{
 				if ($('#field-identifier').val() != "")
@@ -18,7 +18,6 @@
 				if (e.charCode == 13)
 					$('form.form-login').submit();
 			});
-
 		});
 	</script>
 
@@ -32,7 +31,7 @@
 
 		{!! Form::field('password') !!}
 
-		<a href="{{ Fractal::url('forgot-password') }}" class="pull-right">{{ Fractal::trans('labels.forgot_your_password') }}</a>
+		<a href="{{ Fractal::url('password') }}" class="pull-right">{{ Fractal::trans('labels.forgot_your_password') }}</a>
 
 		{!! Form::field('[ICON: sign-in]'.Fractal::trans('labels.log_in'), 'button') !!}
 
