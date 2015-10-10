@@ -77,6 +77,8 @@ Route::get($baseUri.'/password', config('cms.auth_controller').'@getEmail');
 Route::post($baseUri.'/password', config('cms.auth_controller').'@postEmail');
 Route::get($baseUri.'/password/reset/{token}', config('cms.auth_controller').'@getReset');
 Route::post($baseUri.'/password/reset/{token}', config('cms.auth_controller').'@postReset');
+Route::get('password/reset/{token}', config('cms.auth_controller').'@getReset');
+Route::post('password/reset/{token}', config('cms.auth_controller').'@postReset');
 
 Route::controller($baseUri.'/auth', config('cms.auth_controller'));
 
