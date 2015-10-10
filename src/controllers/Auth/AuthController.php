@@ -38,8 +38,6 @@ class AuthController extends BaseController {
 		$this->passwords  = $passwords;
 		$this->redirectTo = Fractal::url('login');
 
-		$this->middleware('guest');
-
 		Fractal::setViewsLocation('auth');
 	}
 
@@ -156,6 +154,10 @@ class AuthController extends BaseController {
 	 */
 	public function getEmail()
 	{
+		// check if an active session already exists
+		if (Auth::check())
+			return Redirect::to(Fractal::uri('account'))->with('messages', ['error' => Fractal::trans('messages.errors.already_logged_in')]);
+
 		Site::setTitle(Fractal::trans('labels.reset_password'));
 
 		Form::setErrors();
@@ -284,53 +286,6 @@ class AuthController extends BaseController {
 		}
 
 		return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
-	}
-
-	// reset password step 2 of 2
-	public function resetPassword($id = 0, $code = '')
-	{
-		if (!$id || $code == "")
-			return Redirect::to(Fractal::uri('forgot-password'))->with('messages', [
-				'error' => Fractal::trans('messages.errors.reset_password_invalid_uri')
-			]);
-
-		$user = User::getActiveById($id);
-		if (empty($user) || $user->reset_password_code != $code)
-			return Redirect::to(Fractal::uri('forgot-password'))->with('messages', [
-				'error' => Fractal::trans('messages.errors.not_found', ['item' => strtolower(Fractal::trans('labels.user'))])
-			]);
-
-		Site::setTitle(Fractal::trans('labels.reset_password'));
-
-		$rules = [
-			'new_password' => ['required', 'min:'.Fractal::getSetting('Minimum Password Length', 8), 'max:64', 'confirmed'],
-		];
-		Form::setValidationRules($rules);
-
-		$messages = [];
-
-		if (Form::isValid())
-		{
-			$user->updateAccount('password');
-
-			$user->reset_password_code = "";
-			$user->save();
-
-			Session::set('username', $user->username);
-
-			Activity::log([
-				'description' => 'Reset Password',
-				'details'     => 'Username: '.$user->username,
-			]);
-
-			return Redirect::to(Fractal::uri('login'))
-				->with('messages', ['success' => Fractal::trans('messages.success.reset_password')]);
-		} else {
-			if ($_POST)
-				$messages['error'] = Fractal::trans('messages.errors.general');
-		}
-
-		return View::make(Fractal::view('reset_password'))->with('messages', $messages);
 	}
 
 }
