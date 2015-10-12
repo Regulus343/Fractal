@@ -1,7 +1,7 @@
 <script id="menu-item-template" type="text/x-handlebars-template">
 
 	<fieldset id="menu-item-{{number}}" data-item-number="{{number}}" data-item-id="{{id}}">
-		<legend><?=Fractal::trans('labels.menuItem')?></legend>
+		<legend><?=Fractal::transChoice('labels.menu_item')?></legend>
 
 		<?=Form::hidden('items.{{number}}.id')?>
 
@@ -72,7 +72,7 @@
 		<?php } ?>
 
 		<a href="" class="btn btn-danger btn-xs remove-template-item pull-right">
-			<span class="glyphicon glyphicon-remove-circle"></span>&nbsp; <?=Fractal::trans('labels.removeMenuItem')?>
+			<span class="glyphicon glyphicon-remove-circle"></span>&nbsp; <?=Fractal::trans('labels.remove_item', ['item' => Fractal::transChoice('labels.menu_item')])?>
 		</a>
 	</fieldset>
 

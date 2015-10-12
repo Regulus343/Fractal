@@ -83,7 +83,9 @@ class AuthController extends BaseController {
 			return Redirect::to($returnUri)->with('messages', [
 				'success' => Fractal::trans('messages.success.logged_in', ['website' => Site::name(), 'user' => $user->getName()])
 			]);
-		} else {
+		}
+		else
+		{
 			if ($_POST)
 			{
 				$messages['error'] = Fractal::trans('messages.errors.log_in');
@@ -91,7 +93,7 @@ class AuthController extends BaseController {
 				Activity::log([
 					'action'      => 'Log In',
 					'description' => 'Attempted to Log In',
-					'details'     => 'Username: '.trim(Input::get('username')),
+					'details'     => 'Username: '.trim(Input::get('identifier')),
 				]);
 			}
 		}
