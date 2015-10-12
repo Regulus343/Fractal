@@ -18,8 +18,8 @@ return [
 	|--------------------------------------------------------------------------
 	|
 	| The subdomain for the media URLs. The default is "media", so the media
-	| will be mapped to "http://media.website.com". Set to false or blank to
-	| not use a subdomain.
+	| will be mapped to "http://media.website.com". Set to null, false, or
+	| blank to not use a subdomain.
 	|
 	*/
 	'subdomain' => 'media',
@@ -29,13 +29,13 @@ return [
 	| Base URI
 	|--------------------------------------------------------------------------
 	|
-	| The URI for the media. The default is false as the media is configured by
+	| The URI for the media. The default is null as the media is configured by
 	| default to use a subdomain instead. If you would like to have a URL like
 	| "http://website.com/media" instead, set this to "media" and set
-	| "subdomain" to false.
+	| "subdomain" to null.
 	|
 	*/
-	'base_uri' => false,
+	'base_uri' => null,
 
 	/*
 	|--------------------------------------------------------------------------

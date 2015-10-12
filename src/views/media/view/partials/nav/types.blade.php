@@ -18,7 +18,7 @@
 
 			@if ($mediaTypeListed->items()->onlyPublished(false)->count())
 
-				<li{{ HTML::activeArea(isset($mediaType) && $mediaTypeListed->id == $mediaType->id) }}>
+				<li{!! HTML::activeArea(isset($mediaType) && $mediaTypeListed->id == $mediaType->id) !!}>
 					<a href="{{ $mediaTypeListed->getUrl() }}">
 						<i class="fa fa-tag"></i> {{ $mediaTypeListed->name }}
 

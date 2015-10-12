@@ -4,14 +4,28 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
+	| Subdomain
+	|--------------------------------------------------------------------------
+	|
+	| The subdomain for the admin / CMS URLs. The default is "admin", so the
+	| CMS will be mapped to "http://blog.website.com". Set to null, false, or
+	| blank to not use a subdomain (in that case, you'll want to set base URI
+	| below to something like "admin" or "cms").
+	|
+	*/
+	'subdomain' => 'admin',
+
+	/*
+	|--------------------------------------------------------------------------
 	| Base URI
 	|--------------------------------------------------------------------------
 	|
-	| The URI for Fractal. The default is "admin" but you might perhaps
-	| wish to use "cms" or something else instead.
+	| The base URI for Fractal. The default is "admin" but you might perhaps
+	| wish to use "cms" or something else instead. If you're using a subdomain,
+	| you should set this to null.
 	|
 	*/
-	'base_uri' => 'admin',
+	'base_uri' => null,
 
 	/*
 	|--------------------------------------------------------------------------

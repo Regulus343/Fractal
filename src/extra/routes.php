@@ -1,16 +1,5 @@
 <?php namespace Regulus\Fractal;
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the Closure to execute when that URI is requested.
-|
-*/
-
 use Illuminate\Support\Facades\Route;
 
 use Illuminate\Support\Facades\App;
@@ -20,67 +9,77 @@ use Auth;
 use Regulus\Fractal\Models\Content\Page;
 use Regulus\Fractal\Models\Blog\Article;
 
-$baseUri     = config('cms.base_uri');
-$controllers = config('cms.controllers');
-$methods     = config('cms.controller_methods');
+$domain = str_replace('https://', '', str_replace('http://', '', config('app.url')));
 
-if (is_null($baseUri))
-	return;
+$subdomain = config('cms.subdomain');
+if (is_string($subdomain) && $subdomain != "")
+	$domain = $subdomain.'.'.$domain;
 
-/* Additional Routes for Defined Controller Methods */
-foreach (array('get', 'post') as $type)
+Route::group(['domain' => $domain], function()
 {
-	if (isset($methods[$type]))
+	$baseUri = config('cms.base_uri');
+
+	/* Authorization Routes */
+	Route::any($baseUri.'/login', config('cms.auth_controller').'@login');
+	Route::get($baseUri.'/logout', config('cms.auth_controller').'@logout');
+	Route::get($baseUri.'/password', config('cms.auth_controller').'@getEmail');
+	Route::post($baseUri.'/password', config('cms.auth_controller').'@postEmail');
+	Route::get($baseUri.'/password/reset/{token}', config('cms.auth_controller').'@getReset');
+	Route::post($baseUri.'/password/reset/{token}', config('cms.auth_controller').'@postReset');
+	Route::get('password/reset/{token}', config('cms.auth_controller').'@getReset');
+	Route::post('password/reset/{token}', config('cms.auth_controller').'@postReset');
+
+	Route::controller($baseUri.'/auth', config('cms.auth_controller'));
+
+	Route::group(['middleware' => 'auth.fractal'], function() use ($baseUri)
 	{
-		foreach ($methods[$type] as $route => $method)
+		$controllers = config('cms.controllers');
+		$methods     = config('cms.controller_methods');
+
+		/* Additional Routes for Defined Controller Methods */
+		foreach (['get', 'post'] as $type)
 		{
-			if ($type == "get")
-				Route::get($baseUri.'/'.$route, $method);
-			else
-				Route::post($baseUri.'/'.$route, $method);
+			if (isset($methods[$type]))
+			{
+				foreach ($methods[$type] as $route => $method)
+				{
+					if ($type == "get")
+						Route::get($baseUri.'/'.$route, $method);
+					else
+						Route::post($baseUri.'/'.$route, $method);
+				}
+			}
 		}
-	}
-}
 
-/* Routes for Defined Standard Controllers */
-if (isset($controllers['standard']))
-{
-	foreach ($controllers['standard'] as $controllerURI => $controller) {
-		Route::controller($baseUri.'/'.$controllerURI, $controller);
-	}
-}
+		/* Routes for Defined Standard Controllers */
+		if (isset($controllers['standard']))
+		{
+			foreach ($controllers['standard'] as $controllerURI => $controller) {
+				Route::controller($baseUri.'/'.$controllerURI, $controller);
+			}
+		}
 
-if (isset($controllers['standard']['home']))
-	Route::get($baseUri, $controllers['standard']['home'].'@getIndex');
+		if (isset($controllers['standard']['home']))
+			Route::get($baseUri, $controllers['standard']['home'].'@getIndex');
 
-/* Routes for Defined Resource Controllers */
-if (isset($controllers['resource']))
-{
-	foreach ($controllers['resource'] as $controllerURI => $controller) {
-		Route::resource($baseUri.'/'.$controllerURI, $controller);
-	}
-}
+		/* Routes for Defined Resource Controllers */
+		if (isset($controllers['resource']))
+		{
+			foreach ($controllers['resource'] as $controllerURI => $controller) {
+				Route::resource($baseUri.'/'.$controllerURI, $controller);
+			}
+		}
 
-if (isset($controllers['resource']['home']))
-	Route::get($baseUri, $controllers['resource']['home'].'@getIndex');
+		if (isset($controllers['resource']['home']))
+			Route::get($baseUri, $controllers['resource']['home'].'@getIndex');
 
-/* Developer Route (executing route enables "developer mode" via "developer" session variable) */
-Route::get($baseUri.'/developer/{off?}', 'Regulus\Fractal\Controllers\General\DashboardController@getDeveloper');
+		/* Developer Route (executing route enables "developer mode" via "developer" session variable) */
+		Route::get($baseUri.'/developer/{off?}', 'Regulus\Fractal\Controllers\General\DashboardController@getDeveloper');
 
-/* API Routes */
-Route::controller($baseUri.'/api', 'Regulus\Fractal\Controllers\General\ApiController');
-
-/* Authorization Routes */
-Route::any($baseUri.'/login', config('cms.auth_controller').'@login');
-Route::get($baseUri.'/logout', config('cms.auth_controller').'@logout');
-Route::get($baseUri.'/password', config('cms.auth_controller').'@getEmail');
-Route::post($baseUri.'/password', config('cms.auth_controller').'@postEmail');
-Route::get($baseUri.'/password/reset/{token}', config('cms.auth_controller').'@getReset');
-Route::post($baseUri.'/password/reset/{token}', config('cms.auth_controller').'@postReset');
-Route::get('password/reset/{token}', config('cms.auth_controller').'@getReset');
-Route::post('password/reset/{token}', config('cms.auth_controller').'@postReset');
-
-Route::controller($baseUri.'/auth', config('cms.auth_controller'));
+		/* API Routes */
+		Route::controller($baseUri.'/api', 'Regulus\Fractal\Controllers\General\ApiController');
+	});
+});
 
 /* Blog Routes */
 if (config('blogs.enabled'))

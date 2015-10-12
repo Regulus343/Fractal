@@ -37,7 +37,11 @@ a.thumbnail-image img { max-width: 100%; border: none; }
 time.date-created { margin-left: 12px; }
 
 span.badge-sticky { margin: 0 0 3px 4px; font-size: 10px; }
-ul.nav-pills.nav-side span.badge-sticky { font-size: 8px; }
+ul.nav-side span.badge { background-color: #ccc; font-size: 0.8em; }
+ul.nav-side span.badge-sticky { font-size: 8px; }
+ul.nav-side li.special a { background-color: #eee; border-radius: 4px; }
+ul.nav-side li.active a, ul.nav-side li:hover a { background-color: #444 !important; color: #fff; border-radius: 4px; }
+ul.nav-side li.active a span.badge, ul.nav-side li:hover a span.badge { background-color: #428bca; color: #fff; }
 
 img.thumbnail-image { padding: 3px; max-width: 120px; border: 1px solid #aaa; }
 
@@ -77,6 +81,8 @@ div.content-side {
 	color: #fff;
 	border-radius: 8px; -webkit-border-radius: 8px; -moz-border-radius: 8px;
 }
+
+div.content-side img { max-width: 100%; }
 
 div#comments { margin-top: 32px; border-top: 1px solid #ddd; }
 

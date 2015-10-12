@@ -6,7 +6,7 @@
 
 		created by Cody Jassman
 		version 0.9.2
-		last updated on October 10, 2015
+		last updated on October 12, 2015
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -85,6 +85,9 @@ class Fractal {
 	 */
 	public function url($uri = '', $controller = false, $subdomain = null)
 	{
+		if (is_null($subdomain))
+			$subdomain = config('cms.subdomain');
+
 		return Site::url($this->uri($uri, $controller), $subdomain);
 	}
 
@@ -1237,8 +1240,14 @@ class Fractal {
 			{
 				if ($renderViews)
 				{
-					$view    = View::make($views[1][$v])->render();
-					$content = str_replace($views[0][$v], $view, $content);
+					$view = $views[1][$v];
+
+					if (View::exists($view))
+						$viewHtml = View::make($view)->render();
+					else
+						$viewHtml = "";
+
+					$content = str_replace($views[0][$v], $viewHtml, $content);
 				} else
 				{
 					$content = str_replace($views[0][$v], '', $content);

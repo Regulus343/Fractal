@@ -61,4 +61,13 @@ class DashboardController extends BaseController {
 		]);
 	}
 
+	public function getExportMenus()
+	{
+		Fractal::exportMenus();
+
+		return Redirect::to(Fractal::url())->with('messages', [
+			'info' => Fractal::trans('messages.menus_exported'),
+		]);
+	}
+
 }

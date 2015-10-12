@@ -18,8 +18,8 @@ return [
 	|--------------------------------------------------------------------------
 	|
 	| The subdomain for the blog URLs. The default is "blog", so the blog will
-	| be mapped to "http://blog.website.com". Set to false or blank to not use
-	| a subdomain.
+	| be mapped to "http://blog.website.com". Set to null, false, or blank to
+	| not use a subdomain.
 	|
 	*/
 	'subdomain' => 'blog',
@@ -29,13 +29,13 @@ return [
 	| Base URI
 	|--------------------------------------------------------------------------
 	|
-	| The URI for the blog. The default is false as the blog is configured by
+	| The URI for the blog. The default is null as the blog is configured by
 	| default to use a subdomain instead. If you would like to have a URL like
 	| "http://website.com/blog" instead, set this to "blog" and set "subdomain"
-	| to false.
+	| to null.
 	|
 	*/
-	'base_uri' => false,
+	'base_uri' => null,
 
 	/*
 	|--------------------------------------------------------------------------

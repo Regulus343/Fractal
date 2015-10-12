@@ -18,7 +18,7 @@
 
 			@if ($mediaSetListed->items()->onlyPublished(false)->count())
 
-				<li{{ HTML::activeArea(isset($mediaSet) && $mediaSetListed->id == $mediaSet->id) }}>
+				<li{!! HTML::activeArea(isset($mediaSet) && $mediaSetListed->id == $mediaSet->id) !!}>
 					<a href="{{ $mediaSetListed->getUrl() }}">
 						<span class="fa fa-th"></span> {{ $mediaSetListed->title }}
 

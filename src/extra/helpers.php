@@ -138,3 +138,16 @@ if ( ! function_exists('trans_choice_lower_a'))
 		return \Regulus\TetraText\Facade::a(strtolower(trans_choice($key, $number, $replace, $locale)));
 	}
 }
+
+if ( ! function_exists('developer'))
+{
+	/**
+	 * Get a language item according to an integer value and make it lowercase.
+	 *
+	 * @return boolean
+	 */
+	function developer()
+	{
+		return \Session::get('developer');
+	}
+}

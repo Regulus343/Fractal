@@ -8,7 +8,7 @@
 
 	@foreach ($mediaItems as $mediaItemListed)
 
-		<li{{ HTML::activeArea(isset($mediaItem->id) && $mediaItemListed->id == $mediaItem->id) }}>
+		<li{!! HTML::activeArea(isset($mediaItem->id) && $mediaItemListed->id == $mediaItem->id) !!}>
 			<a href="{{ $mediaItemListed->getUrl() }}">
 				<i class="fa fa-file"></i> {{ $mediaItemListed->getTitle() }}
 

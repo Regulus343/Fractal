@@ -66,4 +66,6 @@ return [
 	'not_published'       => 'This :item is not published. This means the page cannot be seen by regular users.',
 	'not_published_until' => 'This :item is not published. This means the page cannot be seen by regular users. It is currently set to be published on :dateTime',
 
+	'menus_exported' => 'The menus have been exported.',
+
 ];

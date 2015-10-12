@@ -26,36 +26,6 @@ use Regulus\SolidSite\Facade as Site;
 
 $baseUri = config('cms.base_uri');
 
-Route::filter('fractal-auth', function() use ($baseUri)
-{
-	$path        = Request::path();
-	$uriSegments = explode('/', $path);
-	$uriToCheck  = isset($uriSegments[1]) ? $uriSegments[1] : '';
-
-	if (!in_array($uriToCheck, ['login', 'logout', 'activate', 'password']))
-	{
-		if (!Auth::check())
-		{
-			Session::set('returnUri', $path);
-
-			return Redirect::to($baseUri.'/login')
-				->with('messages', ['error' => Fractal::trans('messages.errors.log_in_required')]);
-		}
-
-		$cmsRoles = Fractal::getSetting('CMS Roles', 'admin');
-		if (Auth::isNot($cmsRoles))
-		{
-			if (config('cms.user_role_no_cms_access_log_out'))
-				Auth::logout();
-
-			return Redirect::to(config('cms.user_role_no_cms_access_uri'));
-		}
-	}
-});
-
-Route::when($baseUri, 'fractal-auth');
-Route::when($baseUri.'/*', 'fractal-auth');
-
 $authFilters = config('cms.auth_filters');
 Route::filter('roles', function() use ($baseUri, $authFilters)
 {
@@ -68,7 +38,7 @@ Route::filter('roles', function() use ($baseUri, $authFilters)
 			if ($prefixUri == $filterUri || $prefixUri.'/'.$suffixUri == $filterUri)
 			{
 				if (!Auth::is($allowedRoles))
-					return Redirect::to($baseUri.'/login')
+					return Redirect::to(Fractal::url('/login'))
 						->with('messages', ['error' => Fractal::trans('messages.errors.unauthorized')]);
 			}
 		}

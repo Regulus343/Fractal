@@ -18,6 +18,8 @@ class MenusTableSeeder extends Seeder {
 
 		$this->timestamp = date('Y-m-d H:i:s');
 
+		$cmsSubdomain = config('cms.subdomain');
+
 		$menus = [
 			[
 				'name'  => 'CMS Main',
@@ -34,6 +36,7 @@ class MenusTableSeeder extends Seeder {
 						'items'         => [
 							[
 								'uri'                => 'menus',
+								'subdomain'          => $cmsSubdomain,
 								'label'              => 'Menus',
 								'label_language_key' => 'plural:menu',
 								'icon'               => 'tasks',
@@ -42,6 +45,7 @@ class MenusTableSeeder extends Seeder {
 							],
 							[
 								'uri'                => 'pages',
+								'subdomain'          => $cmsSubdomain,
 								'label'              => 'Pages',
 								'label_language_key' => 'plural:page',
 								'icon'               => 'file',
@@ -50,6 +54,7 @@ class MenusTableSeeder extends Seeder {
 							],
 							[
 								'uri'                => 'files',
+								'subdomain'          => $cmsSubdomain,
 								'label'              => 'Files',
 								'label_language_key' => 'plural:file',
 								'icon'               => 'folder',
@@ -58,6 +63,7 @@ class MenusTableSeeder extends Seeder {
 							],
 							[
 								'uri'                => 'layout-templates',
+								'subdomain'          => $cmsSubdomain,
 								'label'              => 'Layout Templates',
 								'label_language_key' => 'plural:layout_template',
 								'icon'               => 'th',
@@ -68,6 +74,7 @@ class MenusTableSeeder extends Seeder {
 					],
 					[
 						'uri'           => 'media',
+						'subdomain'          => $cmsSubdomain,
 						'label'         => 'Media',
 						'icon'          => 'th-list',
 						'display_order' => 2,
@@ -76,6 +83,7 @@ class MenusTableSeeder extends Seeder {
 						'items'         => [
 							[
 								'uri'                => 'media/items',
+								'subdomain'          => $cmsSubdomain,
 								'label'              => 'Media Items',
 								'label_language_key' => 'plural:item',
 								'icon'               => 'file-image-o',
@@ -84,6 +92,7 @@ class MenusTableSeeder extends Seeder {
 							],
 							[
 								'uri'                => 'media/types',
+								'subdomain'          => $cmsSubdomain,
 								'label'              => 'Media Types',
 								'label_language_key' => 'plural:type',
 								'icon'               => 'tag',
@@ -92,6 +101,7 @@ class MenusTableSeeder extends Seeder {
 							],
 							[
 								'uri'                => 'media/sets',
+								'subdomain'          => $cmsSubdomain,
 								'label'              => 'Media Sets',
 								'label_language_key' => 'plural:set',
 								'icon'               => 'folder',
@@ -102,6 +112,7 @@ class MenusTableSeeder extends Seeder {
 					],
 					[
 						'uri'           => 'blogs',
+						'subdomain'          => $cmsSubdomain,
 						'label'         => 'Blogs',
 						'icon'          => 'th-list',
 						'display_order' => 2,
@@ -110,6 +121,7 @@ class MenusTableSeeder extends Seeder {
 						'items'         => [
 							[
 								'uri'                => 'blogs/articles',
+								'subdomain'          => $cmsSubdomain,
 								'label'              => 'Blog Articles',
 								'label_language_key' => 'plural:article',
 								'icon'               => 'file',
@@ -118,6 +130,7 @@ class MenusTableSeeder extends Seeder {
 							],
 							[
 								'uri'                => 'blogs/categories',
+								'subdomain'          => $cmsSubdomain,
 								'label'              => 'Categories',
 								'label_language_key' => 'plural:category',
 								'icon'               => 'book',
@@ -128,6 +141,7 @@ class MenusTableSeeder extends Seeder {
 					],
 					[
 						'uri'           => 'users',
+						'subdomain'          => $cmsSubdomain,
 						'label'         => 'Users',
 						'icon'          => 'user',
 						'display_order' => 2,
@@ -137,6 +151,7 @@ class MenusTableSeeder extends Seeder {
 						'items'         => [
 							[
 								'uri'                => 'users',
+								'subdomain'          => $cmsSubdomain,
 								'label'              => 'Users',
 								'label_language_key' => 'plural:user',
 								'icon'               => 'user',
@@ -146,6 +161,7 @@ class MenusTableSeeder extends Seeder {
 							],
 							[
 								'uri'                => 'users/roles',
+								'subdomain'          => $cmsSubdomain,
 								'label'              => 'User Roles',
 								'label_language_key' => 'plural:role',
 								'icon'               => 'book',
@@ -155,6 +171,7 @@ class MenusTableSeeder extends Seeder {
 							],
 							[
 								'uri'                => 'users/permissions',
+								'subdomain'          => $cmsSubdomain,
 								'label'              => 'User Permissions',
 								'label_language_key' => 'plural:permission',
 								'icon'               => 'star',
@@ -164,6 +181,7 @@ class MenusTableSeeder extends Seeder {
 							],
 							[
 								'uri'                => 'users/activity',
+								'subdomain'          => $cmsSubdomain,
 								'label'              => 'User Activity',
 								'label_language_key' => 'singular:activity',
 								'icon'               => 'info-circle',
@@ -175,6 +193,7 @@ class MenusTableSeeder extends Seeder {
 					],
 					[
 						'uri'                => 'settings',
+						'subdomain'          => $cmsSubdomain,
 						'label'              => 'Settings',
 						'label_language_key' => 'settings',
 						'icon'               => 'cog',
@@ -191,6 +210,7 @@ class MenusTableSeeder extends Seeder {
 				'items' => [
 					[
 						'uri'                => 'login',
+						'subdomain'          => $cmsSubdomain,
 						'label'              => 'Log In',
 						'label_language_key' => 'log_in',
 						'icon'               => 'sign-in',
@@ -199,6 +219,7 @@ class MenusTableSeeder extends Seeder {
 					],
 					[
 						'uri'                => 'account',
+						'subdomain'          => $cmsSubdomain,
 						'label'              => 'Account',
 						'label_language_key' => 'account',
 						'icon'               => 'user',
@@ -207,6 +228,7 @@ class MenusTableSeeder extends Seeder {
 					],
 					[
 						'uri'                => 'logout',
+						'subdomain'          => $cmsSubdomain,
 						'label'              => 'Log Out',
 						'label_language_key' => 'log_out',
 						'icon'               => 'sign-out',

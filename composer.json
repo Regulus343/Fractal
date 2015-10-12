@@ -31,6 +31,7 @@
 			"Regulus\\Fractal\\Commands\\": "src/commands/",
 			"Regulus\\Fractal\\Controllers\\": "src/controllers/",
 			"Regulus\\Fractal\\Libraries\\": "src/libraries/",
+			"Regulus\\Fractal\\Middleware\\": "src/middleware/",
 			"Regulus\\Fractal\\Models\\": "src/models/",
 			"Regulus\\Fractal\\Traits\\": "src/traits/"
 		}

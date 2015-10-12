@@ -6,11 +6,11 @@
 
 		@if (isset($category))
 
-		<li class="special">
-			<a href="{{ Fractal::blogUrl() }}">
-				<i class="fa fa-chevron-left"></i> {{ Fractal::trans('labels.all_items', ['items' => Fractal::transChoice('labels.category', 2)]) }}
-			</a>
-		</li>
+			<li class="special">
+				<a href="{{ Fractal::blogUrl() }}">
+					<i class="fa fa-chevron-left"></i> {{ Fractal::trans('labels.all_items', ['items' => Fractal::transChoice('labels.category', 2)]) }}
+				</a>
+			</li>
 
 		@endif
 
@@ -18,7 +18,7 @@
 
 			@if ($categoryListed->articles()->onlyPublished(false)->count())
 
-				<li{{ HTML::activeArea(isset($category) && $categoryListed->id == $category->id) }}>
+				<li{!! HTML::activeArea(isset($category) && $categoryListed->id == $category->id) !!}>
 					<a href="{{ $categoryListed->getUrl() }}">
 						<i class="fa fa-tag"></i> {{ $categoryListed->name }}
 
