@@ -240,42 +240,54 @@ class Reports {
 		{
 			case "year":
 				$interval         = "month";
-				$dateFieldSelect  = DB::raw('left(content_views_sub.created_at, 7) as '.$interval);
-				$dateFieldGroupBy = DB::raw('left(created_at, 7)');
+				$dateFieldSelect  = DB::raw('left(content_views.created_at, 7) as '.$interval);
+				$dateFieldGroupBy = DB::raw('left(content_views.created_at, 7)');
 				$minimumDate      = date('Y-m-d', strtotime('-12 '.$interval.'s'));
 				break;
 
 			case "month":
 				$interval         = "day";
-				$dateFieldSelect  = DB::raw('left(content_views_sub.created_at, 10) as '.$interval);
-				$dateFieldGroupBy = DB::raw('left(created_at, 10)');
+				$dateFieldSelect  = DB::raw('left(content_views.created_at, 10) as '.$interval);
+				$dateFieldGroupBy = DB::raw('left(content_views.created_at, 10)');
 				$minimumDate      = date('Y-m-01');
 				break;
 		}
 
-		$reportDataSub = View::select([
+		$contentTypes = ['Page', 'Article', 'Item'];
+
+		$reportDataContentItems = View::select([
 				'id',
 				'content_type',
 				'content_id',
-				DB::raw('count(id) as views'),
-				'created_at',
 			])
 			->where('created_at', '>=', DB::raw('\''.$minimumDate.'\''))
-			->groupBy($dateFieldGroupBy)
+			->whereIn('content_type', $contentTypes)
 			->groupBy('content_type')
 			->groupBy('content_id')
 			->orderBy(DB::raw('sum(views)'), 'desc')
-			->take(5);
+			->take(5)
+			->get();
+
+		$contentItems = [];
+		foreach ($reportDataContentItems as $contentItem)
+		{
+			$contentItems[] = $contentItem->content_type.'-'.$contentItem->content_id;
+		}
 
 		$reportData = View::select([
 				'content_views.id',
 				$dateFieldSelect,
 				'content_views.content_type',
 				'content_views.content_id',
-				'content_views_sub.views',
+				DB::raw('sum(content_views.views) as views'),
+				'content_views.created_at',
 			])
-			->join(DB::raw('('.$reportDataSub->toSql().') as content_views_sub'), 'content_views.id', '=', 'content_views_sub.id')
-			->orderBy('content_views_sub.created_at')
+			->whereIn(DB::raw('concat(content_views.content_type, \'-\', content_views.content_id)'), $contentItems)
+			->where('created_at', '>=', $minimumDate)
+			->groupBy('content_type')
+			->groupBy('content_id')
+			->groupBy($dateFieldGroupBy)
+			->orderBy('content_views.created_at')
 			->orderBy('content_views.content_type')
 			->get();
 
@@ -284,8 +296,7 @@ class Reports {
 			'values' => [],
 		];
 
-		$contentTypes = ['Page', 'Article', 'Item'];
-		$itemTitles   = [];
+		$itemTitles = [];
 
 		$maxDay = 1;
 
@@ -303,25 +314,24 @@ class Reports {
 					$maxDay = $itemInterval;
 			}
 
-			if (in_array($item->content_type, $contentTypes))
+			$contentItem = null;
+
+			switch ($item->content_type)
 			{
-				switch ($item->content_type)
-				{
-					case "Page":    $contentItem = Page::find($item->content_id);    break;
-					case "Article": $contentItem = Article::find($item->content_id); break;
-					case "Item":    $contentItem = Item::find($item->content_id);    break;
-				}
+				case "Page":    $contentItem = Page::find($item->content_id);    break;
+				case "Article": $contentItem = Article::find($item->content_id); break;
+				case "Item":    $contentItem = Item::find($item->content_id);    break;
+			}
 
-				if (!empty($contentItem))
-				{
-					$reportData[$i]->content = $contentItem;
+			if (!empty($contentItem))
+			{
+				$reportData[$i]->content = $contentItem;
 
-					$itemTitle = Fractal::transChoice('labels.content_types.'.$item->content_type).': '.str_replace("'", "\'", $contentItem->getTitle());
-					$itemTitle = '<a href="'.$item->content->getUrl().'" target="_blank">'.$itemTitle.'</a>';
+				$itemTitle = Fractal::transChoice('labels.content_types.'.$item->content_type).': '.str_replace("'", "\'", $contentItem->getTitle());
+				$itemTitle = '<a href="'.$item->content->getUrl().'" target="_blank">'.$itemTitle.'</a>';
 
-					if (!in_array($itemTitle, $itemTitles))
-						$itemTitles[] = $itemTitle;
-				}
+				if (!in_array($itemTitle, $itemTitles))
+					$itemTitles[] = $itemTitle;
 			}
 		}
 
