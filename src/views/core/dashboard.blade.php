@@ -55,9 +55,10 @@
 			},
 		};
 
-		$(document).ready(function(){
-
-			$('canvas.chart').each(function(){
+		$(document).ready(function()
+		{
+			$('canvas.chart').each(function()
+			{
 				$(this).attr('width', $(this).parents('.well').width());
 			});
 
@@ -192,10 +193,9 @@
 
 	</div>
 
+	{{-- Popular Content --}}
+
 	<div class="row">
-
-		{{-- Popular Content --}}
-
 		<div class="col-md-12">
 			<div class="well">
 				<div class="btn-group chart-selection pull-right">
@@ -220,7 +220,64 @@
 				</div>
 			</div>
 		</div>
+	</div>
 
+	{{-- Popular Articles --}}
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="well">
+				<div class="btn-group chart-selection pull-right">
+					<button class="btn btn-xs btn-primary" data-chart="month">Month</button>
+					<button class="btn btn-xs btn-default" data-chart="year">Year</button>
+				</div>
+
+				<h2>Popular Articles</h2>
+
+				<div class="charts">
+					<div class="chart-area chart-month">
+						<canvas id="chart-popular-articles-month" class="chart" height="300"></canvas>
+
+						<div class="legend"></div>
+					</div>
+
+					<div class="chart-area chart-year chart-hide-on-load">
+						<canvas id="chart-popular-articles-year" class="chart" height="300"></canvas>
+
+						<div class="legend"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{{-- Popular Media --}}
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="well">
+				<div class="btn-group chart-selection pull-right">
+					<button class="btn btn-xs btn-primary" data-chart="month">Month</button>
+					<button class="btn btn-xs btn-default" data-chart="year">Year</button>
+				</div>
+
+				<h2>Popular Media</h2>
+
+				<div class="charts">
+					<div class="chart-area chart-month">
+						<canvas id="chart-popular-media-month" class="chart" height="300"></canvas>
+
+						<div class="legend"></div>
+					</div>
+
+					<div class="chart-area chart-year chart-hide-on-load">
+						<canvas id="chart-popular-media-year" class="chart" height="300"></canvas>
+
+						<div class="legend"></div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 @stop

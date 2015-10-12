@@ -231,7 +231,7 @@ class Reports {
 	 * @param  string   $range
 	 * @return array
 	 */
-	public static function popularContent($range = 'year')
+	public static function popularContent($range = 'year', $contentTypes = null)
 	{
 		if (!in_array($range, ['year', 'month']))
 			$range = "year";
@@ -253,7 +253,11 @@ class Reports {
 				break;
 		}
 
-		$contentTypes = ['Page', 'Article', 'Item'];
+		if (is_null($contentTypes))
+			$contentTypes = ['Page', 'Article', 'Item'];
+
+		if (is_string($contentTypes))
+			$contentTypes = [$contentTypes];
 
 		$reportDataContentItems = View::select([
 				'id',
@@ -327,7 +331,11 @@ class Reports {
 			{
 				$reportData[$i]->content = $contentItem;
 
-				$itemTitle = Fractal::transChoice('labels.content_types.'.$item->content_type).': '.str_replace("'", "\'", $contentItem->getTitle());
+				$itemTitle = str_replace("'", "\'", $contentItem->getTitle());
+
+				if (count($contentTypes) > 1)
+					$itemTitle = Fractal::transChoice('labels.content_types.'.$item->content_type).': '.$itemTitle;
+
 				$itemTitle = '<a href="'.$item->content->getUrl().'" target="_blank">'.$itemTitle.'</a>';
 
 				if (!in_array($itemTitle, $itemTitles))
@@ -363,7 +371,11 @@ class Reports {
 
 			if (isset($item->content) && !empty($item->content))
 			{
-				$itemTitle = Fractal::transChoice('labels.content_types.'.$item->content_type).': '.str_replace("'", "\'", $item->content->getTitle());
+				$itemTitle = str_replace("'", "\'", $item->content->getTitle());
+
+				if (count($contentTypes) > 1)
+					$itemTitle = Fractal::transChoice('labels.content_types.'.$item->content_type).': '.$itemTitle;
+
 				$itemTitle = '<a href="'.$item->content->getUrl().'" target="_blank">'.$itemTitle.'</a>';
 
 				$results['values'][$itemTitle][$itemInterval] += $item->views;

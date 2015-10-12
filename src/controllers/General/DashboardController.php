@@ -35,14 +35,20 @@ class DashboardController extends BaseController {
 		Site::set('title.hide', true);
 
 		$reports = [
-			'totalViewsMonth'     => Reports::totalViews('month'),
-			'totalViewsYear'      => Reports::totalViews('year'),
+			'totalViewsMonth'      => Reports::totalViews('month'),
+			'totalViewsYear'       => Reports::totalViews('year'),
 
-			'uniqueViewsMonth'    => Reports::uniqueViews('month'),
-			'uniqueViewsYear'     => Reports::uniqueViews('year'),
+			'uniqueViewsMonth'     => Reports::uniqueViews('month'),
+			'uniqueViewsYear'      => Reports::uniqueViews('year'),
 
-			'popularContentMonth' => Reports::popularContent('month'),
-			'popularContentYear'  => Reports::popularContent('year'),
+			'popularContentMonth'  => Reports::popularContent('month'),
+			'popularContentYear'   => Reports::popularContent('year'),
+
+			'popularArticlesMonth' => Reports::popularContent('month', 'Article'),
+			'popularArticlesYear'  => Reports::popularContent('year', 'Article'),
+
+			'popularMediaMonth'    => Reports::popularContent('month', 'Item'),
+			'popularMediaYear'     => Reports::popularContent('year', 'Item'),
 		];
 
 		return View::make(Fractal::view('dashboard'))
