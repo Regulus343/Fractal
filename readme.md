@@ -65,6 +65,10 @@ And add this to the `aliases` array:
 
 	'Fractal' => 'Regulus\Fractal\Facade',
 
+**Add middleware to the `routeMiddleware` array in `app/Http/Kernal.php`:**
+
+	'auth.fractal' => 'Regulus\Fractal\Middleware\Authenticate',
+
 **Add and run the install command:**
 
 Add the following to the `commands` array in `app/Console/Kernel.php`:
