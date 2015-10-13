@@ -76,7 +76,6 @@ class ContentAreasTableSeeder extends Seeder {
 			$pageAreas = $area['page_areas'];
 			unset($area['page_areas']);
 
-			$area['user_id']    = 1;
 			$area['created_at'] = $timestamp;
 			$area['updated_at'] = $timestamp;
 
