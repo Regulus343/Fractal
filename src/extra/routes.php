@@ -31,7 +31,7 @@ Route::group(['domain' => $domain], function()
 
 	Route::controller($baseUri.'/auth', config('cms.auth_controller'));
 
-	Route::group(['middleware' => 'auth.fractal'], function() use ($baseUri)
+	Route::group(['middleware' => ['auth.fractal', 'auth.permissions']], function() use ($baseUri)
 	{
 		$controllers = config('cms.controllers');
 		$methods     = config('cms.controller_methods');

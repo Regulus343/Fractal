@@ -26,6 +26,7 @@ class FractalServiceProvider extends ServiceProvider {
 	public function boot()
 	{
 		$this->publishes([
+			__DIR__.'/config/auth.routes.php'  => config_path('auth.routes.php'),
 			__DIR__.'/config/blogs.php'        => config_path('blogs.php'),
 			__DIR__.'/config/cms.php'          => config_path('cms.php'),
 			__DIR__.'/config/media.php'        => config_path('media.php'),

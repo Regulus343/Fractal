@@ -10,6 +10,7 @@ return [
 	| Whether or not the blogs are enabled.
 	|
 	*/
+
 	'enabled' => true,
 
 	/*
@@ -22,6 +23,7 @@ return [
 	| not use a subdomain.
 	|
 	*/
+
 	'subdomain' => 'blog',
 
 	/*
@@ -35,6 +37,7 @@ return [
 	| to null.
 	|
 	*/
+
 	'base_uri' => null,
 
 	/*
@@ -50,6 +53,7 @@ return [
 	| and base URI settings.
 	|
 	*/
+
 	'short_routes' => true,
 
 	/*
@@ -61,6 +65,7 @@ return [
 	| controller, point this setting to it instead of the default.
 	|
 	*/
+
 	'view_controller' => 'Regulus\Fractal\Controllers\Blogs\ViewController',
 
 	/*
@@ -73,6 +78,7 @@ return [
 	| of your own for full view customization.
 	|
 	*/
+
 	'views_location' => 'fractal::blogs.view',
 
 	/*
@@ -84,6 +90,7 @@ return [
 	| false to set it up for a single blog.
 	|
 	*/
+
 	'multiple' => false,
 
 	/*
@@ -96,6 +103,7 @@ return [
 	| article page by clicking the article's title or a "Read More" link.
 	|
 	*/
+
 	'preview_divider' => '[preview-divider]',
 
 	/*
@@ -110,6 +118,7 @@ return [
 	| to false, the selected layout will be used for the article list as well.
 	|
 	*/
+
 	'use_standard_layout_for_article_list' => true,
 
 	/*
@@ -122,6 +131,7 @@ return [
 	| preceding the file path with, for example, "regulus/fractal::".
 	|
 	*/
+
 	'placeholder_thumbnail_image' => 'regulus/fractal::article-placeholder',
 
 ];

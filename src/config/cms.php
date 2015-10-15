@@ -13,6 +13,7 @@ return [
 	| below to something like "admin" or "cms").
 	|
 	*/
+
 	'subdomain' => 'admin',
 
 	/*
@@ -25,6 +26,7 @@ return [
 	| you should set this to null.
 	|
 	*/
+
 	'base_uri' => null,
 
 	/*
@@ -38,6 +40,7 @@ return [
 	| to any project. You may even redefine core controllers such as "pages".
 	|
 	*/
+
 	'controllers' => [
 
 		'standard' => [
@@ -76,6 +79,7 @@ return [
 	| array.
 	|
 	*/
+
 	'controller_methods' => [
 
 		'get'  => [
@@ -123,6 +127,7 @@ return [
 	| customization.
 	|
 	*/
+
 	'layout'        => 'fractal::layouts.master',
 	'layout_public' => 'fractal::layouts.public',
 
@@ -134,6 +139,7 @@ return [
 	| The name of the content section used for views.
 	|
 	*/
+
 	'content_section' => 'content',
 
 	/*
@@ -146,6 +152,7 @@ return [
 	| of your own for full view customization.
 	|
 	*/
+
 	'views_location' => 'fractal::',
 
 	/*
@@ -159,6 +166,7 @@ return [
 	| "http://localhost/page/home".
 	|
 	*/
+
 	'page_uri' => '',
 
 	/*
@@ -170,6 +178,7 @@ return [
 	| point this setting to it instead of the default.
 	|
 	*/
+
 	'page_method' => 'Regulus\Fractal\Controllers\Content\PagesController@view',
 
 	/*
@@ -184,6 +193,7 @@ return [
 	| setting to it.
 	|
 	*/
+
 	'page_view' => 'fractal::content.pages.view',
 
 	/*
@@ -198,6 +208,7 @@ return [
 	| to adjust this, but it is here just in case.
 	|
 	*/
+
 	'use_home_page_for_root' => true,
 
 	/*
@@ -212,6 +223,7 @@ return [
 	| to something like "account" and set "userRoleNoCmsAccessLogOut" to false.
 	|
 	*/
+
 	'user_role_no_cms_access_uri' => '',
 
 	/*
@@ -225,6 +237,7 @@ return [
 	| non-CMS account page using the "userRoleNoCmsAccessUri" setting above.
 	|
 	*/
+
 	'user_role_no_cms_access_log_out' => true,
 
 	/*
@@ -238,6 +251,7 @@ return [
 	| for example, "regulus/fractal::".
 	|
 	*/
+
 	'logo' => 'regulus/fractal::logo',
 
 	/*
@@ -249,6 +263,7 @@ return [
 	| by preceding the file path with, for example, "regulus/fractal::".
 	|
 	*/
+
 	'favicon' => 'regulus/fractal::favicon.ico',
 
 	/*
@@ -261,6 +276,7 @@ return [
 	| with, for example, "regulus/fractal::".
 	|
 	*/
+
 	'placeholder_image' => 'regulus/fractal::image-not-available',
 
 	/*
@@ -273,6 +289,7 @@ return [
 	| directory to use as a starting point.
 	|
 	*/
+
 	'external_language' => false,
 
 	/*
@@ -283,6 +300,7 @@ return [
 	| The name of your authorization controller.
 	|
 	*/
+
 	'auth_controller' => 'Regulus\Fractal\Controllers\Auth\AuthController',
 
 	/*
@@ -293,6 +311,7 @@ return [
 	| The name of the admin role.
 	|
 	*/
+
 	'auth_method_admin_role' => 'admin',
 
 	/*
@@ -304,6 +323,7 @@ return [
 	| role authorization for the whole CMS.
 	|
 	*/
+
 	'auth_filters' => [
 		'x'        => ['admin'],
 		'menus'    => ['admin'],
@@ -324,6 +344,7 @@ return [
 	| hide this option from the forms unless the "developer" session is set.
 	|
 	*/
+
 	'enable_menu_item_auth_filters'         => true,
 	'menu_item_auth_filters_developer_only' => true,
 
@@ -336,6 +357,7 @@ return [
 	| number in the footer of the supplied layout.
 	|
 	*/
+
 	'display_version' => true,
 
 ];

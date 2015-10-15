@@ -2,7 +2,6 @@
 
 use Closure;
 use Fractal;
-use Regulus\Identify\Facade as Auth;
 use Illuminate\Contracts\Auth\Guard;
 
 class Authenticate {
@@ -49,7 +48,7 @@ class Authenticate {
 		else
 		{
 			$cmsRoles = Fractal::getSetting('CMS Roles', 'admin');
-			if (Auth::isNot($cmsRoles))
+			if ($this->auth->isNot($cmsRoles))
 			{
 				if (config('cms.user_role_no_cms_access_log_out'))
 					$this->auth->logout();

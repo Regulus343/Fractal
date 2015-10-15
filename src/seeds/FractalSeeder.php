@@ -21,6 +21,7 @@ class FractalSeeder extends Seeder {
 			'ContentPages',
 			'ContentAreas',
 			'FileMediaTypes',
+			'FractalPermissions',
 		];
 
 		foreach ($seeds as $seed)

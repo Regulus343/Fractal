@@ -10,6 +10,7 @@ return [
 	| Whether or not comments are enabled.
 	|
 	*/
+
 	'comments_enabled' => false,
 
 	/*
@@ -20,6 +21,7 @@ return [
 	| You may use "Disqus" or "Facebook".
 	|
 	*/
+
 	'comments_type' => 'Disqus',
 
 	/*
@@ -30,6 +32,7 @@ return [
 	| Your Disqus forum shortname.
 	|
 	*/
+
 	'disqus_shortname' => null,
 
 	/*
@@ -40,6 +43,7 @@ return [
 	| Whether to include social media share buttons.
 	|
 	*/
+
 	'share' => true,
 
 	/*
@@ -52,6 +56,7 @@ return [
 	| that they exist in the array.
 	|
 	*/
+
 	'share_items' => [
 		'Twitter',
 		'Facebook',
@@ -67,6 +72,7 @@ return [
 	| Related Twitter accounts if using Twitter share button.
 	|
 	*/
+
 	'twitter_related_accounts' => null,
 
 ];

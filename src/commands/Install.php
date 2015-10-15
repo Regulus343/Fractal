@@ -76,13 +76,13 @@ class Install extends Command {
 		$this->output->writeln('');
 		$this->comment('Exporting Fractal\'s default settings from database to config file...');
 		Fractal::exportSettings(null, true);
-		$this->info('Fractal settings exported');
+		$this->info('Fractal settings exported.');
 
 		// export default menus
 		$this->output->writeln('');
 		$this->comment('Exporting Fractal\'s default menus from database to config file...');
 		Fractal::exportMenus(true);
-		$this->info('Fractal menus exported');
+		$this->info('Fractal menus exported.');
 
 		// swap out default LoadConfiguration class
 		$bootstrapAppFile = base_path('bootstrap/app.php');
@@ -115,6 +115,15 @@ class Install extends Command {
 		} else {
 			$this->output->writeln("\n".'<info>Could not find </info>bootstrap/app.php<info>. Was not able to swap out LoadConfiguration singleton. Refer to readme to add it manually.</info>');
 		}
+
+		// copy auth.routes config file
+		$this->output->writeln('');
+		$this->comment('Overwriting auth.routes config file...');
+		$this->info($divider);
+
+		copy('vendor/regulus/fractal/src/config/auth.routes.php', 'config/auth.routes.php');
+
+		$this->info('Authorization routes config file overwritten.');
 
 		// add content type URIs and model classes to Activity Log's "log" config file
 		$logConfigFile = config_path('log.php');

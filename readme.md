@@ -67,7 +67,8 @@ And add this to the `aliases` array:
 
 **Add middleware to the `routeMiddleware` array in `app/Http/Kernal.php`:**
 
-	'auth.fractal' => 'Regulus\Fractal\Middleware\Authenticate',
+	'auth.permissions' => 'Regulus\Identify\Middleware\Authorize',
+	'auth.fractal'     => 'Regulus\Fractal\Middleware\Authenticate',
 
 **Add and run the install command:**
 

@@ -10,6 +10,7 @@ return [
 	| Whether or not the media is enabled.
 	|
 	*/
+
 	'enabled' => true,
 
 	/*
@@ -22,6 +23,7 @@ return [
 	| blank to not use a subdomain.
 	|
 	*/
+
 	'subdomain' => 'media',
 
 	/*
@@ -35,6 +37,7 @@ return [
 	| "subdomain" to null.
 	|
 	*/
+
 	'base_uri' => null,
 
 	/*
@@ -50,6 +53,7 @@ return [
 	| and base URI settings.
 	|
 	*/
+
 	'short_routes' => true,
 
 	/*
@@ -61,6 +65,7 @@ return [
 	| controller, point this setting to it instead of the default.
 	|
 	*/
+
 	'view_controller' => 'Regulus\Fractal\Controllers\Media\ViewController',
 
 	/*
@@ -73,6 +78,7 @@ return [
 	| of your own for full view customization.
 	|
 	*/
+
 	'views_location' => 'fractal::media.view',
 
 ];
