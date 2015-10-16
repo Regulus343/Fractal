@@ -930,7 +930,7 @@ class Item extends Base {
 			}
 
 			// if file was not uploaded but path or name was changed, move/rename file
-			if (!$uploaded && $item->filename != $filename && !is_null($filename))
+			if (!$uploaded && $item && $item->filename != $filename && !is_null($filename))
 			{
 				// move/rename file
 				if (File::exists('uploads/'.$item->getFilePath()))
@@ -944,7 +944,7 @@ class Item extends Base {
 			if (!$uploadResult['error'] || !$mediaSourceRequired)
 			{
 				$result = [
-					'error' => false,
+					'error'    => false,
 					'messages' => [
 						'success' => Fractal::trans('messages.success.'.(!is_null($id) ? 'updated' : 'created'), ['item' => Fractal::transChoiceLowerA('labels.media_item')]),
 					],

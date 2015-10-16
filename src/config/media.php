@@ -81,4 +81,18 @@ return [
 
 	'views_location' => 'fractal::media.view',
 
+	/*
+	|--------------------------------------------------------------------------
+	| Google API Key
+	|--------------------------------------------------------------------------
+	|
+	| If you have a Google API key created in Google Developers Console
+	| (https://console.developers.google.com), you may use it here so that
+	| YouTube videos will automatically retrieve their titles and descriptions
+	| from YouTube when they are added as media items.
+	|
+	*/
+
+	'google_api_key' => null,
+
 ];
