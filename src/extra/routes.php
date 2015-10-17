@@ -54,19 +54,41 @@ Route::group(['domain' => $domain], function()
 		/* Routes for Defined Standard Controllers */
 		if (isset($controllers['standard']))
 		{
-			foreach ($controllers['standard'] as $controllerURI => $controller) {
-				Route::controller($baseUri.'/'.$controllerURI, $controller);
+			foreach ($controllers['standard'] as $controllerUri => $controller)
+			{
+				$controllerArray = explode(':', $controller);
+				$controller      = $controllerArray[0];
+
+				$actions = [];
+				$prefix  = "";
+				if (count($controllerArray) >= 2)
+					$prefix = $controllerArray[1].'.';
+
+				foreach (get_class_methods($controller) as $method)
+				{
+					$routeName = str_slug(str_replace('get', '', str_replace('post', '', str_replace('any', '', $method))));
+
+					$actions[$method] = $prefix.$routeName;
+				}
+
+				Route::controller($baseUri.'/'.$controllerUri, $controller, $actions);
 			}
 		}
 
 		if (isset($controllers['standard']['home']))
-			Route::get($baseUri, $controllers['standard']['home'].'@getIndex');
+		{
+			$controllerArray = explode(':', $controllers['standard']['home']);
+			$controller      = $controllerArray[0];
+
+			Route::get($baseUri, $controller.'@getIndex');
+		}
 
 		/* Routes for Defined Resource Controllers */
 		if (isset($controllers['resource']))
 		{
-			foreach ($controllers['resource'] as $controllerURI => $controller) {
-				Route::resource($baseUri.'/'.$controllerURI, $controller);
+			foreach ($controllers['resource'] as $controllerUri => $controller)
+			{
+				Route::resource($baseUri.'/'.$controllerUri, $controller);
 			}
 		}
 

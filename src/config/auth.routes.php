@@ -20,16 +20,42 @@ return [
 	|
 	*/
 
-	'settings.*'         => ['manage-settings', 'demo'],
-	'menus.*'            => ['manage-menus', 'view-menus', 'demo'],
-	'pages.*'            => ['manage-pages', 'view-pages', 'demo'],
-	'files.*'            => ['manage-files', 'view-files', 'demo'],
-	'layout-templates.*' => ['manage-layout-templates', 'view-layout-templates', 'demo'],
-	'users.*'            => ['manage-users', 'view-users', 'demo'],
-	'media.items.*'      => ['manage-media-items', 'view-media-items', 'demo'],
-	'media.types.*'      => ['manage-media-types', 'view-media-types', 'demo'],
-	'media.sets.*'       => ['manage-media-sets', 'view-media-sets', 'demo'],
-	'blogs.articles.*'   => ['manage-blog-articles', 'view-blog-articles', 'demo'],
-	'blogs.categories.*' => ['manage-blog-categories', 'view-blog-categories', 'demo'],
+	'settings.*'              => ['manage-settings', 'demo'],
+
+	'menus.*'                 => ['manage-menus', 'view-menus', 'demo'],
+
+	'pages.*'                 => ['manage-pages', 'demo'],
+	'pages.index'             => ['manage-pages', 'view-pages', 'demo'],
+	'pages.search'            => ['manage-pages', 'view-pages', 'demo'],
+
+	'files.*'                 => ['manage-files', 'demo'],
+	'files.index'             => ['manage-files', 'view-files', 'demo'],
+	'files.search'            => ['manage-files', 'view-files', 'demo'],
+
+	'layout-templates.*'      => ['manage-layout-templates', 'demo'],
+	'layout-templates.index'  => ['manage-layout-templates', 'view-layout-templates', 'demo'],
+	'layout-templates.search' => ['manage-layout-templates', 'view-layout-templates', 'demo'],
+
+	'users.*'                 => ['manage-users', 'demo'],
+
+	'media.items.*'           => ['manage-media-items', 'demo'],
+	'media.items.index'       => ['manage-media-items', 'view-media-items', 'demo'],
+	'media.items.search'      => ['manage-media-items', 'view-media-items', 'demo'],
+
+	'media.types.*'           => ['manage-media-types', 'demo'],
+	'media.types.index'       => ['manage-media-types', 'view-media-types', 'demo'],
+	'media.types.search'      => ['manage-media-types', 'view-media-types', 'demo'],
+
+	'media.sets.*'            => ['manage-media-sets', 'demo'],
+	'media.sets.index'        => ['manage-media-sets', 'view-media-sets', 'demo'],
+	'media.sets.search'       => ['manage-media-sets', 'view-media-sets', 'demo'],
+
+	'blogs.articles.*'        => ['manage-blog-articles', 'demo'],
+	'blogs.articles.index'    => ['manage-blog-articles', 'view-blog-articles', 'demo'],
+	'blogs.articles.search'   => ['manage-blog-articles', 'view-blog-articles', 'demo'],
+
+	'blogs.categories.*'      => ['manage-blog-categories', 'demo'],
+	'blogs.categories.index'  => ['manage-blog-categories', 'view-blog-categories', 'demo'],
+	'blogs.categories.search' => ['manage-blog-categories', 'view-blog-categories', 'demo'],
 
 ];

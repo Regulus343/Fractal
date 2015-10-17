@@ -68,6 +68,8 @@ class AuthController extends BaseController {
 		{
 			$user = Auth::user();
 
+			$user->cachePermissions();
+
 			Activity::log([
 				'action'      => 'Log In',
 				'description' => 'Logged In',

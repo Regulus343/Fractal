@@ -44,10 +44,10 @@ return [
 	'controllers' => [
 
 		'standard' => [
-			'home'              => 'Regulus\Fractal\Controllers\General\DashboardController',
-			'settings'          => 'Regulus\Fractal\Controllers\General\SettingsController',
-			'account'           => 'Regulus\Fractal\Controllers\Auth\AccountController',
-			'users/activity'    => 'Regulus\Fractal\Controllers\Users\ActivityController',
+			'home'              => 'Regulus\Fractal\Controllers\General\DashboardController:dashboard',
+			'settings'          => 'Regulus\Fractal\Controllers\General\SettingsController:settings',
+			'account'           => 'Regulus\Fractal\Controllers\Auth\AccountController:account',
+			'users/activity'    => 'Regulus\Fractal\Controllers\Users\ActivityController:users.activity',
 		],
 
 		'resource' => [

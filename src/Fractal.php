@@ -5,8 +5,8 @@
 		A versatile CMS for Laravel 5.
 
 		created by Cody Jassman
-		version 0.9.3
-		last updated on October 14, 2015
+		version 0.9.4
+		last updated on October 17, 2015
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -1456,19 +1456,35 @@ class Fractal {
 
 		$visible = true;
 
-		if (! (bool) $menuItem->active)
-			$visible = false;
+		if (!(bool) $menuItem->active)
+			return false;
 
 		if ($menuItem->type == "Content Page" && is_null($menuItem->page_published_date) || strtotime($menuItem->page_published_date) > time())
-			$visible = false;
+			return false;
 
 		if ($menuItem->auth_status)
 		{
 			if (Auth::check() && (int) $menuItem->auth_status == 2)
-				$visible = false;
+				return false;
 
 			if (!Auth::check() && (int) $menuItem->auth_status == 1)
-				$visible = false;
+				return false;
+		}
+
+		if (!empty($menuItem->children) || $menuItem->children_exist)
+		{
+			$visible = false;
+
+			foreach ($menuItem->children as $subMenuItem)
+			{
+				if (Auth::hasAccess($subMenuItem->url))
+					$visible = true;
+			}
+		}
+		else
+		{
+			if (!Auth::hasAccess($menuItem->url))
+				return false;
 		}
 
 		return $visible;
@@ -1588,7 +1604,8 @@ class Fractal {
 		if (!is_null($uri) && $fullUri != "")
 			$uri = str_replace($fullUri.'/'.$fullUri.'/', $fullUri.'/', $uri);
 
-		Site::addButton($label, $uri);
+		if (Auth::hasAccess($this->url($uri)))
+			Site::addButton($label, $uri);
 	}
 
 	/**

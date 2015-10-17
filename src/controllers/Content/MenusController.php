@@ -90,11 +90,12 @@ class MenusController extends BaseController {
 
 		Form::setErrors();
 
-		Fractal::addButton([
-			'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.menu', 2)]),
-			'icon'  => 'list',
-			'uri'   => Fractal::uri('', true),
-		]);
+		if (Auth::user()->hasRouteAccess('menus.create'))
+			Fractal::addButton([
+				'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.menu', 2)]),
+				'icon'  => 'list',
+				'uri'   => Fractal::uri('', true),
+			]);
 
 		Fractal::addTrailItem(Fractal::trans('labels.create'), Request::url());
 

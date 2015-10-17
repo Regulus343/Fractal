@@ -302,6 +302,7 @@ class MenuItem extends Base {
 			'auth_status'         => $this->auth_status,
 			'anchor_class'        => $this->getAnchorClass(),
 			'children'            => $this->getChildrenArray($setSelectedClass, $ignoreVisibilityStatus),
+			'children_exist'      => $this->children->count(),
 		];
 	}
 
