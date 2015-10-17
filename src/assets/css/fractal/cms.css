@@ -36,8 +36,10 @@
 	line-height: 1em;
 }
 
+#nav-side ul li a>i { padding-right: 3px; color: #aaa; }
 #nav-side ul li a { background-color: transparent; }
 #nav-side ul li a:hover { background-color: #181818; }
+#nav-side ul li a:hover>i { color: #fff; }
 #nav-side ul li.open>a { background-color: #181818; }
 #nav-side ul li.active>a, #nav-side ul li:active>a { background-color: #222; }
 #nav-side ul li a b.caret { position: absolute; top: 16px; right : 5px; color: #555; }

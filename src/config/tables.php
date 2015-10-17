@@ -52,6 +52,7 @@ return [
 					[
 						'icon'       => 'remove',
 						'class'      => 'btn btn-danger action-item',
+						'uri'        => config('cms.base_uri').'/menus/:id',
 						'attributes' => [
 							'data-item-id'         => ':id',
 							'data-item-name'       => ':title',
@@ -126,6 +127,7 @@ return [
 					[
 						'icon'       => 'remove',
 						'class'      => 'btn btn-danger action-item',
+						'uri'        => config('cms.base_uri').'/pages/:slug',
 						'attributes' => [
 							'data-item-id'        => ':id',
 							'data-item-name'      => ':title',
@@ -199,6 +201,7 @@ return [
 					[
 						'icon'       => 'remove',
 						'class'      => 'btn btn-danger action-item',
+						'uri'        => config('cms.base_uri').'/files/:id',
 						'attributes' => [
 							'data-item-id'        => ':id',
 							'data-item-name'      => ':name',
@@ -244,8 +247,8 @@ return [
 				'class'     => 'actions',
 				'elements'  => [
 					[
-						'icon'       => 'edit',
-						'class'      => 'btn btn-primary',
+						'icon'            => 'edit',
+						'class'           => 'btn btn-primary',
 						'class_modifiers' => [
 							'invisible' => [
 								'static' => true,
@@ -257,20 +260,21 @@ return [
 						],
 					],
 					[
-						'icon'           => 'remove',
-						'class'          => 'btn btn-danger action-item',
-						'class_modifiers' => [
-							'invisible' => [
-								'static' => true,
-							],
-						],
-						'attributes'     => [
+						'icon'       => 'remove',
+						'class'      => 'btn btn-danger action-item',
+						'uri'        => config('cms.base_uri').'/layout-templates/:id',
+						'attributes' => [
 							'data-item-id'        => ':id',
 							'data-item-name'      => ':name',
 							'data-action'         => 'delete',
 							'data-action-type'    => 'delete',
 							'data-action-message' => 'confirm.delete',
 							'title'               => Fractal::trans('labels.delete_item', ['item' => Fractal::transChoice('labels.layout_template')]),
+						],
+						'class_modifiers' => [
+							'invisible' => [
+								'static' => true,
+							],
 						],
 					],
 				],
@@ -361,6 +365,7 @@ return [
 					[
 						'icon'       => 'remove',
 						'class'      => 'btn btn-danger action-item',
+						'uri'        => config('cms.base_uri').'/media/items/:slug',
 						'attributes' => [
 							'data-item-id'        => ':id',
 							'data-item-name'      => ':title',
@@ -433,6 +438,7 @@ return [
 					[
 						'icon'       => 'remove',
 						'class'      => 'btn btn-danger action-item',
+						'uri'        => config('cms.base_uri').'/media/types/:slug',
 						'attributes' => [
 							'data-item-id'        => ':id',
 							'data-item-name'      => ':name',
@@ -497,9 +503,10 @@ return [
 						],
 					],
 					[
-						'icon'           => 'remove',
-						'class'          => 'btn btn-danger action-item',
-						'attributes'     => [
+						'icon'       => 'remove',
+						'class'      => 'btn btn-danger action-item',
+						'uri'        => config('cms.base_uri').'/media/sets/:slug',
+						'attributes' => [
 							'data-item-id'        => ':id',
 							'data-item-name'      => ':name',
 							'data-action'         => 'delete',
@@ -586,6 +593,7 @@ return [
 					[
 						'icon'       => 'remove',
 						'class'      => 'btn btn-danger action-item',
+						'uri'        => config('cms.base_uri').'/blogs/articles/:slug',
 						'attributes' => [
 							'data-item-id'        => ':id',
 							'data-item-name'      => ':title',
@@ -648,6 +656,7 @@ return [
 					[
 						'icon'       => 'remove',
 						'class'      => 'btn btn-danger action-item',
+						'uri'        => config('cms.base_uri').'/blogs/categories/:slug',
 						'attributes' => [
 							'data-item-id'        => ':id',
 							'data-item-name'      => ':title',
@@ -734,16 +743,9 @@ return [
 						],
 					],
 					[
-						'icon'            => 'ban',
-						'class'           => 'btn btn-danger action-item ban-user',
-						'class_modifiers' => [
-							'hidden' => [
-								'isBanned()' => true,
-							],
-							'invisible' => [
-								'id' => 1,
-							],
-						],
+						'icon'       => 'ban',
+						'class'      => 'btn btn-danger action-item ban-user',
+						'uri'        => config('cms.base_uri').'/users/:name/ban',
 						'attributes' => [
 							'data-item-id'         => ':id',
 							'data-item-name'       => ':name',
@@ -752,18 +754,19 @@ return [
 							'data-action-message'  => 'confirm.banUser',
 							'title'                => Fractal::trans('labels.ban_user'),
 						],
-					],
-					[
-						'icon'            => 'check-circle-o',
-						'class'           => 'btn btn-primary action-item unban-user',
 						'class_modifiers' => [
 							'hidden' => [
-								'isBanned()' => false,
+								'isBanned()' => true,
 							],
 							'invisible' => [
 								'id' => 1,
 							],
 						],
+					],
+					[
+						'icon'       => 'check-circle-o',
+						'class'      => 'btn btn-primary action-item unban-user',
+						'uri'        => config('cms.base_uri').'/users/:name/unban',
 						'attributes' => [
 							'data-item-id'         => ':id',
 							'data-item-name'       => ':name',
@@ -772,15 +775,19 @@ return [
 							'data-action-message'  => 'confirm.unbanUser',
 							'title'                => Fractal::trans('labels.unban_user'),
 						],
-					],
-					[
-						'icon'            => 'remove',
-						'class'           => 'btn btn-danger action-item',
 						'class_modifiers' => [
+							'hidden' => [
+								'isBanned()' => false,
+							],
 							'invisible' => [
 								'id' => 1,
 							],
 						],
+					],
+					[
+						'icon'       => 'remove',
+						'class'      => 'btn btn-danger action-item',
+						'uri'        => config('cms.base_uri').'/users/:name',
 						'attributes' => [
 							'data-item-id'        => ':id',
 							'data-item-name'      => ':name',
@@ -788,6 +795,11 @@ return [
 							'data-action-type'    => 'delete',
 							'data-action-message' => 'confirm.delete',
 							'title'               => Fractal::trans('labels.delete_item', ['item' => Fractal::transChoice('labels.user')]),
+						],
+						'class_modifiers' => [
+							'invisible' => [
+								'id' => 1,
+							],
 						],
 					],
 				],
@@ -845,13 +857,9 @@ return [
 						],
 					],
 					[
-						'icon'            => 'remove',
-						'class'           => 'btn btn-danger action-item',
-						'class_modifiers' => [
-							'invisible' => [
-								'id' => 1,
-							],
-						],
+						'icon'       => 'remove',
+						'class'      => 'btn btn-danger action-item',
+						'uri'        => config('cms.base_uri').'/users/roles/:id',
 						'attributes' => [
 							'data-item-id'        => ':id',
 							'data-item-name'      => ':title',
@@ -860,6 +868,11 @@ return [
 							'data-action-url'     => 'roles/:id',
 							'data-action-message' => 'confirm.delete',
 							'title'               => Fractal::trans('labels.delete_item', ['item' => Fractal::transChoice('labels.role')])
+						],
+						'class_modifiers' => [
+							'invisible' => [
+								'id' => 1,
+							],
 						],
 					],
 				],
@@ -918,13 +931,9 @@ return [
 						],
 					],
 					[
-						'icon'            => 'remove',
-						'class'           => 'btn btn-danger action-item',
-						'class_modifiers' => [
-							'invisible' => [
-								'id' => 1,
-							],
-						],
+						'icon'       => 'remove',
+						'class'      => 'btn btn-danger action-item',
+						'uri'        => config('cms.base_uri').'/users/permissions/:id',
 						'attributes' => [
 							'data-item-id'        => ':id',
 							'data-item-name'      => ':title',
@@ -933,6 +942,11 @@ return [
 							'data-action-url'     => 'permissions/:id',
 							'data-action-message' => 'confirm.delete',
 							'title'               => Fractal::trans('labels.delete_item', ['item' => Fractal::transChoice('labels.permission')])
+						],
+						'class_modifiers' => [
+							'invisible' => [
+								'id' => 1,
+							],
 						],
 					],
 				],

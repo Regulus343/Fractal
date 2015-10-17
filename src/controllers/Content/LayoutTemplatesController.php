@@ -89,12 +89,11 @@ class LayoutTemplatesController extends BaseController {
 		LayoutTemplate::setDefaultsForNew();
 		Form::setErrors();
 
-		if (Auth::user()->hasRouteAccess('layout-templates.create'))
-			Fractal::addButton([
-				'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.layout_template', 2)]),
-				'icon'  => 'list',
-				'uri'   => Fractal::uri('', true),
-			]);
+		Fractal::addButton([
+			'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.layout_template', 2)]),
+			'icon'  => 'list',
+			'uri'   => Fractal::uri('', true),
+		]);
 
 		Fractal::addTrailItem(Fractal::trans('labels.create'), Request::url());
 
