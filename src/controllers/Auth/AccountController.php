@@ -37,8 +37,10 @@ class AccountController extends BaseController {
 	public function getIndex()
 	{
 		$user = Auth::user();
+
 		Form::setDefaults($user);
 		Form::setErrors();
+
 		return View::make(Fractal::view('form'));
 	}
 

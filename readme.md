@@ -78,6 +78,12 @@ Add the following to the `commands` array in `app/Console/Kernel.php`:
 	'Regulus\Identify\Commands\CreateUser',
 	'Regulus\Fractal\Commands\Install',
 
+**Set the sessions domain:**
+
+Set the `domain` variable in `config/sessions.php` to ensure that session data is carried across subdomains:
+
+	'domain' => '.website.com',
+
 Then run the following command:
 
 	php artisan fractal:install

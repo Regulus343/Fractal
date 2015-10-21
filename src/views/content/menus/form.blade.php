@@ -61,6 +61,8 @@
 				}, 750);
 			});
 
+			Fractal.initButtonDropdownFields(item);
+
 			if (data === null) {
 				$('html, body').animate({
 					scrollTop: (item.offset().top - 30) + 'px'

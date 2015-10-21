@@ -99,7 +99,16 @@ Route::group(['domain' => $domain], function()
 		Route::get($baseUri.'/developer/{off?}', 'Regulus\Fractal\Controllers\General\DashboardController@getDeveloper');
 
 		/* API Routes */
-		Route::controller($baseUri.'/api', 'Regulus\Fractal\Controllers\General\ApiController');
+		$controller = "Regulus\Fractal\Controllers\General\ApiController";
+		$actions    = [];
+		$prefix     = "api.";
+		foreach (get_class_methods($controller) as $method)
+		{
+			$routeName = str_slug(str_replace('get', '', str_replace('post', '', str_replace('any', '', $method))));
+
+			$actions[$method] = $prefix.$routeName;
+		}
+		Route::controller($baseUri.'/api', $controller, $actions);
 	});
 });
 
@@ -120,10 +129,19 @@ if (config('blogs.enabled'))
 	Route::group($group, function() use ($blogController)
 	{
 		/* Short Article Routes */
-		Route::get('{slug}', $blogController.'@getArticle');
+		Route::get('{slug}', ['as' => 'blogs.articles.public.view', 'uses' => $blogController.'@getArticle']);
 
 		/* Blog Controller Routes */
-		Route::controller('', $blogController);
+		$actions = [];
+		$prefix  = "blogs.articles.public.";
+		foreach (get_class_methods($blogController) as $method)
+		{
+			$routeName = str_slug(str_replace('get', '', str_replace('post', '', str_replace('any', '', $method))));
+
+			$actions[$method] = $prefix.$routeName;
+		}
+
+		Route::controller('', $blogController, $actions);
 	});
 }
 
@@ -144,10 +162,19 @@ if (config('media.enabled'))
 	Route::group($group, function() use ($mediaController)
 	{
 		/* Short Media Items Routes */
-		Route::get('{slug}', $mediaController.'@getItem');
+		Route::get('{slug}', ['as' => 'media.items.public.view', 'uses' => $mediaController.'@getItem']);
 
 		/* Media Controller Routes */
-		Route::controller('', $mediaController);
+		$actions = [];
+		$prefix  = "media.items.public.";
+		foreach (get_class_methods($mediaController) as $method)
+		{
+			$routeName = str_slug(str_replace('get', '', str_replace('post', '', str_replace('any', '', $method))));
+
+			$actions[$method] = $prefix.$routeName;
+		}
+
+		Route::controller('', $mediaController, $actions);
 	});
 }
 
@@ -156,9 +183,9 @@ $pageUri    = config('cms.page_uri');
 $pageMethod = config('cms.page_method');
 
 if (!is_null($pageUri) && $pageUri != false && $pageUri != "")
-	Route::get($pageUri.'/{slug}', $pageMethod);
+	Route::get($pageUri.'/{slug}', ['as' => 'pages.view', 'uses' => $pageMethod]);
 else
-	Route::get('{slug}', $pageMethod);
+	Route::get('{slug}', ['as' => 'pages.view', 'uses' => $pageMethod]);
 
 if (config('cms.use_home_page_for_root'))
 	Route::get('', $pageMethod);

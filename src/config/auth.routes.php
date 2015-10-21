@@ -27,6 +27,7 @@ return [
 	'pages.*'                 => ['manage-pages', 'demo'],
 	'pages.index'             => ['manage-pages', 'view-pages', 'demo'],
 	'pages.search'            => ['manage-pages', 'view-pages', 'demo'],
+	'pages.view'              => [],
 
 	'files.*'                 => ['manage-files', 'demo'],
 	'files.index'             => ['manage-files', 'view-files', 'demo'],
@@ -41,6 +42,7 @@ return [
 	'media.items.*'           => ['manage-media-items', 'demo'],
 	'media.items.index'       => ['manage-media-items', 'view-media-items', 'demo'],
 	'media.items.search'      => ['manage-media-items', 'view-media-items', 'demo'],
+	'media.items.public.*'    => [],
 
 	'media.types.*'           => ['manage-media-types', 'demo'],
 	'media.types.index'       => ['manage-media-types', 'view-media-types', 'demo'],
@@ -53,6 +55,7 @@ return [
 	'blogs.articles.*'        => ['manage-blog-articles', 'demo'],
 	'blogs.articles.index'    => ['manage-blog-articles', 'view-blog-articles', 'demo'],
 	'blogs.articles.search'   => ['manage-blog-articles', 'view-blog-articles', 'demo'],
+	'blogs.articles.public.*' => [],
 
 	'blogs.categories.*'      => ['manage-blog-categories', 'demo'],
 	'blogs.categories.index'  => ['manage-blog-categories', 'view-blog-categories', 'demo'],

@@ -45,7 +45,6 @@ class FractalServiceProvider extends ServiceProvider {
 
 		$extraPath  = __DIR__.'/extra/';
 		$extraFiles = [
-			'filters',
 			'helpers',
 			'routes',
 			'settings',

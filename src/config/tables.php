@@ -119,9 +119,10 @@ return [
 					[
 						'icon'       => 'file',
 						'class'      => 'btn btn-default',
-						'uri'        => config('cms.page_uri') == "" ? ':slug' : config('cms.page_uri').'/:slug',
+						'url'        => Site::url(config('cms.page_uri') == "" ? ':slug' : config('cms.page_uri').'/:slug'),
 						'attributes' => [
 							'title'  => Fractal::trans('labels.view_item', ['item' => Fractal::transChoice('labels.page')]),
+							'target' => '_blank',
 						],
 					],
 					[
@@ -360,6 +361,7 @@ return [
 						'url'        => Fractal::mediaUrl(config('media.base_uri') == false ? 'item/:slug' : config('media.base_uri').'/article/:slug'),
 						'attributes' => [
 							'title'  => Fractal::trans('labels.view_item', ['item' => Fractal::transChoice('labels.media_item')]),
+							'target' => '_blank',
 						],
 					],
 					[
@@ -588,6 +590,7 @@ return [
 						'url'        => Fractal::blogUrl(config('blogs.base_uri') == false ? 'article/:slug' : config('blogs.base_uri').'/article/:slug'),
 						'attributes' => [
 							'title'  => Fractal::trans('labels.view_item', ['item' => Fractal::transChoice('labels.article')]),
+							'target' => '_blank',
 						],
 					],
 					[

@@ -29,8 +29,6 @@ class CreateMenuItemsTable extends Migration {
 			$table->string('additional_info');
 			$table->integer('display_order');
 			$table->integer('auth_status');
-			$table->string('auth_roles');
-			$table->string('auth_permissions');
 			$table->boolean('active');
 
 			$table->timestamps();

@@ -18,6 +18,7 @@ use Site;
 
 use Regulus\Fractal\Models\Content\Page;
 use Regulus\Fractal\Models\Content\FileType;
+use Regulus\Fractal\Models\Content\MenuItem;
 use Regulus\Fractal\Models\Media\Type as MediaType;
 use Regulus\Fractal\Models\Media\Set as MediaSet;
 use Regulus\Fractal\Models\Blog\Category as BlogCategory;
@@ -37,10 +38,12 @@ View::composer($viewsLocation.'content.menus.form', function($view)
 {
 	$typeOptions = Form::simpleOptions(['URI', 'Content Page']);
 	$pageOptions = Form::prepOptions(Page::select('id', 'title')->orderBy('title')->get(), array('id', 'title'));
+	$iconOptions = MenuItem::getIconOptions();
 
 	$view
 		->with('typeOptions', $typeOptions)
-		->with('pageOptions', $pageOptions);
+		->with('pageOptions', $pageOptions)
+		->with('iconOptions', $iconOptions);
 });
 
 View::composer([$viewsLocation.'content.files.form', $viewsLocation.'media.items.form'], function($view)

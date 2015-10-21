@@ -15,7 +15,6 @@ class CreateBlogContentAreasTable extends Migration {
 		Schema::create('blog_content_areas', function(Blueprint $table)
 		{
 			$table->increments('id');
-
 			$table->integer('blog_id');
 			$table->integer('user_id');
 

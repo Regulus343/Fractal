@@ -3,7 +3,7 @@
 | Fractal JS
 |------------------------------------------------------------------------------
 |
-| Last Updated: April 19, 2015
+| Last Updated: October 20, 2015
 |
 */
 
@@ -45,7 +45,7 @@ var Fractal = {
 	markdownPreviewField:       null,
 	markdownContentUpdateTimer: null,
 
-	autoSaveRate:               (1000 * 60), // auto-save every every minute
+	autoSaveRate:               (1000 * 60), // auto-save every minute
 
 	caretPos:                   null,
 
@@ -111,6 +111,9 @@ var Fractal = {
 		{
 			audiojs.createAll();
 		});
+
+		// initialize button dropdown fields
+		this.initButtonDropdownFields();
 
 		// initialize search, content, and table sorting
 		$('#form-search').submit(function(e)
@@ -952,6 +955,53 @@ var Fractal = {
 
 				Fractal.markdownContentField.parents('.row').find('.markdown-preview-content').html(content);
 			}
+		});
+	},
+
+	initButtonDropdownFields: function(container)
+	{
+		if (container == undefined)
+			var fieldMenu = $('.dropdown-menu-field');
+		else
+			var fieldMenu = container.find('.dropdown-menu-field');
+
+		fieldMenu.each(function()
+		{
+			var buttonGroup = $(this).parent('.btn-group');
+
+			var displayValue = buttonGroup.find('input').val();
+
+			if ($(this).data('null-option') != "" && $(this).data('null-option') != null)
+				var displayValueNull = $(this).data('null-option');
+			else
+				var displayValueNull = "Select an Option";
+
+			if (displayValue == "" || displayValue == null)
+			{
+				displayValue = displayValueNull;
+			}
+			else
+			{
+				var option = $(this).find('li a[data-value="'+displayValue+'"]');
+
+				if (option.length)
+					displayValue = option.html();
+			}
+
+			buttonGroup.find('.dropdown-menu-field-value').html(displayValue);
+
+			buttonGroup.find('li.null-option a').html(displayValueNull);
+		});
+
+		fieldMenu.find('li a').off('click').on('click', function(e)
+		{
+			e.preventDefault();
+
+			var buttonGroup = $(this).parents('.btn-group');
+
+			buttonGroup.find('.dropdown-menu-field-value').html($(this).html());
+
+			buttonGroup.find('input').val($(this).data('value'));
 		});
 	},
 

@@ -141,12 +141,11 @@ class MenusTableSeeder extends Seeder {
 					],
 					[
 						'uri'           => 'users',
-						'subdomain'          => $cmsSubdomain,
+						'subdomain'     => $cmsSubdomain,
 						'label'         => 'Users',
 						'icon'          => 'user',
 						'display_order' => 2,
 						'auth_status'   => 1,
-						'auth_roles'    => 'admin',
 
 						'items'         => [
 							[
@@ -157,7 +156,6 @@ class MenusTableSeeder extends Seeder {
 								'icon'               => 'user',
 								'display_order'      => 1,
 								'auth_status'        => 1,
-								'auth_roles'         => 'admin',
 							],
 							[
 								'uri'                => 'users/roles',
@@ -167,7 +165,6 @@ class MenusTableSeeder extends Seeder {
 								'icon'               => 'book',
 								'display_order'      => 2,
 								'auth_status'        => 1,
-								'auth_roles'         => 'admin',
 							],
 							[
 								'uri'                => 'users/permissions',
@@ -177,7 +174,6 @@ class MenusTableSeeder extends Seeder {
 								'icon'               => 'star',
 								'display_order'      => 2,
 								'auth_status'        => 1,
-								'auth_roles'         => 'admin',
 							],
 							[
 								'uri'                => 'users/activity',
@@ -187,7 +183,6 @@ class MenusTableSeeder extends Seeder {
 								'icon'               => 'info-circle',
 								'display_order'      => 3,
 								'auth_status'        => 1,
-								'auth_roles'         => 'admin',
 							],
 						],
 					],
@@ -199,7 +194,6 @@ class MenusTableSeeder extends Seeder {
 						'icon'               => 'cog',
 						'display_order'      => 4,
 						'auth_status'        => 1,
-						'auth_roles'         => 'admin',
 					],
 				],
 			],
