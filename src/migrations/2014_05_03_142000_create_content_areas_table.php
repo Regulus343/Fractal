@@ -15,7 +15,7 @@ class CreateContentAreasTable extends Migration {
 		Schema::create('content_areas', function(Blueprint $table)
 		{
 			$table->increments('id');
-
+                        $table->integer('user_id');
 			$table->string('title');
 			$table->string('content_type', 8);
 			$table->text('content');
