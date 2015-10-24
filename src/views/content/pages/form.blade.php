@@ -42,16 +42,20 @@
 			});
 		});
 
-		function getLayoutTags() {
+		function getLayoutTags()
+		{
 			var postData = SolidSite.prepData({
 				layout_template_id: 0,
-				layout:             ''
+				layout:             '',
 			});
 
-			if ($('#field-layout-template-id').val() != "") {
+			if ($('#field-layout-template-id').val() != "")
+			{
 				$('#layout-area').addClass('hidden');
 				postData.layout_template_id = $('#field-layout-template-id').val();
-			} else {
+			}
+			else
+			{
 				$('#layout-area').removeClass('hidden');
 				postData.layout = $('#layout').val();
 			}
@@ -83,7 +87,9 @@
 
 				if (data !== null)
 					item.find('.field-content-markdown').val(data.content);
-			} else {
+			}
+			else
+			{
 				item.find('.markdown-content-area').addClass('hidden');
 				item.find('.col-markdown-preview-content').addClass('hidden');
 				item.find('.html-content-area').removeClass('hidden');
@@ -95,7 +101,8 @@
 			// initialize WYSIWYG editor for HTML content field
 			var htmlField = item.find('.field-content-html');
 			if (htmlField)
-				CKEDITOR.replace(htmlField.attr('id'), {
+				CKEDITOR.replace(htmlField.attr('id'),
+				{
 					on: {
 						key: function() {
 							setTimeout(function(){

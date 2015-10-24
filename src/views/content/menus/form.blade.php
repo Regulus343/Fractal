@@ -22,17 +22,52 @@
 			if (Formation.allItemsLoaded())
 				formatItemHierarchy();
 
-			if (data !== null && data.type != "") {
-				if (data.type == "URI") {
-					item.find('.uri-area').removeClass('hidden');
-					item.find('.page-area').addClass('hidden');
-				} else {
-					item.find('.uri-area').addClass('hidden');
-					item.find('.page-area').removeClass('hidden');
+			if (data !== null)
+			{
+				if (data.label_language_key != "")
+				{
+					item.find('.field-label-type').val('Language Key');
+					item.find('.label-language-key-area').removeClass('hidden');
+					item.find('.label-text-area').addClass('hidden');
+				}
+				else
+				{
+					item.find('.field-label-type').val('Text');
+					item.find('.label-language-key-area').addClass('hidden');
+					item.find('.label-text-area').removeClass('hidden');
+				}
+
+				if (data.type != "")
+				{
+					if (data.type == "URI")
+					{
+						item.find('.uri-area').removeClass('hidden');
+						item.find('.page-area').addClass('hidden');
+					}
+					else
+					{
+						item.find('.uri-area').addClass('hidden');
+						item.find('.page-area').removeClass('hidden');
+					}
 				}
 			}
 
-			item.find('.field-type').change(function(){
+			item.find('.field-label-type').change(function()
+			{
+				if ($(this).val() == "Language Key")
+				{
+					item.find('.label-language-key-area').removeClass('hidden');
+					item.find('.label-text-area').addClass('hidden');
+				}
+				else
+				{
+					item.find('.label-language-key-area').addClass('hidden');
+					item.find('.label-text-area').removeClass('hidden');
+				}
+			});
+
+			item.find('.field-type').change(function()
+			{
 				if ($(this).val() == "URI") {
 					item.find('.uri-area').removeClass('hidden');
 					item.find('.page-area').addClass('hidden');
@@ -45,7 +80,8 @@
 				}
 			});
 
-			item.find('.field-parent-id').change(function(){
+			item.find('.field-parent-id').change(function()
+			{
 				formatItemHierarchy();
 
 				$('html,body').animate({
@@ -53,7 +89,8 @@
 				}, 750);
 			});
 
-			item.find('.field-display-order').change(function(){
+			item.find('.field-display-order').change(function()
+			{
 				formatItemHierarchy();
 
 				$('html,body').animate({
@@ -63,19 +100,22 @@
 
 			Fractal.initButtonDropdownFields(item);
 
-			if (data === null) {
+			if (data === null)
+			{
 				$('html, body').animate({
 					scrollTop: (item.offset().top - 30) + 'px'
 				}, 750);
 
 				//set display order to greatest value
 				var displayOrder = 0;
-				$('#menu-items fieldset').each(function(){
+				$('#menu-items fieldset').each(function()
+				{
 					var fieldParentId     = $(this).find('.field-parent-id').val();
 					var fieldDisplayOrder = parseInt($(this).find('.field-display-order').val());
 					if ((fieldParentId == "" || fieldParentId == null) && fieldDisplayOrder > displayOrder)
 						displayOrder = fieldDisplayOrder;
 				});
+
 				displayOrder ++;
 
 				item.find('.field-display-order').val(displayOrder);
@@ -88,16 +128,20 @@
 			var menuItemHierarchy = getMenuItemHierarchy();
 			var positionedItems   = [];
 
-			for (level = 0; level < menuItemHierarchy.length; level++) {
+			for (level = 0; level < menuItemHierarchy.length; level++)
+			{
 				var itemNumbers = menuItemHierarchy[level];
 				for (var itemNumber in itemNumbers)
 				{
 					var parentNumber = itemNumbers[itemNumber];
-					if ($.inArray(itemNumber, positionedItems) < 0) {
+					if ($.inArray(itemNumber, positionedItems) < 0)
+					{
 						var item           = $('#menu-items fieldset[data-item-number="'+itemNumber+'"]');
 						var lastItemNumber = 0;
-						for (var itemNumberMatch in itemNumbers) {
-							if (itemNumberMatch != itemNumber) {
+						for (var itemNumberMatch in itemNumbers)
+						{
+							if (itemNumberMatch != itemNumber)
+							{
 								var parentNumberMatch = itemNumbers[itemNumberMatch];
 								if (parentNumberMatch == parentNumber && $.inArray(itemNumberMatch, positionedItems) >= 0) {
 									var itemMatch      = $('#menu-items fieldset[data-item-number="'+itemNumberMatch+'"]');
@@ -109,11 +153,15 @@
 							}
 						}
 
-						if (lastItemNumber) {
+						if (lastItemNumber)
+						{
 							item.insertAfter($('#menu-items fieldset[data-item-number="'+lastItemNumber+'"]'));
 							positionedItems.push(itemNumber);
-						} else {
-							if (parentNumber) {
+						}
+						else
+						{
+							if (parentNumber)
+							{
 								item.insertAfter($('#menu-items fieldset[data-item-number="'+parentNumber+'"]'));
 								positionedItems.push(itemNumber);
 							}

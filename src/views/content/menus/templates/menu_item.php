@@ -2,14 +2,29 @@
 
 	<fieldset id="menu-item-{{number}}" data-item-number="{{number}}" data-item-id="{{id}}">
 
-		<legend><?=Fractal::transChoice('labels.menu_item')?></legend>
+		<legend><?=Fractal::transChoice('labels.menu_item')?>: <strong>{{label}}</strong></legend>
 
 		<?=Form::hidden('items.{{number}}.id')?>
 		<?=Form::hidden('items.{{number}}.display_order')?>
 
 		<div class="row">
 			<div class="col-md-3">
+				<?=Form::field('items.{{number}}.label_type', 'select', [
+					'options'     => Form::simpleOptions(['Text', 'Language Key']),
+					'null-option' => 'Select a Label Type',
+				])?>
+			</div>
+
+			<div class="col-md-3 label-text-area hidden">
 				<?=Form::field('items.{{number}}.label')?>
+			</div>
+
+			<div class="col-md-3 label-language-key-area hidden">
+				<?=Form::field('items.{{number}}.label_language_key', 'select', [
+					'label'       => Fractal::trans('labels.language_key'),
+					'options'     => $languageKeyOptions,
+					'null-option' => 'Select a Language Key',
+				])?>
 			</div>
 
 			<div class="col-md-3">
@@ -53,7 +68,7 @@
 				<?=Form::field('items.{{number}}.page_id', 'select', [
 					'label'       => Fractal::transChoice('labels.page'),
 					'options'     => $pageOptions,
-					'null-option' => 'Select a page',
+					'null-option' => 'Select a Page',
 				])?>
 			</div>
 		</div>
@@ -63,7 +78,7 @@
 				<?=Form::field('items.{{number}}.parent_id', 'select', [
 					'label'       => 'Parent Menu Item',
 					'options'     => isset($menu) ? Form::prepOptions($menu->items, ['id', 'label']) : [],
-					'null-option' => 'Select a parent menu item',
+					'null-option' => 'Select a Parent Menu Item',
 				])?>
 			</div>
 

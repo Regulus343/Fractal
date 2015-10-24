@@ -16,6 +16,8 @@ use Auth;
 use Form;
 use Site;
 
+use Regulus\Fractal\Facade as FractalCore;
+
 use Regulus\Fractal\Models\Content\Page;
 use Regulus\Fractal\Models\Content\FileType;
 use Regulus\Fractal\Models\Content\MenuItem;
@@ -36,11 +38,13 @@ View::composer($viewsLocation.'partials.messages', function($view)
 
 View::composer($viewsLocation.'content.menus.form', function($view)
 {
-	$typeOptions = Form::simpleOptions(['URI', 'Content Page']);
-	$pageOptions = Form::prepOptions(Page::select('id', 'title')->orderBy('title')->get(), array('id', 'title'));
-	$iconOptions = MenuItem::getIconOptions();
+	$languageKeyOptions = FractalCore::getLanguageKeyOptions();
+	$typeOptions        = Form::simpleOptions(['URI', 'Content Page']);
+	$pageOptions        = Form::prepOptions(Page::select('id', 'title')->orderBy('title')->get(), array('id', 'title'));
+	$iconOptions        = MenuItem::getIconOptions();
 
 	$view
+		->with('languageKeyOptions', $languageKeyOptions)
 		->with('typeOptions', $typeOptions)
 		->with('pageOptions', $pageOptions)
 		->with('iconOptions', $iconOptions);

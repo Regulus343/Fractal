@@ -2,9 +2,11 @@
 
 return [
 
-	'version'                 => '0.9.4',
-
 	'home'                    => 'Home',
+	'about'                   => 'About',
+	'about_us'                => 'About Us',
+	'contact'                 => 'Contact',
+	'contact_us'              => 'Contact Us',
 	'dashboard'               => 'Dashboard',
 	'return_to_cms'           => 'Return to CMS',
 
@@ -116,7 +118,7 @@ return [
 
 	'settings'                => 'Settings',
 
-	'your_account'            => 'your account',
+	'your_account'            => 'Your Account',
 
 	'account'                 => 'Account',
 	'log_in'                  => 'Log In',
@@ -145,9 +147,11 @@ return [
 	'language_key'            => 'Language Key',
 
 	'content_types'           => [
-		'Page'    => 'Page|Pages',
-		'Article' => 'Article|Articles',
-		'Item'    => 'Media Item|Media Items',
+		'page'    => 'Page|Pages',
+		'article' => 'Article|Articles',
+		'item'    => 'Media Item|Media Items',
 	],
+
+	'version'                 => '0.9.5',
 
 ];

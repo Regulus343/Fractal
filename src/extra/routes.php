@@ -112,6 +112,10 @@ Route::group(['domain' => $domain], function()
 	});
 });
 
+$groupDefault = [
+	'middleware' => ['auth.permissions'],
+];
+
 /* Blog Routes */
 if (config('blogs.enabled'))
 {
@@ -119,7 +123,7 @@ if (config('blogs.enabled'))
 	$blogUri        = config('blogs.base_uri');
 	$blogController = config('blogs.view_controller');
 
-	$group = [];
+	$group = $groupDefault;
 	if (is_string($blogSubdomain) && $blogSubdomain != "")
 		$group['domain'] = str_replace('http://', $blogSubdomain.'.', str_replace('https://', $blogSubdomain.'.', config('app.url')));
 
@@ -152,7 +156,8 @@ if (config('media.enabled'))
 	$mediaUri        = config('media.base_uri');
 	$mediaController = config('media.view_controller');
 
-	$group = [];
+	$group = $groupDefault;
+
 	if (is_string($mediaSubdomain) && $mediaSubdomain != "")
 		$group['domain'] = str_replace('http://', $mediaSubdomain.'.', str_replace('https://', $mediaSubdomain.'.', config('app.url')));
 
@@ -179,13 +184,20 @@ if (config('media.enabled'))
 }
 
 /* Content Pages Routes */
-$pageUri    = config('cms.page_uri');
-$pageMethod = config('cms.page_method');
+$group = $groupDefault;
 
-if (!is_null($pageUri) && $pageUri != false && $pageUri != "")
-	Route::get($pageUri.'/{slug}', ['as' => 'pages.view', 'uses' => $pageMethod]);
-else
-	Route::get('{slug}', ['as' => 'pages.view', 'uses' => $pageMethod]);
+$group['domain'] = str_replace('http://', '', str_replace('https://', '', config('app.url')));
 
-if (config('cms.use_home_page_for_root'))
-	Route::get('', $pageMethod);
+Route::group($group, function()
+{
+	$pageUri    = config('cms.page_uri');
+	$pageMethod = config('cms.page_method');
+
+	if (!is_null($pageUri) && $pageUri != false && $pageUri != "")
+		Route::get($pageUri.'/{slug}', ['as' => 'pages.view', 'uses' => $pageMethod]);
+	else
+		Route::get('{slug}', ['as' => 'pages.view', 'uses' => $pageMethod]);
+
+	if (config('cms.use_home_page_for_root'))
+		Route::get('', ['as' => 'home', 'uses' => $pageMethod]);
+});

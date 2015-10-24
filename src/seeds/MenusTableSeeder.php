@@ -27,17 +27,15 @@ class MenusTableSeeder extends Seeder {
 
 				'items' => [
 					[
-						'uri'           => '',
-						'label'         => 'Content',
-						'icon'          => 'th-list',
-						'display_order' => 1,
-						'auth_status'   => 1,
-
-						'items'         => [
+						'uri'                => '',
+						'label_language_key' => 'content',
+						'icon'               => 'th-list',
+						'display_order'      => 1,
+						'auth_status'        => 1,
+						'items'              => [
 							[
 								'uri'                => 'menus',
 								'subdomain'          => $cmsSubdomain,
-								'label'              => 'Menus',
 								'label_language_key' => 'plural:menu',
 								'icon'               => 'tasks',
 								'display_order'      => 1,
@@ -46,7 +44,6 @@ class MenusTableSeeder extends Seeder {
 							[
 								'uri'                => 'pages',
 								'subdomain'          => $cmsSubdomain,
-								'label'              => 'Pages',
 								'label_language_key' => 'plural:page',
 								'icon'               => 'file',
 								'display_order'      => 2,
@@ -55,7 +52,6 @@ class MenusTableSeeder extends Seeder {
 							[
 								'uri'                => 'files',
 								'subdomain'          => $cmsSubdomain,
-								'label'              => 'Files',
 								'label_language_key' => 'plural:file',
 								'icon'               => 'folder',
 								'display_order'      => 3,
@@ -64,7 +60,6 @@ class MenusTableSeeder extends Seeder {
 							[
 								'uri'                => 'layout-templates',
 								'subdomain'          => $cmsSubdomain,
-								'label'              => 'Layout Templates',
 								'label_language_key' => 'plural:layout_template',
 								'icon'               => 'th',
 								'display_order'      => 4,
@@ -73,18 +68,16 @@ class MenusTableSeeder extends Seeder {
 						],
 					],
 					[
-						'uri'           => 'media',
+						'uri'                => 'media',
 						'subdomain'          => $cmsSubdomain,
-						'label'         => 'Media',
-						'icon'          => 'th-list',
-						'display_order' => 2,
-						'auth_status'   => 1,
-
-						'items'         => [
+						'label_language_key' => 'media',
+						'icon'               => 'th-list',
+						'display_order'      => 2,
+						'auth_status'        => 1,
+						'items'              => [
 							[
 								'uri'                => 'media/items',
 								'subdomain'          => $cmsSubdomain,
-								'label'              => 'Media Items',
 								'label_language_key' => 'plural:item',
 								'icon'               => 'file-image-o',
 								'display_order'      => 3,
@@ -93,7 +86,6 @@ class MenusTableSeeder extends Seeder {
 							[
 								'uri'                => 'media/types',
 								'subdomain'          => $cmsSubdomain,
-								'label'              => 'Media Types',
 								'label_language_key' => 'plural:type',
 								'icon'               => 'tag',
 								'display_order'      => 3,
@@ -102,7 +94,6 @@ class MenusTableSeeder extends Seeder {
 							[
 								'uri'                => 'media/sets',
 								'subdomain'          => $cmsSubdomain,
-								'label'              => 'Media Sets',
 								'label_language_key' => 'plural:set',
 								'icon'               => 'folder',
 								'display_order'      => 3,
@@ -111,18 +102,16 @@ class MenusTableSeeder extends Seeder {
 						],
 					],
 					[
-						'uri'           => 'blogs',
+						'uri'                => 'blogs',
 						'subdomain'          => $cmsSubdomain,
-						'label'         => 'Blogs',
-						'icon'          => 'th-list',
-						'display_order' => 2,
-						'auth_status'   => 1,
-
-						'items'         => [
+						'label_language_key' => 'plural:blog',
+						'icon'               => 'th-list',
+						'display_order'      => 2,
+						'auth_status'        => 1,
+						'items'              => [
 							[
 								'uri'                => 'blogs/articles',
 								'subdomain'          => $cmsSubdomain,
-								'label'              => 'Blog Articles',
 								'label_language_key' => 'plural:article',
 								'icon'               => 'file',
 								'display_order'      => 1,
@@ -131,7 +120,6 @@ class MenusTableSeeder extends Seeder {
 							[
 								'uri'                => 'blogs/categories',
 								'subdomain'          => $cmsSubdomain,
-								'label'              => 'Categories',
 								'label_language_key' => 'plural:category',
 								'icon'               => 'book',
 								'display_order'      => 2,
@@ -140,18 +128,16 @@ class MenusTableSeeder extends Seeder {
 						],
 					],
 					[
-						'uri'           => 'users',
-						'subdomain'     => $cmsSubdomain,
-						'label'         => 'Users',
-						'icon'          => 'user',
-						'display_order' => 2,
-						'auth_status'   => 1,
-
-						'items'         => [
+						'uri'                => 'users',
+						'subdomain'          => $cmsSubdomain,
+						'label_language_key' => 'plural:user',
+						'icon'               => 'user',
+						'display_order'      => 2,
+						'auth_status'        => 1,
+						'items'              => [
 							[
 								'uri'                => 'users',
 								'subdomain'          => $cmsSubdomain,
-								'label'              => 'Users',
 								'label_language_key' => 'plural:user',
 								'icon'               => 'user',
 								'display_order'      => 1,
@@ -160,7 +146,6 @@ class MenusTableSeeder extends Seeder {
 							[
 								'uri'                => 'users/roles',
 								'subdomain'          => $cmsSubdomain,
-								'label'              => 'User Roles',
 								'label_language_key' => 'plural:role',
 								'icon'               => 'book',
 								'display_order'      => 2,
@@ -169,7 +154,6 @@ class MenusTableSeeder extends Seeder {
 							[
 								'uri'                => 'users/permissions',
 								'subdomain'          => $cmsSubdomain,
-								'label'              => 'User Permissions',
 								'label_language_key' => 'plural:permission',
 								'icon'               => 'star',
 								'display_order'      => 2,
@@ -178,7 +162,6 @@ class MenusTableSeeder extends Seeder {
 							[
 								'uri'                => 'users/activity',
 								'subdomain'          => $cmsSubdomain,
-								'label'              => 'User Activity',
 								'label_language_key' => 'singular:activity',
 								'icon'               => 'info-circle',
 								'display_order'      => 3,
@@ -189,7 +172,6 @@ class MenusTableSeeder extends Seeder {
 					[
 						'uri'                => 'settings',
 						'subdomain'          => $cmsSubdomain,
-						'label'              => 'Settings',
 						'label_language_key' => 'settings',
 						'icon'               => 'cog',
 						'display_order'      => 4,
@@ -200,12 +182,10 @@ class MenusTableSeeder extends Seeder {
 			[
 				'name'  => 'CMS Account',
 				'cms'   => true,
-
 				'items' => [
 					[
 						'uri'                => 'login',
 						'subdomain'          => $cmsSubdomain,
-						'label'              => 'Log In',
 						'label_language_key' => 'log_in',
 						'icon'               => 'sign-in',
 						'display_order'      => 1,
@@ -214,7 +194,6 @@ class MenusTableSeeder extends Seeder {
 					[
 						'uri'                => 'account',
 						'subdomain'          => $cmsSubdomain,
-						'label'              => 'Account',
 						'label_language_key' => 'account',
 						'icon'               => 'user',
 						'display_order'      => 2,
@@ -223,7 +202,6 @@ class MenusTableSeeder extends Seeder {
 					[
 						'uri'                => 'logout',
 						'subdomain'          => $cmsSubdomain,
-						'label'              => 'Log Out',
 						'label_language_key' => 'log_out',
 						'icon'               => 'sign-out',
 						'display_order'      => 3,
@@ -238,35 +216,35 @@ class MenusTableSeeder extends Seeder {
 					[
 						'type'               => 'Content Page',
 						'page_id'            => 1,
-						'label'              => 'Home',
+						'label_language_key' => 'home',
 						'icon'               => 'home',
 						'display_order'      => 1,
 					],
 					[
 						'uri'                => config('blogs.base_uri'),
 						'subdomain'          => config('blogs.subdomain'),
-						'label'              => 'Blog',
+						'label_language_key' => 'singular:blog',
 						'icon'               => 'comment',
 						'display_order'      => 2,
 					],
 					[
 						'uri'                => config('media.base_uri'),
 						'subdomain'          => config('media.subdomain'),
-						'label'              => 'Media',
+						'label_language_key' => 'media',
 						'icon'               => 'book',
 						'display_order'      => 3,
 					],
 					[
 						'type'               => 'Content Page',
 						'page_id'            => 2,
-						'label'              => 'About',
+						'label_language_key' => 'about',
 						'icon'               => 'list',
 						'display_order'      => 4,
 					],
 					[
 						'type'               => 'Content Page',
 						'page_id'            => 3,
-						'label'              => 'Contact',
+						'label_language_key' => 'contact',
 						'icon'               => 'envelope',
 						'display_order'      => 5,
 					],
@@ -274,37 +252,36 @@ class MenusTableSeeder extends Seeder {
 			],
 			[
 				'name'  => 'Footer',
-
 				'items' => [
 					[
-						'type'          => 'Content Page',
-						'page_id'       => 1,
-						'label'         => 'Home',
-						'display_order' => 1,
+						'type'               => 'Content Page',
+						'page_id'            => 1,
+						'label_language_key' => 'home',
+						'display_order'      => 1,
 					],
 					[
-						'uri'           => config('blogs.base_uri'),
-						'subdomain'     => config('blogs.subdomain'),
-						'label'         => 'Blog',
-						'display_order' => 2,
+						'uri'                => config('blogs.base_uri'),
+						'subdomain'          => config('blogs.subdomain'),
+						'label_language_key' => 'singular:blog',
+						'display_order'      => 2,
 					],
 					[
-						'uri'           => config('media.base_uri'),
-						'subdomain'     => config('media.subdomain'),
-						'label'         => 'Media',
-						'display_order' => 3,
+						'uri'                => config('media.base_uri'),
+						'subdomain'          => config('media.subdomain'),
+						'label_language_key' => 'media',
+						'display_order'      => 3,
 					],
 					[
-						'type'          => 'Content Page',
-						'page_id'       => 2,
-						'label'         => 'About',
-						'display_order' => 4,
+						'type'               => 'Content Page',
+						'page_id'            => 2,
+						'label_language_key' => 'about',
+						'display_order'      => 4,
 					],
 					[
-						'type'          => 'Content Page',
-						'page_id'       => 3,
-						'label'         => 'Contact',
-						'display_order' => 5,
+						'type'               => 'Content Page',
+						'page_id'            => 3,
+						'label_language_key' => 'contact',
+						'display_order'      => 5,
 					],
 				],
 			],

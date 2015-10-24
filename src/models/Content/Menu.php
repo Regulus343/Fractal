@@ -77,12 +77,23 @@ class Menu extends Base {
 				if (Form::getValueFromObject('label', $values) != "")
 				{
 					$itemRules = [
-						'items.'.$number.'.label' => ['required'],
-						'items.'.$number.'.type'  => ['required'],
+						'items.'.$number.'.label_type' => ['required'],
+						'items.'.$number.'.type'       => ['required'],
 					];
 
+					$labelType = Form::getValueFromObject('type', $values);
+					if ($labelType == "Language Key")
+					{
+						$itemRules['items.'.$number.'.language_key'] = ['required'];
+					}
+					else
+					{
+						$itemRules['items.'.$number.'.label'] = ['required'];
+					}
+
 					$type = Form::getValueFromObject('type', $values);
-					if ($type != "") {
+					if ($type != "")
+					{
 						if ($contentField = $type == "URI") {
 							if (Form::getValueFromObject('subdomain', $values) == "")
 								$itemRules['items.'.$number.'.uri'] = ['required'];
@@ -200,6 +211,7 @@ class Menu extends Base {
 		$menuItems = '';
 		$added     = 0;
 		$complete  = false;
+		$limit     = 5;
 
 		foreach ($this->items as $menuItem)
 		{
@@ -207,12 +219,12 @@ class Menu extends Base {
 			{
 				if (! (int) $menuItem->parent_id && $menuItem->active)
 				{
-					if ($added < 3)
+					if ($added < $limit)
 					{
 						if ($menuItems != "")
 							$menuItems .= ', ';
 
-						$menuItems .= '<a href="'.$menuItem->getUrl().'" target="_blank">'.$menuItem->label.'</a>';
+						$menuItems .= '<a href="'.$menuItem->getUrl().'" target="_blank">'.$menuItem->getLabel().'</a>';
 					}
 
 					$added ++;
@@ -220,7 +232,7 @@ class Menu extends Base {
 			}
 		}
 
-		if ($added > 3)
+		if ($added > $limit)
 			$menuItems .= '...';
 
 		return $menuItems;

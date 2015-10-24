@@ -5,8 +5,8 @@
 		A versatile CMS for Laravel 5.
 
 		created by Cody Jassman
-		version 0.9.4
-		last updated on October 20, 2015
+		version 0.9.5
+		last updated on October 23, 2015
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -1886,6 +1886,47 @@ class Fractal {
 	public function transChoiceLowerA($key, $number = 1, array $replace = [], $locale = null)
 	{
 		return Format::a(strtolower($this->transChoice($key, $number, $replace, $locale)));
+	}
+
+	/**
+	 * Get an array of language key options.
+	 *
+	 * @param  mixed   $set
+	 * @param  mixed   $prefix
+	 * @return array
+	 */
+	public function getLanguageKeyOptions($set = 'labels', $prefix = null)
+	{
+		$options = [];
+
+		if (is_string($set))
+			$set = $this->trans($set);
+
+		foreach ($set as $key => $item)
+		{
+			if (is_array($item))
+			{
+				$options = array_merge($options, $this->getLanguageKeyOptions($item, $key.'.'));
+			}
+			else
+			{
+				$itemMultiple = explode('|', $item);
+
+				if (count($itemMultiple) == 2)
+				{
+					$options['singular:'.$prefix.$key] = $itemMultiple[0];
+					$options['plural:'.$prefix.$key] = $itemMultiple[1];
+				}
+				else
+				{
+					$options[$prefix.$key] = $item;
+				}
+			}
+		}
+
+		asort($options);
+
+		return $options;
 	}
 
 }
