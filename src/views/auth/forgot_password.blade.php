@@ -20,9 +20,11 @@
 
 		{!! Form::field('email', 'text', ['label' => Fractal::trans('labels.email')]) !!}
 
-		<a href="{{ Fractal::url('login') }}" class="pull-right">{{ Fractal::trans('labels.return_to_log_in') }}</a>
+		{!! Form::field('[ICON: check-circle]'.Fractal::trans('labels.reset_password'), 'button', ['class' => 'btn-primary pull-right']) !!}
 
-		{!! Form::field('[ICON: check-circle]'.Fractal::trans('labels.reset_password'), 'button') !!}
+		<a href="{{ Fractal::url('login') }}" class="btn btn-default">
+			<i class="fa fa-arrow-left"></i> {{ Fractal::trans('labels.return_to_log_in') }}
+		</a>
 
 	{!! Form::close() !!}
 

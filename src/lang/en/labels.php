@@ -123,8 +123,8 @@ return [
 	'account'                 => 'Account',
 	'log_in'                  => 'Log In',
 	'log_out'                 => 'Log Out',
-	'forgot_your_password'    => 'Forgot your password?',
-	'return_to_log_in'        => 'Return to log in',
+	'forgot_your_password'    => 'Forgot Your Password?',
+	'return_to_log_in'        => 'Return to Log In',
 	'reset_password'          => 'Reset Password',
 
 	'blog_return_to_home'     => 'Return to Blog Home Page',

@@ -31,9 +31,11 @@
 
 		{!! Form::field('password') !!}
 
-		<a href="{{ Fractal::url('password') }}" class="pull-right">{{ Fractal::trans('labels.forgot_your_password') }}</a>
+		{!! Form::field('[ICON: sign-in]'.Fractal::trans('labels.log_in'), 'button', ['class' => 'btn-primary pull-right']) !!}
 
-		{!! Form::field('[ICON: sign-in]'.Fractal::trans('labels.log_in'), 'button') !!}
+		<a href="{{ Fractal::url('password') }}" class="btn btn-default">
+			<i class="fa fa-question-circle"></i> {{ Fractal::trans('labels.forgot_your_password') }}
+		</a>
 
 	{!! Form::close() !!}
 
