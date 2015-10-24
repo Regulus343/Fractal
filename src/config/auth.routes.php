@@ -38,6 +38,7 @@ return [
 	'layout-templates.search' => ['manage-layout-templates', 'view-layout-templates', 'demo'],
 
 	'users.*'                 => ['manage-users', 'demo'],
+	'users.activity.*'        => [],
 
 	'media.items.*'           => ['manage-media-items', 'demo'],
 	'media.items.index'       => ['manage-media-items', 'view-media-items', 'demo'],

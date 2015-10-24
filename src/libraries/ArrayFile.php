@@ -130,7 +130,7 @@ class ArrayFile {
 			}
 
 			if (is_null($item))
-				$this->data .= "\n]; //Exported from DB on ".date('m/d/Y \a\t g:ia');
+				$this->data .= "\n]; // exported from DB on ".date('m/d/Y \a\t g:ia');
 			else
 				$this->data .= "],";
 

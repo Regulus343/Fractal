@@ -88,7 +88,7 @@ class CategoriesController extends BlogsController {
 		Form::setErrors();
 
 		Fractal::addButton([
-			'label' => Fractal::trans('labels.return_to_items_list', ['item' => Fractal::transChoice('labels.category', 2)]),
+			'label' => Fractal::trans('labels.return_to_items_list', ['items' => Fractal::transChoice('labels.category', 2)]),
 			'icon'  => 'list',
 			'uri'   => Fractal::uri('', true),
 		]);
