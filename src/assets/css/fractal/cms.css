@@ -407,3 +407,6 @@ ul#menu-items li fieldset div.absolute { position: absolute; }
 
 .btn-spaced-right { margin-right: 6px; }
 .btn-spaced-left { margin-left: 6px; }
+
+.dropdown-menu-field { max-height: 360px; overflow-y: auto; }
+.dropdown-menu-field li i { display: inline-block; width: 24px; }
