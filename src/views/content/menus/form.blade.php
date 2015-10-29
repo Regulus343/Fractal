@@ -227,6 +227,8 @@
 					setMenuItemPositions();
 				}
 			});
+
+			setMenuItemPositions();
 		}
 
 		function setMenuItemPositions()
@@ -249,6 +251,14 @@
 				$(this).find('.field-display-order').val(displayOrder);
 
 				displayOrder ++;
+			});
+
+			$('ul#menu-items li.item .remove-template-item').addClass('invisible');
+
+			$('ul#menu-items li.item').each(function()
+			{
+				if (!$(this).find('ul li.item').length)
+					$(this).find('.remove-template-item').removeClass('invisible');
 			});
 		}
 
@@ -302,6 +312,8 @@
 				</div>
 			</div>
 		@endif
+
+		<hr />
 
 		{{-- Menu Items --}}
 		<ul id="menu-items" data-template-id="menu-item-template"></ul>
