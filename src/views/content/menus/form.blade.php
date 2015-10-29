@@ -19,19 +19,7 @@
 				return new Handlebars.SafeString(languageKeyLabel);
 			});
 
-			$('#menu-items').nestedSortable({
-				handle:           'fieldset',
-				items:            'li.item',
-				listType:         'ul',
-				toleranceElement: '> fieldset',
-				maxLevels:        3,
-				beforeStop:       function()
-				{
-					setMenuItemPositions();
-				}
-			});
-
-			Formation.loadTemplates('#menu-items', $.parseJSON('{!! Form::getJsonValues('items') !!}'), menuItemTemplateCallback);
+			Formation.loadTemplates('#menu-items', $.parseJSON('{!! Form::getJsonValues('items') !!}'), menuItemTemplateCallback, menuItemTemplatesCallback);
 
 			$('.add-menu-item').click(function(e)
 			{
@@ -87,7 +75,7 @@
 				}
 			}
 
-			item.find('.field-label-type').change(function()
+			item.find('.field-label-type').off('change').on('change', function()
 			{
 				if ($(this).val() == "Language Key")
 				{
@@ -101,7 +89,7 @@
 				}
 			});
 
-			item.find('.field-label').keyup(function()
+			item.find('.field-label').off('keyup').on('keyup', function()
 			{
 				var fieldset = $(this).parents('fieldset');
 
@@ -109,7 +97,7 @@
 				fieldset.find('h2').html($(this).val());
 			});
 
-			item.find('.field-label-language-key').change(function()
+			item.find('.field-label-language-key').off('change').on('change', function()
 			{
 				var languageKeyLabel = languageKeyOptions[$(this).val()];
 
@@ -122,7 +110,7 @@
 				fieldset.find('h2').html(languageKeyLabel);
 			});
 
-			item.find('.field-type').change(function()
+			item.find('.field-type').off('change').on('change', function()
 			{
 				if ($(this).val() == "URI") {
 					item.find('.uri-area').removeClass('hidden');
@@ -136,28 +124,28 @@
 				}
 			});
 
-			item.find('.field-icon').change(function()
+			item.find('.field-icon').off('change').on('change', function()
 			{
 				setIcon($(this));
 			});
 
 			setIcon(item.find('.field-icon'));
 
-			item.find('.btn-expand').click(function(e)
+			item.find('.btn-expand').off('click').on('click', function(e)
 			{
 				e.preventDefault();
 
 				expandItem($(this).parents('fieldset'));
 			});
 
-			item.find('.btn-collapse').click(function(e)
+			item.find('.btn-collapse').off('click').on('click', function(e)
 			{
 				e.preventDefault();
 
 				collapseItem($(this).parents('fieldset'));
 			});
 
-			item.dblclick(function()
+			item.off('dblclick').on('dblclick', function()
 			{
 				var item = $(this);
 
@@ -175,7 +163,7 @@
 					scrollTop: (item.offset().top - 30) + 'px'
 				}, 750);
 
-				//set display order to greatest value
+				// set display order to greatest value
 				var displayOrder = 0;
 				$('#menu-items fieldset').each(function()
 				{
@@ -192,6 +180,54 @@
 				item.find('.field-label').focus();
 			}
 		};
+
+		var menuItemTemplatesCallback = function()
+		{
+			initializeMenu();
+		};
+
+		function initializeMenu()
+		{
+			$('ul#menu-items li.item').each(function()
+			{
+				var item = $(this);
+
+				var parentId = item.find('.field-parent-id').val();
+
+				if (parentId != "")
+				{
+					$('ul#menu-items li.item').each(function()
+					{
+						var comparedItem = $(this);
+
+						if ($(this).find('.field-id').val() == parentId)
+						{
+							var list = comparedItem.find('>ul');
+
+							if (!list.length)
+							{
+								comparedItem.append('<ul></ul>');
+								list = comparedItem.find('>ul');
+							}
+
+							list.append(item);
+						}
+					});
+				}
+			});
+
+			$('#menu-items').nestedSortable({
+				handle:           'fieldset',
+				items:            'li.item',
+				listType:         'ul',
+				toleranceElement: '> fieldset',
+				maxLevels:        3,
+				beforeStop:       function()
+				{
+					setMenuItemPositions();
+				}
+			});
+		}
 
 		function setMenuItemPositions()
 		{
