@@ -16,6 +16,9 @@
 
 				languageKeyLabel = languageKeyOptions[languageKey];
 
+				if (languageKeyLabel === undefined)
+					languageKeyLabel = "Menu Item";
+
 				return new Handlebars.SafeString(languageKeyLabel);
 			});
 
@@ -94,7 +97,7 @@
 				var fieldset = $(this).parents('fieldset');
 
 				fieldset.find('legend').html($(this).val());
-				fieldset.find('h2').html($(this).val());
+				fieldset.find('h2 span').html($(this).val());
 			});
 
 			item.find('.field-label-language-key').off('change').on('change', function()
@@ -107,7 +110,7 @@
 				var fieldset = $(this).parents('fieldset');
 
 				fieldset.find('legend').html(languageKeyLabel);
-				fieldset.find('h2').html(languageKeyLabel);
+				fieldset.find('h2 span').html(languageKeyLabel);
 			});
 
 			item.find('.field-type').off('change').on('change', function()

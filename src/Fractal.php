@@ -6,7 +6,7 @@
 
 		created by Cody Jassman
 		version 0.9.5
-		last updated on October 23, 2015
+		last updated on October 28, 2015
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -1477,6 +1477,9 @@ class Fractal {
 
 			foreach ($menuItem->children as $subMenuItem)
 			{
+				if (is_array($subMenuItem))
+					$subMenuItem = (object) $subMenuItem;
+
 				if (Auth::hasAccess($subMenuItem->url))
 					$visible = true;
 			}

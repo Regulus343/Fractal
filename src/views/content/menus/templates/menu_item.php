@@ -20,11 +20,13 @@
 				<h2>
 					<i class="fa fa-th"></i>
 
-					{{#if label}}
-						{{label}}
-					{{else}}
-						{{dynamicLabel label_language_key}}
-					{{/if}}
+					<span>
+						{{#if label}}
+							{{label}}
+						{{else}}
+							{{dynamicLabel label_language_key}}
+						{{/if}}
+					</span>
 				</h2>
 			</div>
 
