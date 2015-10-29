@@ -392,3 +392,18 @@ table.markdown-guide tr td img { width: 90px; }
 .full-screen>div { height: 100%; }
 .full-screen .form-group { height: 90%; }
 .full-screen textarea, .full-screen .markdown-preview-content { height: 95%; max-height: 95%; }
+
+ul#menu-items { padding-left: 0; }
+ul#menu-items, ul#menu-items ul { list-style: none; }
+ul#menu-items li.ui-sortable-helper fieldset { box-shadow: #777 3px 3px 12px; }
+ul#menu-items li.ui-sortable-placeholder { border: 2px dashed #aaa; }
+ul#menu-items li fieldset { position: relative; background-color: #efefff; box-shadow: #ccc 3px 3px 6px; cursor: move; }
+ul#menu-items li fieldset:hover { border-color: #666; box-shadow: #aaa 3px 3px 6px; }
+ul#menu-items li fieldset legend { font-weight: bold; }
+ul#menu-items li fieldset h2 { margin-left: 12px; }
+ul#menu-items li fieldset h2 i { display: inline-block; width: 36px; color: #666; }
+ul#menu-items li fieldset .buttons-area { position: absolute; bottom: 8px; right: 8px; }
+ul#menu-items li fieldset div.absolute { position: absolute; }
+
+.btn-spaced-right { margin-right: 6px; }
+.btn-spaced-left { margin-left: 6px; }

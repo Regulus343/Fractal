@@ -3,7 +3,7 @@
 | Fractal JS
 |------------------------------------------------------------------------------
 |
-| Last Updated: October 20, 2015
+| Last Updated: October 28, 2015
 |
 */
 
@@ -1001,7 +1001,7 @@ var Fractal = {
 
 			buttonGroup.find('.dropdown-menu-field-value').html($(this).html());
 
-			buttonGroup.find('input').val($(this).data('value'));
+			buttonGroup.find('input').val($(this).data('value')).trigger('change');
 		});
 	},
 

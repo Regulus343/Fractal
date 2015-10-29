@@ -123,6 +123,20 @@ class Menu extends Base {
 	}
 
 	/**
+	 * Get only accessible activities.
+	 *
+	 * @param  Collection $query
+	 * @return Collection
+	 */
+	public function scopeOnlyAccessible($query)
+	{
+		if (!developer())
+			$query->where('cms', false);
+
+		return $query;
+	}
+
+	/**
 	 * Create a menu array.
 	 *
 	 * @param  boolean  $setSelectedClass
@@ -260,7 +274,7 @@ class Menu extends Base {
 	 */
 	public static function getSearchResults($searchData)
 	{
-		$menus = static::orderBy($searchData['sortField'], $searchData['sortOrder']);
+		$menus = static::onlyAccessible()->orderBy($searchData['sortField'], $searchData['sortOrder']);
 
 		if ($searchData['sortField'] != "id")
 			$menus->orderBy('id', 'asc');

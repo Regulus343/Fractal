@@ -53,7 +53,7 @@ class MenusController extends BaseController {
 		$messages = Fractal::getPaginationMessageArray();
 
 		if (!count($menus))
-			$menus = Menu::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
+			$menus = Menu::onlyAccessible()->orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		Fractal::addButton([
 			'label' => Fractal::trans('labels.create_item', ['item' => Fractal::transChoice('labels.menu')]),
@@ -76,7 +76,7 @@ class MenusController extends BaseController {
 		$data = Fractal::setPaginationMessage();
 
 		if (!count($menus))
-			$data['content'] = Menu::orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
+			$data['content'] = Menu::onlyAccessible()->orderBy($data['sortField'], $data['sortOrder'])->paginate($data['itemsPerPage']);
 
 		$data['result']['pages']     = Fractal::getLastPage();
 		$data['result']['tableBody'] = Fractal::createTable($data['content'], true);
@@ -137,7 +137,7 @@ class MenusController extends BaseController {
 
 	public function edit($id)
 	{
-		$menu = Menu::find($id);
+		$menu = Menu::onlyAccessible()->find($id);
 		if (empty($menu))
 			return Redirect::to(Fractal::uri('', true))->with('messages', [
 				'error' => Fractal::trans('messages.errors.not_found', ['item' => Fractal::transChoiceLower('labels.menu')])

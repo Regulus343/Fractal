@@ -36,6 +36,9 @@ return [
 	'view_item'               => 'View :item',
 	'return_to_items_list'    => 'Return to :items List',
 
+	'expand'                  => 'Expand',
+	'collapse'                => 'Collapse',
+
 	'menu'                    => 'Menu|Menus',
 	'menu_item'               => 'Menu Item|Menu Items',
 	'page'                    => 'Page|Pages',

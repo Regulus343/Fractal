@@ -50,6 +50,16 @@ class MenuItem extends Base {
 	];
 
 	/**
+	 * The special formatted fields for the model for saving to the database.
+	 *
+	 * @var    array
+	 */
+	protected $formatsForDb = [
+		'parent_id' => 'nullIfBlank',
+		'page_id'   => 'nullIfBlank',
+	];
+
+	/**
 	 * The menu that the menu item belong to.
 	 *
 	 * @return Menu

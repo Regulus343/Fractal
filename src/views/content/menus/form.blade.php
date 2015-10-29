@@ -2,14 +2,39 @@
 
 @section(config('cms.content_section'))
 
+	<script type="text/javascript" src="{{ Site::js('nested-sortable', 'regulus/fractal') }}"></script>
 	<script type="text/javascript">
+		var languageKeyOptions = $.parseJSON('{!! json_encode($languageKeyOptions) !!}');
+
 		$(document).ready(function()
 		{
 			Fractal.preventBackspaceNavigation();
 
+			Handlebars.registerHelper('dynamicLabel', function(languageKey)
+			{
+				var languageKeyOptions = $.parseJSON('{!! json_encode($languageKeyOptions) !!}');
+
+				languageKeyLabel = languageKeyOptions[languageKey];
+
+				return new Handlebars.SafeString(languageKeyLabel);
+			});
+
+			$('#menu-items').nestedSortable({
+				handle:           'fieldset',
+				items:            'li.item',
+				listType:         'ul',
+				toleranceElement: '> fieldset',
+				maxLevels:        3,
+				beforeStop:       function()
+				{
+					setMenuItemPositions();
+				}
+			});
+
 			Formation.loadTemplates('#menu-items', $.parseJSON('{!! Form::getJsonValues('items') !!}'), menuItemTemplateCallback);
 
-			$('.add-menu-item').click(function(e){
+			$('.add-menu-item').click(function(e)
+			{
 				e.preventDefault();
 
 				Formation.loadNewTemplate('#menu-items', menuItemTemplateCallback);
@@ -17,14 +42,24 @@
 		});
 
 		var menuItemLevel = 0;
-		var menuItemTemplateCallback = function(item, data) {
-			//order menu items under their parent menu items and by display order
-			if (Formation.allItemsLoaded())
-				formatItemHierarchy();
-
+		var menuItemTemplateCallback = function(item, data)
+		{
 			if (data !== null)
 			{
 				if (data.label_language_key != "")
+				{
+					item.find('.field-label-type').val('Language Key');
+					item.find('.label-language-key-area').removeClass('hidden');
+					item.find('.label-text-area').addClass('hidden');
+				}
+				else
+				{
+					item.find('.field-label-type').val('Text');
+					item.find('.label-language-key-area').addClass('hidden');
+					item.find('.label-text-area').removeClass('hidden');
+				}
+
+				if (data.icon != "")
 				{
 					item.find('.field-label-type').val('Language Key');
 					item.find('.label-language-key-area').removeClass('hidden');
@@ -66,6 +101,27 @@
 				}
 			});
 
+			item.find('.field-label').keyup(function()
+			{
+				var fieldset = $(this).parents('fieldset');
+
+				fieldset.find('legend').html($(this).val());
+				fieldset.find('h2').html($(this).val());
+			});
+
+			item.find('.field-label-language-key').change(function()
+			{
+				var languageKeyLabel = languageKeyOptions[$(this).val()];
+
+				if (languageKeyLabel === undefined)
+					languageKeyLabel = "Menu Item";
+
+				var fieldset = $(this).parents('fieldset');
+
+				fieldset.find('legend').html(languageKeyLabel);
+				fieldset.find('h2').html(languageKeyLabel);
+			});
+
 			item.find('.field-type').change(function()
 			{
 				if ($(this).val() == "URI") {
@@ -80,22 +136,35 @@
 				}
 			});
 
-			item.find('.field-parent-id').change(function()
+			item.find('.field-icon').change(function()
 			{
-				formatItemHierarchy();
-
-				$('html,body').animate({
-					scrollTop: (item.offset().top - 180) + 'px'
-				}, 750);
+				setIcon($(this));
 			});
 
-			item.find('.field-display-order').change(function()
-			{
-				formatItemHierarchy();
+			setIcon(item.find('.field-icon'));
 
-				$('html,body').animate({
-					scrollTop: (item.offset().top - 180) + 'px'
-				}, 750);
+			item.find('.btn-expand').click(function(e)
+			{
+				e.preventDefault();
+
+				expandItem($(this).parents('fieldset'));
+			});
+
+			item.find('.btn-collapse').click(function(e)
+			{
+				e.preventDefault();
+
+				collapseItem($(this).parents('fieldset'));
+			});
+
+			item.dblclick(function()
+			{
+				var item = $(this);
+
+				if (item.data('expanded'))
+					collapseItem(item);
+				else
+					expandItem(item);
 			});
 
 			Fractal.initButtonDropdownFields(item);
@@ -124,89 +193,61 @@
 			}
 		};
 
-		function formatItemHierarchy() {
-			var menuItemHierarchy = getMenuItemHierarchy();
-			var positionedItems   = [];
+		function setMenuItemPositions()
+		{
+			var displayOrder = 1;
 
-			for (level = 0; level < menuItemHierarchy.length; level++)
+			$('ul#menu-items li.item').each(function()
 			{
-				var itemNumbers = menuItemHierarchy[level];
-				for (var itemNumber in itemNumbers)
+				var parents = $(this).parents('li.item');
+
+				if (parents.length)
 				{
-					var parentNumber = itemNumbers[itemNumber];
-					if ($.inArray(itemNumber, positionedItems) < 0)
-					{
-						var item           = $('#menu-items fieldset[data-item-number="'+itemNumber+'"]');
-						var lastItemNumber = 0;
-						for (var itemNumberMatch in itemNumbers)
-						{
-							if (itemNumberMatch != itemNumber)
-							{
-								var parentNumberMatch = itemNumbers[itemNumberMatch];
-								if (parentNumberMatch == parentNumber && $.inArray(itemNumberMatch, positionedItems) >= 0) {
-									var itemMatch      = $('#menu-items fieldset[data-item-number="'+itemNumberMatch+'"]');
-									var itemOrder      = parseInt(item.find('.field-display-order').val());
-									var itemMatchOrder = parseInt(itemMatch.find('.field-display-order').val());
-									if (itemOrder > itemMatchOrder)
-										lastItemNumber = itemNumberMatch;
-								}
-							}
-						}
-
-						if (lastItemNumber)
-						{
-							item.insertAfter($('#menu-items fieldset[data-item-number="'+lastItemNumber+'"]'));
-							positionedItems.push(itemNumber);
-						}
-						else
-						{
-							if (parentNumber)
-							{
-								item.insertAfter($('#menu-items fieldset[data-item-number="'+parentNumber+'"]'));
-								positionedItems.push(itemNumber);
-							}
-						}
-					}
+					$(this).find('.field-parent-id').val($(parents[0]).find('.field-id').val());
 				}
-			}
-		}
-
-		function getMenuItemHierarchy() {
-			var menuItemHierarchy = [];
-
-			$('#menu-items fieldset').each(function(){
-				menuItemLevel    = 0;
-				var itemNumber   = $(this).attr('data-item-number');
-				var parentId     = $(this).find('.field-parent-id').val();
-				var parentNumber = parseInt($('#menu-items fieldset[data-item-id="'+parentId+'"]').attr('data-item-number'));
-
-				if (isNaN(parentNumber))
-					parentNumber = 0;
-
-				addMenuItemLevel(parentId);
-
-				if (menuItemHierarchy[menuItemLevel] === undefined)
-					menuItemHierarchy[menuItemLevel] = [];
-
-				if (menuItemHierarchy[menuItemLevel][itemNumber] === undefined)
-					menuItemHierarchy[menuItemLevel][itemNumber] = parentNumber;
-
-				if (menuItemLevel)
-					$(this).attr('class', 'indent-level-'+menuItemLevel);
 				else
-					$(this).removeAttr('class');
-			});
+				{
+					$(this).find('.field-parent-id').val('');
+				}
 
-			return menuItemHierarchy;
+				$(this).find('.field-display-order').val(displayOrder);
+
+				displayOrder ++;
+			});
 		}
 
-		function addMenuItemLevel(id) {
-			if (id != "" && id) {
-				menuItemLevel ++;
-				addMenuItemLevel($('#menu-items fieldset[data-item-id="'+id+'"]').find('.field-parent-id').val());
-			}
+		function expandItem(item)
+		{
+			item.find('.collapsed-area').addClass('absolute').slideUp(350);
+			item.find('.expanded-area').hide().removeClass('hidden').removeClass('invisible').slideDown(350);
 
-			return menuItemLevel;
+			item.find('.btn-expand').hide();
+			item.find('.btn-collapse').removeClass('hidden').show();
+
+			item.data('expanded', 1);
+		}
+
+		function collapseItem(item)
+		{
+			item.find('.expanded-area').addClass('invisible').slideUp(350);
+			item.find('.collapsed-area').hide().removeClass('hidden').removeClass('absolute').slideDown(350);
+
+			item.find('.btn-collapse').hide();
+			item.find('.btn-expand').removeClass('hidden').show();
+
+			item.data('expanded', 0);
+		}
+
+		function setIcon(iconField)
+		{
+			var icon = iconField.val();
+
+			var fieldsets = iconField.parents('fieldset');
+
+			if (icon != "")
+				$(fieldsets[0]).find('h2 i').attr('class', 'fa fa-'+icon);
+			else
+				$(fieldsets[0]).find('h2 i').attr('class', 'fa fa-th');
 		}
 	</script>
 
@@ -227,7 +268,7 @@
 		@endif
 
 		{{-- Menu Items --}}
-		<div id="menu-items" data-template-id="menu-item-template"></div>
+		<ul id="menu-items" data-template-id="menu-item-template"></ul>
 
 		@include(Fractal::view('content.menus.templates.menu_item', true))
 

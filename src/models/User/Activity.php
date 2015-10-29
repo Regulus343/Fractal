@@ -8,7 +8,7 @@ class Activity extends \Regulus\ActivityLog\Models\Activity {
 	/**
 	 * Get only accessible activities.
 	 *
-	 * @param  array    $searchData
+	 * @param  Collection $query
 	 * @return Collection
 	 */
 	public function scopeOnlyAccessible($query)
