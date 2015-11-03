@@ -7,6 +7,8 @@ use Fractal;
 use Auth;
 use Site;
 
+use Illuminate\Support\Facades\Request;
+
 class MenuItem extends Base {
 
 	/**
@@ -203,6 +205,14 @@ class MenuItem extends Base {
 		// if nothing was found and menu item is for a content page, check its title
 		if ($class == $defaultClass && $item->type == "Content Page")
 			$class .= Site::selectBy($checked, $item->page, true, $selectedClass);
+
+		if (strpos($class, $selectedClass) === false && Request::url() == $item->url)
+		{
+			if ($class != "")
+				$class .= " ";
+
+			$class .= $selectedClass;
+		}
 
 		return trim($class);
 	}

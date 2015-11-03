@@ -1,6 +1,7 @@
-$(document).ready(function(){
-
-	$('.download-media-item').on('mousedown', function(){
+$(document).ready(function()
+{
+	$('.download-media-item').on('mousedown', function()
+	{
 		$.ajax({ url: mediaUrl + '/log-download/' + $(this).attr('data-media-item-id') });
 	});
 
@@ -21,8 +22,8 @@ $(document).ready(function(){
 		$('#modal').modal('show');
 	});
 
-	audiojs.events.ready(function() {
+	audiojs.events.ready(function()
+	{
 		audiojs.createAll();
 	});
-
 });

@@ -2,7 +2,7 @@
 
 @if (Fractal::isMenuItemVisible($menuItem))
 
-	<li class="{{ Fractal::setMenuItemSelectedClass($menuItem) }}" data-menu-item-id="{{ $menuItem->id }}">
+	<li class="{{ Fractal::setMenuItemSelectedClass($menuItem) }} {{ (!empty($menuItem->children) ? 'dropdown' : '') }}" data-menu-item-id="{{ $menuItem->id }}">
 
 		<a href="{{ URL::to($menuItem->url) }}" class="{{ $menuItem->anchor_class }}"
 		{!! (!empty($menuItem->children) && $actionSubMenuDropDown ? ' data-toggle="dropdown"' : '') !!}>
@@ -18,7 +18,7 @@
 		</a>
 
 		@if (!empty($menuItem->children))
-			<ul{{ ($actionSubMenuDropDown ? ' class="dropdown-menu"' : '') }}>
+			<ul{!! ($actionSubMenuDropDown ? ' class="dropdown-menu"' : '') !!}>
 
 				@include(Fractal::view('partials.menu', true), array('menu' => $menuItem->children, 'listItemsOnly' => true))
 

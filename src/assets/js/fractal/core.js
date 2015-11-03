@@ -372,6 +372,14 @@ var Fractal = {
 	{
 		if (typeof translations == "object")
 		{
+			$.extend(String.prototype, {
+				camelize: function () {
+					return this.replace (/(?:^|[-_])(\w)/g, function (_, c) {
+						return c ? c.toUpperCase () : '';
+					})
+				}
+			});
+
 			var prefixSplit = prefix.split('.');
 
 			if (prefixSplit.length >= 1 && this[prefixSplit[0]] === undefined)
@@ -1315,4 +1323,4 @@ var Fractal = {
 		});
 	},
 
-}
+};

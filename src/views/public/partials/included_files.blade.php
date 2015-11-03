@@ -38,6 +38,11 @@
 
 <script type="text/javascript" src="{{ Site::js('handlebars.min', 'regulus/fractal') }}"></script>
 
+{{-- Markdown --}}
+
+<script type="text/javascript" src="{{ Site::js('markdown.converter', 'regulus/fractal') }}"></script>
+<script type="text/javascript" src="{{ Site::js('markdown.sanitizer', 'regulus/fractal') }}"></script>
+
 {{-- Audio JS --}}
 
 <script type="text/javascript" src="{{ Site::asset('libraries/audiojs/audio.min.js', false, 'regulus/fractal') }}"></script>
@@ -70,6 +75,8 @@
 <script type="text/javascript" src="{{ Site::js('fractal/menu', 'regulus/fractal') }}"></script>
 
 <script type="text/javascript">
+
+	var baseUrl              = "{{ Site::url('') }}";
 
 	Fractal.baseUrl          = "{{ Fractal::url() }}";
 

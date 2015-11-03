@@ -3,7 +3,8 @@ var sidebarCollapsedWidth = 8;
 
 $(document).ready(function(){
 	//set up open width for collapsed sidebar and set inline width to collapsed width
-	if ($('#nav-side').hasClass('collapsed')) {
+	if ($('#nav-side').hasClass('collapsed'))
+	{
 		$('#nav-side')
 			.removeClass('collapsed')
 			.attr('data-width', $('#nav-side').width())
@@ -17,7 +18,8 @@ $(document).ready(function(){
 	}
 
 	//set up sidebar toggling
-	$('#nav-side-toggle').on('click', function(){
+	$('#nav-side-toggle').on('click', function()
+	{
 		if ($('#nav-side').hasClass('collapsed'))
 		{
 			$('#nav-side').removeClass('collapsed').css('width', sidebarCollapsedWidth);
@@ -41,7 +43,9 @@ $(document).ready(function(){
 				duration: sidebarToggleSpeed,
 				queue:    false
 			});
-		} else {
+		}
+		else
+		{
 			$('#nav-side').attr('data-width', $('#nav-side').width());
 			$('#container-content').attr('data-margin-left', $('#container-content').css('margin-left'));
 
@@ -68,15 +72,19 @@ $(document).ready(function(){
 
 	//set up sidebar accordion menu
 	$('#nav-side ul li.active ul').css('display', 'block').addClass('open');
-	$('#nav-side ul li a.dropdown-toggle').on('click', function(e){
+	$('#nav-side ul li a.dropdown-toggle').on('click', function(e)
+	{
 		e.preventDefault();
 
-		if (!$(this).parents('li').hasClass('open')) {
+		if (!$(this).parents('li').hasClass('open'))
+		{
 			$(this).parents('li').find('ul').slideDown(250);
 			$(this).parents('li').addClass('open');
 
 			Fractal.setUserState('menuOpen[]', $(this).parents('li').attr('data-menu-item-id'));
-		} else {
+		}
+		else
+		{
 			$(this).parents('li').find('ul').css('display', 'block').slideUp(250);
 			$(this).parents('li').removeClass('open');
 
