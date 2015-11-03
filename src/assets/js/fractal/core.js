@@ -3,7 +3,7 @@
 | Fractal JS
 |------------------------------------------------------------------------------
 |
-| Last Updated: October 28, 2015
+| Last Updated: November 2, 2015
 |
 */
 
@@ -356,6 +356,39 @@ var Fractal = {
 
 		// initialize markdown fields
 		this.initMarkdownFields();
+
+		// initialize tabs
+		$('.nav-tabs a').click(function(e)
+		{
+			e.preventDefault();
+
+			$(this).tab('show');
+		});
+
+		// initialize trees
+		$('ul.tree>li>a.tree-expand-collapse').click(function(e)
+		{
+			e.preventDefault();
+
+			var listItem = $(this).parent('li');
+
+			if (listItem.data('expanded'))
+			{
+				listItem.find('>ul').slideUp();
+
+				listItem.data('expanded', 0);
+
+				$(this).find('i').addClass('fa-plus').removeClass('fa-minus');
+			}
+			else
+			{
+				listItem.find('>ul').slideDown();
+
+				listItem.data('expanded', 1);
+
+				$(this).find('i').addClass('fa-minus').removeClass('fa-plus');
+			}
+		});
 	},
 
 	setLabels: function(labels)

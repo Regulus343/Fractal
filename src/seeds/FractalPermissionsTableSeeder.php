@@ -121,6 +121,26 @@ class FractalPermissionsTableSeeder extends Seeder {
 						'name'         => 'Manage Users',
 						'description'  => 'Manage users, roles, and permissions',
 						'access_level' => 950,
+						'children'     => [
+							[
+								'permission'   => 'manage-user-accounts',
+								'name'         => 'Manage User Accounts',
+								'description'  => 'Manage user accounts',
+								'access_level' => 975,
+							],
+							[
+								'permission'   => 'manage-user-permissions',
+								'name'         => 'Manage User Permissions',
+								'description'  => 'Manage user permissions',
+								'access_level' => 975,
+							],
+							[
+								'permission'   => 'manage-user-roles',
+								'name'         => 'Manage User Roles',
+								'description'  => 'Manage user roles',
+								'access_level' => 975,
+							],
+						],
 					],
 					[
 						'permission'  => 'manage-settings',

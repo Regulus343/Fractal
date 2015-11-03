@@ -75,7 +75,7 @@ class Reports {
 					$maxDay = $itemInterval;
 			}
 
-			$contentTypeLabel = Fractal::transChoice('labels.content_types.'.$item->content_type, 2);
+			$contentTypeLabel = static::getContentTypeLabel($item->content_type, 2);
 
 			if (!in_array($contentTypeLabel, $contentTypes))
 				$contentTypes[] = $contentTypeLabel;
@@ -107,7 +107,7 @@ class Reports {
 			if ($interval == "day" && ($itemInterval == 1 || $itemInterval == $maxDay))
 				$itemInterval = date('M').' '.$itemInterval;
 
-			$results['values'][Fractal::transChoice('labels.content_types.'.$item->content_type, 2)][$itemInterval] += $item->views;
+			$results['values'][static::getContentTypeLabel($item->content_type, 2)][$itemInterval] += $item->views;
 		}
 
 		return $results;
@@ -187,7 +187,7 @@ class Reports {
 					$maxDay = $itemInterval;
 			}
 
-			$contentTypeLabel = Fractal::transChoice('labels.content_types.'.$item->content_type, 2);
+			$contentTypeLabel = static::getContentTypeLabel($item->content_type, 2);
 
 			if (!in_array($contentTypeLabel, $contentTypes))
 				$contentTypes[] = $contentTypeLabel;
@@ -219,7 +219,7 @@ class Reports {
 			if ($interval == "day" && ($itemInterval == 1 || $itemInterval == $maxDay))
 				$itemInterval = date('M').' '.$itemInterval;
 
-			$results['values'][Fractal::transChoice('labels.content_types.'.$item->content_type, 2)][$itemInterval] ++;
+			$results['values'][static::getContentTypeLabel($item->content_type, 2)][$itemInterval] ++;
 		}
 
 		return $results;
@@ -334,7 +334,7 @@ class Reports {
 				$itemTitle = str_replace("'", "\'", $contentItem->getTitle());
 
 				if (count($contentTypes) > 1)
-					$itemTitle = Fractal::transChoice('labels.content_types.'.$item->content_type).': '.$itemTitle;
+					$itemTitle = static::getContentTypeLabel($item->content_type).': '.$itemTitle;
 
 				$itemTitle = '<a href="'.$item->content->getUrl().'" target="_blank">'.$itemTitle.'</a>';
 
@@ -374,7 +374,7 @@ class Reports {
 				$itemTitle = str_replace("'", "\'", $item->content->getTitle());
 
 				if (count($contentTypes) > 1)
-					$itemTitle = Fractal::transChoice('labels.content_types.'.$item->content_type).': '.$itemTitle;
+					$itemTitle = static::getContentTypeLabel($item->content_type).': '.$itemTitle;
 
 				$itemTitle = '<a href="'.$item->content->getUrl().'" target="_blank">'.$itemTitle.'</a>';
 
@@ -383,6 +383,18 @@ class Reports {
 		}
 
 		return $results;
+	}
+
+	/**
+	 * Get a content type label.
+	 *
+	 * @param  string   $contentType
+	 * @param  integer  $number
+	 * @return string
+	 */
+	public static function getContentTypeLabel($contentType, $number = 1)
+	{
+		return Fractal::transChoice('labels.content_types.'.snake_case($contentType), $number);
 	}
 
 }

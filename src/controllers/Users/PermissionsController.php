@@ -58,8 +58,11 @@ class PermissionsController extends UsersController {
 			'uri'   => Fractal::uri('create', true),
 		]);
 
+		$rootPermissions = Permission::whereNull('parent_id')->orderBy('display_order')->get();
+
 		return View::make(Fractal::view('list'))
 			->with('content', $permissions)
+			->with('rootPermissions', $rootPermissions)
 			->with('messages', $messages);
 	}
 
@@ -102,8 +105,7 @@ class PermissionsController extends UsersController {
 		$tableName = Auth::getTableName('permissions');
 
 		$rules = [
-			'permission' => ['required', 'unique:'.$tableName],
-			'name'       => ['required', 'unique:'.$tableName],
+			'name' => ['required', 'unique:'.$tableName],
 		];
 		Form::setValidationRules($rules);
 
@@ -114,8 +116,9 @@ class PermissionsController extends UsersController {
 
 			$permission = new Permission;
 
-			$permission->permission  = strtolower(trim(Input::get('permission')));
+			$permission->parent_id   = Input::get('parent_id');
 			$permission->name        = ucfirst(trim(Input::get('name')));
+			$permission->permission  = str_replace('_', '-', snake_case($permission->name));
 			$permission->description = Input::get('description') != "" ? ucfirst(trim(Input::get('description'))) : null;
 			$permission->save();
 
@@ -178,8 +181,7 @@ class PermissionsController extends UsersController {
 		$tableName = Auth::getTableName('permissions');
 
 		$rules = [
-			'permission' => ['required', 'unique:'.$tableName.',permission,'.$id],
-			'name'       => ['required', 'unique:'.$tableName.',name,'.$id],
+			'name' => ['required', 'unique:'.$tableName.',name,'.$id],
 		];
 		Form::setValidationRules($rules);
 		Form::setErrors();
@@ -189,8 +191,9 @@ class PermissionsController extends UsersController {
 		{
 			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoice('labels.permission')]);
 
-			$permission->permission  = strtolower(trim(Input::get('permission')));
+			$permission->parent_id   = Input::get('parent_id');
 			$permission->name        = ucfirst(trim(Input::get('name')));
+			$permission->permission  = str_replace('_', '-', snake_case($permission->name));
 			$permission->description = Input::get('description') != "" ? ucfirst(trim(Input::get('description'))) : null;
 			$permission->save();
 

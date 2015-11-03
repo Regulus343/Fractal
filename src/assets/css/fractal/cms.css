@@ -410,3 +410,9 @@ ul#menu-items li fieldset div.absolute { position: absolute; }
 
 .dropdown-menu-field { max-height: 360px; overflow-y: auto; }
 .dropdown-menu-field li i { display: inline-block; width: 24px; }
+
+ul.tree { padding-left: 0; list-style: none; }
+ul.tree li { margin-top: -1px; padding: 8px; border: 1px solid #bbb; }
+ul.tree li:first-child { margin-top: 0; }
+ul.tree li ul { display: none; margin-top: 8px; padding-left: 16px; }
+ul.tree li a.btn { margin-right: 8px; }

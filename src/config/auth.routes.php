@@ -37,7 +37,9 @@ return [
 	'layout-templates.index'  => ['manage-layout-templates', 'view-layout-templates', 'demo'],
 	'layout-templates.search' => ['manage-layout-templates', 'view-layout-templates', 'demo'],
 
-	'users.*'                 => ['manage-users', 'demo'],
+	'users.*'                 => ['manage-user-accounts', 'demo'],
+	'users.roles.*'           => ['manage-user-roles', 'demo'],
+	'users.permissions.*'     => ['manage-user-permissions', 'demo'],
 	'users.activity.*'        => [],
 
 	'media.items.*'           => ['manage-media-items', 'demo'],

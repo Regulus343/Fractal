@@ -3,24 +3,24 @@
 		Simple, generic styles for quick markup which can be used as an alternative for many design
 		features which would otherwise likely use inline styles.
 
-		last updated on October 13, 2013
+		last updated on November 2, 2015
 ----------------------------------------------------------------------------------------------------------*/
 
-.static { position: static; }
-.relative { position: relative; }
-.absolute { position: absolute; }
-.fixed { position: fixed; }
+.static { position: static !important; }
+.relative { position: relative !important; }
+.absolute { position: absolute !important; }
+.fixed { position: fixed !important; }
 
-.pull-left { float: left; }
-.pull-right { float: right; }
+.pull-left { float: left !important; }
+.pull-right { float: right !important; }
 
-.clear { clear: both; }
-.clear-left { clear: left; }
-.clear-right { clear: right; }
-.no-clear { clear: none; }
+.clear { clear: both !important; }
+.clear-left { clear: left !important; }
+.clear-right { clear: right !important; }
+.no-clear { clear: none !important; }
 
-.hidden { display: none; }
-.invisible { visibility: hidden; }
+.hidden { display: none !important; }
+.invisible { visibility: hidden !important; }
 
 .margin-0, .margin-0px { margin: 0; }
 .margin-5px { margin: 5px; }
@@ -30,6 +30,9 @@
 .margin-vertical-5px { margin-top: 5px; margin-bottom: 5px; }
 .margin-vertical-10px { margin-top: 10px; margin-bottom: 10px; }
 .margin-vertical-20px { margin-top: 20px; margin-bottom: 20px; }
+.margin-top-5px { margin-top: 5px; }
+.margin-top-10px { margin-top: 10px; }
+.margin-top-20px { margin-top: 20px; }
 .margin-bottom-5px { margin-bottom: 5px; }
 .margin-bottom-10px { margin-bottom: 10px; }
 .margin-bottom-20px { margin-bottom: 20px; }
@@ -43,6 +46,9 @@
 .padding-vertical-5px { padding-top: 5px; padding-bottom: 5px; }
 .padding-vertical-10px { padding-top: 10px; padding-bottom: 10px; }
 .padding-vertical-20px { padding-top: 20px; padding-bottom: 20px; }
+.padding-top-5px { padding-top: 5px; }
+.padding-top-10px { padding-top: 10px; }
+.padding-top-20px { padding-top: 20px; }
 .padding-bottom-5px { padding-bottom: 5px; }
 .padding-bottom-10px { padding-bottom: 10px; }
 .padding-bottom-20px { padding-bottom: 20px; }

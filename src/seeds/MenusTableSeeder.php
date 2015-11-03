@@ -136,19 +136,19 @@ class MenusTableSeeder extends Seeder {
 						'auth_status'        => 1,
 						'items'              => [
 							[
-								'uri'                => 'users',
-								'subdomain'          => $cmsSubdomain,
-								'label_language_key' => 'plural:user',
-								'icon'               => 'user',
-								'display_order'      => 1,
-								'auth_status'        => 1,
-							],
-							[
 								'uri'                => 'users/roles',
 								'subdomain'          => $cmsSubdomain,
 								'label_language_key' => 'plural:role',
 								'icon'               => 'book',
 								'display_order'      => 2,
+								'auth_status'        => 1,
+							],
+							[
+								'uri'                => 'users',
+								'subdomain'          => $cmsSubdomain,
+								'label_language_key' => 'plural:user',
+								'icon'               => 'user',
+								'display_order'      => 1,
 								'auth_status'        => 1,
 							],
 							[
