@@ -105,7 +105,8 @@ class PermissionsController extends UsersController {
 		$tableName = Auth::getTableName('permissions');
 
 		$rules = [
-			'name' => ['required', 'unique:'.$tableName],
+			'permission' => ['required', 'unique:'.$tableName],
+			'name'       => ['required', 'unique:'.$tableName],
 		];
 		Form::setValidationRules($rules);
 
@@ -117,8 +118,8 @@ class PermissionsController extends UsersController {
 			$permission = new Permission;
 
 			$permission->parent_id   = Input::get('parent_id');
+			$permission->permission  = strtolower(trim(Input::get('permission')));
 			$permission->name        = ucfirst(trim(Input::get('name')));
-			$permission->permission  = str_replace('_', '-', snake_case($permission->name));
 			$permission->description = Input::get('description') != "" ? ucfirst(trim(Input::get('description'))) : null;
 			$permission->save();
 
@@ -181,7 +182,8 @@ class PermissionsController extends UsersController {
 		$tableName = Auth::getTableName('permissions');
 
 		$rules = [
-			'name' => ['required', 'unique:'.$tableName.',name,'.$id],
+			'permission' => ['required', 'unique:'.$tableName.',permission,'.$id],
+			'name'       => ['required', 'unique:'.$tableName.',name,'.$id],
 		];
 		Form::setValidationRules($rules);
 		Form::setErrors();
@@ -192,8 +194,8 @@ class PermissionsController extends UsersController {
 			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoice('labels.permission')]);
 
 			$permission->parent_id   = Input::get('parent_id');
+			$permission->permission  = strtolower(trim(Input::get('permission')));
 			$permission->name        = ucfirst(trim(Input::get('name')));
-			$permission->permission  = str_replace('_', '-', snake_case($permission->name));
 			$permission->description = Input::get('description') != "" ? ucfirst(trim(Input::get('description'))) : null;
 			$permission->save();
 
@@ -226,6 +228,9 @@ class PermissionsController extends UsersController {
 
 		$permission = Permission::find($id);
 
+		if ($permission->subPermissions()->count())
+			return $result;
+
 		Activity::log([
 			'contentId'   => $permission->id,
 			'contentType' => 'Permission',
@@ -235,7 +240,7 @@ class PermissionsController extends UsersController {
 		]);
 
 		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.successDeleted', ['item' => '<strong>'.$permission->name.'</strong>']);
+		$result['message']    = Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$permission->name.'</strong>']);
 
 		$permission->users()->sync([]);
 		$permission->roles()->sync([]);

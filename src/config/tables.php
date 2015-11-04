@@ -948,7 +948,7 @@ return [
 						],
 						'class_modifiers' => [
 							'invisible' => [
-								'id' => 1,
+								'hasSubPermissions()' => true,
 							],
 						],
 					],

@@ -3,7 +3,7 @@
 | Fractal JS
 |------------------------------------------------------------------------------
 |
-| Last Updated: November 2, 2015
+| Last Updated: November 3, 2015
 |
 */
 
@@ -405,11 +405,16 @@ var Fractal = {
 	{
 		if (typeof translations == "object")
 		{
-			$.extend(String.prototype, {
-				camelize: function () {
-					return this.replace (/(?:^|[-_])(\w)/g, function (_, c) {
+			$.extend(String.prototype,
+			{
+				camelize: function ()
+				{
+					var string = this.replace (/(?:^|[-_])(\w)/g, function (_, c)
+					{
 						return c ? c.toUpperCase () : '';
-					})
+					});
+
+					return string.substr(0, 1).toLowerCase() + string.substr(1);
 				}
 			});
 

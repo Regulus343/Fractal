@@ -5,6 +5,16 @@ use Fractal;
 class Permission extends \Regulus\Identify\Models\Permission {
 
 	/**
+	 * Check if permission has sub permissions.
+	 *
+	 * @return boolean
+	 */
+	public function hasSubPermissions()
+	{
+		return (bool) $this->subPermissions()->count();
+	}
+
+	/**
 	 * Get user role search results.
 	 *
 	 * @param  array    $searchData
