@@ -21,7 +21,7 @@
 
 		</div><!-- /#list-area -->
 
-		<div id="tree-area" class="tab-pane fade in padding-top-20px">
+		<div id="tree-area" class="tab-pane tab-pane-padded fade in">
 
 			@include(Fractal::view('partials.tree'), ['permissions' => $rootPermissions])
 

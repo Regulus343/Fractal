@@ -15,6 +15,7 @@ use Fractal;
 
 use Regulus\Fractal\Models\User\User;
 use Regulus\Fractal\Models\User\Role;
+use Regulus\Fractal\Models\User\Permission;
 
 use Regulus\ActivityLog\Models\Activity;
 use Form;
@@ -102,7 +103,9 @@ class UsersController extends BaseController {
 
 		Fractal::addTrailItem(Fractal::trans('labels.create'), Request::url());
 
-		return View::make(Fractal::view('form'));
+		$permissions = Permission::whereNull('parent_id')->orderBy('display_order')->get();
+
+		return View::make(Fractal::view('form'))->with('permissions', $permissions);
 	}
 
 	public function store()
@@ -175,7 +178,7 @@ class UsersController extends BaseController {
 				]);
 		}
 
-		Site::setTitle($user->name.' ('.Fractal::trans('labels.user').')');
+		Site::setTitle($user->name.' ('.Fractal::transChoice('labels.user').')');
 		Site::setHeading(Fractal::trans('labels.update_item', ['item' => Fractal::transChoice('labels.user')]).': <strong>'.Format::entities($user->name).'</strong>');
 		Site::set('wysiwyg', true);
 
@@ -190,7 +193,13 @@ class UsersController extends BaseController {
 
 		Fractal::addTrailItem(Fractal::trans('labels.update'), Request::url());
 
-		return View::make(Fractal::view('form'))->with('update', true);
+		$permissions = Permission::whereNull('parent_id')->orderBy('display_order')->get();
+
+		return View::make(Fractal::view('form'))
+			->with('update', true)
+			->with('form', 'User')
+			->with('user', $user)
+			->with('permissions', $permissions);
 	}
 
 	public function update($name)

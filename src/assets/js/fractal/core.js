@@ -378,7 +378,7 @@ var Fractal = {
 
 				listItem.data('expanded', 0);
 
-				$(this).find('i').addClass('fa-plus').removeClass('fa-minus');
+				$(this).find('i').addClass('fa-folder-o').removeClass('fa-folder-open-o');
 			}
 			else
 			{
@@ -386,7 +386,7 @@ var Fractal = {
 
 				listItem.data('expanded', 1);
 
-				$(this).find('i').addClass('fa-minus').removeClass('fa-plus');
+				$(this).find('i').addClass('fa-folder-open-o').removeClass('fa-folder-o');
 			}
 		});
 	},

@@ -13,7 +13,9 @@ a#logo img { height: 30px; border: none; }
 #top-buttons .btn { background: none; color: #fff; border-color: #444; text-shadow: none; }
 #top-buttons .btn:hover { border-color: #777; }
 
-.btn-green { background-color: #161 !important; text-shadow: #000 0 0 5px !important; }
+.btn-green { background-color: #161 !important; color: #fff; }
+.btn-green:hover { background-color: #181 !important; color: #fff; }
+.btn-grey { background-color: #888 !important; color: #fff; border: 1px solid #777; }
 
 button.icon { padding-left: 10px; }
 button.icon i, button.icon span, a.icon i { padding-right: 4px; }

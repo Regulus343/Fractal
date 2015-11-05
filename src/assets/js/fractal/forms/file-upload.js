@@ -1,15 +1,17 @@
-$(document).ready(function(){
-
+$(document).ready(function()
+{
 	if (fileTypeExtensions === undefined)
 		fileTypeExtensions = {};
 
-	$('input[file]').change(function(){
+	$('input[file]').change(function()
+	{
 		var path     = $(this).val().split('\\');
 		var filename = path[(path.length - 1)].split('.');
 		var basename = filename[0];
 	});
 
-	$('#field-file').change(function(){
+	$('#field-file').change(function()
+	{
 		var path      = $(this).val().split('\\');
 		var filename  = path[(path.length - 1)].split('.');
 		var basename  = filename[0];
@@ -80,13 +82,13 @@ $(document).ready(function(){
 	$('#field-file-type-id').change(function()
 	{
 		Formation.ajaxForSelect({
-			type:                 'get',
-			url:                  Fractal.createUrl('media/items/get-types-for-file-type/' + $(this).val()),
-			optionValue:          'id',
-			optionLabel:          'name',
-			targetSelect:         '#field-media-type-id',
-			nullOption:           'Select a media type',
-			callbackFunction:     'refreshMediaTypeSelect'
+			type:             'get',
+			url:              Fractal.createUrl('media/items/get-types-for-file-type/' + $(this).val()),
+			optionValue:      'id',
+			optionLabel:      'name',
+			targetSelect:     '#field-media-type-id',
+			nullOption:       'Select a media type',
+			callbackFunction: 'refreshMediaTypeSelect'
 		});
 	});
 
