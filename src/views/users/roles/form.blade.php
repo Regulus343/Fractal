@@ -19,34 +19,68 @@
 		});
 	</script>
 
-	{!! Form::openResource() !!}
+	@if (isset($update))
 
-		<div class="row">
-			<div class="col-md-4">
-				{!! Form::field('name') !!}
-			</div>
+		<ul class="nav nav-tabs">
+			<li role="presentation" class="active">
+				<a href="#main-area">Main</a>
+			</li>
 
-			<div class="col-md-4">
-				{!! Form::field('role') !!}
-			</div>
+			<li role="presentation">
+				<a href="#permissions-area">Permissions</a>
+			</li>
+		</ul>
 
-			<div class="col-md-4">
-				{!! Form::field('display_order', 'select', ['options' => Form::numberOptions(1, 36)]) !!}
-			</div>
-		</div>
+	@endif
 
-		<div class="row">
-			<div class="col-md-8">
-				{!! Form::field('description', 'textarea') !!}
-			</div>
-		</div>
+	<div class="tab-content">
 
-		<div class="row">
-			<div class="col-md-12">
-				{!! Form::field(Form::submitResource(Fractal::transChoice('labels.role')), 'button') !!}
-			</div>
-		</div>
+		<div id="main-area" class="tab-pane{!! HTML::dynamicArea(isset($update), 'tab-pane-padded', true) !!} fade in active">
 
-	{!! Form::close() !!}
+			{!! Form::openResource() !!}
+
+				<div class="row">
+					<div class="col-md-4">
+						{!! Form::field('name') !!}
+					</div>
+
+					<div class="col-md-4">
+						{!! Form::field('role') !!}
+					</div>
+
+					<div class="col-md-4">
+						{!! Form::field('display_order', 'select', ['options' => Form::numberOptions(1, 36)]) !!}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-8">
+						{!! Form::field('description', 'textarea') !!}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12">
+						{!! Form::field(Form::submitResource(Fractal::transChoice('labels.role')), 'button') !!}
+					</div>
+				</div>
+
+			{!! Form::close() !!}
+
+		</div><!-- /#main-area -->
+
+		@if (isset($update))
+
+			<div id="permissions-area" class="tab-pane tab-pane-padded fade in padding-top-20px">
+
+				@include(Fractal::view('users.permissions.partials.tree_legend', true))
+
+				@include(Fractal::view('users.permissions.partials.tree', true), ['permissions' => $permissions])
+
+			</div><!-- /#permissions-area -->
+
+		@endif
+
+	</div><!-- /.tab-content -->
 
 @stop

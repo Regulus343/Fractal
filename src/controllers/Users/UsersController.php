@@ -150,7 +150,7 @@ class UsersController extends BaseController {
 				'details'     => 'Username: '.$user->name,
 			]);
 
-			return Redirect::to(Fractal::uri('', true))
+			return Redirect::to(Fractal::uri($user->name.'/edit', true))
 				->with('messages', $messages);
 		} else {
 			$messages['error'] = Fractal::trans('messages.errors.general');

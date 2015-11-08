@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\View;
 use Fractal;
 
 use Regulus\Fractal\Models\User\Role;
+use Regulus\Fractal\Models\User\Permission;
 
 use Regulus\ActivityLog\Models\Activity;
 use Auth;
@@ -129,7 +130,7 @@ class RolesController extends UsersController {
 				'details'     => 'Role: '.$role->name,
 			]);
 
-			return Redirect::to(Fractal::uri('', true))
+			return Redirect::to(Fractal::uri($role->id.'/edit', true))
 				->with('messages', $messages);
 		} else {
 			$messages['error'] = Fractal::trans('messages.errors.general');
@@ -164,7 +165,13 @@ class RolesController extends UsersController {
 
 		Fractal::addTrailItem(Fractal::trans('labels.update'), Request::url());
 
-		return View::make(Fractal::view('form'))->with('update', true);
+		$permissions = Permission::whereNull('parent_id')->orderBy('display_order')->get();
+
+		return View::make(Fractal::view('form'))
+			->with('update', true)
+			->with('form', 'Role')
+			->with('role', $role)
+			->with('permissions', $permissions);
 	}
 
 	public function update($id)

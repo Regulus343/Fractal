@@ -9,15 +9,15 @@
 
 	@if (isset($update))
 
-	<ul class="nav nav-tabs">
-		<li role="presentation" class="active">
-			<a href="#main-area">Main</a>
-		</li>
+		<ul class="nav nav-tabs">
+			<li role="presentation" class="active">
+				<a href="#main-area">Main</a>
+			</li>
 
-		<li role="presentation">
-			<a href="#permissions-area">Permissions</a>
-		</li>
-	</ul>
+			<li role="presentation">
+				<a href="#permissions-area">Permissions</a>
+			</li>
+		</ul>
 
 	@endif
 
@@ -141,13 +141,7 @@
 
 			<div id="permissions-area" class="tab-pane tab-pane-padded fade in padding-top-20px">
 
-				<ul class="permissions-legend">
-					<li><i class="permission-active fa fa-check-circle"></i> Permission Active</li>
-
-					<li><i class="sub-permission-active fa fa-circle"></i> Sub Permission Active</li>
-
-					<li><i class="permission-inactive fa fa-circle-o"></i> Permission Inactive</li>
-				</ul>
+				@include(Fractal::view('users.permissions.partials.tree_legend', true))
 
 				@include(Fractal::view('users.permissions.partials.tree', true), ['permissions' => $permissions])
 

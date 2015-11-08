@@ -31,7 +31,7 @@
 
 				<div class="info">
 					<i class="permission-active fa fa-check-circle"></i>
-					<i class="sub-permission-active fa fa-circle"></i>
+					<i class="sub-permission-active fa fa-dot-circle-o"></i>
 					<i class="permission-inactive fa fa-circle-o"></i>
 
 					{{ $permission->name }}
@@ -39,7 +39,12 @@
 
 				@if (isset($form))
 
-					<?php $source = $user->getPermissionSource($permission->permission, true); ?>
+					<?php $source = (object) [
+						'type' => null,
+					];
+
+					if (isset($user))
+						$source = $user->getPermissionSource($permission->permission, true); ?>
 
 					<div class="inline-block">
 
