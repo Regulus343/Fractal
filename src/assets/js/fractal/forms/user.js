@@ -30,18 +30,6 @@ $(document).ready(function()
 	{
 		checkPasswords();
 	});
-
-	$('ul.tree li').each(function()
-	{
-		if ($(this).data('added'))
-		{
-			$(this).find('.remove-area').removeClass('hidden');
-		}
-		else
-		{
-			$(this).find('.add-area').removeClass('hidden');
-		}
-	});
 });
 
 function checkPasswords() {

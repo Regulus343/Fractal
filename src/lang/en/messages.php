@@ -18,11 +18,13 @@ return [
 
 	'success' => [
 		'created'                 => 'You have successfully created :item.',
+		'added'                   => 'You have successfully added :item.',
 		'updated'                 => 'You have successfully updated :item.',
 		'activated'               => 'You have successfully activated :item.',
 		'banned'                  => 'You have successfully banned :item.',
 		'unbanned'                => 'You have successfully unbanned :item.',
 		'deleted'                 => 'You have successfully deleted :item.',
+		'removed'                 => 'You have successfully removed :item.',
 		'undeleted'               => 'You have successfully undeleted :item.',
 		'logged_in'               => 'Welcome back to :website, <strong>:user</strong>.',
 		'logged_out'              => 'You have successfully logged out.',

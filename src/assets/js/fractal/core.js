@@ -3,7 +3,7 @@
 | Fractal JS
 |------------------------------------------------------------------------------
 |
-| Last Updated: November 3, 2015
+| Last Updated: November 7, 2015
 |
 */
 
@@ -389,6 +389,162 @@ var Fractal = {
 				$(this).find('i').addClass('fa-folder-open-o').removeClass('fa-folder-o');
 			}
 		});
+
+		// initialize permission tree functions
+		$('ul.tree-permissions li').each(function()
+		{
+			Fractal.setPermissionsTreeItem($(this));
+
+			$(this).find('.btn-add-permission').off('click').on('click', function(e)
+			{
+				e.preventDefault();
+
+				if (!$(this).hasClass('disabled'))
+					Fractal.addRemovePermission($(this).closest('li'), 'add');
+			});
+
+			$(this).find('.btn-remove-permission').off('click').on('click', function(e)
+			{
+				e.preventDefault();
+
+				if (!$(this).hasClass('disabled'))
+					Fractal.addRemovePermission($(this).closest('li'), 'remove');
+			});
+		});
+	},
+
+	addRemovePermission: function(item, action)
+	{
+		if (!$(this).hasClass('disabled'))
+		{
+			if (item.parents('ul.tree').data('user-id'))
+				var urlTypeSection = 'user/' + item.parents('ul.tree').data('user-id');
+			else
+				var urlTypeSection = 'role/' + item.parents('ul.tree').data('role-id');
+
+			var url = Fractal.createUrl('users/permissions/' + action + '/' + urlTypeSection + '/' + item.data('permission'));
+
+			$.ajax({
+				url:      url,
+				type:     'get',
+				dataType: 'json',
+
+				success: function(result)
+				{
+					if (result.resultType == "Success")
+					{
+						if (action == "add")
+							item.data('added', 1);
+						else
+							item.data('added', 0);
+
+						if (action == "add")
+						{
+							item.parent('ul').parent('li').each(function()
+							{
+								$(this).find('>.info>.permission-active').addClass('hidden');
+								$(this).find('>.info>.permission-inactive').addClass('hidden');
+								$(this).find('>.info>.sub-permission-active').removeClass('hidden');
+							});
+						}
+						else
+						{
+							item.parent('ul').parent('li').each(function()
+							{
+								var subPermissionsAdded = false;
+								$(this).find('ul.tree li').each(function()
+								{
+									if ($(this).data('added'))
+									{
+										subPermissionsAdded = true;
+									}
+								});
+
+								$(this).find('.permission-active').addClass('hidden');
+								$(this).find('.permission-inactive').addClass('hidden');
+								$(this).find('.sub-permission-active').addClass('hidden');
+
+								if (subPermissionsAdded)
+								{
+									$(this).find('.sub-permission-active').removeClass('hidden');
+								}
+								else
+								{
+									$(this).find('.permission-inactive').removeClass('hidden');
+								}
+							});
+						}
+
+						item.find('ul.tree li').each(function()
+						{
+							if (action == "add")
+							{
+								$(this).find('.btn-remove-permission').addClass('btn-grey').removeClass('btn-danger').addClass('disabled');
+							}
+							else
+							{
+								$(this).removeClass('active');
+
+								$(this).find('.btn-remove-permission').addClass('btn-danger').removeClass('btn-grey').removeClass('disabled');
+							}
+						});
+
+						Fractal.setPermissionsTreeItem(item);
+
+						Fractal.setMainMessage(result.message, 'success');
+					} else {
+						Fractal.setMainMessage(result.message, 'error');
+					}
+				},
+
+				error: function()
+				{
+					Fractal.setMainMessage(Fractal.messages.errors.general, 'error');
+				}
+			});
+		}
+	},
+
+	setPermissionsTreeItem: function(item)
+	{
+		item.find('.permission-active').addClass('hidden');
+		item.find('.sub-permission-active').addClass('hidden');
+		item.find('.permission-inactive').addClass('hidden');
+
+		if (item.data('added'))
+		{
+			item.addClass('active');
+
+			item.find('.add-area').addClass('hidden');
+			item.find('.remove-area').removeClass('hidden');
+
+			item.find('.permission-active').removeClass('hidden');
+		}
+		else
+		{
+			item.removeClass('active');
+
+			item.find('.remove-area').addClass('hidden');
+			item.find('.add-area').removeClass('hidden');
+
+			var subPermissionActive = false;
+			item.find('ul.tree li').each(function()
+			{
+				if ($(this).data('added'))
+				{
+					subPermissionActive = true;
+				}
+			});
+
+			if (subPermissionActive)
+			{
+				item.find('.sub-permission-active').removeClass('hidden');
+			}
+			else
+			{
+				item.find('.permission-inactive').removeClass('hidden');
+			}
+		}
 	},
 
 	setLabels: function(labels)

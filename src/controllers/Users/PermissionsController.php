@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\View;
 use Fractal;
 
 use Regulus\Fractal\Models\User\Permission;
+use Regulus\Fractal\Models\User\User;
+use Regulus\Fractal\Models\User\Role;
 
 use Regulus\ActivityLog\Models\Activity;
 use Auth;
@@ -217,6 +219,84 @@ class PermissionsController extends UsersController {
 				->with('errors', Form::getErrors())
 				->withInput();
 		}
+	}
+
+	public function add($type, $id, $permission)
+	{
+		$result = [
+			'resultType' => 'Error',
+			'message'    => Fractal::trans('messages.errors.general'),
+		];
+
+		switch ($type)
+		{
+			case "user":
+				$user = User::find($id);
+
+				if (!empty($user) && $user->addPermission($permission))
+				{
+					$result = [
+						'resultType' => 'Success',
+						'message'    => Fractal::trans('messages.success.added', ['item' => Fractal::transChoiceA('labels.permission')]),
+					];
+				}
+
+				break;
+
+			case "role":
+				$role = Role::find($id);
+
+				if (!empty($role) && $role->addPermission($permission))
+				{
+					$result = [
+						'resultType' => 'Success',
+						'message'    => Fractal::trans('messages.success.added', ['item' => Fractal::transChoiceA('labels.permission')]),
+					];
+				}
+
+				break;
+		}
+
+		return $result;
+	}
+
+	public function remove($type, $id, $permission)
+	{
+		$result = [
+			'resultType' => 'Error',
+			'message'    => Fractal::trans('messages.errors.general'),
+		];
+
+		switch ($type)
+		{
+			case "user":
+				$user = User::find($id);
+
+				if (!empty($user) && $user->removePermission($permission))
+				{
+					$result = [
+						'resultType' => 'Success',
+						'message'    => Fractal::trans('messages.success.removed', ['item' => Fractal::transChoiceA('labels.permission')]),
+					];
+				}
+
+				break;
+
+			case "role":
+				$role = Role::find($id);
+
+				if (!empty($role) && $role->removePermission($permission))
+				{
+					$result = [
+						'resultType' => 'Success',
+						'message'    => Fractal::trans('messages.success.removed', ['item' => Fractal::transChoiceA('labels.permission')]),
+					];
+				}
+
+				break;
+		}
+
+		return $result;
 	}
 
 	public function destroy($id)
