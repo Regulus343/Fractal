@@ -71,7 +71,7 @@ class Set extends Base {
 	 * @var    array
 	 */
 	protected $formatsForDb = [
-		'published_at' => 'nullIfBlank',
+		'published_at' => 'null-if-blank',
 	];
 
 	/**

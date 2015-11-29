@@ -82,11 +82,11 @@ class Article extends Base {
 	 * @var    array
 	 */
 	protected $formatsForDb = [
-		'thumbnail_image_type'          => 'nullIfBlank',
-		'thumbnail_image_file_id'       => 'nullIfBlank',
-		'thumbnail_image_media_item_id' => 'nullIfBlank',
-		'categories'                    => 'pivotArray',
-		'published_at'                  => 'nullIfBlank',
+		'thumbnail_image_type'          => 'null-if-blank',
+		'thumbnail_image_file_id'       => 'null-if-blank',
+		'thumbnail_image_media_item_id' => 'null-if-blank',
+		'categories'                    => 'pivot-array',
+		'published_at'                  => 'null-if-blank',
 	];
 
 	/**

@@ -52,8 +52,8 @@ class Form extends Base {
 	 * @var    array
 	 */
 	protected $formatsForDb = [
-		'activated_at'   => 'nullIfBlank',
-		'deactivated_at' => 'nullIfBlank',
+		'activated_at'   => 'null-if-blank',
+		'deactivated_at' => 'null-if-blank',
 	];
 
 	/**

@@ -57,8 +57,8 @@ class MenuItem extends Base {
 	 * @var    array
 	 */
 	protected $formatsForDb = [
-		'parent_id' => 'nullIfBlank',
-		'page_id'   => 'nullIfBlank',
+		'parent_id' => 'null-if-blank',
+		'page_id'   => 'null-if-blank',
 	];
 
 	/**

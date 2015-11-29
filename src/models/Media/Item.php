@@ -104,9 +104,9 @@ class Item extends Base {
 	 * @var    array
 	 */
 	protected $formatsForDb = [
-		'hosted_content_thumbnail_url' => 'nullIfBlank',
-		'date_created'                 => 'nullIfBlank',
-		'published_at'                 => 'nullIfBlank',
+		'hosted_content_thumbnail_url' => 'null-if-blank',
+		'date_created'                 => 'null-if-blank',
+		'published_at'                 => 'null-if-blank',
 	];
 
 	/**

@@ -842,6 +842,12 @@ return [
 				'class'     => 'name',
 			],
 			[
+				'label'     => Fractal::transChoice('labels.role', 2),
+				'method'    => 'rolePermissions()',
+				'attribute' => 'name',
+				'type'      => 'list',
+			],
+			[
 				'label'     => 'Last Updated',
 				'attribute' => 'updated_at',
 				'type'      => 'datetime',

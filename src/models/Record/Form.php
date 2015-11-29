@@ -48,7 +48,7 @@ class Form extends Base {
 	 * @var    array
 	 */
 	protected $formatsForDb = [
-		'processed_at' => 'nullIfBlank',
+		'processed_at' => 'null-if-blank',
 	];
 
 	/**

@@ -14,9 +14,9 @@ var Fractal = {
 	blogUrl:                    null,
 	currentUrl:                 null,
 
-	messageShowTime:            5000,
 	searching:                  false,
 	messageTimer:               null,
+	messageShowTime:            5000,
 
 	labels:                     {},
 	messages:                   {},
@@ -632,7 +632,8 @@ var Fractal = {
 		$('#message-'+type+' div').html(message);
 		$('#message-'+type).hide().removeClass('hidden').css('z-index', 10000).slideDown('medium');
 
-		this.messageTimer = setTimeout(function(){
+		this.messageTimer = setTimeout(function()
+		{
 			$('.alert-dismissable-hide').slideUp('fast', function()
 			{
 				$(this).css('z-index', 1000);

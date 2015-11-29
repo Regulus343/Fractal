@@ -60,8 +60,8 @@ class Type extends Base {
 	 * @var    array
 	 */
 	protected $formatsForDb = [
-		'file_type_id' => 'nullIfBlank',
-		'name_plural'  => 'nullIfBlank',
+		'file_type_id' => 'null-if-blank',
+		'name_plural'  => 'null-if-blank',
 	];
 
 	/**
