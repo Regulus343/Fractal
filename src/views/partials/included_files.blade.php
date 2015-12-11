@@ -16,10 +16,13 @@
 
 <script type="text/javascript" src="{{ Site::js('moment.min', 'regulus/fractal') }}"></script>
 
+{{-- Tether --}}
+
+<script type="text/javascript" src="{{ Site::js('tether.min', 'regulus/fractal') }}"></script>
+
 {{-- Bootstrap CSS / JS --}}
 
 <link type="text/css" rel="stylesheet" href="{{ Site::css('bootstrap.min', 'regulus/fractal') }}" />
-<link type="text/css" rel="stylesheet" href="{{ Site::css('bootstrap-theme.min', 'regulus/fractal') }}" />
 <script type="text/javascript" src="{{ Site::js('bootstrap.min', 'regulus/fractal') }}"></script>
 
 {{-- Bootstrap Date Time Picker CSS --}}

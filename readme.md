@@ -59,11 +59,11 @@ Then run `php composer.phar update` from the command line. Composer will install
 
 Now, all you have to do is register the service provider, set up Fractal's alias in `config/app.php`, publish the assets, and run the install command. Add this to the `providers` array:
 
-	'Regulus\Fractal\FractalServiceProvider',
+	Regulus\Fractal\FractalServiceProvider::class,
 
 And add this to the `aliases` array:
 
-	'Fractal' => 'Regulus\Fractal\Facade',
+	'Fractal' => Regulus\Fractal\Facade::class,
 
 **Add middleware to the `routeMiddleware` array in `app/Http/Kernal.php`:**
 

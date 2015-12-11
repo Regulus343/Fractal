@@ -6,8 +6,8 @@
 
 		@if (isset($mediaSet))
 
-			<li class="special">
-				<a href="{{ Fractal::mediaUrl() }}">
+			<li class="special nav-item">
+				<a href="{{ Fractal::mediaUrl() }}" class="nav-link">
 					<i class="fa fa-chevron-left"></i> {{ Fractal::trans('labels.all_items', ['items' => Fractal::transChoice('labels.media_set', 2)]) }}
 				</a>
 			</li>
@@ -18,11 +18,11 @@
 
 			@if ($mediaSetListed->items()->onlyPublished(false)->count())
 
-				<li{!! HTML::activeArea(isset($mediaSet) && $mediaSetListed->id == $mediaSet->id) !!}>
-					<a href="{{ $mediaSetListed->getUrl() }}">
+				<li class="nav-item{{ HTML::activeArea(isset($mediaSet) && $mediaSetListed->id == $mediaSet->id, true) }}">
+					<a href="{{ $mediaSetListed->getUrl() }}" class="nav-link">
 						<span class="fa fa-th"></span> {{ $mediaSetListed->title }}
 
-						<span class="badge primary">{{ $mediaSetListed->items()->onlyPublished()->count() }}</span>
+						<span class="label label-pill label-primary label-sticky">{{ $mediaSetListed->items()->onlyPublished()->count() }}</span>
 					</a>
 				</li>
 

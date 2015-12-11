@@ -318,7 +318,7 @@ class ArticlesController extends BlogsController {
 	public function addContentArea($id = null)
 	{
 		$data = [
-			'title'        => Fractal::trans('labels.addContentArea'),
+			'title'        => Fractal::trans('labels.add_item', ['item' => Fractal::transChoice('labels.content_area')]),
 			'articleId'    => $id,
 			'contentAreas' => ContentArea::orderBy('title')->get(),
 		];

@@ -32,6 +32,7 @@
 #nav-side ul li:last-child { margin-bottom: 0; }
 #nav-side ul li a {
 	padding: 10px;
+	width: 100%;
 	color: #ddd;
 	line-height: 1em;
 }
@@ -42,7 +43,6 @@
 #nav-side ul li a:hover>i { color: #fff; }
 #nav-side ul li.open>a { background-color: #181818; }
 #nav-side ul li.active>a, #nav-side ul li:active>a { background-color: #222; }
-#nav-side ul li a b.caret { position: absolute; top: 16px; right : 5px; color: #555; }
 #nav-side ul li ul {
 	display: none;
 	margin: 0 0 12px 0;
@@ -57,6 +57,7 @@
 
 #nav-side ul li.open ul { display: block; }
 
+#nav-side .dropdown-toggle span.menu-item-label { display: inline-block; width: 72%; }
 #nav-side.collapsed ul { display: none; }
 
 #container-content.sidebar-offset { margin-left: 16%; }
@@ -207,7 +208,6 @@ table tr td span.boolean-false { color: #500; }
 
 input#field-search {
 	float: right;
-	margin-top: 7px;
 	margin-right: 16px;
 	width: 164px;
 	color: #555;
@@ -416,7 +416,9 @@ ul.tree li { margin-top: -1px; padding: 8px; border: 1px solid #bbb; }
 ul.tree li:first-child { margin-top: 0; }
 ul.tree li:hover, ul.tree li:hover ul.tree li:hover { background-color: #eee; }
 ul.tree li:hover ul.tree li { background-color: #fff; }
-ul.tree li.active, ul.tree li.active ul.tree li, ul.tree li.active:hover ul.tree li { background-color: #040 !important; color: #fff !important; }
+ul.tree li.active, ul.tree li.active ul.tree li, ul.tree li.active:hover, ul.tree li ul.tree li.active, ul.tree li ul.tree li.active:hover, ul.tree li.active ul.tree li:hover {
+	background-color: #040; color: #fff;
+}
 ul.tree li ul { display: none; margin-top: 8px; padding-left: 16px; }
 ul.tree li a.btn { margin-right: 8px; }
 ul.tree div.info { display: inline-block; width: 50%; max-width: 380px; }

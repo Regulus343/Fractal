@@ -2,9 +2,9 @@
 
 @if (Fractal::isMenuItemVisible($menuItem))
 
-	<li class="{{ Fractal::setMenuItemSelectedClass($menuItem) }} {{ (!empty($menuItem->children) ? 'dropdown' : '') }}" data-menu-item-id="{{ $menuItem->id }}">
+	<li class="nav-item {{ Fractal::setMenuItemSelectedClass($menuItem) }} {{ (!empty($menuItem->children) ? 'dropdown' : '') }}" data-menu-item-id="{{ $menuItem->id }}">
 
-		<a href="{{ URL::to($menuItem->url) }}" class="{{ $menuItem->anchor_class }}"
+		<a href="{{ URL::to($menuItem->url) }}" class="nav-link {{ $menuItem->anchor_class }}"
 		{!! (!empty($menuItem->children) && $actionSubMenuDropDown ? ' data-toggle="dropdown"' : '') !!}>
 
 			{!! $menuItem->icon !!}

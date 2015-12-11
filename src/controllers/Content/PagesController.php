@@ -379,7 +379,7 @@ class PagesController extends BaseController {
 	public function addContentArea($id = null)
 	{
 		$data = [
-			'title'        => Fractal::trans('labels.add_item', Fractal::transChoice('labels.content_area')),
+			'title'        => Fractal::trans('labels.add_item', ['item' => Fractal::transChoice('labels.content_area')]),
 			'pageId'       => $id,
 			'contentAreas' => Area::orderBy('title')->get(),
 		];

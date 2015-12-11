@@ -1,22 +1,18 @@
-<nav class="navbar navbar-inverse" role="navigation">
+<nav class="navbar navbar-dark bg-inverse" role="navigation">
 	<div class="container-fluid">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-
+		<div class="navbar-logo">
 			@if (config('cms.logo') && is_string(config('cms.logo')))
 				<a class="navbar-brand" id="logo" href="{{ URL::to('') }}">
 					<img src="{{ Fractal::getImageUrlFromConfig('cms.logo') }}" alt="{{{ Site::get('name') }}}" title="{{{ Site::get('name') }}}" id="logo" />
 				</a>
 			@else
-				<a class="navbar-brand" href="{{ URL::to('') }}">{{{ Site::get('name') }}}</a>
+				<a class="navbar-brand" href="{{ URL::to('') }}">{{ Site::get('name') }}</a>
 			@endif
 		</div>
 
-		<div class="navbar-collapse collapse">
+		<button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navbar-header" aria-controls="navbar-header">&#9776;</button>
+
+		<div class="collapse navbar-toggleable-xs" id="navbar-header">
 
 			{!! Fractal::getMenuMarkup('Main') !!}
 

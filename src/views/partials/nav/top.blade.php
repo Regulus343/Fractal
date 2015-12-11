@@ -1,12 +1,6 @@
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<nav class="navbar navbar-dark navbar-fixed-top bg-inverse" role="navigation">
 	<div class="container-fluid">
-		<div class="navbar-header">
-
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
+		<div class="navbar-logo">
 
 			@if (config('cms.logo') && is_string(config('cms.logo')))
 
@@ -16,7 +10,7 @@
 
 			@else
 
-				<a class="navbar-brand" href="{{ Fractal::url() }}">{{{ Site::get('name') }}}</a>
+				<a class="navbar-brand" href="{{ Fractal::url() }}">{{ Site::get('name') }}</a>
 
 			@endif
 
@@ -26,9 +20,11 @@
 			{!! Site::getButtonListMarkup() !!}
 		</div>
 
-		<div class="navbar-collapse collapse">
+		<button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navbar-header" aria-controls="navbar-header">&#9776;</button>
 
-			{!! Fractal::getMenuMarkup('CMS Account', ['class' => 'nav navbar-nav navbar-right']) !!}
+		<div class="collapse navbar-toggleable-xs" id="navbar-header">
+
+			{!! Fractal::getMenuMarkup('CMS Account', ['class' => 'nav navbar-nav pull-right']) !!}
 
 			@yield('search')
 

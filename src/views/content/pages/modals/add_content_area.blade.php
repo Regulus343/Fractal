@@ -1,6 +1,6 @@
 <ul id="select-content-area">
 	<li class="new">
-		<h3>{{ Fractal::trans('labels.createNewContentArea') }}</h3>
+		<h3>{{ Fractal::trans('labels.create_new_item', ['item' => Fractal::transChoice('labels.content_area')]) }}</h3>
 	</li>
 
 	@foreach ($contentAreas as $contentArea)
@@ -11,12 +11,12 @@
 				<div class="info">
 					@if (!$contentArea->pages()->count())
 						<div class="actions">
-							<span class="glyphicon glyphicon-remove red delete" title="{{ Fractal::trans('labels.deleteContentArea') }}"></span>
+							<span class="glyphicon glyphicon-remove red delete" title="{{ Fractal::trans('messages.delete_item', ['item' => Fractal::trans('labels.content_area')]) }}"></span>
 						</div>
 					@endif
 
 					{{ $contentArea->pages()->count() }}
-					{{ Format::pluralize(Fractal::trans('labels.page'), $contentArea->pages()->count()) }}
+					{{ Fractal::transChoice('labels.page', $contentArea->pages()->count()) }}
 				</div>
 
 				<h3>{{ $contentArea->getTitle() }}</h3>
