@@ -15,25 +15,20 @@
 		"regulus/activity-log": "0.5.*",
 		"regulus/elemental": "0.5.*",
 		"regulus/formation": "1.0.*",
-		"regulus/identify": "0.8.*",
+		"regulus/identify": "0.9.*",
 		"regulus/solid-site": "0.6.*",
 		"regulus/tetra-text": "0.5.*",
 		"regulus/upstream": "0.5.*",
+
 		"alfredo-ramos/parsedown-extra-laravel": "~0.2"
 	},
 	"autoload": {
 		"classmap": [
-			"src/migrations",
-			"src/seeds"
+			"src/database/migrations",
+			"src/database/seeds"
 		],
 		"psr-4": {
-			"Regulus\\Fractal\\": "src/",
-			"Regulus\\Fractal\\Commands\\": "src/commands/",
-			"Regulus\\Fractal\\Controllers\\": "src/controllers/",
-			"Regulus\\Fractal\\Libraries\\": "src/libraries/",
-			"Regulus\\Fractal\\Middleware\\": "src/middleware/",
-			"Regulus\\Fractal\\Models\\": "src/models/",
-			"Regulus\\Fractal\\Traits\\": "src/traits/"
+			"Regulus\\Fractal\\": "src/"
 		}
 	}
 }

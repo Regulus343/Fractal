@@ -67,16 +67,16 @@ And add this to the `aliases` array:
 
 **Add middleware to the `routeMiddleware` array in `app/Http/Kernal.php`:**
 
-	'auth.permissions' => 'Regulus\Identify\Middleware\Authorize',
-	'auth.fractal'     => 'Regulus\Fractal\Middleware\Authenticate',
+	'auth.permissions' => \Regulus\Identify\Middleware\Authorize::class,
+	'auth.fractal'     => \Regulus\Fractal\Middleware\Authenticate::class,
 
 **Add and run the install command:**
 
 Add the following to the `commands` array in `app/Console/Kernel.php`:
 
-	'Regulus\Identify\Commands\Install',
-	'Regulus\Identify\Commands\CreateUser',
-	'Regulus\Fractal\Commands\Install',
+	\Regulus\Identify\Commands\Install::class,
+	\Regulus\Identify\Commands\CreateUser::class,
+	\Regulus\Fractal\Commands\Install::class,
 
 **Set the sessions domain:**
 
@@ -90,13 +90,13 @@ Then run the following command:
 
 Fractal (along with Identify) will now be installed. This includes all necessary DB migrations, DB seeding, config publishing, and asset publishing.
 
-The config file that is published for Identify is `auth.php` and will overwrite Laravel 5's default auth configuration. The default table names are prefixed with `auth_`, but you may alter the users table name (from which the other table names are derived) by adding a `--userstable` option to the install line:
+The config file that is published for Identify is `auth.php` and will overwrite Laravel 5's default auth configuration. The default table names are prefixed with `auth_`, but you may alter the users table name by adding a `--user-tables-prefix` option to the install line:
 
-	php artisan fractal:install --userstable=users
+	php artisan fractal:install --user-tables-prefix=none
 
-	php artisan fractal:install --userstable=identify_users
+	php artisan fractal:install --user-tables-prefix=identify
 
-The former example will remove the prefix from all of the table names, so you will get `users`, `roles`, etc. The latter example will change the default table prefix of `auth_` to `identify_` so your table names will be `identify_users`, `identify_roles`, etc.
+The former example will remove the prefix from all of the table names, so you will get `users`, `roles`, etc. The latter example will change the default table prefix of `auth` to `identify` so your table names will be `identify_users`, `identify_roles`, etc.
 
 You should now have 4 users, `Admin`, `TestUser`, `TestUser2`, and `TestUser3`. All of the default passwords are simply `password` and the usernames are case insensitive, so you may simply type `admin` and `password` to log in. The 3 initial roles are `Administrator`, `Moderator`, and `Member`. `Admin` has the `Administrator` role, `TestUser` has the `Moderator` role, and the final 2 users have the `Member` role.
 

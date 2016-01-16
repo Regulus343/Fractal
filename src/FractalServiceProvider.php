@@ -36,12 +36,12 @@ class FractalServiceProvider extends ServiceProvider {
 			__DIR__.'/config/cms_settings.php' => config_path('exported/cms_settings.php'),
 			__DIR__.'/config/menus.php'        => config_path('exported/menus.php'),
 
-			__DIR__.'/assets'                  => assets_path('regulus/fractal'),
+			__DIR__.'/resources/assets'        => assets_path('regulus/fractal'),
 		]);
 
-		$this->loadTranslationsFrom(__DIR__.'/lang', 'fractal');
+		$this->loadTranslationsFrom(__DIR__.'/resources/lang', 'fractal');
 
-		$this->loadViewsFrom(__DIR__.'/views', 'fractal');
+		$this->loadViewsFrom(__DIR__.'/resources/views', 'fractal');
 
 		$extraPath  = __DIR__.'/extra/';
 		$extraFiles = [

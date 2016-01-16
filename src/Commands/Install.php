@@ -48,7 +48,8 @@ class Install extends Command {
 
 		// install Identify
 		$this->call('identify:install', [
-			'--env' => $this->option('env'),
+			'--env'           => $this->option('env'),
+			'--tables-prefix' => $this->option('user-tables-prefix'),
 		]);
 
 		// run database migrations
@@ -202,10 +203,10 @@ class Install extends Command {
 	{
 		return [
 			[
-				'userstable',
+				'user-tables-prefix',
 				'u',
 				InputOption::VALUE_OPTIONAL,
-				'The name of the users table (from which the other auth table names are derived).',
+				'The prefix of the user tables.',
 				'auth_users',
 			],
 		];
