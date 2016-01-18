@@ -226,14 +226,9 @@ class SetsController extends MediaController {
 
 	public function destroy($id)
 	{
-		$result = [
-			'resultType' => 'Error',
-			'message'    => Fractal::trans('messages.errors.general'),
-		];
-
 		$set = Set::find($id);
 		if (empty($set))
-			return $result;
+			return $this->error();
 
 		Activity::log([
 			'contentId'   => $set->id,
@@ -243,14 +238,11 @@ class SetsController extends MediaController {
 			'details'     => 'Name: '.$set->title,
 		]);
 
-		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$set->title.'</strong>']);
-
 		$set->items()->sync([]);
 
 		$set->delete();
 
-		return $result;
+		return $this->success(Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$set->title.'</strong>']));
 	}
 
 	public function addItem()

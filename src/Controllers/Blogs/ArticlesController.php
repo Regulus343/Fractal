@@ -252,14 +252,9 @@ class ArticlesController extends BlogsController {
 
 	public function destroy($id)
 	{
-		$result = [
-			'resultType' => 'Error',
-			'message'    => Fractal::trans('messages.errors.general'),
-		];
-
 		$article = Article::find($id);
 		if (empty($article))
-			return $result;
+			return $this->error();
 
 		Activity::log([
 			'contentId'   => $article->id,
@@ -269,13 +264,10 @@ class ArticlesController extends BlogsController {
 			'details'     => 'Title: '.$article->title,
 		]);
 
-		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$article->getTitle().'</strong>']);
-
 		$article->contentAreas()->sync([]);
 		$article->delete();
 
-		return $result;
+		return $this->success(Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$article->getTitle().'</strong>']));
 	}
 
 	public function layoutTags()

@@ -223,14 +223,9 @@ class RolesController extends UsersController {
 
 	public function destroy($id)
 	{
-		$result = [
-			'resultType' => 'Error',
-			'message'    => Fractal::trans('messages.errors.general'),
-		];
-
 		$role = Role::find($id);
 		if (empty($role))
-			return $result;
+			return $this->error();
 
 		$existingUsers = $role->users()->count();
 		if ($existingUsers)
@@ -241,8 +236,7 @@ class RolesController extends UsersController {
 				'relatedItem' => Format::pluralize(strtolower(Fractal::trans('labels.user')), $existingUsers),
 			];
 
-			$result['message'] = Fractal::trans('messages.error.delete_items_exist', $messageData);
-			return $result;
+			return $this->error(Fractal::trans('messages.error.delete_items_exist', $messageData));
 		}
 
 		Activity::log([
@@ -253,13 +247,10 @@ class RolesController extends UsersController {
 			'details'     => 'Role: '.$role->name,
 		]);
 
-		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$role->name.'</strong>']);
-
 		$role->rolePermissions()->sync([]);
 		$role->delete();
 
-		return $result;
+		return $this->success(Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$role->name.'</strong>']));
 	}
 
 }

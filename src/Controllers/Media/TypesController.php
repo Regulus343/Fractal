@@ -210,17 +210,12 @@ class TypesController extends MediaController {
 
 	public function destroy($id)
 	{
-		$result = [
-			'resultType' => 'Error',
-			'message'    => Fractal::trans('messages.errors.general'),
-		];
-
 		$type = Type::find($id);
 		if (empty($type))
-			return $result;
+			return $this->error();
 
 		if ($type->items()->count())
-			return $result;
+			return $this->error();
 
 		Activity::log([
 			'contentId'   => $type->id,
@@ -230,12 +225,9 @@ class TypesController extends MediaController {
 			'details'     => 'Name: '.$type->name,
 		]);
 
-		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$type->name.'</strong>']);
-
 		$type->delete();
 
-		return $result;
+		return $this->success(Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$type->name.'</strong>']));
 	}
 
 }

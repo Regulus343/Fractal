@@ -50,15 +50,17 @@ class ArrayFile {
 		if (substr($path, -4) != ".php")
 			$path .= ".php";
 
-		if (!is_file($path)) {
+		if (!is_file($path))
+		{
 			$fp = fopen($path, 'w+');
 			fwrite($fp, $file->getData());
 			fclose($fp);
 			chmod($path, 0777);
-		} else {
+		}
+		else
+		{
 			file_put_contents($path, $file->getData());
 		}
-
 
 		return $path;
 	}
@@ -88,7 +90,8 @@ class ArrayFile {
 
 		$this->addTabsToArray();
 
-		if ($associative && !is_null($item)) {
+		if ($associative && !is_null($item))
+		{
 			$this->data .= "'".$item."'";
 
 			for ($s = 0; $s <= $maxNameLength - strlen($item); $s++)
@@ -97,7 +100,8 @@ class ArrayFile {
 			$this->data .= "=> ";
 		}
 
-		if (is_array($data) || is_object($data)) {
+		if (is_array($data) || is_object($data))
+		{
 			if (is_object($data))
 				$data = (array) $data;
 
@@ -133,13 +137,19 @@ class ArrayFile {
 				$this->data .= "\n]; // exported from DB on ".date('m/d/Y \a\t g:ia');
 			else
 				$this->data .= "],";
-
-		} else {
-			if (is_bool($data)) {
+		}
+		else
+		{
+			if (is_bool($data))
+			{
 				$this->data .= $data ? "true" : "false";
-			} else if (is_int($data) || is_float($data)) {
+			}
+			else if (is_int($data) || is_float($data))
+			{
 				$this->data .= $data;
-			} else {
+			}
+			else
+			{
 				$this->data .= "'".str_replace("'", "\'", $data)."'";
 			}
 

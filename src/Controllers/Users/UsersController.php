@@ -260,17 +260,12 @@ class UsersController extends BaseController {
 
 	public function ban($id)
 	{
-		$result = [
-			'resultType' => 'Error',
-			'message'    => Fractal::trans('messages.errors.general'),
-		];
-
 		$user = User::find($id);
 		if (empty($user))
-			return $result;
+			return $this->error();
 
 		if ($user->isBanned())
-			return $result;
+			return $this->error();
 
 		$user->banned_at = date('Y-m-d H:i:s');
 		$user->save();
@@ -283,24 +278,17 @@ class UsersController extends BaseController {
 			'details'     => 'Username: '.$user->name,
 		]);
 
-		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.success.banned', ['item' => '<strong>'.$user->name.'</strong>']);
-		return $result;
+		return $this->success(Fractal::trans('messages.success.banned', ['item' => '<strong>'.$user->name.'</strong>']));
 	}
 
 	public function unban($id)
 	{
-		$result = [
-			'resultType' => 'Error',
-			'message'    => Fractal::trans('messages.errors.general'),
-		];
-
 		$user = User::find($id);
 		if (empty($user))
-			return $result;
+			return $this->error();
 
 		if (!$user->isBanned())
-			return $result;
+			return $this->error();
 
 		$user->banned_at = null;
 		$user->save();
@@ -313,21 +301,14 @@ class UsersController extends BaseController {
 			'details'     => 'Username: '.$user->name,
 		]);
 
-		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.success.unbanned', ['item' => '<strong>'.$user->name.'</strong>']);
-		return $result;
+		return $this->success(Fractal::trans('messages.success.unbanned', ['item' => '<strong>'.$user->name.'</strong>']));
 	}
 
 	public function destroy($id)
 	{
-		$result = [
-			'resultType' => 'Error',
-			'message'    => Fractal::trans('messages.errors.general'),
-		];
-
 		$user = User::find($id);
 		if (empty($user))
-			return $result;
+			return $this->error();
 
 		$user->roles()->sync([]);
 		$user->userPermissions()->sync([]);
@@ -341,9 +322,7 @@ class UsersController extends BaseController {
 			'details'     => 'Username: '.$user->name,
 		]);
 
-		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$user->name.'</strong>']);
-		return $result;
+		return $this->success(Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$user->name.'</strong>']));
 	}
 
 }

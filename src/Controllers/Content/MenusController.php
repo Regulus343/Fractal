@@ -205,14 +205,9 @@ class MenusController extends BaseController {
 
 	public function destroy($id)
 	{
-		$result = [
-			'resultType' => 'Error',
-			'message'    => Fractal::trans('messages.errors.general'),
-		];
-
 		$menu = Menu::find($id);
 		if (empty($menu))
-			return $result;
+			return $this->error();
 
 		Activity::log([
 			'contentId'   => $menu->id,
@@ -222,13 +217,10 @@ class MenusController extends BaseController {
 			'details'     => 'Name: '.$menu->name,
 		]);
 
-		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$menu->name.'</strong>']);
-
 		$menu->items()->delete();
 		$menu->delete();
 
-		return $result;
+		return $this->success(Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$menu->name.'</strong>']));
 	}
 
 }

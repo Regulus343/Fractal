@@ -6,7 +6,7 @@
 
 		created by Cody Jassman
 		version 0.9.5
-		last updated on December 10, 2015
+		last updated on January 17, 2015
 ----------------------------------------------------------------------------------------------------------*/
 
 use Illuminate\Support\Facades\App;
@@ -472,7 +472,7 @@ class Fractal {
 			'sortOrder'    => (strtolower(Input::get('sort_order')) == 'desc' ? 'desc' : 'asc'),
 			'contentType'  => $contentType,
 			'result'       => [
-				'resultType' => 'Error',
+				'type'       => 'Error',
 				'messageSet' => false,
 			],
 		];
@@ -550,7 +550,7 @@ class Fractal {
 	{
 		$contentType = $this->getContentTypeSnakeCase();
 
-		$this->pagination['result']['resultType'] = $this->pagination['content']->total() ? "Success" : "Error";
+		$this->pagination['result']['type'] = $this->pagination['content']->total() ? "Success" : "Error";
 
 		if (count($this->pagination['content']))
 		{
@@ -612,7 +612,7 @@ class Fractal {
 			return [];
 
 		return [
-			strtolower($this->pagination['result']['resultType']) => $this->pagination['result']['message']
+			strtolower($this->pagination['result']['type']) => $this->pagination['result']['message']
 		];
 	}
 

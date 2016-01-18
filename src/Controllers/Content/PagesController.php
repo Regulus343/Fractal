@@ -249,14 +249,9 @@ class PagesController extends BaseController {
 
 	public function destroy($id)
 	{
-		$result = [
-			'resultType' => 'Error',
-			'message'    => Fractal::trans('messages.errors.general'),
-		];
-
 		$page = Page::find($id);
 		if (empty($page))
-			return $result;
+			return $this->error();
 
 		Activity::log([
 			'contentId'   => $page->id,
@@ -266,13 +261,10 @@ class PagesController extends BaseController {
 			'details'     => 'Title: '.$page->title,
 		]);
 
-		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$page->title.'</strong>']);
-
 		$page->contentAreas()->sync([]);
 		$page->delete();
 
-		return $result;
+		return $this->success(Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$page->title.'</strong>']));
 	}
 
 	public function view($slug = 'home')

@@ -209,14 +209,9 @@ class CategoriesController extends BlogsController {
 
 	public function destroy($id)
 	{
-		$result = [
-			'resultType' => 'Error',
-			'message'    => Fractal::trans('messages.errors.general'),
-		];
-
 		$category = Category::find($id);
 		if (empty($category))
-			return $result;
+			return $this->error();
 
 		Activity::log([
 			'contentId'   => $category->id,
@@ -226,13 +221,10 @@ class CategoriesController extends BlogsController {
 			'details'     => 'Name: '.$category->name,
 		]);
 
-		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$category->name.'</strong>']);
-
 		$category->articles()->sync([]);
 		$category->delete();
 
-		return $result;
+		return $this->success(Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$category->name.'</strong>']));
 	}
 
 }

@@ -3,7 +3,7 @@
 | Fractal JS
 |------------------------------------------------------------------------------
 |
-| Last Updated: November 7, 2015
+| Last Updated: January 17, 2016
 |
 */
 
@@ -429,9 +429,9 @@ var Fractal = {
 				type:     'get',
 				dataType: 'json',
 
-				success: function(result)
+				success: function(response)
 				{
-					if (result.resultType == "Success")
+					if (response.type == "Success")
 					{
 						if (action == "add")
 							item.data('added', 1);
@@ -491,9 +491,9 @@ var Fractal = {
 
 						Fractal.setPermissionsTreeItem(item);
 
-						Fractal.setMainMessage(result.message, 'success');
+						Fractal.setMainMessage(response.message, 'success');
 					} else {
-						Fractal.setMainMessage(result.message, 'error');
+						Fractal.setMainMessage(response.message, 'error');
 					}
 				},
 
@@ -670,11 +670,12 @@ var Fractal = {
 			data:     SolidSite.prepData(data),
 			dataType: 'json',
 
-			success: function(result) {
-				$('#'+modalId+' .modal-title').html(result.title);
-				$('#'+modalId+' .modal-body').html(result.content);
+			success: function(response)
+			{
+				$('#'+modalId+' .modal-title').html(response.title);
+				$('#'+modalId+' .modal-body').html(response.content);
 
-				if (result.buttons)
+				if (response.buttons)
 					$('#'+modalId+' .modal-footer').show();
 				else
 					$('#'+modalId+' .modal-footer').hide();
@@ -699,10 +700,12 @@ var Fractal = {
 			type: 'post',
 			data: SolidSite.prepData({name: name, state: state}),
 
-			success: function(result){
+			success: function(response)
+			{
 				console.log('User State Saved: '+name+' = '+state);
 			},
-			error: function(){
+			error: function()
+			{
 				console.log('User State Change Failed: '+name+' = '+state);
 			}
 		});
@@ -715,10 +718,12 @@ var Fractal = {
 			type: 'post',
 			data: SolidSite.prepData({name: name, state: state}),
 
-			success: function(result){
+			success: function(response)
+			{
 				console.log('User State Removed: '+name+' = '+state);
 			},
-			error: function(){
+			error: function()
+			{
 				console.log('User State Removal Failed: '+name+' = '+state);
 			}
 		});
@@ -795,18 +800,19 @@ var Fractal = {
 				data:     postData,
 				dataType: 'json',
 
-				success: function(result)
+				success: function(response)
 				{
-					if (result.message !== undefined) {
-						if (result.resultType == "Success")
-							Fractal.setMainMessage(result.message, 'success');
+					if (response.message !== undefined)
+					{
+						if (response.type == "Success")
+							Fractal.setMainMessage(response.message, 'success');
 						else
-							Fractal.setMainMessage(result.message, 'error');
+							Fractal.setMainMessage(response.message, 'error');
 					}
 
-					Fractal.createPaginationMenu(result.pages);
+					Fractal.createPaginationMenu(response.pages);
 
-					$('table.table tbody').html(result.tableBody);
+					$('table.table tbody').html(response.tableBody);
 
 					Fractal.initContentTable();
 
@@ -965,16 +971,16 @@ var Fractal = {
 			data:     data,
 			dataType: 'json',
 
-			success: function(result)
+			success: function(response)
 			{
-				if (result.resultType == "Success")
+				if (response.type == "Success")
 				{
 					if (itemActionType == "delete")
 						$('#'+contentType+'-'+contentId).addClass('hidden');
 
-					Fractal.setMainMessage(result.message, 'success');
+					Fractal.setMainMessage(response.message, 'success');
 				} else {
-					Fractal.setMainMessage(result.message, 'error');
+					Fractal.setMainMessage(response.message, 'error');
 				}
 			},
 
@@ -993,9 +999,9 @@ var Fractal = {
 			url:      Fractal.createUrl('users/' + contentId + '/ban'),
 			dataType: 'json',
 
-			success: function(result)
+			success: function(response)
 			{
-				if (result.resultType == "Success")
+				if (response.type == "Success")
 				{
 					$('#user-'+contentId).addClass('danger');
 					$('#user-'+contentId+' td.actions a.ban-user').addClass('hidden');
@@ -1003,9 +1009,9 @@ var Fractal = {
 
 					$('#user-'+contentId+' td.banned').html('<span class="boolean-true">Yes</span>');
 
-					Fractal.setMainMessage(result.message, 'success');
+					Fractal.setMainMessage(response.message, 'success');
 				} else {
-					Fractal.setMainMessage(result.message, 'error');
+					Fractal.setMainMessage(response.message, 'error');
 				}
 			},
 
@@ -1024,9 +1030,9 @@ var Fractal = {
 			url:      Fractal.createUrl('users/' + contentId + '/unban'),
 			dataType: 'json',
 
-			success: function(result)
+			success: function(response)
 			{
-				if (result.resultType == "Success")
+				if (response.type == "Success")
 				{
 					$('#user-'+contentId).removeClass('danger');
 					$('#user-'+contentId+' td.actions a.unban-user').addClass('hidden');
@@ -1034,9 +1040,9 @@ var Fractal = {
 
 					$('#user-'+contentId+' td.banned').html('<span class="boolean-false">No</span>');
 
-					Fractal.setMainMessage(result.message, 'success');
+					Fractal.setMainMessage(response.message, 'success');
 				} else {
-					Fractal.setMainMessage(result.message, 'error');
+					Fractal.setMainMessage(response.message, 'error');
 				}
 			},
 
@@ -1397,12 +1403,14 @@ var Fractal = {
 			value: this.contentType,
 		});
 
-		SolidSite.post(Fractal.createUrl('api/save-content'), data, function(result)
+		SolidSite.post(Fractal.createUrl('api/save-content'), data, function(response)
 		{
-			if (parseInt(result))
+			if (parseInt(response))
 			{
 				Fractal.setMainMessage(Fractal.trans('messages.success.formContentSaved'), 'success');
-			} else {
+			}
+			else
+			{
 				if (manuallySaved)
 					Fractal.setMainMessage(Fractal.trans('messages.errors.saveContent'), 'error');
 			}

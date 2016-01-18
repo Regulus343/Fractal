@@ -201,20 +201,15 @@ class LayoutTemplatesController extends BaseController {
 
 	public function destroy($id)
 	{
-		$result = [
-			'resultType' => 'Error',
-			'message'    => Fractal::trans('messages.errors.general'),
-		];
-
 		$layoutTemplate = LayoutTemplate::find($id);
 		if (empty($layoutTemplate))
-			return $result;
+			return $this->error();
 
 		if ($layoutTemplate->pages()->count())
-			return $result;
+			return $this->error();
 
 		if ($layoutTemplate->articles()->count())
-			return $result;
+			return $this->error();
 
 		Activity::log([
 			'contentId'   => $layoutTemplate->id,
@@ -224,12 +219,9 @@ class LayoutTemplatesController extends BaseController {
 			'details'     => 'Name: '.$layoutTemplate->name,
 		]);
 
-		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$layoutTemplate->name.'</strong>']);
-
 		$layoutTemplate->delete();
 
-		return $result;
+		return $this->success(Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$layoutTemplate->name.'</strong>']));
 	}
 
 }

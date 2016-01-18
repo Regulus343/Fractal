@@ -310,14 +310,9 @@ class FilesController extends BaseController {
 
 	public function destroy($id)
 	{
-		$result = [
-			'resultType' => 'Error',
-			'message'    => Fractal::trans('messages.errors.general'),
-		];
-
 		$file = ContentFile::find($id);
 		if (empty($file))
-			return $result;
+			return $this->error();
 
 		Activity::log([
 			'contentId'   => $file->id,
@@ -326,9 +321,6 @@ class FilesController extends BaseController {
 			'description' => 'Deleted a File',
 			'details'     => 'Filename: '.$file->filename,
 		]);
-
-		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$file->name.'</strong>']);
 
 		// delete file
 		if (File::exists('uploads/'.$file->getPath()))
@@ -340,7 +332,7 @@ class FilesController extends BaseController {
 
 		$file->delete();
 
-		return $result;
+		return $this->success(Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$file->name.'</strong>']));
 	}
 
 	private function setDefaultImageSize()

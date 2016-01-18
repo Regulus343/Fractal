@@ -223,23 +223,13 @@ class PermissionsController extends UsersController {
 
 	public function add($type, $id, $permission)
 	{
-		$result = [
-			'resultType' => 'Error',
-			'message'    => Fractal::trans('messages.errors.general'),
-		];
-
 		switch ($type)
 		{
 			case "user":
 				$user = User::find($id);
 
 				if (!empty($user) && $user->addPermission($permission))
-				{
-					$result = [
-						'resultType' => 'Success',
-						'message'    => Fractal::trans('messages.success.added', ['item' => Fractal::transChoiceA('labels.permission')]),
-					];
-				}
+					return $this->success(Fractal::trans('messages.success.added', ['item' => Fractal::transChoiceA('labels.permission')]));
 
 				break;
 
@@ -247,38 +237,23 @@ class PermissionsController extends UsersController {
 				$role = Role::find($id);
 
 				if (!empty($role) && $role->addPermission($permission))
-				{
-					$result = [
-						'resultType' => 'Success',
-						'message'    => Fractal::trans('messages.success.added', ['item' => Fractal::transChoiceA('labels.permission')]),
-					];
-				}
+					return $this->success(Fractal::trans('messages.success.added', ['item' => Fractal::transChoiceA('labels.permission')]));
 
 				break;
 		}
 
-		return $result;
+		return $this->error();
 	}
 
 	public function remove($type, $id, $permission)
 	{
-		$result = [
-			'resultType' => 'Error',
-			'message'    => Fractal::trans('messages.errors.general'),
-		];
-
 		switch ($type)
 		{
 			case "user":
 				$user = User::find($id);
 
 				if (!empty($user) && $user->removePermission($permission))
-				{
-					$result = [
-						'resultType' => 'Success',
-						'message'    => Fractal::trans('messages.success.removed', ['item' => Fractal::transChoiceA('labels.permission')]),
-					];
-				}
+					return $this->success(Fractal::trans('messages.success.removed', ['item' => Fractal::transChoiceA('labels.permission')]));
 
 				break;
 
@@ -286,30 +261,20 @@ class PermissionsController extends UsersController {
 				$role = Role::find($id);
 
 				if (!empty($role) && $role->removePermission($permission))
-				{
-					$result = [
-						'resultType' => 'Success',
-						'message'    => Fractal::trans('messages.success.removed', ['item' => Fractal::transChoiceA('labels.permission')]),
-					];
-				}
+					return $this->success(Fractal::trans('messages.success.removed', ['item' => Fractal::transChoiceA('labels.permission')]));
 
 				break;
 		}
 
-		return $result;
+		return $this->error();
 	}
 
 	public function destroy($id)
 	{
-		$result = [
-			'resultType' => 'Error',
-			'message'    => Fractal::trans('messages.errors.general'),
-		];
-
 		$permission = Permission::find($id);
 
 		if ($permission->subPermissions()->count())
-			return $result;
+			return $this->error();
 
 		Activity::log([
 			'contentId'   => $permission->id,
@@ -319,14 +284,11 @@ class PermissionsController extends UsersController {
 			'details'     => 'Permission: '.$permission->name,
 		]);
 
-		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$permission->name.'</strong>']);
-
 		$permission->users()->sync([]);
 		$permission->roles()->sync([]);
 		$permission->delete();
 
-		return $result;
+		return $this->success(Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$permission->name.'</strong>']));
 	}
 
 }

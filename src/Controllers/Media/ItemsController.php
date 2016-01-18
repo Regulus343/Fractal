@@ -197,14 +197,9 @@ class ItemsController extends MediaController {
 
 	public function destroy($id)
 	{
-		$result = [
-			'resultType' => 'Error',
-			'message'    => Fractal::trans('messages.errors.general'),
-		];
-
 		$item = Item::find($id);
 		if (empty($item))
-			return $result;
+			return $this->error();
 
 		Activity::log([
 			'contentId'   => $item->id,
@@ -214,14 +209,11 @@ class ItemsController extends MediaController {
 			'details'     => 'Title: '.$item->title,
 		]);
 
-		$result['resultType'] = "Success";
-		$result['message']    = Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$item->getTitle().'</strong>']);
-
 		$item->deleteFiles();
 
 		$item->delete();
 
-		return $result;
+		return $this->success(Fractal::trans('messages.success.deleted', ['item' => '<strong>'.$item->getTitle().'</strong>']));
 	}
 
 	public function getTypesForFileType($fileTypeId = null)
