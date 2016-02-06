@@ -9,195 +9,198 @@ use Auth;
 use Regulus\Fractal\Models\Content\Page;
 use Regulus\Fractal\Models\Blog\Article;
 
-$domain = str_replace('https://', '', str_replace('http://', '', config('app.url')));
-
-$subdomain = config('cms.subdomain');
-if (is_string($subdomain) && $subdomain != "")
-	$domain = $subdomain.'.'.$domain;
-
-Route::group(['domain' => $domain], function()
+Route::group(['middleware' => 'web'], function()
 {
-	$baseUri = config('cms.base_uri');
+	$domain = str_replace('https://', '', str_replace('http://', '', config('app.url')));
 
-	/* Authorization Routes */
-	Route::any($baseUri.'/login', config('cms.auth_controller').'@login');
-	Route::get($baseUri.'/logout', config('cms.auth_controller').'@logout');
-	Route::get($baseUri.'/password', config('cms.auth_controller').'@getEmail');
-	Route::post($baseUri.'/password', config('cms.auth_controller').'@postEmail');
-	Route::get($baseUri.'/password/reset/{token}', config('cms.auth_controller').'@getReset');
-	Route::post($baseUri.'/password/reset/{token}', config('cms.auth_controller').'@postReset');
-	Route::get('password/reset/{token}', config('cms.auth_controller').'@getReset');
-	Route::post('password/reset/{token}', config('cms.auth_controller').'@postReset');
+	$subdomain = config('cms.subdomain');
+	if (is_string($subdomain) && $subdomain != "")
+		$domain = $subdomain.'.'.$domain;
 
-	Route::controller($baseUri.'/auth', config('cms.auth_controller'));
-
-	Route::group(['middleware' => ['auth.fractal', 'auth.permissions']], function() use ($baseUri)
+	Route::group(['domain' => $domain], function()
 	{
-		$controllers = config('cms.controllers');
-		$methods     = config('cms.controller_methods');
+		$baseUri = config('cms.base_uri');
 
-		/* Additional Routes for Defined Controller Methods */
-		foreach (['get', 'post'] as $type)
+		/* Authorization Routes */
+		Route::any($baseUri.'/login', config('cms.auth_controller').'@login');
+		Route::get($baseUri.'/logout', config('cms.auth_controller').'@logout');
+		Route::get($baseUri.'/password', config('cms.auth_controller').'@getEmail');
+		Route::post($baseUri.'/password', config('cms.auth_controller').'@postEmail');
+		Route::get($baseUri.'/password/reset/{token}', config('cms.auth_controller').'@getReset');
+		Route::post($baseUri.'/password/reset/{token}', config('cms.auth_controller').'@postReset');
+		Route::get('password/reset/{token}', config('cms.auth_controller').'@getReset');
+		Route::post('password/reset/{token}', config('cms.auth_controller').'@postReset');
+
+		Route::controller($baseUri.'/auth', config('cms.auth_controller'));
+
+		Route::group(['middleware' => ['auth.fractal', 'auth.permissions']], function() use ($baseUri)
 		{
-			if (isset($methods[$type]))
+			$controllers = config('cms.controllers');
+			$methods     = config('cms.controller_methods');
+
+			/* Additional Routes for Defined Controller Methods */
+			foreach (['get', 'post'] as $type)
 			{
-				foreach ($methods[$type] as $route => $method)
+				if (isset($methods[$type]))
 				{
-					if ($type == "get")
-						Route::get($baseUri.'/'.$route, $method);
-					else
-						Route::post($baseUri.'/'.$route, $method);
+					foreach ($methods[$type] as $route => $method)
+					{
+						if ($type == "get")
+							Route::get($baseUri.'/'.$route, $method);
+						else
+							Route::post($baseUri.'/'.$route, $method);
+					}
 				}
 			}
-		}
 
-		/* Routes for Defined Standard Controllers */
-		if (isset($controllers['standard']))
-		{
-			foreach ($controllers['standard'] as $controllerUri => $controller)
+			/* Routes for Defined Standard Controllers */
+			if (isset($controllers['standard']))
 			{
-				$controllerArray = explode(':', $controller);
+				foreach ($controllers['standard'] as $controllerUri => $controller)
+				{
+					$controllerArray = explode(':', $controller);
+					$controller      = $controllerArray[0];
+
+					$actions = [];
+					$prefix  = "";
+					if (count($controllerArray) >= 2)
+						$prefix = $controllerArray[1].'.';
+
+					foreach (get_class_methods($controller) as $method)
+					{
+						$routeName = str_slug(str_replace('get', '', str_replace('post', '', str_replace('any', '', $method))));
+
+						$actions[$method] = $prefix.$routeName;
+					}
+
+					Route::controller($baseUri.'/'.$controllerUri, $controller, $actions);
+				}
+			}
+
+			if (isset($controllers['standard']['home']))
+			{
+				$controllerArray = explode(':', $controllers['standard']['home']);
 				$controller      = $controllerArray[0];
 
-				$actions = [];
-				$prefix  = "";
-				if (count($controllerArray) >= 2)
-					$prefix = $controllerArray[1].'.';
-
-				foreach (get_class_methods($controller) as $method)
-				{
-					$routeName = str_slug(str_replace('get', '', str_replace('post', '', str_replace('any', '', $method))));
-
-					$actions[$method] = $prefix.$routeName;
-				}
-
-				Route::controller($baseUri.'/'.$controllerUri, $controller, $actions);
+				Route::get($baseUri, $controller.'@getIndex');
 			}
-		}
 
-		if (isset($controllers['standard']['home']))
-		{
-			$controllerArray = explode(':', $controllers['standard']['home']);
-			$controller      = $controllerArray[0];
-
-			Route::get($baseUri, $controller.'@getIndex');
-		}
-
-		/* Routes for Defined Resource Controllers */
-		if (isset($controllers['resource']))
-		{
-			foreach ($controllers['resource'] as $controllerUri => $controller)
+			/* Routes for Defined Resource Controllers */
+			if (isset($controllers['resource']))
 			{
-				Route::resource($baseUri.'/'.$controllerUri, $controller);
+				foreach ($controllers['resource'] as $controllerUri => $controller)
+				{
+					Route::resource($baseUri.'/'.$controllerUri, $controller);
+				}
 			}
-		}
 
-		if (isset($controllers['resource']['home']))
-			Route::get($baseUri, $controllers['resource']['home'].'@getIndex');
+			if (isset($controllers['resource']['home']))
+				Route::get($baseUri, $controllers['resource']['home'].'@getIndex');
 
-		/* Developer Route (executing route enables "developer mode" via "developer" session variable) */
-		Route::get($baseUri.'/developer/{off?}', 'Regulus\Fractal\Controllers\General\DashboardController@getDeveloper');
+			/* Developer Route (executing route enables "developer mode" via "developer" session variable) */
+			Route::get($baseUri.'/developer/{off?}', 'Regulus\Fractal\Controllers\General\DashboardController@getDeveloper');
 
-		/* API Routes */
-		$controller = "Regulus\Fractal\Controllers\General\ApiController";
-		$actions    = [];
-		$prefix     = "api.";
-		foreach (get_class_methods($controller) as $method)
-		{
-			$routeName = str_slug(str_replace('get', '', str_replace('post', '', str_replace('any', '', $method))));
+			/* API Routes */
+			$controller = "Regulus\Fractal\Controllers\General\ApiController";
+			$actions    = [];
+			$prefix     = "api.";
+			foreach (get_class_methods($controller) as $method)
+			{
+				$routeName = str_slug(str_replace('get', '', str_replace('post', '', str_replace('any', '', $method))));
 
-			$actions[$method] = $prefix.$routeName;
-		}
-		Route::controller($baseUri.'/api', $controller, $actions);
+				$actions[$method] = $prefix.$routeName;
+			}
+			Route::controller($baseUri.'/api', $controller, $actions);
+		});
 	});
-});
 
-$groupDefault = [
-	'middleware' => ['auth.permissions'],
-];
+	$groupDefault = [
+		'middleware' => ['auth.permissions'],
+	];
 
-/* Blog Routes */
-if (config('blogs.enabled'))
-{
-	$blogSubdomain  = config('blogs.subdomain');
-	$blogUri        = config('blogs.base_uri');
-	$blogController = config('blogs.view_controller');
-
-	$group = $groupDefault;
-	if (is_string($blogSubdomain) && $blogSubdomain != "")
-		$group['domain'] = str_replace('http://', $blogSubdomain.'.', str_replace('https://', $blogSubdomain.'.', config('app.url')));
-
-	if ($blogUri != false && is_null($blogUri) && $blogUri != "")
-		$group['prefix'] = $blogUri;
-
-	Route::group($group, function() use ($blogController)
+	/* Blog Routes */
+	if (config('blogs.enabled'))
 	{
-		/* Short Article Routes */
-		Route::get('{slug}', ['as' => 'blogs.articles.public.view', 'uses' => $blogController.'@getArticle']);
+		$blogSubdomain  = config('blogs.subdomain');
+		$blogUri        = config('blogs.base_uri');
+		$blogController = config('blogs.view_controller');
 
-		/* Blog Controller Routes */
-		$actions = [];
-		$prefix  = "blogs.articles.public.";
-		foreach (get_class_methods($blogController) as $method)
+		$group = $groupDefault;
+		if (is_string($blogSubdomain) && $blogSubdomain != "")
+			$group['domain'] = str_replace('http://', $blogSubdomain.'.', str_replace('https://', $blogSubdomain.'.', config('app.url')));
+
+		if ($blogUri != false && is_null($blogUri) && $blogUri != "")
+			$group['prefix'] = $blogUri;
+
+		Route::group($group, function() use ($blogController)
 		{
-			$routeName = str_slug(str_replace('get', '', str_replace('post', '', str_replace('any', '', $method))));
+			/* Short Article Routes */
+			Route::get('{slug}', ['as' => 'blogs.articles.public.view', 'uses' => $blogController.'@getArticle']);
 
-			$actions[$method] = $prefix.$routeName;
-		}
+			/* Blog Controller Routes */
+			$actions = [];
+			$prefix  = "blogs.articles.public.";
+			foreach (get_class_methods($blogController) as $method)
+			{
+				$routeName = str_slug(str_replace('get', '', str_replace('post', '', str_replace('any', '', $method))));
 
-		Route::controller('', $blogController, $actions);
-	});
-}
+				$actions[$method] = $prefix.$routeName;
+			}
 
-/* Media Routes */
-if (config('media.enabled'))
-{
-	$mediaSubdomain  = config('media.subdomain');
-	$mediaUri        = config('media.base_uri');
-	$mediaController = config('media.view_controller');
+			Route::controller('', $blogController, $actions);
+		});
+	}
 
+	/* Media Routes */
+	if (config('media.enabled'))
+	{
+		$mediaSubdomain  = config('media.subdomain');
+		$mediaUri        = config('media.base_uri');
+		$mediaController = config('media.view_controller');
+
+		$group = $groupDefault;
+
+		if (is_string($mediaSubdomain) && $mediaSubdomain != "")
+			$group['domain'] = str_replace('http://', $mediaSubdomain.'.', str_replace('https://', $mediaSubdomain.'.', config('app.url')));
+
+		if ($mediaUri != false && is_null($mediaUri) && $mediaUri != "")
+			$group['prefix'] = $mediaUri;
+
+		Route::group($group, function() use ($mediaController)
+		{
+			/* Short Media Items Routes */
+			Route::get('{slug}', ['as' => 'media.items.public.view', 'uses' => $mediaController.'@getItem']);
+
+			/* Media Controller Routes */
+			$actions = [];
+			$prefix  = "media.items.public.";
+			foreach (get_class_methods($mediaController) as $method)
+			{
+				$routeName = str_slug(str_replace('get', '', str_replace('post', '', str_replace('any', '', $method))));
+
+				$actions[$method] = $prefix.$routeName;
+			}
+
+			Route::controller('', $mediaController, $actions);
+		});
+	}
+
+	/* Content Pages Routes */
 	$group = $groupDefault;
 
-	if (is_string($mediaSubdomain) && $mediaSubdomain != "")
-		$group['domain'] = str_replace('http://', $mediaSubdomain.'.', str_replace('https://', $mediaSubdomain.'.', config('app.url')));
+	$group['domain'] = str_replace('http://', '', str_replace('https://', '', config('app.url')));
 
-	if ($mediaUri != false && is_null($mediaUri) && $mediaUri != "")
-		$group['prefix'] = $mediaUri;
-
-	Route::group($group, function() use ($mediaController)
+	Route::group($group, function()
 	{
-		/* Short Media Items Routes */
-		Route::get('{slug}', ['as' => 'media.items.public.view', 'uses' => $mediaController.'@getItem']);
+		$pageUri    = config('cms.page_uri');
+		$pageMethod = config('cms.page_method');
 
-		/* Media Controller Routes */
-		$actions = [];
-		$prefix  = "media.items.public.";
-		foreach (get_class_methods($mediaController) as $method)
-		{
-			$routeName = str_slug(str_replace('get', '', str_replace('post', '', str_replace('any', '', $method))));
+		if (!is_null($pageUri) && $pageUri != false && $pageUri != "")
+			Route::get($pageUri.'/{slug}', ['as' => 'pages.view', 'uses' => $pageMethod]);
+		else
+			Route::get('{slug}', ['as' => 'pages.view', 'uses' => $pageMethod]);
 
-			$actions[$method] = $prefix.$routeName;
-		}
-
-		Route::controller('', $mediaController, $actions);
+		if (config('cms.use_home_page_for_root'))
+			Route::get('', ['as' => 'home', 'uses' => $pageMethod]);
 	});
-}
-
-/* Content Pages Routes */
-$group = $groupDefault;
-
-$group['domain'] = str_replace('http://', '', str_replace('https://', '', config('app.url')));
-
-Route::group($group, function()
-{
-	$pageUri    = config('cms.page_uri');
-	$pageMethod = config('cms.page_method');
-
-	if (!is_null($pageUri) && $pageUri != false && $pageUri != "")
-		Route::get($pageUri.'/{slug}', ['as' => 'pages.view', 'uses' => $pageMethod]);
-	else
-		Route::get('{slug}', ['as' => 'pages.view', 'uses' => $pageMethod]);
-
-	if (config('cms.use_home_page_for_root'))
-		Route::get('', ['as' => 'home', 'uses' => $pageMethod]);
 });

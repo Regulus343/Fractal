@@ -92,7 +92,7 @@ class Install extends Command {
 			$bootstrapAppContents       = file_get_contents($bootstrapAppFile);
 			$bootstrapAppContentsLength = strlen($bootstrapAppContents);
 
-			$singleton = "\n".'$app'."->singleton(\n\t'Illuminate\Foundation\Bootstrap\LoadConfiguration',\n\t'Regulus\Fractal\Libraries\LoadConfiguration'\n);\n";
+			$singleton = "\n".'$app'."->singleton(\n    Illuminate\Foundation\Bootstrap\LoadConfiguration::class,\n    Regulus\Fractal\Libraries\LoadConfiguration::class\n);\n";
 
 			// ensure singleton has not already been added to file
 			if (strpos($bootstrapAppContents, $singleton) === false)
@@ -207,7 +207,7 @@ class Install extends Command {
 				'u',
 				InputOption::VALUE_OPTIONAL,
 				'The prefix of the user tables.',
-				'auth_users',
+				'auth',
 			],
 		];
 	}

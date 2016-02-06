@@ -103,8 +103,8 @@ You should now have 4 users, `Admin`, `TestUser`, `TestUser2`, and `TestUser3`. 
 The install command will also attempt to automatically add a singleton to `bootstrap/app.php` which swaps out Laravel's default `LoadConfiguration` class to allow delaying the loading of certain config files until after Fractal's service provider runs. If the install command is not able to add the singleton, go into `bootstrap/app.php` and add this after the other singletons under the "Bind Important Interfaces" heading:
 
 	$app->singleton(
-		'Illuminate\Foundation\Bootstrap\LoadConfiguration',
-		'Regulus\Fractal\Libraries\LoadConfiguration'
+		Illuminate\Foundation\Bootstrap\LoadConfiguration::class,
+		Regulus\Fractal\Libraries\LoadConfiguration::class
 	);
 
 <a name="auth-installation"></a>

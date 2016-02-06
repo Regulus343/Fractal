@@ -68,6 +68,10 @@ class LoadConfiguration {
 			$this->loadConfigurationFiles($app, $config);
 		}
 
+		$app->detectEnvironment(function () use ($config) {
+			return $config->get('app.env', 'production');
+		});
+
 		date_default_timezone_set($config['app.timezone']);
 
 		mb_internal_encoding('UTF-8');
@@ -77,15 +81,15 @@ class LoadConfiguration {
 	 * Load the configuration items from all of the files.
 	 *
 	 * @param  \Illuminate\Contracts\Foundation\Application  $app
-	 * @param  \Illuminate\Contracts\Config\Repository  $config
+	 * @param  \Illuminate\Contracts\Config\Repository  $repository
 	 * @param  boolean  $delayed
 	 * @return void
 	 */
-	public function loadConfigurationFiles(Application $app, RepositoryContract $config, $delayed = false)
+	public function loadConfigurationFiles(Application $app, RepositoryContract $repository, $delayed = false)
 	{
 		foreach ($this->getConfigurationFiles($app, $delayed) as $key => $path)
 		{
-			$config->set($key, require $path);
+			$repository->set($key, require $path);
 		}
 	}
 
