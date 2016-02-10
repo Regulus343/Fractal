@@ -70,6 +70,9 @@ div.checkbox-set.has-error label, div.radio-set.has-error label { color: #000; }
 
 form div.error { padding: 5px; color: #b94a48; }
 
+.form-group.has-error input, .form-group.has-error textarea, .form-group.has-error select { border: 1px solid  #900; }
+.form-group.has-error label, .form-group.has-error .error { color: #900; }
+
 input.file-dummy { float: left; margin-right: 5px; width: 60%; cursor: pointer; }
 input.file-dummy[readonly="readonly"] { background-color: #fff; cursor: pointer; }
 

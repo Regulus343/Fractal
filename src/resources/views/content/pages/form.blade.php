@@ -32,7 +32,12 @@
 
 			Fractal.initAutoSave();
 
-			$('form').submit(function(e){
+			$('form').submit(function(e)
+			{
+				e.preventDefault();
+
+				Fractal.submitForm($(this));
+
 				$('#content-areas fieldset').each(function(){
 					if ($(this).find('.field-content-type').val() == "HTML")
 						$(this).find('.field-content').val(CKEDITOR.instances[$(this).find('.field-content-html').attr('id')].getData());
@@ -155,8 +160,10 @@
 		{
 			$.ajax({
 				url:     Fractal.createUrl('pages/delete-content-area/' + contentAreaId),
-				success: function(result) {
-					if (result == "Success") {
+				success: function(response)
+				{
+					if (response == "Success")
+					{
 						$('#modal-secondary').hide();
 						$('#select-content-area li[data-content-area-id="'+contentAreaId+'"]').remove();
 					}
@@ -189,7 +196,8 @@
 				}
 			});
 
-			$('#select-content-area li span.delete').off('click').on('click', function(){
+			$('#select-content-area li span.delete').off('click').on('click', function()
+			{
 				contentAreaId = $(this).parents('li').attr('data-content-area-id');
 
 				modalConfirm(
@@ -219,14 +227,16 @@
 				}
 			});
 
-			$('.field-content-html, .field-content-markdown').off('change').on('change', function(){
+			$('.field-content-html, .field-content-markdown').off('change').on('change', function()
+			{
 				$(this).parents('fieldset').find('.field-content').val($(this).val());
 			});
 		}
 
 		function setupContentFields()
 		{
-			$('.field-content-html, .field-content-markdown').off('change').on('change', function(){
+			$('.field-content-html, .field-content-markdown').off('change').on('change', function()
+			{
 				$(this).parents('fieldset').find('.field-content').val($(this).val());
 			});
 		}

@@ -198,8 +198,10 @@
 		{
 			$.ajax({
 				url:     Fractal.createUrl('blogs/articles/delete-content-area/' + contentAreaId),
-				success: function(result) {
-					if (result == "Success") {
+				success: function(response)
+				{
+					if (response == "Success")
+					{
 						$('#modal-secondary').hide();
 						$('#select-content-area li[data-content-area-id="'+contentAreaId+'"]').remove();
 					}
@@ -209,7 +211,8 @@
 
 		function selectContentAreaActions()
 		{
-			$('#select-content-area li').off('click').on('click', function(e){
+			$('#select-content-area li').off('click').on('click', function(e)
+			{
 				if (!$(e.target).hasClass('delete')) {
 					if ($(this).hasClass('new')) {
 						addingContentArea = true;
@@ -229,7 +232,8 @@
 				}
 			});
 
-			$('#select-content-area li span.delete').off('click').on('click', function(){
+			$('#select-content-area li span.delete').off('click').on('click', function()
+			{
 				contentAreaId = $(this).parents('li').attr('data-content-area-id');
 
 				modalConfirm(
@@ -258,14 +262,16 @@
 				}
 			});
 
-			$('.field-content-html, .field-content-markdown').off('change').on('change', function(){
+			$('.field-content-html, .field-content-markdown').off('change').on('change', function()
+			{
 				$(this).parents('fieldset').find('.field-content').val($(this).val());
 			});
 		}
 
 		function setupContentFields()
 		{
-			$('.field-content-html, .field-content-markdown').off('change').on('change', function(){
+			$('.field-content-html, .field-content-markdown').off('change').on('change', function()
+			{
 				$(this).parents('fieldset').find('.field-content').val($(this).val());
 			});
 		}

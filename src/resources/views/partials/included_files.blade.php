@@ -18,7 +18,7 @@
 
 {{-- Tether --}}
 
-<script type="text/javascript" src="{{ Site::js('tether.min', 'regulus/fractal') }}"></script>
+<script type="text/javascript" src="{{ Site::asset('libraries/tether/js/tether.min.js', 'regulus/fractal') }}"></script>
 
 {{-- Bootstrap CSS / JS --}}
 
@@ -40,7 +40,7 @@
 {{-- CK Editor --}}
 
 @if (Site::get('wysiwyg'))
-	<script type="text/javascript" src="{{ Site::asset('libraries/ckeditor/ckeditor.js', false, 'regulus/fractal') }}"></script>
+	<script type="text/javascript" src="{{ Site::asset('libraries/ckeditor/ckeditor.js', 'regulus/fractal') }}"></script>
 @endif
 
 {{-- Handlebars --}}
@@ -70,7 +70,7 @@
 
 {{-- Audio JS --}}
 
-<script type="text/javascript" src="{{ Site::asset('libraries/audiojs/audio.min.js', false, 'regulus/fractal') }}"></script>
+<script type="text/javascript" src="{{ Site::asset('libraries/audiojs/audio.min.js', 'regulus/fractal') }}"></script>
 
 {{-- SolidSite JS --}}
 

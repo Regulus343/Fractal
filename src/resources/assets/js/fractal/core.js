@@ -3,7 +3,7 @@
 | Fractal JS
 |------------------------------------------------------------------------------
 |
-| Last Updated: January 17, 2016
+| Last Updated: February 7, 2016
 |
 */
 
@@ -31,6 +31,8 @@ var Fractal = {
 
 	sortField:                  'id',
 	sortOrder:                  'asc',
+
+	suppressNextResponse:       false,
 
 	itemAction:                 null,
 	itemActionType:             null,
@@ -63,48 +65,8 @@ var Fractal = {
 			$('.alert-auto-hide').slideUp('fast');
 		}, this.messageShowTime);
 
-		// initialize file fields
-		$('input[type="file"].file-upload-button').each(function()
-		{
-			$(this).addClass('hidden');
-
-			var fileType   = $(this).attr('data-file-type') !== undefined ? $(this).attr('data-file-type') : "File";
-			var buttonText = "Select "+fileType;
-			var button     = $('<button class="btn btn-default icon block"><i class="fa fa-file"></i> '+buttonText+'</button>').click(function(e){
-				e.preventDefault();
-				$(this).parents('div').children('input[type="file"]').click();
-			});
-
-			var dummyInput = $('<input type="text" name="'+$(this).attr('name')+'_dummy" id="'+$(this).attr('id')+'-dummy" class="form-control file-dummy" placeholder="'+fileType+'" readonly="readonly" />').click(function(){
-				$(this).parents('div').children('input[type="file"]').click();
-			});
-
-			$(this)
-				.after(button)
-				.after(dummyInput)
-				.after('<div class="clear"></div>');
-
-		}).change(function()
-		{
-			var path     = $(this).val().split('\\');
-			var filename = path[(path.length - 1)];
-
-			$('#'+$(this).attr('id')+'-dummy').val(filename);
-		});
-
-		// initialize number fields
-		$('input[type="number"], input.number').keyup(function()
-		{
-			if (isNaN($(this).val()) || $(this).val() == "")
-				$(this).val('');
-
-		}).change(function(){
-			if (isNaN($(this).val()) || $(this).val() == "")
-				$(this).val('');
-		});
-
-		// initialize select fields
-		$('select').select2();
+		// initialize forms
+		this.initForms();
 
 		// initialize embedded audio
 		audiojs.events.ready(function()
@@ -413,6 +375,78 @@ var Fractal = {
 		});
 	},
 
+	initForms: function()
+	{
+		// initialize AJAX forms
+		$('form.ajax').submit(function(e)
+		{
+			this.submitForm($(this));
+		});
+
+		// initialize file fields
+		$('input[type="file"].file-upload-button').each(function()
+		{
+			$(this).addClass('hidden');
+
+			var fileType   = $(this).attr('data-file-type') !== undefined ? $(this).attr('data-file-type') : "File";
+			var buttonText = "Select "+fileType;
+			var button     = $('<button class="btn btn-default icon block"><i class="fa fa-file"></i> '+buttonText+'</button>').click(function(e){
+				e.preventDefault();
+				$(this).parents('div').children('input[type="file"]').click();
+			});
+
+			var dummyInput = $('<input type="text" name="'+$(this).attr('name')+'_dummy" id="'+$(this).attr('id')+'-dummy" class="form-control file-dummy" placeholder="'+fileType+'" readonly="readonly" />').click(function(){
+				$(this).parents('div').children('input[type="file"]').click();
+			});
+
+			$(this)
+				.after(button)
+				.after(dummyInput)
+				.after('<div class="clear"></div>');
+
+		}).change(function()
+		{
+			var path     = $(this).val().split('\\');
+			var filename = path[(path.length - 1)];
+
+			$('#'+$(this).attr('id')+'-dummy').val(filename);
+		});
+
+		// initialize number fields
+		$('input[type="number"], input.number').keyup(function()
+		{
+			if (isNaN($(this).val()) || $(this).val() == "")
+				$(this).val('');
+
+		}).change(function(){
+			if (isNaN($(this).val()) || $(this).val() == "")
+				$(this).val('');
+		});
+
+		// initialize select fields
+		$('select').select2();
+	},
+
+	submitForm: function(form)
+	{
+		var formData = form.serializeArray();
+
+		$.ajax({
+			url:      form.attr('action'),
+			type:     form.attr('method'),
+			data:     formData,
+			dataType: 'json',
+			success:  function(response)
+			{
+				Fractal.processResponse(response, form);
+			},
+			error: function(response)
+			{
+				Fractal.processResponse(response, form);
+			},
+		});
+	},
+
 	addRemovePermission: function(item, action)
 	{
 		if (!$(this).hasClass('disabled'))
@@ -563,7 +597,7 @@ var Fractal = {
 		{
 			$.extend(String.prototype,
 			{
-				camelize: function ()
+				camelize: function()
 				{
 					var string = this.replace (/(?:^|[-_])(\w)/g, function (_, c)
 					{
@@ -619,7 +653,7 @@ var Fractal = {
 
 	createUrl: function(uri, type)
 	{
-		if (type === undefined)
+		if (typeof type == "undefined")
 			type = "base";
 
 		return this[type+'Url'] + '/' + uri;
@@ -628,6 +662,8 @@ var Fractal = {
 	setMainMessage: function(message, type)
 	{
 		clearTimeout(this.messageTimer);
+
+		type = type.toLowerCase();
 
 		$('#message-'+type+' div').html(message);
 		$('#message-'+type).hide().removeClass('hidden').css('z-index', 10000).slideDown('medium');
@@ -686,6 +722,65 @@ var Fractal = {
 				$('#'+modalId).modal('show');
 			}
 		});
+	},
+
+	processResponse: function(response, form)
+	{
+		if (!this.suppressNextResponse)
+		{
+			if (typeof response == "string")
+			{
+				if (response.substr(0, 1) == "{")
+				{
+					response = $.parseJSON(response);
+				}
+				else
+				{
+					response = {
+						type:    'Error',
+						message: response,
+						data:    {},
+					};
+				}
+			}
+
+			// redirect to URL / URI if one is set
+			if (typeof response.data.uri != "undefined" && response.data.uri != null)
+				document.location.href = this.createUrl(response.data.uri);
+
+			if (typeof response.data.url != "undefined" && response.data.url != null)
+				document.location.href = response.data.url;
+
+			// set the message
+			if (typeof response.message != undefined && response.message != false)
+				this.setMainMessage(response.message, response.type);
+
+			if (typeof form != "undefined")
+			{
+				if (response.type == "Success")
+				{
+					if (!form.data('prevent-modal-hide'))
+						$(form).parents('.modal').find('[data-dismiss=modal]').trigger('click');
+
+					var callbackFunction = form.data('callback-function');
+					if (callbackFunction)
+					{
+						this.executeFunction(callbackFunction, response, form);
+					}
+				}
+			}
+
+			if (typeof response.data.errors == "object")
+			{
+				Formation.populateErrors(response.data.errors, form);
+
+				this.formErrorCallback(form);
+			}
+		}
+		else
+		{
+			this.suppressNextResponse = false;
+		}
 	},
 
 	capitalizeFirstLetter: function(string)

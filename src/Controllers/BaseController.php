@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 use Fractal;
 
 use Auth;
+use Form;
+use Session;
 use Site;
 
 class BaseController extends Controller {
@@ -27,12 +29,17 @@ class BaseController extends Controller {
 			'data'    => $data,
 		];
 
-		if (!is_null($httpStatusCode))
+		// if a message is set and URL redirection is going to occur, flash the message to the session
+		if (!is_null($message))
 		{
-			return response($response, $httpStatusCode)->header('Content-Type', 'text/json');
+			if ((isset($data['url']) && !is_null($data['url'])) || (isset($data['uri']) && !is_null($data['uri'])))
+				Session::flash('messages', [strtolower($type) => $message]);
 		}
 
-		return $response;
+		if (is_null($httpStatusCode))
+			$httpStatusCode = 200;
+
+		return response($response, $httpStatusCode)->header('Content-Type', 'text/json');
 	}
 
 	protected function success($message = null, $data = [], $httpStatusCode = null)

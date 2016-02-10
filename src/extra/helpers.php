@@ -9,7 +9,7 @@
 |
 */
 
-if ( ! function_exists('trans'))
+if (!function_exists('trans'))
 {
 	/**
 	 * Get a language item from language arrays.
@@ -25,7 +25,7 @@ if ( ! function_exists('trans'))
 	}
 }
 
-if ( ! function_exists('trans_lower'))
+if (!function_exists('trans_lower'))
 {
 	/**
 	 * Get a language item from language arrays and make it lowercase.
@@ -41,7 +41,7 @@ if ( ! function_exists('trans_lower'))
 	}
 }
 
-if ( ! function_exists('trans_a'))
+if (!function_exists('trans_a'))
 {
 	/**
 	 * Get a language item from language arrays and add "a" or "an" prefix.
@@ -57,7 +57,7 @@ if ( ! function_exists('trans_a'))
 	}
 }
 
-if ( ! function_exists('trans_lower_a'))
+if (!function_exists('trans_lower_a'))
 {
 	/**
 	 * Get a language item from language arrays, make it lowercase, and add "a" or "an" prefix.
@@ -73,7 +73,7 @@ if ( ! function_exists('trans_lower_a'))
 	}
 }
 
-if ( ! function_exists('trans_plural'))
+if (!function_exists('trans_plural'))
 {
 	/**
 	 * Get a language item from language arrays and make it plural.
@@ -89,7 +89,7 @@ if ( ! function_exists('trans_plural'))
 	}
 }
 
-if ( ! function_exists('trans_plural_lower'))
+if (!function_exists('trans_plural_lower'))
 {
 	/**
 	 * Get a language item from language arrays, make it lowercase, and make it plural.
@@ -105,7 +105,7 @@ if ( ! function_exists('trans_plural_lower'))
 	}
 }
 
-if ( ! function_exists('trans_choice_lower'))
+if (!function_exists('trans_choice_lower'))
 {
 	/**
 	 * Get a language item according to an integer value and make it lowercase.
@@ -122,7 +122,7 @@ if ( ! function_exists('trans_choice_lower'))
 	}
 }
 
-if ( ! function_exists('trans_choice_lower_a'))
+if (!function_exists('trans_choice_lower_a'))
 {
 	/**
 	 * Get a language item according to an integer value and make it lowercase.
@@ -139,7 +139,7 @@ if ( ! function_exists('trans_choice_lower_a'))
 	}
 }
 
-if ( ! function_exists('developer'))
+if (!function_exists('developer'))
 {
 	/**
 	 * Get a language item according to an integer value and make it lowercase.

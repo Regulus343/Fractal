@@ -114,10 +114,9 @@ class PagesController extends BaseController {
 	{
 		Form::setValidationRules(Page::validationRules());
 
-		$messages = [];
 		if (Form::isValid())
 		{
-			$messages['success'] = Fractal::trans('messages.successCreated', ['item' => Fractal::transLowerA('labels.page')]);
+			$message = Fractal::trans('messages.successCreated', ['item' => Fractal::transLowerA('labels.page')]);
 
 			$input = Input::all();
 			$page  = Page::createNew($input);
@@ -137,16 +136,10 @@ class PagesController extends BaseController {
 				'details'     => 'Title: '.$page->title,
 			]);
 
-			return Redirect::to(Fractal::uri($page->slug.'/edit', true))
-				->with('messages', $messages);
-		} else {
-			$messages['error'] = Fractal::trans('messages.errors.general');
+			return $this->success($message, ['uri' => Fractal::uri($page->slug.'/edit', true)]);
 		}
 
-		return Redirect::to(Fractal::uri('create', true))
-			->with('messages', $messages)
-			->with('errors', Form::getErrors())
-			->withInput();
+		return $this->error();
 	}
 
 	public function edit($slug)
@@ -210,10 +203,9 @@ class PagesController extends BaseController {
 
 		$page->setValidationRules();
 
-		$messages = [];
 		if (Form::isValid())
 		{
-			$messages['success'] = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoiceLowerA('labels.page')]);
+			$message = Fractal::trans('messages.success.updated', ['item' => Fractal::transChoiceLowerA('labels.page')]);
 
 			$page->saveData();
 
@@ -233,17 +225,11 @@ class PagesController extends BaseController {
 				'updated'     => true,
 			]);
 
-			return Redirect::to(Fractal::uri('', true))
-				->with('messages', $messages);
+			return $this->success($message, ['uri' => Fractal::uri('', true)]);
 		}
 		else
 		{
-			$messages['error'] = Fractal::trans('messages.errors.general');
-
-			return Redirect::to(Fractal::uri($slug.'/edit', true))
-				->with('messages', $messages)
-				->with('errors', Form::getErrors())
-				->withInput();
+			return $this->error();
 		}
 	}
 
@@ -338,7 +324,7 @@ class PagesController extends BaseController {
 				$layout = $template->layout;
 		}
 
-		return json_encode(Fractal::getLayoutTagsFromLayout($layout));
+		return Form::simpleOptions(Fractal::getLayoutTagsFromLayout($layout));
 	}
 
 	private function getLayoutTagOptions($layoutTagOptions = [])
@@ -357,7 +343,7 @@ class PagesController extends BaseController {
 			$layoutTagOptions = Fractal::getLayoutTagsFromLayout($layout);
 		}
 
-		return $layoutTagOptions;
+		return Form::simpleOptions($layoutTagOptions);
 	}
 
 	public function renderMarkdownContent()

@@ -14,7 +14,7 @@
 
 		"regulus/activity-log": "0.5.*",
 		"regulus/elemental": "0.5.*",
-		"regulus/formation": "1.0.*",
+		"regulus/formation": "1.1.*",
 		"regulus/identify": "0.9.*",
 		"regulus/solid-site": "0.6.*",
 		"regulus/tetra-text": "0.5.*",

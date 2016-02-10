@@ -283,15 +283,18 @@ class ArticlesController extends BlogsController {
 				$layout = $template->layout;
 		}
 
-		return json_encode(Fractal::getLayoutTagsFromLayout($layout));
+		return Form::simpleOptions(Fractal::getLayoutTagsFromLayout($layout));
 	}
 
 	private function getLayoutTagOptions($layoutTagOptions = [])
 	{
-		if (Input::old()) {
+		if (Input::old())
+		{
 			$layout = Input::old('layout');
-			if (Input::old('layout_template_id') != "") {
+			if (Input::old('layout_template_id') != "")
+			{
 				$template = LayoutTemplate::find(Input::old('layout_template_id'));
+
 				if (!empty($template))
 					$layout = $template->layout;
 			}
@@ -299,7 +302,7 @@ class ArticlesController extends BlogsController {
 			$layoutTagOptions = Fractal::getLayoutTagsFromLayout($layout);
 		}
 
-		return $layoutTagOptions;
+		return Form::simpleOptions($layoutTagOptions);
 	}
 
 	public function renderMarkdownContent()
